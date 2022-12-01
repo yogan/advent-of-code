@@ -1,0 +1,26 @@
+            # PREV RESULTS:
+            # x01 = 1
+            # z01 = d01 + 6
+            #
+inp w       # w = d02
+mul x 0     # x = 0
+add x z     # x = z01
+mod x 26    # x = z01 % 26
+div z 1     # z = z01
+add x 13    # x = (z01 % 26) + 13
+eql x w     # x = 0   (w <= 9, x = z01+13 = d01+6+13 > 9)
+eql x 0     # x = 1   (0 == 0)
+mul y 0     # y = 0
+add y 25    # y = 25
+mul y x     # y = 25
+add y 1     # y = 26
+mul z y     # z = z01 * 26
+mul y 0     # y = 0
+add y w     # y = w = d02
+add y 14    # y = d02 + 14
+mul y x     # y = d02 + 14
+add z y     # z = (z01 * 26) + d02 + 14
+            #
+            # RESULTS:
+            # x02 = 1
+            # z02 = (z01 * 26) + d02 + 14

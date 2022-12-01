@@ -1,0 +1,22 @@
+            # PREV RESULTS:
+            # x03 = 1
+            # z03 = (z02 * 26) + d03 + 14
+            #
+inp w
+mul x 0
+add x z     # x = z03
+mod x 26    # x = z03 % 26
+div z 26    # z = z03 // 26
+add x -8    # x = (z03 % 26) - 8
+eql x w     # x = 0 || 1  % so we don't know :-(
+eql x 0     # x = 1  (0 == 0)
+mul y 0
+add y 25
+mul y x
+add y 1     # y = 26
+mul z y     # z = (z03 // 26) * 26
+mul y 0
+add y w
+add y 10    # y = d04 + 10
+mul y x
+add z y     # z = ((z03 // 26) * 26) + d04 + 10
