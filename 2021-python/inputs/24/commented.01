@@ -1,0 +1,26 @@
+inp w       # w = d01              # SAME
+mul x 0     # x = 0                # SAME
+add x z     # x = 0                # SAME
+mod x 26    # x = 0                # SAME
+div z 1     # z = 0                # diff: either 1 or 26
+add x 11    # x = 11               # diff: bunch of numbers
+eql x w     # x = 0   (11 != w)    # SAME
+eql x 0     # x = 1   (0 == 0)     # SAME
+mul y 0     # y = 0                # SAME
+add y 25    # y = 25               # SAME
+mul y x     # y = 25               # SAME
+add y 1     # y = 26               # SAME
+mul z y     # z = 0                # SAME
+mul y 0     # y = 0                # SAME
+add y w     # y = w = d01          # SAME
+add y 6     # y = w + 6 = d01 + 6  # diff: bunch of numbers
+mul y x     # y = (d01 + 6) * 1    # SAME
+add z y     # z = 0 + d01 + 6      # SAME
+            #
+            # RESULTS:
+            # x01 = 1
+            # z01 = d01 + 6
+            #
+            # Not required to carry over:
+            # w = set to input digit, never written then
+            # y = always set to 0 by "mul y 0" (line 9)
