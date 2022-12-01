@@ -24,4 +24,4 @@ set top_sums $(for sum in $sums
 end | sort -n | tail -$elves
 )
 
-echo $(math max $(string join '+' $top_sums))
+echo $(math $(string join '+' $top_sums))
