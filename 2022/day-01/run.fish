@@ -1,2 +1,5 @@
 #!/usr/bin/env fish
-./day01.fish <day01.in
+set INPUT day01.in
+
+./day01.fish --part=1 <$INPUT
+./day01.fish --part=2 <$INPUT
