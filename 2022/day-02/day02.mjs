@@ -4,6 +4,10 @@ const ROCK_PLAYER = "X"
 const PAPER_PLAYER = "Y"
 const SCISSORS_PLAYER = "Z"
 
+const SHALL_LOSE = "X"
+const SHALL_DRAW = "Y"
+const SHALL_WIN = "Z"
+
 const ROCK_OPPONENT = "A"
 const PAPER_OPPONENT = "B"
 const SCISSORS_OPPONENT = "C"
@@ -16,7 +20,7 @@ const LOSS = 0
 const DRAW = 3
 const WIN = 6
 
-export async function day02(filename) {
+async function parseInput(filename) {
   const matches = []
 
   const file = await open(filename)
@@ -25,8 +29,59 @@ export async function day02(filename) {
   }
 
   return matches
+}
+
+export async function part1(filename) {
+  return (await parseInput(filename))
     .map(([opponent, player]) => score(opponent, player))
     .reduce((sum, x) => sum + x, 0)
+}
+
+export async function part2(filename) {
+  return (await parseInput(filename))
+    .map(([opponent, result]) => [opponent, findPlayerShape(opponent, result)])
+    .map(([opponent, player]) => score(opponent, player))
+    .reduce((sum, x) => sum + x, 0)
+}
+
+const findPlayerShape = (opponent, result) => {
+  switch (opponent) {
+    case ROCK_OPPONENT:
+      switch (result) {
+        case SHALL_DRAW:
+          return ROCK_PLAYER
+        case SHALL_WIN:
+          return PAPER_PLAYER
+        case SHALL_LOSE:
+          return SCISSORS_PLAYER
+        default:
+          throw Error(`unexpected result "${result}"`)
+      }
+    case PAPER_OPPONENT:
+      switch (result) {
+        case SHALL_DRAW:
+          return PAPER_PLAYER
+        case SHALL_WIN:
+          return SCISSORS_PLAYER
+        case SHALL_LOSE:
+          return ROCK_PLAYER
+        default:
+          throw Error(`unexpected result "${result}"`)
+      }
+    case SCISSORS_OPPONENT:
+      switch (result) {
+        case SHALL_DRAW:
+          return SCISSORS_PLAYER
+        case SHALL_WIN:
+          return ROCK_PLAYER
+        case SHALL_LOSE:
+          return PAPER_PLAYER
+        default:
+          throw Error(`unexpected result "${result}"`)
+      }
+    default:
+      throw Error(`unexpected shape "${opponent}"`)
+  }
 }
 
 const score = (opponent, player) =>
@@ -85,5 +140,8 @@ const win_score = (opponent, player) => {
   }
 }
 
-const scorePart1 = await day02("./day02.in")
+const scorePart1 = await part1("./day02.in")
+const scorePart2 = await part2("./day02.in")
+
 console.log(`Day 02 part 1: ${scorePart1}`)
+console.log(`Day 02 part 2: ${scorePart2}`)
