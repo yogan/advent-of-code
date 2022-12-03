@@ -1,0 +1,12 @@
+{
+  "name": "aoc-2022-day-02",
+  "version": "1.0.0",
+  "description": "Advent of Code 2022 Day 02",
+  "main": "day02.mjs",
+  "scripts": {
+    "start": "node day02.mjs",
+    "test": "node --test"
+  },
+  "author": "Frank Blendinger",
+  "license": "ISC"
+}
