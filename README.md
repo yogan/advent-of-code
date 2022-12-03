@@ -5,6 +5,9 @@
 - [Day 01](https://adventofcode.com/2022/day/1) ⭐⭐ in
   [fish](2022/day-01/day01.fish)
   with [tests](2022/day-01/test.fish)
+- [Day 02](https://adventofcode.com/2022/day/2) ⭐⭐ in
+  [JavaScript (Node/esm)](2022/day-02/day02.mjs),
+  [tests](2022/day-02/day02.test.mjs) for Node 19's experimental built-in test runner
 
 ## [2021](https://adventofcode.com/2021) (34/50 ⭐)
 
