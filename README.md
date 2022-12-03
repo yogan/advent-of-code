@@ -8,6 +8,10 @@
 - [Day 02](https://adventofcode.com/2022/day/2) ⭐⭐ in
   [JavaScript (Node/esm)](2022/day-02/day02.mjs),
   [tests](2022/day-02/day02.test.mjs) for Node 19's experimental built-in test runner
+- [Day 03](https://adventofcode.com/2022/day/3) ⭐⭐ in
+  [TypeScript (Bun)](2022/day-03/day03.ts),
+  [tests](2022/day-03/day03.test.ts) requires Bun Canary for the tests, see
+  [README](2022/day-03/README.md)
 
 ## [2021](https://adventofcode.com/2021) (34/50 ⭐)
 
