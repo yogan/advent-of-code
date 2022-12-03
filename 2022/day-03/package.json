@@ -1,0 +1,9 @@
+{
+  "name": "day-03",
+  "module": "day03.ts",
+  "type": "module",
+  "devDependencies": {
+    "bun-types": "^0.2.0",
+    "prettier": "^2.8.0"
+  }
+}
