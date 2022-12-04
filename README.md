@@ -12,6 +12,8 @@
   [TypeScript (Bun)](2022/day-03/day03.ts),
   [tests](2022/day-03/day03.test.ts) requires Bun Canary for the tests, see
   [README](2022/day-03/README.md)
+- [Day 04](https://adventofcode.com/2022/day/4) ⭐⭐ in
+  [Perl](2022/day-04/day04.pl)
 
 ## [2021](https://adventofcode.com/2021) (34/50 ⭐)
 
