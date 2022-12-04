@@ -38,6 +38,19 @@ sub find_fully_contained {
     return grep { is_fully_contained(@$_) } @_;
 }
 
+sub is_overlapping {
+    die if @_ != 4;
+    my ( $left_min, $left_max, $right_min, $right_max ) = @_;
+
+    my $no_overlap = $left_max < $right_min || $right_max < $left_min;
+
+    return !$no_overlap;
+}
+
+sub find_overlapping {
+    return grep { is_overlapping(@$_) } @_;
+}
+
 sub part1 {
     my $filename         = shift;
     my @lines            = lines_from_file($filename);
@@ -45,6 +58,15 @@ sub part1 {
     my @fully_containted = find_fully_contained(@parsed_lines);
 
     return scalar @fully_containted;
+}
+
+sub part2 {
+    my $filename     = shift;
+    my @lines        = lines_from_file($filename);
+    my @parsed_lines = parse_lines(@lines);
+    my @overlapping  = find_overlapping(@parsed_lines);
+
+    return scalar @overlapping;
 }
 
 # --------------- TESTS ---------------
@@ -86,7 +108,18 @@ ok !is_fully_contained( ( 2, 4, 6, 8 ) ),
 ok is_fully_contained( ( 2, 4, 2, 8 ) ),
   "is_fully_contained (left fully in right)";
 ok is_fully_contained( ( 3, 8, 4, 5 ) ),
-  "is_fully_contained (right fully in left";
+  "is_fully_contained (right fully in left)";
+
+# -------------------------------------
+
+ok !is_overlapping( ( 2, 4, 6, 8 ) ),
+  "is_overlapping (does not overlap at all)";
+ok is_overlapping( ( 5, 7, 7, 9 ) ),
+  "is_overlapping (overlaps in single section, 7)";
+ok is_overlapping( ( 6, 6, 4, 6 ) ),
+  "is_overlapping (overlaps in a single section, 6)";
+ok is_overlapping( ( 2, 6, 4, 8 ) ),
+  "is_overlapping (overlaps in sections 4, 5, and 6)";
 
 # -------------------------------------
 
@@ -110,6 +143,7 @@ is find_fully_contained(@assignments), @expected_fully_contained,
 # -------------------------------------
 
 is part1("./day04.sample"), 2, "part1 with sample data";
+is part2("./day04.sample"), 4, "part2 with sample data";
 
 done_testing;
 
@@ -117,3 +151,4 @@ done_testing;
 
 print "\n";
 print "Part 1: " . part1("./day04.in") . "\n";
+print "Part 2: " . part2("./day04.in") . "\n";
