@@ -62,21 +62,48 @@ def apply_instructions(stacks, instructions)
   end
 end
 
+def apply_instructions_part2(stacks, instructions)
+  instructions.each do |instruction|
+    on_crane = []
+    instruction.quantity.times do
+      on_crane << stacks[instruction.source].pop
+    end
+    on_crane.reverse.each do |crate|
+      stacks[instruction.destination].push(crate)
+    end
+  end
+end
+
 def get_stack_tops(stacks)
   stacks[1..].map { |s| s.last }.join
 end
 
-def part1(filename: 'day05.in')
+def move_crates(filename, is_part_one)
   parsed_input = parse_file(filename)
   stacks       = initialize_stacks(parsed_input.stacks)
   instructions = initialize_instructions(parsed_input.instructions)
 
-  apply_instructions(stacks, instructions)
+  if is_part_one
+    apply_instructions(stacks, instructions)
+  else
+    apply_instructions_part2(stacks, instructions)
+  end
 
   get_stack_tops(stacks)
 end
 
+def part1(filename: 'day05.in')
+  is_part_one = true
+  move_crates(filename, is_part_one)
+end
+
+def part2(filename: 'day05.in')
+  is_part_one = false
+  move_crates(filename, is_part_one)
+end
+
 print "Part 1: #{part1}\n"
+print "Part 2: #{part2}\n"
 print "\n"
 
 # Tests
@@ -147,6 +174,21 @@ class TestDay05 < Test::Unit::TestCase
     assert_equal expected_stacks, stacks
   end
 
+  def test_apply_instructions_part2
+    instructions = [
+      Instruction.new(1, 3, 2),
+      Instruction.new(2, 2, 1)
+    ]
+    #                         1      2        3
+    stacks          = [[], %w[K], %w[V W], %w[X Y A]]
+    # after step 1:   [[], %w[K], %w[V W A], %w[X Y]]
+    expected_stacks = [[], %w[K W A], %w[V], %w[X Y]]
+
+    apply_instructions_part2(stacks, instructions)
+
+    assert_equal expected_stacks, stacks
+  end
+
   def test_get_stack_tops
     stacks = [[], %w[K A W], %w[V], %w[X Y]]
 
@@ -155,5 +197,9 @@ class TestDay05 < Test::Unit::TestCase
 
   def test_part1
     assert_equal 'CMZ', part1(filename: @@filename)
+  end
+
+  def test_part2
+    assert_equal 'MCD', part2(filename: @@filename)
   end
 end
