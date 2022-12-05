@@ -13,6 +13,8 @@
   [tests](2022/day-03/day03.test.ts) require Bun Canary, see [README](2022/day-03/README.md)
 - [Day 04](https://adventofcode.com/2022/day/4) ⭐⭐ in
   [Perl](2022/day-04/day04.pl) with [Test2](https://metacpan.org/pod/Test2)
+- [Day 05](https://adventofcode.com/2022/day/5) ⭐⭐ in
+  [Ruby](2022/day-05/day05.rb)
 
 ## [2021](https://adventofcode.com/2021) (34/50 ⭐)
 
