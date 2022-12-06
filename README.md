@@ -15,6 +15,8 @@
   [Perl](2022/day-04/day04.pl) with [Test2](https://metacpan.org/pod/Test2)
 - [Day 05](https://adventofcode.com/2022/day/5) ⭐⭐ in
   [Ruby](2022/day-05/day05.rb)
+- [Day 06](https://adventofcode.com/2022/day/6) ⭐⭐ in
+  [C](2022/day-06/day06.c) 💀
 
 ## [2021](https://adventofcode.com/2021) (34/50 ⭐)
 
