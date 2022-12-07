@@ -30,26 +30,69 @@ public class Day07 {
     }
 
     static class Directory {
+
+        private String name;
+
+        public String getName() {
+            return name;
+        }
+
         private Directory parent;
 
         public Directory getParent() {
             return parent;
         }
 
-        public Directory(Directory parent) {
+        public Directory() {
+            this("/", null);
+        }
+
+        public Directory(String name, Directory parent) {
+            this.name = name;
             this.parent = parent;
         }
 
         public HashMap<String, Directory> subDirs = new HashMap<String, Directory>();
         public Set<File> files = new HashSet<File>();
+
+        private int size = -1;
+
+        public int getSize() {
+            if (size == -1) {
+                size = files.stream().mapToInt(File::getSize).sum() +
+                        subDirs.values().stream().mapToInt(Directory::getSize).sum();
+            }
+            return size;
+        }
+
+        public Set<Directory> findDirectories(int maximumSize) {
+            var dirs = new HashSet<Directory>();
+            if (getSize() <= maximumSize) {
+                dirs.add(this);
+            }
+            for (var subDir : subDirs.values()) {
+                dirs.addAll(subDir.findDirectories(maximumSize));
+            }
+            return dirs;
+        }
+    }
+
+    public static int getTotalSize(Directory root) {
+        return root.findDirectories(100000)
+                .stream()
+                .map(Directory::getSize)
+                .mapToInt(Integer::intValue)
+                .sum();
     }
 
     public static void main(String[] args) {
-        var lines = readFile();
+        var lines = readFile("day07.in");
 
-        var root = new Directory(null);
+        var root = new Directory();
+        parseTerminalOutput(lines, root);
+        var totalSize = getTotalSize(root);
 
-        System.out.println(lines);
+        System.out.println("Part 1: " + totalSize);
     }
 
     public static void parseTerminalOutput(ArrayList<String> lines, Directory dir) {
@@ -72,7 +115,7 @@ public class Day07 {
                 var parts = line.split(" ");
                 if (parts[0].equals("dir")) {
                     var dirname = parts[1];
-                    currentDir.subDirs.put(dirname, new Directory(currentDir));
+                    currentDir.subDirs.put(dirname, new Directory(dirname, currentDir));
                 } else {
                     var filename = parts[1];
                     var size = Integer.parseInt(parts[0]);
@@ -82,11 +125,9 @@ public class Day07 {
         }
     }
 
-    static private String file = "day07.sample";
-
-    private static ArrayList<String> readFile() {
+    private static ArrayList<String> readFile(String filename) {
         var lines = new ArrayList<String>();
-        try (var reader = new BufferedReader(new FileReader(file))) {
+        try (var reader = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 lines.add(line);
