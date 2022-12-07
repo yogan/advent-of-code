@@ -83,11 +83,11 @@ class Day07Tests {
     }
 
     @Test
-    void findDirectories_HaveCorrectSize() {
+    void findDirectoriesWithMaxSize_HaveCorrectSize() {
         var root = new Directory();
         Day07.parseTerminalOutput(lines, root);
 
-        var directories = root.findDirectories(100000);
+        var directories = root.findDirectoriesWithMaxSize(100000);
         assertDirs(Set.of("a", "e"), Set.of(94853, 584), directories);
     }
 
@@ -97,6 +97,22 @@ class Day07Tests {
         Day07.parseTerminalOutput(lines, root);
 
         assertEquals(95437, Day07.getTotalSize(root));
+    }
+
+    @Test
+    void getSpaceToBeDeleted_ReturnsCorrectValue() {
+        var root = new Directory();
+        Day07.parseTerminalOutput(lines, root);
+
+        assertEquals(8381165, Day07.getSpaceToBeDeleted(root));
+    }
+
+    @Test
+    void sizeOfSmallestDirToDelete_ReturnsCorrectValue() {
+        var root = new Directory();
+        Day07.parseTerminalOutput(lines, root);
+
+        assertEquals(24933642, Day07.sizeOfSmallestDirToDelete(root));
     }
 
     private void assertDirs(

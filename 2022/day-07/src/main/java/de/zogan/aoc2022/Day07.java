@@ -65,24 +65,54 @@ public class Day07 {
             return size;
         }
 
-        public Set<Directory> findDirectories(int maximumSize) {
+        public Set<Directory> findDirectoriesWithMinSize(int minimumSize) {
+            var dirs = new HashSet<Directory>();
+            if (getSize() >= minimumSize) {
+                dirs.add(this);
+            }
+            for (var subDir : subDirs.values()) {
+                dirs.addAll(subDir.findDirectoriesWithMinSize(minimumSize));
+            }
+            return dirs;
+        }
+
+        public Set<Directory> findDirectoriesWithMaxSize(int maximumSize) {
             var dirs = new HashSet<Directory>();
             if (getSize() <= maximumSize) {
                 dirs.add(this);
             }
             for (var subDir : subDirs.values()) {
-                dirs.addAll(subDir.findDirectories(maximumSize));
+                dirs.addAll(subDir.findDirectoriesWithMaxSize(maximumSize));
             }
             return dirs;
         }
     }
 
     public static int getTotalSize(Directory root) {
-        return root.findDirectories(100000)
+        return root.findDirectoriesWithMaxSize(100000)
                 .stream()
                 .map(Directory::getSize)
                 .mapToInt(Integer::intValue)
                 .sum();
+    }
+
+    public static int getSpaceToBeDeleted(Directory root) {
+        var totalDiskSpace = 70000000;
+        var requiredDiskSpace = 30000000;
+
+        var freeSpace = totalDiskSpace - root.getSize();
+        return requiredDiskSpace - freeSpace;
+    }
+
+    public static int sizeOfSmallestDirToDelete(Directory root) {
+        var minimumDirSize = getSpaceToBeDeleted(root);
+        return root.findDirectoriesWithMinSize(minimumDirSize)
+                .stream()
+                .map(Directory::getSize)
+                .mapToInt(Integer::intValue)
+                .sorted()
+                .findFirst()
+                .getAsInt();
     }
 
     public static void main(String[] args) {
@@ -92,7 +122,10 @@ public class Day07 {
         parseTerminalOutput(lines, root);
         var totalSize = getTotalSize(root);
 
+        var dirToDeleteSize = sizeOfSmallestDirToDelete(root);
+
         System.out.println("Part 1: " + totalSize);
+        System.out.println("Part 2: " + dirToDeleteSize);
     }
 
     public static void parseTerminalOutput(ArrayList<String> lines, Directory dir) {
