@@ -17,6 +17,9 @@
   [Ruby](2022/day-05/day05.rb)
 - [Day 06](https://adventofcode.com/2022/day/6) ⭐⭐ in
   [C](2022/day-06/day06.c) 💀
+- [Day 07](https://adventofcode.com/2022/day/7) ⭐⭐ in
+  [Java](2022/day-07/src/main/java/de/zogan/aoc2022/Day07.java)
+  ([tests](2022/day-07/src/test/java/de/zogan/aoc2022/Day07Tests.java)) 🦕
 
 ## [2021](https://adventofcode.com/2021) (34/50 ⭐)
 
