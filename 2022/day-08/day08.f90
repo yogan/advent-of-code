@@ -78,6 +78,62 @@ contains
       visibility = visibility
    end function calc_visibility
 
+   function find_max_scenic_score( grid, grid_size ) result(max_score)
+      integer, intent(in) :: grid(:,:)
+      integer, intent(in) :: grid_size
+      integer :: row, col, x, score, max_score
+      integer :: dist_left, dist_right, dist_up, dist_down
+
+      max_score = 0
+
+      do row = 2, grid_size - 1
+         do col = 2, grid_size - 1
+            dist_left = 0
+            dist_right = 0
+            dist_up = 0
+            dist_down = 0
+            score = 0
+
+            ! go to the left
+            do x = col - 1, 1, -1
+               dist_left = dist_left + 1
+               if ( grid(row, x) >= grid(row, col) ) then
+                  go to 10
+               end if
+            end do
+
+            ! go to the right
+10          do x = col + 1, grid_size, 1
+               dist_right = dist_right + 1
+               if ( grid(row, x) >= grid(row, col) ) then
+                  go to 20
+               end if
+            end do
+
+            ! go up
+20          do x = row - 1, 1, -1
+               dist_up = dist_up + 1
+               if ( grid(x, col) >= grid(row, col) ) then
+                  go to 30
+               end if
+            end do
+
+            ! go down
+30          do x = row + 1, grid_size, 1
+               dist_down = dist_down + 1
+               if ( grid(x, col) >= grid(row, col) ) then
+                  go to 40
+               end if
+            end do
+
+40          score = dist_left * dist_right * dist_up * dist_down
+            if ( score > max_score ) then
+               max_score = score
+            end if
+         end do
+      end do
+   end function find_max_scenic_score
+
    function count_visible_trees( visibility ) result(number)
       logical, intent(in) :: visibility(:,:)
       integer :: number
