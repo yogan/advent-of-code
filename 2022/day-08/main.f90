@@ -2,17 +2,19 @@ program main
    use day08
    implicit none
 
-   integer :: sample_grid_size = 5
-   integer :: sample_grid(5, 5)
-   ! integer :: grid_size = 99
-   ! integer :: grid(99, 99)
+   integer :: sample_grid_size = 5, grid_size = 99
+   integer :: sample_grid(5,5), grid(99,99)
+   logical :: sample_visibility(5,5), visibility(99,99)
 
+   print *, "SAMPLE"
    sample_grid = read_file("day08.sample", sample_grid_size)
-   print *, "Sample grid:"
-   call print_grid(sample_grid)
+   sample_visibility = calc_visibility(sample_grid, sample_grid_size)
+   call print_visibility(sample_visibility)
 
-   ! grid = read_file("day08.in", grid_size)
-   ! print *, "Grid:"
-   ! call print_grid(grid)
+   print *, ""
+   print *, "INPUT"
+   grid = read_file("day08.in", grid_size)
+   visibility = calc_visibility(grid, grid_size)
+   call print_visibility(visibility)
 
 end program main
