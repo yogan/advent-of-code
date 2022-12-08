@@ -78,6 +78,13 @@ contains
       visibility = visibility
    end function calc_visibility
 
+   function count_visible_trees( visibility ) result(number)
+      logical, intent(in) :: visibility(:,:)
+      integer :: number
+
+      number = count( visibility )
+   end function count_visible_trees
+
    function find_max_scenic_score( grid, grid_size ) result(max_score)
       integer, intent(in) :: grid(:,:)
       integer, intent(in) :: grid_size
@@ -133,13 +140,6 @@ contains
          end do
       end do
    end function find_max_scenic_score
-
-   function count_visible_trees( visibility ) result(number)
-      logical, intent(in) :: visibility(:,:)
-      integer :: number
-
-      number = count( visibility )
-   end function count_visible_trees
 
    subroutine print_grid( grid )
       integer, intent(in) :: grid(:,:)

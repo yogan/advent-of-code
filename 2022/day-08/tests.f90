@@ -63,26 +63,6 @@ contains
       end if
    end subroutine test_calc_visibility
 
-   subroutine test_find_max_scenic_score()
-      integer :: grid_size = 5, max_score
-      integer, dimension(5,5):: grid = reshape( &
-         (/ 3,0,3,7,3, &
-            2,5,5,1,2, &
-            6,5,3,3,2, &
-            3,3,5,4,9, &
-            3,5,3,9,0 /), &
-         shape(grid), order=(/2,1/) )
-
-      max_score = find_max_scenic_score(grid, grid_size)
-
-      if (max_score /= 8) then
-         print *, "Test failed: expected max score of 8", &
-            ", got tree count:", max_score
-      else
-         print *, "Test passed (find_max_scenic_score)"
-      end if
-   end subroutine test_find_max_scenic_score
-
    subroutine test_count_visible_trees()
       integer :: number, expected_number = 21
       logical, dimension(5,5) :: visibility = reshape( &
@@ -102,5 +82,25 @@ contains
          print *, "Test passed (count_visible_trees)"
       end if
    end subroutine test_count_visible_trees
+
+   subroutine test_find_max_scenic_score()
+      integer :: grid_size = 5, max_score
+      integer, dimension(5,5):: grid = reshape( &
+         (/ 3,0,3,7,3, &
+            2,5,5,1,2, &
+            6,5,3,3,2, &
+            3,3,5,4,9, &
+            3,5,3,9,0 /), &
+         shape(grid), order=(/2,1/) )
+
+      max_score = find_max_scenic_score(grid, grid_size)
+
+      if (max_score /= 8) then
+         print *, "Test failed: expected max score of 8", &
+            ", got tree count:", max_score
+      else
+         print *, "Test passed (find_max_scenic_score)"
+      end if
+   end subroutine test_find_max_scenic_score
 
 end program tests
