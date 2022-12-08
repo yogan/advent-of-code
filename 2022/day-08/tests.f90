@@ -4,6 +4,7 @@ program tests
 
    call test_read_file()
    call test_calc_visibility()
+   call test_count_visible_trees()
 
 contains
    subroutine test_read_file()
@@ -21,7 +22,7 @@ contains
       grid = read_file("day08.sample", grid_size)
 
       if (any(grid /= expected_grid)) then
-         print *, "Test failed: Expected grid:"
+         print *, "Test failed: expected grid:"
          call print_grid(expected_grid)
          print *, "Got grid:"
          call print_grid(grid)
@@ -52,7 +53,7 @@ contains
       visibility = calc_visibility(grid, grid_size)
 
       if (any(visibility .neqv. expected_visibility)) then
-         print *, "Test failed: Expected visibility:"
+         print *, "Test failed: expected visibility:"
          call print_visibility(expected_visibility)
          print *, "Got visibility:"
          call print_visibility(visibility)
@@ -60,5 +61,25 @@ contains
          print *, "Test passed (calc_visibility)"
       end if
    end subroutine test_calc_visibility
+
+   subroutine test_count_visible_trees()
+      integer :: number, expected_number = 21
+      logical, dimension(5,5) :: visibility = reshape( &
+         (/ .true.,.true.,.true.,.true.,.true., &
+            .true.,.true.,.true.,.false.,.true., &
+            .true.,.true.,.false.,.true.,.true., &
+            .true.,.false.,.true.,.false.,.true., &
+            .true.,.true.,.true.,.true.,.true. /), &
+         shape(visibility), order=(/2,1/) )
+
+      number = count_visible_trees(visibility)
+
+      if (number /= expected_number) then
+         print *, "Test failed: expected tree count:" &
+            , expected_number, ", got tree count:", number
+      else
+         print *, "Test passed (count_visible_trees)"
+      end if
+   end subroutine test_count_visible_trees
 
 end program tests
