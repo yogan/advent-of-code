@@ -20,6 +20,10 @@
 - [Day 07](https://adventofcode.com/2022/day/7) ⭐⭐ in
   [Java](2022/day-07/src/main/java/de/zogan/aoc2022/Day07.java)
   ([tests](2022/day-07/src/test/java/de/zogan/aoc2022/Day07Tests.java)) 🦕
+- [Day 08](https://adventofcode.com/2022/day/8) ⭐⭐ in
+  [Fortran](2022/day-08/day08.f90)
+  ([tests](2022/day-08/tests.f90)) 🧑‍🔬 with GOTO!
+  (paired with Anna)
 
 ## [2021](https://adventofcode.com/2021) (34/50 ⭐)
 
