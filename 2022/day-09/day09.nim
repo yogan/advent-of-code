@@ -9,7 +9,7 @@ type
     steps: int
 
 type
-  Positions = object
+  Positions = tuple
     head_x: int
     head_y: int
     tail_x: int
@@ -69,14 +69,12 @@ proc step(positions: Positions, direction: Direction): Positions =
     dec(result.tail_y)
 
 proc simulateRope(commands: seq[Command]) =
-  var positions = Positions(head_x: 0, head_y: 0,
-                            tail_x: 0, tail_y: 0)
+  var positions = (head_x: 0, head_y: 0,
+                   tail_x: 0, tail_y: 0)
 
   for command in commands:
-    echo command
     for _ in 0 ..< command.steps:
       positions = step(positions, command.direction)
-      echo fmt"H ({positions.head_x}/{positions.head_y})   T ({positions.tail_x}/{positions.tail_y})"
 
 proc part1: int =
   let commands = parseInput("day09.sample")
@@ -108,55 +106,55 @@ suite "Advent of Code 2022 Day 09":
 
   test "step (tail stays)":
     check(step(
-      Positions(head_x: 0, head_y: 0,
-                tail_x: 0, tail_y: 0), right) ==
-      Positions(head_x: 1, head_y: 0,
-                tail_x: 0, tail_y: 0))
+      (head_x: 0, head_y: 0,
+       tail_x: 0, tail_y: 0), right) ==
+      (head_x: 1, head_y: 0,
+       tail_x: 0, tail_y: 0))
 
     check(step(
-      Positions(head_x: 2, head_y: 1,
-                tail_x: 1, tail_y: 1), left) ==
-      Positions(head_x: 1, head_y: 1,
-                tail_x: 1, tail_y: 1))
+      (head_x: 2, head_y: 1,
+       tail_x: 1, tail_y: 1), left) ==
+      (head_x: 1, head_y: 1,
+       tail_x: 1, tail_y: 1))
 
   test "step (tail follows horizontally)":
     check(step(
-      Positions(head_x: 2, head_y: 1,
-                tail_x: 1, tail_y: 1), right) ==
-      Positions(head_x: 3, head_y: 1,
-                tail_x: 2, tail_y: 1))
+      (head_x: 2, head_y: 1,
+       tail_x: 1, tail_y: 1), right) ==
+      (head_x: 3, head_y: 1,
+       tail_x: 2, tail_y: 1))
 
     check(step(
-      Positions(head_x: 2, head_y: 1,
-                tail_x: 3, tail_y: 1), left) ==
-      Positions(head_x: 1, head_y: 1,
-                tail_x: 2, tail_y: 1))
+      (head_x: 2, head_y: 1,
+       tail_x: 3, tail_y: 1), left) ==
+      (head_x: 1, head_y: 1,
+       tail_x: 2, tail_y: 1))
 
   test "step (tail follows vertically)":
     check(step(
-      Positions(head_x: 1, head_y: 2,
-                tail_x: 1, tail_y: 3), down) ==
-      Positions(head_x: 1, head_y: 1,
-                tail_x: 1, tail_y: 2))
+      (head_x: 1, head_y: 2,
+       tail_x: 1, tail_y: 3), down) ==
+      (head_x: 1, head_y: 1,
+       tail_x: 1, tail_y: 2))
 
     check(step(
-      Positions(head_x: 1, head_y: 2,
-                tail_x: 1, tail_y: 1), up) ==
-      Positions(head_x: 1, head_y: 3,
-                tail_x: 1, tail_y: 2))
+      (head_x: 1, head_y: 2,
+       tail_x: 1, tail_y: 1), up) ==
+      (head_x: 1, head_y: 3,
+       tail_x: 1, tail_y: 2))
 
   test "step (tail follows diagonally)":
     check(step(
-      Positions(head_x: 2, head_y: 2,
-                tail_x: 1, tail_y: 1), up) ==
-      Positions(head_x: 2, head_y: 3,
-                tail_x: 2, tail_y: 2))
+      (head_x: 2, head_y: 2,
+       tail_x: 1, tail_y: 1), up) ==
+      (head_x: 2, head_y: 3,
+       tail_x: 2, tail_y: 2))
 
     check(step(
-      Positions(head_x: 2, head_y: 2,
-                tail_x: 1, tail_y: 1), right) ==
-      Positions(head_x: 3, head_y: 2,
-                tail_x: 2, tail_y: 2))
+      (head_x: 2, head_y: 2,
+       tail_x: 1, tail_y: 1), right) ==
+      (head_x: 3, head_y: 2,
+       tail_x: 2, tail_y: 2))
 
 #endregion Tests
 
