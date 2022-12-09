@@ -1,19 +1,18 @@
 import std/strutils, std/strformat, std/sequtils
 
-type Direction = enum
-  left, right, up, down
-
 type
+  Direction = enum
+    left, right, up, down
+
   Command = object
     direction: Direction
     steps: int
 
-type
+  Position = tuple[x: int, y: int]
+
   Positions = tuple
-    head_x: int
-    head_y: int
-    tail_x: int
-    tail_y: int
+    head: Position
+    tail: Position
 
 proc parseInput(filename: string): seq[Command] =
   result = readFile(filename)
@@ -34,23 +33,23 @@ proc step(positions: Positions, direction: Direction): Positions =
   result = positions
 
   case direction
-  of left: dec(result.head_x)
-  of right: inc(result.head_x)
-  of up: inc(result.head_y)
-  of down: dec(result.head_y)
+  of left: dec(result.head.x)
+  of right: inc(result.head.x)
+  of up: inc(result.head.y)
+  of down: dec(result.head.y)
 
-  var delta_x = result.head_x - result.tail_x
-  var delta_y = result.head_y - result.tail_y
+  var delta_x = result.head.x - result.tail.x
+  var delta_y = result.head.y - result.tail.y
   assert abs(delta_x) + abs(delta_y) < 4
 
   if delta_x == 2:
-    inc(result.tail_x)
+    inc(result.tail.x)
   elif delta_x == -2:
-    dec(result.tail_x)
+    dec(result.tail.x)
   elif delta_y == 2:
-    inc(result.tail_y)
+    inc(result.tail.y)
   elif delta_y == -2:
-    dec(result.tail_y)
+    dec(result.tail.y)
 
   var diagonal = (
     (abs(delta_x) == 2 and abs(delta_y) == 1) or
@@ -60,17 +59,16 @@ proc step(positions: Positions, direction: Direction): Positions =
     return
 
   if (delta_x == 1):
-    inc(result.tail_x)
+    inc(result.tail.x)
   if (delta_x == -1):
-    dec(result.tail_x)
+    dec(result.tail.x)
   if (delta_y == 1):
-    inc(result.tail_y)
+    inc(result.tail.y)
   if (delta_y == -1):
-    dec(result.tail_y)
+    dec(result.tail.y)
 
 proc simulateRope(commands: seq[Command]) =
-  var positions = (head_x: 0, head_y: 0,
-                   tail_x: 0, tail_y: 0)
+  var positions = (head: (0, 0), tail: (0, 0))
 
   for command in commands:
     for _ in 0 ..< command.steps:
@@ -106,55 +104,39 @@ suite "Advent of Code 2022 Day 09":
 
   test "step (tail stays)":
     check(step(
-      (head_x: 0, head_y: 0,
-       tail_x: 0, tail_y: 0), right) ==
-      (head_x: 1, head_y: 0,
-       tail_x: 0, tail_y: 0))
+      (head: (0, 0), tail: (0, 0)), right) ==
+      (head: (1, 0), tail: (0, 0)))
 
     check(step(
-      (head_x: 2, head_y: 1,
-       tail_x: 1, tail_y: 1), left) ==
-      (head_x: 1, head_y: 1,
-       tail_x: 1, tail_y: 1))
+      (head: (2, 1), tail: (1, 1)), left) ==
+      (head: (1, 1), tail: (1, 1)))
 
   test "step (tail follows horizontally)":
     check(step(
-      (head_x: 2, head_y: 1,
-       tail_x: 1, tail_y: 1), right) ==
-      (head_x: 3, head_y: 1,
-       tail_x: 2, tail_y: 1))
+      (head: (2, 1), tail: (1, 1)), right) ==
+      (head: (3, 1), tail: (2, 1)))
 
     check(step(
-      (head_x: 2, head_y: 1,
-       tail_x: 3, tail_y: 1), left) ==
-      (head_x: 1, head_y: 1,
-       tail_x: 2, tail_y: 1))
+      (head: (2, 1), tail: (3, 1)), left) ==
+      (head: (1, 1), tail: (2, 1)))
 
   test "step (tail follows vertically)":
     check(step(
-      (head_x: 1, head_y: 2,
-       tail_x: 1, tail_y: 3), down) ==
-      (head_x: 1, head_y: 1,
-       tail_x: 1, tail_y: 2))
+      (head: (1, 2), tail: (1, 3)), down) ==
+      (head: (1, 1), tail: (1, 2)))
 
     check(step(
-      (head_x: 1, head_y: 2,
-       tail_x: 1, tail_y: 1), up) ==
-      (head_x: 1, head_y: 3,
-       tail_x: 1, tail_y: 2))
+      (head: (1, 2), tail: (1, 1)), up) ==
+      (head: (1, 3), tail: (1, 2)))
 
   test "step (tail follows diagonally)":
     check(step(
-      (head_x: 2, head_y: 2,
-       tail_x: 1, tail_y: 1), up) ==
-      (head_x: 2, head_y: 3,
-       tail_x: 2, tail_y: 2))
+      (head: (2, 2), tail: (1, 1)), up) ==
+      (head: (2, 3), tail: (2, 2)))
 
     check(step(
-      (head_x: 2, head_y: 2,
-       tail_x: 1, tail_y: 1), right) ==
-      (head_x: 3, head_y: 2,
-       tail_x: 2, tail_y: 2))
+      (head: (2, 2), tail: (1, 1)), right) ==
+      (head: (3, 2), tail: (2, 2)))
 
 #endregion Tests
 
