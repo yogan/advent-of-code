@@ -1,4 +1,4 @@
-import std/strutils, std/strformat, std/sequtils
+import std/sets, std/strutils, std/strformat, std/sequtils
 
 type
   Direction = enum
@@ -67,19 +67,21 @@ proc step(positions: Positions, direction: Direction): Positions =
   if (delta_y == -1):
     dec(result.tail.y)
 
-proc simulateRope(commands: seq[Command]) =
+proc simulateRope(commands: seq[Command]): HashSet[Position] =
+  result = initHashSet[Position]()
+  result.incl((0, 0))
+
   var positions = (head: (0, 0), tail: (0, 0))
 
   for command in commands:
     for _ in 0 ..< command.steps:
       positions = step(positions, command.direction)
+      result.incl(positions.tail)
 
-proc part1: int =
-  let commands = parseInput("day09.sample")
-  # let commands = parseInput("day09.in")
-  simulateRope(commands)
-
-  result = 999999999
+proc part1(filename: string): int =
+  let commands = parseInput(filename)
+  let tailPositions = simulateRope(commands)
+  result = tailPositions.len
 
 #region Tests
 
@@ -138,6 +140,10 @@ suite "Advent of Code 2022 Day 09":
       (head: (2, 2), tail: (1, 1)), right) ==
       (head: (3, 2), tail: (2, 2)))
 
+  test "part1":
+    check part1("day09.sample") == 13
+
 #endregion Tests
 
-echo &"Part 1: {part1()}"
+let tailPositions = part1("day09.in")
+echo &"Part 1: {tailPositions}"
