@@ -26,6 +26,8 @@
   (paired with Anna)
 - [Day 09](https://adventofcode.com/2022/day/9) ⭐⭐ in
   [Nim](2022/day-09/day09.nim) visualizing *does* help… I learned the hard way
+- [Day 10](https://adventofcode.com/2022/day/10) ⭐⭐ in
+  [Lua](2022/day-10/day10.lua) ([tests](2022/day-10/day10_spec.lua))
 
 ## [2021](https://adventofcode.com/2021) (34/50 ⭐)
 
