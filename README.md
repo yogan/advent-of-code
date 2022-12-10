@@ -24,6 +24,8 @@
   [Fortran](2022/day-08/day08.f90)
   ([tests](2022/day-08/tests.f90)) 🧑‍🔬 with GOTO!
   (paired with Anna)
+- [Day 09](https://adventofcode.com/2022/day/9) ⭐⭐ in
+  [Nim](2022/day-09/day09.nim) visualizing *does* help… I learned the hard way
 
 ## [2021](https://adventofcode.com/2021) (34/50 ⭐)
 
