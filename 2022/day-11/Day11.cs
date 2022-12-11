@@ -31,18 +31,15 @@ public class Day11
     private const string Filename = "day11.in";
 
     public static Int64 Part1(string filename = Filename)
-    {
-        var monkeys = ParseInput(filename);
-        var inspections = SimulateMonkeyBusiness(monkeys, 20);
-        Array.Sort(inspections);
-        Array.Reverse(inspections);
-        return inspections[0] * inspections[1];
-    }
+        => MonkeyInTheMiddle(filename, 20);
 
     public static Int64 Part2(string filename = Filename)
+        => MonkeyInTheMiddle(filename, 10000);
+
+    private static Int64 MonkeyInTheMiddle(string filename, int rounds)
     {
         var monkeys = ParseInput(filename);
-        var inspections = SimulateMonkeyBusiness(monkeys, 10000);
+        var inspections = SimulateMonkeyBusiness(monkeys, rounds);
         Array.Sort(inspections);
         Array.Reverse(inspections);
         return inspections[0] * inspections[1];
@@ -54,11 +51,11 @@ public class Day11
             .Split("\n\n")
             .Select(group => group.Split('\n'))
             .Select(lines => new Monkey(
-                Items: ParseItems(lines[1]),
-                Operation: ParseOperation(lines[2]),
-                Divisor: ParseDivisor(lines[3]),
-                TargetTrue: ParseTarget(lines[4]),
-                TargetFalse: ParseTarget(lines[5])
+                Items:       ParseItems(    lines[1]),
+                Operation:   ParseOperation(lines[2]),
+                Divisor:     ParseDivisor(  lines[3]),
+                TargetTrue:  ParseTarget(   lines[4]),
+                TargetFalse: ParseTarget(   lines[5])
             ))
             .ToList();
 
