@@ -31,6 +31,7 @@ public class Day11Tests
         }, monkeys.Select(monkey => monkey.TargetFalse));
     }
 
+    [Fact]
     public void SimulateMonkeyBusiness_WithSample_Part1_CountsInspections()
     {
         var monkeys = Day11.ParseInput(Filename);
