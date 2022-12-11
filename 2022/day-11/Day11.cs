@@ -1,32 +1,4 @@
-﻿public record struct Monkey(
-    Stack<Int64> Items,
-    Operation Operation,
-    int Divisor,
-    int TargetTrue,
-    int TargetFalse
-);
-
-public interface Operation
-{
-    Int64 Evaluate(Int64 input);
-}
-
-public record struct Square : Operation
-{
-    public Int64 Evaluate(Int64 input) => input * input;
-}
-
-public record struct Multiply(int Value) : Operation
-{
-    public Int64 Evaluate(Int64 input) => Value * input;
-}
-
-public record struct Add(int Value) : Operation
-{
-    public Int64 Evaluate(Int64 input) => Value + input;
-}
-
-public class Day11
+﻿public class Day11
 {
     private const string Filename = "day11.in";
 
@@ -44,20 +16,6 @@ public class Day11
         Array.Reverse(inspections);
         return inspections[0] * inspections[1];
     }
-
-    public static IList<Monkey> ParseInput(string filename) =>
-        File
-            .ReadAllText(GetPath(filename))
-            .Split("\n\n")
-            .Select(group => group.Split('\n'))
-            .Select(lines => new Monkey(
-                Items:       ParseItems(    lines[1]),
-                Operation:   ParseOperation(lines[2]),
-                Divisor:     ParseDivisor(  lines[3]),
-                TargetTrue:  ParseTarget(   lines[4]),
-                TargetFalse: ParseTarget(   lines[5])
-            ))
-            .ToList();
 
     public static Int64[] SimulateMonkeyBusiness(IEnumerable<Monkey> monkeys, int rounds)
     {
@@ -86,6 +44,20 @@ public class Day11
 
         return inspections;
     }
+
+    public static IList<Monkey> ParseInput(string filename) =>
+        File
+            .ReadAllText(GetPath(filename))
+            .Split("\n\n")
+            .Select(group => group.Split('\n'))
+            .Select(lines => new Monkey(
+                Items:       ParseItems(    lines[1]),
+                Operation:   ParseOperation(lines[2]),
+                Divisor:     ParseDivisor(  lines[3]),
+                TargetTrue:  ParseTarget(   lines[4]),
+                TargetFalse: ParseTarget(   lines[5])
+            ))
+            .ToList();
 
     private static Stack<Int64> ParseItems(string line) =>
         new Stack<Int64>(
@@ -126,4 +98,32 @@ public class Day11
         File.Exists(filename)
             ? Path.Combine(Environment.CurrentDirectory, filename)
             : Path.Combine(Environment.CurrentDirectory, "../../../", filename);
+}
+
+public record struct Monkey(
+    Stack<Int64> Items,
+    Operation Operation,
+    int Divisor,
+    int TargetTrue,
+    int TargetFalse
+);
+
+public interface Operation
+{
+    Int64 Evaluate(Int64 input);
+}
+
+public record struct Square : Operation
+{
+    public Int64 Evaluate(Int64 input) => input * input;
+}
+
+public record struct Multiply(int Value) : Operation
+{
+    public Int64 Evaluate(Int64 input) => Value * input;
+}
+
+public record struct Add(int Value) : Operation
+{
+    public Int64 Evaluate(Int64 input) => Value + input;
 }
