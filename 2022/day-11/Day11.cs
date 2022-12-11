@@ -1,12 +1,15 @@
 ﻿public class Day11
 {
+    public const int Part1Rounds = 20;
+    public const int Part2Rounds = 10000;
+
     private const string Filename = "day11.in";
 
     public static Int64 Part1(string filename = Filename) =>
-        MonkeyInTheMiddle(filename, 20);
+        MonkeyInTheMiddle(filename, Part1Rounds);
 
     public static Int64 Part2(string filename = Filename) =>
-        MonkeyInTheMiddle(filename, 10000);
+        MonkeyInTheMiddle(filename, Part2Rounds);
 
     private static Int64 MonkeyInTheMiddle(string filename, int rounds) =>
         SimulateMonkeyBusiness(ParseInput(filename), rounds)
@@ -28,7 +31,7 @@
                 {
                     inspections[m]++;
                     var worryLevel = monkey.Operation.Evaluate(item);
-                    if (rounds != 10000) { worryLevel /= 3; }
+                    if (rounds != Part2Rounds) { worryLevel /= 3; }
                     worryLevel %= commonDivisor;
                     var target = worryLevel % monkey.Divisor == 0
                         ? monkey.TargetTrue

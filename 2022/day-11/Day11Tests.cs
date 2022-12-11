@@ -25,7 +25,7 @@ public class Day11Tests
     {
         var monkeys = Day11.ParseInput(Filename);
 
-        var inspections = Day11.SimulateMonkeyBusiness(monkeys, 20);
+        var inspections = Day11.SimulateMonkeyBusiness(monkeys, Day11.Part1Rounds);
 
         Assert.Equal(new Int64[] { 101, 95, 7, 105 }, inspections);
     }
@@ -35,7 +35,7 @@ public class Day11Tests
     {
         var monkeys = Day11.ParseInput(Filename);
 
-        var inspections = Day11.SimulateMonkeyBusiness(monkeys, 10000);
+        var inspections = Day11.SimulateMonkeyBusiness(monkeys, Day11.Part2Rounds);
 
         Assert.Equal(new Int64[] { 52166, 47830, 1938, 52013 }, inspections);
     }
