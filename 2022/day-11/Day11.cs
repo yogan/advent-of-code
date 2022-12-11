@@ -2,20 +2,17 @@
 {
     private const string Filename = "day11.in";
 
-    public static Int64 Part1(string filename = Filename)
-        => MonkeyInTheMiddle(filename, 20);
+    public static Int64 Part1(string filename = Filename) =>
+        MonkeyInTheMiddle(filename, 20);
 
-    public static Int64 Part2(string filename = Filename)
-        => MonkeyInTheMiddle(filename, 10000);
+    public static Int64 Part2(string filename = Filename) =>
+        MonkeyInTheMiddle(filename, 10000);
 
-    private static Int64 MonkeyInTheMiddle(string filename, int rounds)
-    {
-        var monkeys = ParseInput(filename);
-        var inspections = SimulateMonkeyBusiness(monkeys, rounds);
-        Array.Sort(inspections);
-        Array.Reverse(inspections);
-        return inspections[0] * inspections[1];
-    }
+    private static Int64 MonkeyInTheMiddle(string filename, int rounds) =>
+        SimulateMonkeyBusiness(ParseInput(filename), rounds)
+            .OrderByDescending(i => i)
+            .Take(2)
+            .Aggregate(1L, (acc, i) => acc * i);
 
     public static Int64[] SimulateMonkeyBusiness(IEnumerable<Monkey> monkeys, int rounds)
     {
