@@ -28,6 +28,8 @@
   [Nim](2022/day-09/day09.nim) visualizing *does* help… I learned the hard way
 - [Day 10](https://adventofcode.com/2022/day/10) ⭐⭐ in
   [Lua](2022/day-10/day10.lua) ([tests](2022/day-10/day10_spec.lua))
+- [Day 11](https://adventofcode.com/2022/day/11) ⭐⭐ in
+  [C#](2022/day-11/Day11.cs) ([tests](2022/day-11/Day11Tests.cs)) with record structs
 
 ## [2021](https://adventofcode.com/2021) (34/50 ⭐)
 
