@@ -11,10 +11,10 @@ public class Day11Tests
 
         Assert.Equal(new[]
         {
-            new Stack<int>(new int[] { 79, 98 }),
-            new Stack<int>(new int[] { 54, 65, 75, 74 }),
-            new Stack<int>(new int[] { 79, 60, 97 }),
-            new Stack<int>(new int[] { 74 }),
+            new Stack<Int64>(new Int64[] { 79, 98 }),
+            new Stack<Int64>(new Int64[] { 54, 65, 75, 74 }),
+            new Stack<Int64>(new Int64[] { 79, 60, 97 }),
+            new Stack<Int64>(new Int64[] { 74 }),
         }, monkeys.Select(monkey => monkey.Items));
 
         Assert.Equal(new Operation[] {
@@ -31,14 +31,23 @@ public class Day11Tests
         }, monkeys.Select(monkey => monkey.TargetFalse));
     }
 
-    [Fact]
-    public void SimulateMonkeyBusiness_WithSample_CountsInspections()
+    public void SimulateMonkeyBusiness_WithSample_Part1_CountsInspections()
     {
         var monkeys = Day11.ParseInput(Filename);
 
         var inspections = Day11.SimulateMonkeyBusiness(monkeys, 20);
 
-        Assert.Equal(new[] { 101, 95, 7, 105 }, inspections);
+        Assert.Equal(new Int64[] { 101, 95, 7, 105 }, inspections);
+    }
+
+    [Fact]
+    public void SimulateMonkeyBusiness_WithSample_Part2_CountsInspections()
+    {
+        var monkeys = Day11.ParseInput(Filename);
+
+        var inspections = Day11.SimulateMonkeyBusiness(monkeys, 10000);
+
+        Assert.Equal(new Int64[] { 52166, 47830, 1938, 52013 }, inspections);
     }
 
     [Fact]
@@ -47,5 +56,13 @@ public class Day11Tests
         var monkeyBusiness = Day11.Part1(Filename);
 
         Assert.Equal(10605, monkeyBusiness);
+    }
+
+    [Fact]
+    public void Part2_WithSample_ReturnsMonkeyBusiness()
+    {
+        var monkeyBusiness = Day11.Part2(Filename);
+
+        Assert.Equal(2713310158, monkeyBusiness);
     }
 }
