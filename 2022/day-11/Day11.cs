@@ -24,25 +24,45 @@
 
         for (int round = 0; round < rounds; round++)
         {
-            for (int m = 0; m < monkeys.Count(); m++)
+            for (int monkeyIndex = 0; monkeyIndex < monkeys.Count(); monkeyIndex++)
             {
-                var monkey = monkeys.ElementAt(m);
-                foreach (var item in monkey.Items)
-                {
-                    inspections[m]++;
-                    var worryLevel = monkey.Operation.Evaluate(item);
-                    if (rounds != Part2Rounds) { worryLevel /= 3; }
-                    worryLevel %= commonDivisor;
-                    var target = worryLevel % monkey.Divisor == 0
-                        ? monkey.TargetTrue
-                        : monkey.TargetFalse;
-                    monkeys.ElementAt(target).Items.Push(worryLevel);
-                }
-                monkey.Items.Clear();
+                MonkeyTurn(monkeys, monkeyIndex, rounds, inspections, commonDivisor);
             }
         }
 
         return inspections;
+    }
+
+    private static void MonkeyTurn(
+        IEnumerable<Monkey> monkeys, int monkeyIndex, int rounds,
+        long[] inspections, int commonDivisor)
+    {
+        var monkey = monkeys.ElementAt(monkeyIndex);
+
+        while (monkey.Items.TryPop(out var item))
+        {
+            CountInspection(inspections, monkeyIndex);
+            long worryLevel = UpdateWorryLevel(monkey, item, rounds, commonDivisor);
+            ThrowItem(monkeys, monkey, worryLevel);
+        }
+    }
+
+    private static void CountInspection(long[] inspections, int monkeyIndex) =>
+        inspections[monkeyIndex]++;
+
+    private static long UpdateWorryLevel(Monkey monkey, long item, int rounds, int commonDivisor)
+    {
+        var worryLevel = monkey.Operation.Evaluate(item);
+        if (rounds != Part2Rounds) { worryLevel /= 3; }
+        return worryLevel % commonDivisor;
+    }
+
+    private static void ThrowItem(IEnumerable<Monkey> monkeys, Monkey monkey, long worryLevel)
+    {
+        var target = worryLevel % monkey.Divisor == 0
+            ? monkey.TargetTrue
+            : monkey.TargetFalse;
+        monkeys.ElementAt(target).Items.Push(worryLevel);
     }
 
     public static IList<Monkey> ParseInput(string filename) =>
