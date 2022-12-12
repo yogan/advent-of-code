@@ -62,7 +62,7 @@ pub fn part2(inp: String) {
                 combinations.insert(*joltage, sum);
             }
             _ => {
-                panic!("adapter {} has more than 3 next adaptors");
+                panic!("adapter {} has more than 3 next adaptors", joltage);
             }
         }
     }
