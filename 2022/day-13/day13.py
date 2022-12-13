@@ -1,4 +1,4 @@
-import sys
+import sys, math
 from functools import cmp_to_key
 
 def parse_input(filename):
@@ -9,17 +9,17 @@ def compare(left, right):
     match (left, right):
         case int(), int():
             return left - right
+        case int(), list():
+            return compare([left], right)
+        case list(), int():
+            return compare(left, [right])
         case list(), list():
             for l, r in zip(left, right):
                 diff = compare(l, r)
                 if (diff != 0):
                     return diff
-            # all zipped were the same, but we could have more in left or right
+            # all zipped were equal, but we could have more in left or right
             return len(left) - len(right)
-        case int(), list():
-            return compare([left], right)
-        case list(), int():
-            return compare(left, [right])
 
 def get_in_order(packets):
     right_order = []
@@ -28,15 +28,11 @@ def get_in_order(packets):
             right_order.append(i + 1)
     return right_order
 
-def to_part2_format(pairs):
-    packets = [packet for pair in pairs for packet in pair]
-    packets.append([[2]])
-    packets.append([[6]])
-    return packets
-
 def find_dividers(packets):
-    sorted_packets = sorted(to_part2_format(packets), key=cmp_to_key(compare))
-    return [sorted_packets.index(p) + 1 for p in [[[2]], [[6]]]]
+    dividers = [[[2]], [[6]]]
+    packets = [packet for pair in packets for packet in pair] + dividers
+    sorted_packets = sorted(packets, key=cmp_to_key(compare))
+    return [sorted_packets.index(p) + 1 for p in dividers]
 
 input = parse_input("day13.in")
 sample = parse_input("day13.sample")
@@ -52,7 +48,6 @@ print("Part 1:", part1)
 # Part 2
 assert(find_dividers(sample) == [10, 14])
 
-dividers = find_dividers(input)
-decoder_key = dividers[0] * dividers[1]
+decoder_key = math.prod(find_dividers(input))
 assert(decoder_key == 25792)
 print("Part 2:", decoder_key)
