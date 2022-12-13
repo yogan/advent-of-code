@@ -1,3 +1,5 @@
+from functools import cmp_to_key
+
 # region preprocessed data
 # done with a bunch of vim :%s commands
 # TODO: get this data properly with Python
@@ -503,9 +505,28 @@ def get_in_order(packets):
             right_order.append(i + 1)
     return right_order
 
+def to_part2_format(pairs):
+    packets = [packet for pair in pairs for packet in pair]
+    packets.append([[2]])
+    packets.append([[6]])
+    return packets
+
+def find_dividers(packets):
+    sorted_packets = sorted(to_part2_format(packets), key=cmp_to_key(compare))
+    return [sorted_packets.index(p) + 1 for p in [[[2]], [[6]]]]
+
+# Part 1
 right_order_sample = get_in_order(sample)
 assert(right_order_sample == [1, 2, 4, 6])
 
 part1 = sum(get_in_order(input))
 assert(part1 == 5208)
 print("Part 1:", part1)
+
+# Part 2
+assert(find_dividers(sample) == [10, 14])
+
+dividers = find_dividers(input)
+decoder_key = dividers[0] * dividers[1]
+assert(decoder_key == 25792)
+print("Part 2:", decoder_key)
