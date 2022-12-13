@@ -2,6 +2,8 @@
 
 ## [2022](https://adventofcode.com/2022)
 
+**Language count:** 12
+
 - [Day 01](https://adventofcode.com/2022/day/1) ⭐⭐ in
   [fish](2022/day-01/day01.fish)
   with [tests](2022/day-01/test.fish)
