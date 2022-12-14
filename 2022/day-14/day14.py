@@ -2,15 +2,15 @@ import sys, math
 
 file = sys.argv[1] if len(sys.argv) > 1 else "day14.in"
 is_sample = file != "day14.in"
-lines = open(file).read().splitlines()
-paths = [list(map(lambda x: tuple(map(int, x)),
-              list(map(lambda x: x.split(","), line.split(" -> ")))))
-         for line in lines]
 
 sand_start = (500, 0)
-sand_x, sand_y = sand_start
 
 def read_rocks():
+    lines = open(file).read().splitlines()
+    paths = [list(map(lambda x: tuple(map(int, x)),
+                list(map(lambda x: x.split(","), line.split(" -> ")))))
+            for line in lines]
+
     def update_min_max(x, y, dimensions):
         min_x, min_y, max_x, max_y = dimensions
         if (x < min_x):
@@ -57,65 +57,71 @@ def print_field(sand):
         print()
     print()
 
-sand_part_1 = set()
-sand_part_2 = set()
-
-# Part 1
-rocks, dimensions = read_rocks()
-min_x, min_y, max_x, max_y = dimensions
-
-while True:
-    if sand_y >= max_y:
-        break
-    if (sand_x, sand_y + 1) not in rocks:
-        sand_y += 1
-        continue
-    if (sand_x - 1, sand_y + 1) not in rocks:
-        sand_x -= 1
-        sand_y += 1
-        continue
-    if (sand_x + 1, sand_y + 1) not in rocks:
-        sand_x += 1
-        sand_y += 1
-        continue
-    sand_part_1.add((sand_x, sand_y))
-    rocks.add((sand_x, sand_y))
+def part1():
+    sand = set()
     sand_x, sand_y = sand_start
-    # print_field(sand_part_1)
+    rocks, dimensions = read_rocks()
+    min_x, min_y, max_x, max_y = dimensions
 
-# Part 2
-rocks, dimensions = read_rocks()
-min_x, min_y, max_x, max_y = dimensions
-for x in range(min_x - 300, max_x + 300):
-    rocks.add((x, max_y + 2))
-sand_x, sand_y = sand_start
-while True:
-    if (sand_x, sand_y + 1) not in rocks:
-        sand_y += 1
-        continue
-    if (sand_x - 1, sand_y + 1) not in rocks:
-        sand_x -= 1
-        sand_y += 1
-        continue
-    if (sand_x + 1, sand_y + 1) not in rocks:
-        sand_x += 1
-        sand_y += 1
-        continue
-    sand_part_2.add((sand_x, sand_y))
-    rocks.add((sand_x, sand_y))
-    if (sand_x, sand_y) == sand_start:
-        break
+    while True:
+        if sand_y >= max_y:
+            break
+        if (sand_x, sand_y + 1) not in rocks:
+            sand_y += 1
+            continue
+        if (sand_x - 1, sand_y + 1) not in rocks:
+            sand_x -= 1
+            sand_y += 1
+            continue
+        if (sand_x + 1, sand_y + 1) not in rocks:
+            sand_x += 1
+            sand_y += 1
+            continue
+        sand.add((sand_x, sand_y))
+        rocks.add((sand_x, sand_y))
+        sand_x, sand_y = sand_start
+        # print_field(sand)
+
+    return len(sand)
+
+def part2():
+    sand = set()
     sand_x, sand_y = sand_start
-    # print_field(sand_part_2)
+    rocks, dimensions = read_rocks()
+    min_x, min_y, max_x, max_y = dimensions
 
-part1 = len(sand_part_1)
+    for x in range(min_x - 300, max_x + 300):
+        rocks.add((x, max_y + 2))
+
+    while True:
+        if (sand_x, sand_y + 1) not in rocks:
+            sand_y += 1
+            continue
+        if (sand_x - 1, sand_y + 1) not in rocks:
+            sand_x -= 1
+            sand_y += 1
+            continue
+        if (sand_x + 1, sand_y + 1) not in rocks:
+            sand_x += 1
+            sand_y += 1
+            continue
+        sand.add((sand_x, sand_y))
+        rocks.add((sand_x, sand_y))
+        if (sand_x, sand_y) == sand_start:
+            break
+        sand_x, sand_y = sand_start
+        # print_field(sand)
+
+    return len(sand)
+
+part1 = part1()
 if (is_sample):
     assert(part1 == 24)
 else:
     assert(part1 == 683)
 print("Part 1:", part1)
 
-part2 = len(sand_part_2)
+part2 = part2()
 if (is_sample):
     assert(part2 == 93)
 else:
