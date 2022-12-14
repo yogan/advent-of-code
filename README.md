@@ -38,7 +38,7 @@
 - [Day 13](https://adventofcode.com/2022/day/13) ⭐⭐ in
   [Python](2022/day-13/day13.py) input data is recursive and almost valid Python syntax, so Python /w `eval`
 - [Day 14](https://adventofcode.com/2022/day/14) ⭐⭐ in
-  [Python](2022/day-14/day14.py)
+  [Python](2022/day-14/day14.py) with [visualization](2022/day-14/README.md)
 
 ## [2021](https://adventofcode.com/2021) (34/50 ⭐)
 
