@@ -2,7 +2,6 @@ import sys, math
 
 file = sys.argv[1] if len(sys.argv) > 1 else "day14.in"
 is_sample = file != "day14.in"
-
 sand_start = (500, 0)
 
 def read_rocks():
@@ -43,7 +42,8 @@ def read_rocks():
             x1, y1 = x2, y2
     return rocks, dimensions
 
-def print_field(sand):
+def print_field(sand, rocks, dimensions):
+    min_x, min_y, max_x, max_y = dimensions
     for y in range(min_y, max_y + 1 + 2): # +2 for part2
         for x in range(min_x - 7, max_x + 1 + 10): # left/right for part2
             if (x, y) == sand_start:
@@ -57,73 +57,57 @@ def print_field(sand):
         print()
     print()
 
-def part1():
+def simulate_sand(part1):
+    def is_free(x, y, rocks, floor = None):
+        return not ((x, y) in rocks) and (floor == None or y != floor)
+
     sand = set()
     sand_x, sand_y = sand_start
     rocks, dimensions = read_rocks()
-    min_x, min_y, max_x, max_y = dimensions
+    _, _, _, max_y = dimensions
+    floor = None if part1 else max_y + 2
 
     while True:
-        if sand_y >= max_y:
+        if part1 and sand_y >= max_y:
             break
-        if (sand_x, sand_y + 1) not in rocks:
+
+        if is_free(sand_x, sand_y + 1, rocks, floor):
             sand_y += 1
             continue
-        if (sand_x - 1, sand_y + 1) not in rocks:
+        if is_free(sand_x - 1, sand_y + 1, rocks, floor):
             sand_x -= 1
             sand_y += 1
             continue
-        if (sand_x + 1, sand_y + 1) not in rocks:
+        if is_free(sand_x + 1, sand_y + 1, rocks, floor):
             sand_x += 1
             sand_y += 1
             continue
+
         sand.add((sand_x, sand_y))
         rocks.add((sand_x, sand_y))
-        sand_x, sand_y = sand_start
-        # print_field(sand)
 
-    return len(sand)
-
-def part2():
-    sand = set()
-    sand_x, sand_y = sand_start
-    rocks, dimensions = read_rocks()
-    min_x, min_y, max_x, max_y = dimensions
-
-    for x in range(min_x - 300, max_x + 300):
-        rocks.add((x, max_y + 2))
-
-    while True:
-        if (sand_x, sand_y + 1) not in rocks:
-            sand_y += 1
-            continue
-        if (sand_x - 1, sand_y + 1) not in rocks:
-            sand_x -= 1
-            sand_y += 1
-            continue
-        if (sand_x + 1, sand_y + 1) not in rocks:
-            sand_x += 1
-            sand_y += 1
-            continue
-        sand.add((sand_x, sand_y))
-        rocks.add((sand_x, sand_y))
-        if (sand_x, sand_y) == sand_start:
+        if (not part1) and (sand_x, sand_y) == sand_start:
             break
-        sand_x, sand_y = sand_start
-        # print_field(sand)
 
+        sand_x, sand_y = sand_start
+        # print_field(sand, rocks, dimensions) # each frame
+
+    # print_field(sand, rocks, dimensions) # final state
     return len(sand)
 
-part1 = part1()
-if (is_sample):
-    assert(part1 == 24)
-else:
-    assert(part1 == 683)
-print("Part 1:", part1)
+def run():
+    part1 = simulate_sand(True)
+    if (is_sample):
+        assert(part1 == 24)
+    else:
+        assert(part1 == 683)
+    print("Part 1:", part1, "(sample)" if is_sample else "")
 
-part2 = part2()
-if (is_sample):
-    assert(part2 == 93)
-else:
-    assert(part2 == 28821)
-print("Part 2:", part2)
+    part2 = simulate_sand(False)
+    if (is_sample):
+        assert(part2 == 93)
+    else:
+        assert(part2 == 28821)
+    print("Part 2:", part2, "(sample)" if is_sample else "")
+
+run()
