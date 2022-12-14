@@ -7,37 +7,33 @@ paths = [list(map(lambda x: tuple(map(int, x)),
               list(map(lambda x: x.split(","), line.split(" -> ")))))
          for line in lines]
 
-sand_part_1 = set()
-sand_part_2 = set()
+sand_start = (500, 0)
+sand_x, sand_y = sand_start
 
 def read_rocks():
-    min_x =  math.inf
-    max_x = -math.inf
-    min_y =  math.inf
-    max_y = -math.inf
+    def update_min_max(x, y, dimensions):
+        min_x, min_y, max_x, max_y = dimensions
+        if (x < min_x):
+            min_x = x
+        elif (x > max_x):
+            max_x = x
+        if (y < min_y):
+            min_y = y
+        elif (y > max_y):
+            max_y = y
+        return (min_x, min_y, max_x, max_y)
+
+    dimensions = sand_start + sand_start
     rocks = set()
+
     for path in paths:
         start = path[0]
         rocks.add(start)
         x1, y1 = start
-        if (x1 < min_x):
-            min_x = x1
-        elif (x1 > max_x):
-            max_x = x1
-        if (y1 < min_y):
-            min_y = y1
-        elif (y1 > max_y):
-            max_y = y1
+        dimensions = update_min_max(x1, y1, dimensions)
         for coord in path[1:]:
             x2, y2 = coord
-            if (x2 < min_x):
-                min_x = x2
-            elif (x2 > max_x):
-                max_x = x2
-            if (y2 < min_y):
-                min_y = y2
-            elif (y2 > max_y):
-                max_y = y2
+            dimensions = update_min_max(x2, y2, dimensions)
             if (x1 == x2):
                 for y in range(min(y1, y2), max(y1, y2) + 1):
                     rocks.add((x1, y))
@@ -45,7 +41,7 @@ def read_rocks():
                 for x in range(min(x1, x2), max(x1, x2) + 1):
                     rocks.add((x, y1))
             x1, y1 = x2, y2
-    return rocks, min_x, max_x, min_y, max_y
+    return rocks, dimensions
 
 def print_field(sand):
     for y in range(min_y, max_y + 1 + 2): # +2 for part2
@@ -61,20 +57,12 @@ def print_field(sand):
         print()
     print()
 
-sand_start = (500, 0)
-sand_x, sand_y = sand_start
+sand_part_1 = set()
+sand_part_2 = set()
 
 # Part 1
-rocks, min_x, max_x, min_y, max_y = read_rocks()
-
-if (sand_x < min_x):
-    min_x = sand_x
-elif (sand_x > max_x):
-    max_x = sand_x
-if (sand_y < min_y):
-    min_y = sand_y
-elif (sand_y > max_y):
-    max_y = sand_y
+rocks, dimensions = read_rocks()
+min_x, min_y, max_x, max_y = dimensions
 
 while True:
     if sand_y >= max_y:
@@ -96,7 +84,8 @@ while True:
     # print_field(sand_part_1)
 
 # Part 2
-rocks, min_x, max_x, min_y, max_y = read_rocks()
+rocks, dimensions = read_rocks()
+min_x, min_y, max_x, max_y = dimensions
 for x in range(min_x - 300, max_x + 300):
     rocks.add((x, max_y + 2))
 sand_x, sand_y = sand_start
