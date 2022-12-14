@@ -97,17 +97,11 @@ def simulate_sand(part1):
 
 def run():
     part1 = simulate_sand(True)
-    if (is_sample):
-        assert(part1 == 24)
-    else:
-        assert(part1 == 683)
+    assert(part1 == 24 if is_sample else 683)
     print("Part 1:", part1, "(sample)" if is_sample else "")
 
     part2 = simulate_sand(False)
-    if (is_sample):
-        assert(part2 == 93)
-    else:
-        assert(part2 == 28821)
+    assert(part2 == 93 if is_sample else 28821)
     print("Part 2:", part2, "(sample)" if is_sample else "")
 
 run()
