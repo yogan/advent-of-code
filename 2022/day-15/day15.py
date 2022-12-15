@@ -5,9 +5,10 @@ sys.argv = sys.argv[:1] # strip args, they scare the unittest module
 is_sample = file != "day15.in"
 
 def parse():
-    lines = [line.replace("Sensor at ", "")
-                 .replace(" closest beacon is at ", "")
-             for line in open(file).read().splitlines()]
+    with open(file) as f:
+        lines = [line.replace("Sensor at ", "")
+                    .replace(" closest beacon is at ", "")
+                for line in f.read().splitlines()]
 
     coords = [tuple(map(lambda x: x.split(", "), line.split(":")))
               for line in lines]
@@ -67,6 +68,17 @@ def count_positions(coverages):
         count += (end - start + 1)
     return count
 
+def find_distress_beacon(coverages, x_min, x_max):
+    for x in range(x_min, x_max + 1):
+        for left, right in coverages:
+            found = False
+            if (left <= x and x <= right):
+                found = True
+                break
+        if (not found):
+            return x
+    return None
+
 def part1():
     sensor_beacon_pairs = parse()
     radii = find_sensor_radii(sensor_beacon_pairs)
@@ -75,6 +87,22 @@ def part1():
     coverages = simplify_line_coverages(coverages)
     return count_positions(coverages) - 1
 
+def part2():
+    sensor_beacon_pairs = parse()
+    radii = find_sensor_radii(sensor_beacon_pairs)
+    xy_min, xy_max = 0, 20 if is_sample else 4000000
+    if (not is_sample):
+        print(f"Iterating all {xy_max} is too slow, aborting.")
+        return None
+    for y in range(xy_min, xy_max + 1):
+        if (not is_sample and y % 100 == 0):
+            print("checking y = {}…".format(y))
+        coverages = get_line_coverages(radii, y)
+        coverages = simplify_line_coverages(coverages)
+        distress_beacon_x = find_distress_beacon(coverages, xy_min, xy_max)
+        if (distress_beacon_x is not None):
+            return distress_beacon_x * 4000000 + y
+    raise Exception("No distress beacon found")
 
 class TestDay15(unittest.TestCase):
     def test_calc_manhattan_dist(self):
@@ -122,11 +150,29 @@ class TestDay15(unittest.TestCase):
     def test_count_positions(self):
         self.assertEqual(15 + 3, count_positions({(1, 15), (17, 19)}))
 
+    def test_find_distress_beacon(self):
+        x_min, x_max = 0, 20
+
+        self.assertEqual(None, find_distress_beacon({(-8, 26)}, x_min, x_max))
+        self.assertEqual(None, find_distress_beacon({(0, 20)}, x_min, x_max))
+        self.assertEqual(0, find_distress_beacon({(1, 20)}, x_min, x_max))
+        self.assertEqual(20, find_distress_beacon({(0, 19)}, x_min, x_max))
+
+        self.assertEqual(None, find_distress_beacon({(-1, 25), (-3, 13)}, x_min, x_max))
+        self.assertEqual(None, find_distress_beacon({(-3, 13), (-1, 25)}, x_min, x_max))
+        self.assertEqual(14, find_distress_beacon({(15, 25), (-3, 13)}, x_min, x_max))
+        self.assertEqual(14, find_distress_beacon({(-3, 13), (15, 25)}, x_min, x_max))
+
     def test_part1(self):
         self.assertEqual(26 if is_sample else 5832528, part1())
+
+    def test_part2(self):
+        self.assertEqual(56000011 if is_sample else None, part2())
 
 if __name__ == '__main__':
     unittest.main(exit=False)
 
     res1 = part1()
     print(f"Part 1: {res1}", "(sample)" if is_sample else "")
+    res2 = part2()
+    print(f"Part 2: {res2}", "(sample)" if is_sample else "")
