@@ -1,4 +1,5 @@
 import unittest, sys
+from tqdm import tqdm
 
 file = sys.argv[1] if len(sys.argv) > 1 else "day15.in"
 sys.argv = sys.argv[:1] # strip args, they scare the unittest module
@@ -68,16 +69,54 @@ def count_positions(coverages):
         count += (end - start + 1)
     return count
 
-def find_distress_beacon(coverages, x_min, x_max):
-    for x in range(x_min, x_max + 1):
-        for left, right in coverages:
-            found = False
-            if (left <= x and x <= right):
-                found = True
-                break
-        if (not found):
-            return x
-    return None
+def check_surroundings(radii, xy_min, xy_max, is_unit_test = False):
+    if (not is_unit_test):
+        i = 1
+    else:
+        s = set()
+
+    for cx, cy, radius in radii:
+        if (not is_unit_test and not is_sample):
+            print(f"Checking beacon area {i} of {len(radii)}")
+            i += 1
+
+        s_radius = radius + 1
+        x_min = min(cx - s_radius, xy_min) + 1
+        x_range = range(cx - s_radius, cx + s_radius + 1) \
+            if is_sample or is_unit_test \
+            else tqdm(range(cx - s_radius, cx + s_radius + 1))
+
+        for x in x_range:
+            dist = s_radius - abs(cx - x)
+            if (xy_min <= x and x <= xy_max):
+                ys = [cy - dist - 1, cy - dist, cy + dist, cy + dist + 1]
+                for y in ys:
+                    if (xy_min <= y and y <= xy_max):
+                        if (is_unit_test):
+                            s.add((x, y))
+                        elif (not is_covered((x, y), radii)):
+                            return (x, y)
+
+        if (is_unit_test):
+            # remove "peaks" at top/bottom
+            top_peak = (cx, cy - s_radius - 1)
+            btm_peak = (cx, cy + s_radius + 1)
+            if top_peak in s:
+                s.remove(top_peak)
+            if btm_peak in s:
+                s.remove(btm_peak)
+
+    if (is_unit_test):
+        return s
+    else:
+        raise Exception("no uncovered point found")
+
+def is_covered(point, radii):
+    for cx, cy, radius in radii:
+        dist = calc_manhattan_dist(point, (cx, cy))
+        if (dist <= radius):
+            return True
+    return False
 
 def part1():
     sensor_beacon_pairs = parse()
@@ -90,19 +129,11 @@ def part1():
 def part2():
     sensor_beacon_pairs = parse()
     radii = find_sensor_radii(sensor_beacon_pairs)
-    xy_min, xy_max = 0, 20 if is_sample else 4000000
-    if (not is_sample):
-        print(f"Iterating all {xy_max} is too slow, aborting.")
-        return None
-    for y in range(xy_min, xy_max + 1):
-        if (not is_sample and y % 100 == 0):
-            print("checking y = {}…".format(y))
-        coverages = get_line_coverages(radii, y)
-        coverages = simplify_line_coverages(coverages)
-        distress_beacon_x = find_distress_beacon(coverages, xy_min, xy_max)
-        if (distress_beacon_x is not None):
-            return distress_beacon_x * 4000000 + y
-    raise Exception("No distress beacon found")
+    limit = 4000000
+    xy_min, xy_max = 0, 20 if is_sample else limit
+    x, y = check_surroundings(radii, xy_min, xy_max)
+    print(f"Distress signal at x={x}, y={y}")
+    return x * limit + y
 
 class TestDay15(unittest.TestCase):
     def test_calc_manhattan_dist(self):
@@ -150,29 +181,147 @@ class TestDay15(unittest.TestCase):
     def test_count_positions(self):
         self.assertEqual(15 + 3, count_positions({(1, 15), (17, 19)}))
 
-    def test_find_distress_beacon(self):
-        x_min, x_max = 0, 20
+    def test_check_surroundings(self):
+        is_unit_test = True
 
-        self.assertEqual(None, find_distress_beacon({(-8, 26)}, x_min, x_max))
-        self.assertEqual(None, find_distress_beacon({(0, 20)}, x_min, x_max))
-        self.assertEqual(0, find_distress_beacon({(1, 20)}, x_min, x_max))
-        self.assertEqual(20, find_distress_beacon({(0, 19)}, x_min, x_max))
+        #    012345
+        # 0...sss...
+        # 1..ss#ss..
+        # 2..s#S#s..
+        # 3..ss#ss..
+        # 4...sss...
+        radii = {(2, 2, 1)}
+        self.assertEqual({
+                        (1, 0), (2, 0), (3, 0),
+                (0, 1), (1, 1),         (3, 1), (4, 1),
+                (0, 2),                         (4, 2),
+                (0, 3), (1, 3),         (3, 3), (4, 3),
+                        (1, 4), (2, 4), (3, 4),
+            }, check_surroundings(radii, 0, 10, is_unit_test))
 
-        self.assertEqual(None, find_distress_beacon({(-1, 25), (-3, 13)}, x_min, x_max))
-        self.assertEqual(None, find_distress_beacon({(-3, 13), (-1, 25)}, x_min, x_max))
-        self.assertEqual(14, find_distress_beacon({(15, 25), (-3, 13)}, x_min, x_max))
-        self.assertEqual(14, find_distress_beacon({(-3, 13), (15, 25)}, x_min, x_max))
+        #     012345678
+        # 1 .....sss......
+        # 2 ....ss#ss.....
+        # 3 ...ss###ss....
+        # 4 ...s##S##s....
+        # 5 ...ss###ss....
+        # 6 ....ss#ss.....
+        # 7 .....sss......
+        radii = {(4, 4, 2)}
+        self.assertEqual({  (3, 1), (4, 1), (5, 1),
+                    (2, 2), (3, 2),         (5, 2), (6, 2),
+            (1, 3), (2, 3),                         (6, 3), (7, 3),
+            (1, 4),                                         (7, 4),
+            (1, 5), (2, 5),                         (6, 5), (7, 5),
+                    (2, 6), (3, 6),         (5, 6), (6, 6),
+                            (3, 7), (4, 7), (5, 7),
+            }, check_surroundings(radii, 0, 10, is_unit_test))
+
+        #     012345678
+        # 1 .............. cutoff top and left at xy = 3
+        # 2 ..............
+        # 3 ....+---------
+        # 4 ....|#S##s....
+        # 5 ....|###ss....
+        # 6 ....|s#ss.....
+        # 7 ....|sss......
+        radii = {(4, 4, 2)}
+        self.assertEqual({
+                                                    (6, 3), (7, 3),
+                                                            (7, 4),
+                                                    (6, 5), (7, 5),
+                            (3, 6),         (5, 6), (6, 6),
+                            (3, 7), (4, 7), (5, 7),
+            }, check_surroundings(radii, 3, 10, is_unit_test))
+
+        #     0123456
+        # 1 .....s|... cutoff right and bottom at xy = 3
+        # 2 ....ss|...
+        # 3 ...ss#|...
+        # 4 ------+...
+        radii = {(4, 4, 2)}
+        self.assertEqual({  (3, 1),
+                    (2, 2), (3, 2),
+            (1, 3), (2, 3),
+            }, check_surroundings(radii, 0, 3, is_unit_test))
+
+        #     012345678
+        # 0 ...sss....... two overlapping areas merged
+        # 1 ..ss#sssss...
+        # 2 ..s#S#ss#ss..
+        # 3 ..ss#ss#S#s..
+        # 4 ...sssss#ss..
+        # 5 .......sss...
+        radii = {(2, 2, 1), (6, 3, 1)}
+        self.assertEqual({
+                    (1, 0), (2, 0), (3, 0),
+            (0, 1), (1, 1),         (3, 1), (4, 1), (5, 1), (6, 1), (7, 1),
+            (0, 2),                         (4, 2), (5, 2),         (7, 2), (8, 2),
+            (0, 3), (1, 3),         (3, 3), (4, 3),                         (8, 3),
+                    (1, 4), (2, 4), (3, 4), (4, 4), (5, 4),         (7, 4), (8, 4),
+                                                    (5, 5), (6, 5), (7, 5),
+            }, check_surroundings(radii, 0, 10, is_unit_test))
+
+        #     012345678
+        # 0 ............. two overlapping areas merged with cutoff
+        # 1 .............
+        # 2 ....+--------
+        # 3 ....|ss#S#s..
+        # 4 ....|sss#ss..
+        # 5 ....|..sss...
+        radii = {(2, 2, 1), (6, 3, 1)}
+        self.assertEqual({
+                (3, 3), (4, 3),                         (8, 3),
+                (3, 4), (4, 4), (5, 4),         (7, 4), (8, 4),
+                                (5, 5), (6, 5), (7, 5),
+            }, check_surroundings(radii, 3, 10, is_unit_test))
+
+    def test_is_covered(self):
+        #     012345678
+        # 0 .............
+        # 1 ....#........
+        # 2 ...#S#..#....
+        # 3 ....#..#S#...
+        # 4 ........#....
+        # 5 .............
+        radii = {(2, 2, 1), (6, 3, 1)}
+
+        self.assertTrue(is_covered((2, 1), radii))
+        self.assertTrue(is_covered((1, 2), radii))
+        self.assertTrue(is_covered((2, 2), radii))
+        self.assertTrue(is_covered((3, 2), radii))
+        self.assertTrue(is_covered((2, 3), radii))
+        self.assertFalse(is_covered((1, 1), radii))
+        self.assertFalse(is_covered((3, 1), radii))
+        self.assertFalse(is_covered((0, 2), radii))
+        self.assertFalse(is_covered((4, 2), radii))
+        self.assertFalse(is_covered((1, 3), radii))
+        self.assertFalse(is_covered((3, 3), radii))
+
+        self.assertTrue(is_covered((6, 2), radii))
+        self.assertTrue(is_covered((5, 3), radii))
+        self.assertTrue(is_covered((6, 3), radii))
+        self.assertTrue(is_covered((7, 3), radii))
+        self.assertTrue(is_covered((6, 4), radii))
+        self.assertFalse(is_covered((5, 2), radii))
+        self.assertFalse(is_covered((7, 2), radii))
+        self.assertFalse(is_covered((4, 3), radii))
+        self.assertFalse(is_covered((8, 3), radii))
+        self.assertFalse(is_covered((5, 4), radii))
+        self.assertFalse(is_covered((7, 4), radii))
 
     def test_part1(self):
         self.assertEqual(26 if is_sample else 5832528, part1())
 
-    def test_part2(self):
-        self.assertEqual(56000011 if is_sample else None, part2())
+    # no unit test for part 2, but asserts in main below
 
 if __name__ == '__main__':
     unittest.main(exit=False)
+    print()
 
     res1 = part1()
     print(f"Part 1: {res1}", "(sample)" if is_sample else "")
+    print()
     res2 = part2()
+    assert(res2 == 56000011 if is_sample else 13360899249595)
     print(f"Part 2: {res2}", "(sample)" if is_sample else "")
