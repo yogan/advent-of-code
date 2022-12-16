@@ -40,7 +40,9 @@
 - [Day 14](https://adventofcode.com/2022/day/14) ⭐⭐ in
   [Python](2022/day-14/day14.py) with [visualization](2022/day-14/README.md)
 - [Day 15](https://adventofcode.com/2022/day/15) ⭐⭐ in
-  [Python](2022/day-15/day15.py) "Use the force, Brute!"
+  [Python](2022/day-15/day15.py) "Use the force, Brute!"  
+  Learned about *PyPy* and *tqdm* (see [day 15 README](2022/day-15/README.md)),
+  both very helpful for long-running Python scripts
 
 ## [2021](https://adventofcode.com/2021) (34/50 ⭐)
 
