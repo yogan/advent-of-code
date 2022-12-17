@@ -35,6 +35,7 @@ pieces = [
         list("..@@..."),
     ]
 ]
+states = {}
 
 def parse(file = filename):
     with open(file) as f:
@@ -49,18 +50,19 @@ def debug_field(field):
         print_field(field)
 
 def print_field(field):
-    # reverse field without modifying it
     for i, line in enumerate(reversed(field)):
         i = len(field) - i - 1
-        print(f" {i:02d} |{''.join(line)}|")
+        print(f"   {i:04d}  |{''.join(line)}|")
     print(f"    +{'-' * width}+\n")
 
-def play_rock_tetris(movements, rocks_max):
+def play_rock_tetris(movements, rocks_max, return_field = False):
     rocks = 0
     piece_idx = 0
     piece_btm_i = 0
     move_idx = 0
     field = []
+    height = 0
+    rows_from_cycle = 0
 
     while rocks < rocks_max:
         debug("\n-- LOOP -- Settled rocks:", rocks, "of", rocks_max, "--\n")
@@ -73,7 +75,8 @@ def play_rock_tetris(movements, rocks_max):
         field.append(list(empty_row))
         for piece_line in piece:
             field.append(list(piece_line))
-        piece_btm_i = len(field) - len(piece)
+        height += 3 + len(piece)
+        piece_btm_i = height - len(piece)
         debug(f"piece {piece_idx} placed, bottom = {piece_btm_i}:")
         debug_field(field)
 
@@ -86,6 +89,7 @@ def play_rock_tetris(movements, rocks_max):
             side_free = True
             if (move == ">"):
                 for i in range(piece_btm_i, piece_btm_i + len(piece)):
+                    i = i - rows_from_cycle
                     # check for right wall
                     if field[i][-1] == "@":
                         side_free = False
@@ -101,6 +105,7 @@ def play_rock_tetris(movements, rocks_max):
                         continue
                 if side_free:
                     for i in range(piece_btm_i, piece_btm_i + len(piece)):
+                        i = i - rows_from_cycle
                         # move @ blocks of piece to the right, going right to left
                         for j in range(width - 1, -1, -1):
                             if field[i][j] == "@":
@@ -108,6 +113,7 @@ def play_rock_tetris(movements, rocks_max):
                                 field[i][j + 1] = "@"
             elif (move == "<"):
                 for i in range(piece_btm_i, piece_btm_i + len(piece)):
+                    i = i - rows_from_cycle
                     # check for left wall
                     if field[i][0] == "@":
                         side_free = False
@@ -123,6 +129,7 @@ def play_rock_tetris(movements, rocks_max):
                         continue
                 if side_free:
                     for i in range(piece_btm_i, piece_btm_i + len(piece)):
+                        i = i - rows_from_cycle
                         # move @ pieces of piece to the left, going left to right
                         for j in range(width):
                             if field[i][j] == "@":
@@ -138,11 +145,12 @@ def play_rock_tetris(movements, rocks_max):
             # collision could be either hitting the bottom or another rock
             collision = False
             # if len of piece is len of field, we're at the bottom
-            if len(piece) == len(field):
+            if len(piece) == height:
                 collision = True
             else:
                 # check for collision at indices below the falling piece
                 for i in range(piece_btm_i, piece_btm_i + len(piece)):
+                    i = i - rows_from_cycle
                     for j in range(width):
                         if field[i][j] == "@" and field[i - 1][j] == "#":
                             collision = True
@@ -153,16 +161,40 @@ def play_rock_tetris(movements, rocks_max):
             if collision:
                 # rock settles, convert @ to #
                 for i in range(piece_btm_i, piece_btm_i + len(piece)):
+                    i = i - rows_from_cycle
                     for j in range(width):
                         if field[i][j] == "@":
                             field[i][j] = "#"
+
                 rocks += 1
                 settled = True
+
+                if rows_from_cycle == 0:
+                    columns = ":".join([str(d) for d in get_column_depths(field)])
+                    key = (piece_idx, move_idx, columns)
+                    if key in states:
+                        prev_rocks, prev_height = states[key]
+                        cycle_rocks = rocks - prev_rocks
+                        cycle_height = height - prev_height
+                        if cycle_rocks > 0:
+                            debug("found a cycle:", key, "rocks:", cycle_rocks,
+                                "height:", cycle_height)
+                            debug("current height:", height, "rocks:", rocks)
+                            cycles_to_add = (rocks_max - rocks) // cycle_rocks
+                            debug("cycles to add:", cycles_to_add)
+                            rows_from_cycle = cycles_to_add * cycle_height
+                            height += rows_from_cycle
+                            rocks += cycles_to_add * cycle_rocks
+                            debug("new height:", height, "rocks:", rocks)
+                    else:
+                        states[key] = (rocks, height)
+
                 debug("collision detected, rock settles:")
                 debug_field(field)
             else:
                 # fall down
                 for i in range(piece_btm_i, piece_btm_i + len(piece)):
+                    i = i - rows_from_cycle
                     for j in range(width):
                         if field[i][j] == "@":
                             field[i][j] = "."
@@ -171,16 +203,27 @@ def play_rock_tetris(movements, rocks_max):
                 # remove empty top row
                 if field[-1] == empty_row:
                     field.pop(-1)
+                    height -= 1
                 debug("no collision, rock falls down:")
                 debug_field(field)
 
     debug("==== DONE ==== Settled rocks:", rocks, "of", rocks_max, "====\n")
-    return field
+    return field if return_field else height
+
+def get_column_depths(field):
+    depths = [0] * width
+    for col in range(width):
+        for row in range(len(field) - 1, -1, -1):
+            if field[row][col] == "#":
+                break
+            depths[col] += 1
+    return depths
 
 def part1():
-    movements = parse()
-    field = play_rock_tetris(movements, 2022)
-    return len(field)
+    return play_rock_tetris(parse(), 2022)
+
+def part2():
+    return play_rock_tetris(parse(), 1000000000000)
 
 class TestDay17(unittest.TestCase):
     def test_parse(self):
@@ -196,13 +239,13 @@ class TestDay17(unittest.TestCase):
 
     def test_play_rock_tetris(self):
         movements = parse("sample.txt")
-        field = play_rock_tetris(movements, 1)
+        field = play_rock_tetris(movements, 1, True)
         expected = [list("..####.")]
         self.assertEqual(expected, field)
 
     def test_play_rock_tetris_two_rocks(self):
         movements = parse("sample.txt")
-        field = play_rock_tetris(movements, 2)
+        field = play_rock_tetris(movements, 2, True)
         expected = list(reversed([
             list("...#..."),
             list("..###.."),
@@ -213,7 +256,7 @@ class TestDay17(unittest.TestCase):
 
     def test_play_rock_tetris_ten_rocks(self):
         movements = parse("sample.txt")
-        field = play_rock_tetris(movements, 10)
+        field = play_rock_tetris(movements, 10, True)
         expected = list(reversed([
             list("....#.."),
             list("....#.."),
@@ -235,8 +278,34 @@ class TestDay17(unittest.TestCase):
         ]))
         self.assertEqual(expected, field)
 
+    def test_get_column_depths(self):
+        field = list(reversed([
+            list("....#.."),
+            list("....#.."),
+            list("....##."),
+            list("##..##."),
+            list("######."),
+            list(".###..."),
+            list("..#...."),
+            list(".####.."),
+            list("....##."),
+            list("....##."),
+            list("....#.."),
+            list("..#.#.."),
+            list("..#.#.."),
+            list("#####.."),
+            list("..###.."),
+            list("...#..."),
+            list("..####."),
+        ]))
+        expected = [3, 3, 4, 4, 0, 2, 17]
+        self.assertEqual(expected, get_column_depths(field))
+
     def test_part1(self):
-        self.assertEqual(3068 if is_sample else 3175, part1())
+       self.assertEqual(3068 if is_sample else 3175, part1())
+
+    def test_part2(self):
+        self.assertEqual(1514285714288 if is_sample else 1555113636385, part2())
 
 if __name__ == '__main__':
     unittest.main(exit=False)
@@ -245,5 +314,5 @@ if __name__ == '__main__':
     res1 = part1()
     print(f"Part 1: {res1}", "(sample)" if is_sample else "")
 
-    # res2 = part2()
-    # print(f"Part 2: {res2}", "(sample)" if is_sample else "")
+    res2 = part2()
+    print(f"Part 2: {res2}", "(sample)" if is_sample else "")

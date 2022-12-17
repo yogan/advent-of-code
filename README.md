@@ -43,6 +43,8 @@
   [Python](2022/day-15/day15.py) "Use the force, Brute!"  
   Learned about *PyPy* and *tqdm* (see [day 15 README](2022/day-15/README.md)),
   both very helpful for long-running Python scripts
+- [Day 17](https://adventofcode.com/2022/day/17) ⭐⭐ in
+  [Python](2022/day-17/day17.py) used some hints for the cycle detection of part 2
 
 ## [2021](https://adventofcode.com/2021) (34/50 ⭐)
 
