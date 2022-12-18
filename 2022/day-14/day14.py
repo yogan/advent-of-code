@@ -1,12 +1,24 @@
-import sys, math
+import os, sys, math
+from tqdm import tqdm
 
 # To generate animated gifs, requires Pillow, see
 # https://pillow.readthedocs.io/en/stable/installation.html
 from PIL import Image, ImageDraw
+import imageio
 
 file = sys.argv[1] if len(sys.argv) > 1 else "day14.in"
 is_sample = file != "day14.in"
-sand_start = (500, 0)
+create_gifs = len(sys.argv) > 2 and sys.argv[2] == "--gifs"
+
+sand_start  = (500, 0)
+
+color_bg    = (150, 150, 150)
+color_start = (179, 159,  97)
+color_sand  = (194, 178, 128)
+color_rock  = ( 42,  42 , 42)
+
+frame_count = 0
+skip_frames = 0
 
 def update_min_max(x, y, dimensions):
     min_x, min_y, max_x, max_y = dimensions
@@ -47,24 +59,25 @@ def read_rocks():
 
     return list(rocks), dimensions
 
-def simulate_sand(part1):
+def simulate_sand(part1, create_gifs):
     def is_free(x, y, sand, rocks, floor = None):
         return not ((x, y) in sand or (x, y) in rocks) \
                and (floor == None or y != floor)
 
-    def store_frame(sand_frames, sand, additional_point = None):
-        if (is_sample):
-            sand_copy = list(sand)
-            if (additional_point is not None):
-                sand_copy.append(additional_point)
-            sand_frames.append(sand_copy)
-
     sand = set()
-    sand_frames = []
     x, y = sand_start
     rocks, dimensions = read_rocks()
     _, _, _, max_y = dimensions
     floor = None if part1 else max_y + 2
+
+    if create_gifs:
+        global frame_count
+        frame_count = 0
+        if is_sample:
+            total_frames = 170 if part1 else 699
+        else:
+            total_frames = 236 if part1 else 618
+        pbar = tqdm(total=total_frames, desc="Generating frames")
 
     while True:
         if part1 and y >= max_y:
@@ -72,24 +85,39 @@ def simulate_sand(part1):
 
         if is_free(x, y + 1, sand, rocks, floor):
             y += 1
-            store_frame(sand_frames, sand, (x, y))
             dimensions = update_min_max(x, y, dimensions)
+            if create_gifs and is_sample:
+                pbar.update()
+                write_frame(part1, rocks, sand, (x, y))
             continue
         if is_free(x - 1, y + 1, sand, rocks, floor):
             x -= 1
             y += 1
-            store_frame(sand_frames, sand, (x, y))
             dimensions = update_min_max(x, y, dimensions)
+            if create_gifs and is_sample:
+                pbar.update()
+                write_frame(part1, rocks, sand, (x, y))
             continue
         if is_free(x + 1, y + 1, sand, rocks, floor):
             x += 1
             y += 1
-            store_frame(sand_frames, sand, (x, y))
             dimensions = update_min_max(x, y, dimensions)
+            if create_gifs and is_sample:
+                pbar.update()
+                write_frame(part1, rocks, sand, (x, y))
             continue
 
         sand.add((x, y))
-        store_frame(sand_frames, sand)
+
+        if create_gifs:
+            if is_sample or frame_count < 50 or skip_frames == 0:
+                pbar.update()
+                write_frame(part1, rocks, sand)
+                skip_frames = frame_count // 50
+                if not part1:
+                    skip_frames *= 8
+            else:
+                skip_frames -= 1
 
         if (not part1) and (x, y) == sand_start:
             break
@@ -98,7 +126,7 @@ def simulate_sand(part1):
         # print_field(sand, rocks, dimensions) # each frame
 
     # print_field(sand, rocks, dimensions) # final state
-    return sand, rocks, sand_frames, dimensions
+    return sand, rocks, dimensions
 
 def print_field(sand, rocks, dimensions):
     min_x, min_y, max_x, max_y = dimensions
@@ -115,65 +143,112 @@ def print_field(sand, rocks, dimensions):
         print()
     print()
 
-def create_gif(sand_frames, rocks, dimensions, is_part1):
-    def shift_pixels(pixels, min_x, min_y):
-        return [(x - min_x, y - min_y) for x, y in pixels]
+def write_frame(is_part1, rocks, sand, additional_sand_point = None):
+    if is_part1:
+        width  = 17 if is_sample else 75
+        height = 10 if is_sample else 176
+    else:
+        width  = 23 if is_sample else 375
+        height = 12 if is_sample else 176
 
-    min_x, min_y, max_x, max_y = dimensions
-    assert(min_x >= 0 and min_y >= 0)
-    if (not is_part1):
-        max_y += 1
-    dimensions = (max_x - min_x + 1, max_y - min_y + 1)
-    resize_factor = 30
+    resize_factor = 24 if is_sample else 8
 
-    images      = []
-    color_bg    = (150, 150, 150)
-    color_start = (179, 159,  97)
-    color_sand  = (194, 178, 128)
-    color_rock  = ( 42,  42 , 42)
+    if (additional_sand_point is not None):
+        sand = list(sand) # copy to avoid modifying original
+        sand.append(additional_sand_point)
+
+    def shift_pixels(pixels, width):
+        offset_x = sand_start[0] - width // 2
+        if not is_sample and is_part1:
+            offset_x += 25
+        return [(x - offset_x, y) for x, y in pixels]
+
+    image = Image.new('RGB', (width, height), color_bg)
+    draw  = ImageDraw.Draw(image)
 
     if not is_part1:
-        for x in range(min_x, max_x + 1):
-            rocks.append((x, max_y))
-    rock_pixels = shift_pixels(rocks, min_x, min_y)
+        floor_pixels = [(x, height - 1) for x in range(width)]
+        draw.point(floor_pixels, fill=color_rock)
 
-    for i, sand in enumerate(sand_frames):
-        # print("Frame", i, "/", len(sand_frames))
-        im = Image.new('RGB', dimensions, color_bg)
-        draw = ImageDraw.Draw(im)
+    rock_pixels      = shift_pixels(rocks,        width)
+    sand_start_pixel = shift_pixels([sand_start], width)
+    sand_pixels      = shift_pixels(sand,         width)
 
-        draw.point(shift_pixels([sand_start], min_x, min_y), fill=color_start)
-        draw.point(shift_pixels(sand, min_x, min_y), fill=color_sand)
-        draw.point(rock_pixels, fill=color_rock)
+    draw.point(rock_pixels,      fill=color_rock)
+    draw.point(sand_pixels,      fill=color_sand)
+    draw.point(sand_start_pixel, fill=color_start)
 
-        (width, height) = (im.width * resize_factor, im.height * resize_factor)
-        im_resized = im.resize((width, height), Image.Resampling.NEAREST)
-        images.append(im_resized)
+    (width, height) = (image.width * resize_factor, image.height * resize_factor)
+    image = image.resize((width, height), Image.Resampling.NEAREST)
 
-    filename = ("part1.gif" if is_part1 else "part2.gif")
-    filename = filename.replace(".gif", "_sample.gif")
-    images[0].save(filename,
-        save_all=True, append_images=images[1:],
-        optimize=False, duration=40, loop=0)
-    print(f"Wrote {filename} ({len(images)} frames)")
+    global frame_count
+    frame_count += 1
+    dir_name = get_dir_name(is_part1)
+    os.makedirs(dir_name, exist_ok=True)
+    image.save(f"{dir_name}/frame_{frame_count:05d}.gif")
 
-def part(num):
+base_dir = "/tmp/aoc2022day14/"
+
+def get_dir_name(is_part1):
+    dir_name = base_dir + "part1/"  if is_part1  else base_dir + "part2/"
+    dir_name = dir_name + "sample/" if is_sample else dir_name + "input/"
+    return dir_name
+
+def get_gif_path(is_part1, ):
+    path = base_dir + "part1.gif" if is_part1 else base_dir + "part2.gif"
+    if is_sample:
+        path = path.replace(".gif", "_sample.gif")
+    return path
+
+def create_gif(is_part1):
+    dir_name   = get_dir_name(is_part1)
+    gif_path   = get_gif_path(is_part1)
+    images     = []
+    durations  = []
+    if is_sample:
+        frame_rate = 25 if is_part1 else 40
+    else:
+        frame_rate = 100 # 100 fps = 10ms per frame is the limit for GIFs
+
+    pbar = tqdm(total=frame_count, desc="Create GIF from frames")
+
+    for i in range(1, frame_count + 1):
+        pbar.update()
+        filename = f"{dir_name}/frame_{str(i).zfill(5)}.gif"
+        images.append(imageio.v2.imread(filename))
+        if i == 1:
+            durations.append(0.5) # first frame: 500ms
+        elif i == frame_count:
+            durations.append(3.0) # last frame: 3000ms
+        else:
+            durations.append(1.0 / frame_rate) # default frame rate
+
+    imageio.mimsave(gif_path, images, fps=frame_rate, duration=durations,
+                    subrectangles=True, palettesize=4)
+    print(f"GIF created: {gif_path} ({frame_count} frames)\n")
+
+def part(num, create_gifs):
     is_part1 = num == 1
 
-    sand, rocks, sand_frames, dimensions = simulate_sand(is_part1)
-    sand_amount = len(sand)
+    if create_gifs:
+        if is_sample:
+            print(f"Creating GIF for part {num} (sample)…")
+        else:
+            print(f"Creating GIF for part {num}…")
+            if not is_part1:
+                print("This will take a while (a few minutes). Be patient!")
 
-    if (is_part1):
-        assert(sand_amount == 24 if is_sample else 683)
+    sand, rocks, dimensions = simulate_sand(is_part1, create_gifs)
+
+    if create_gifs:
+        create_gif(is_part1)
     else:
-        assert(sand_amount == 93 if is_sample else 28821)
+        sand_amount = len(sand)
+        if (is_part1):
+            assert(sand_amount == 24 if is_sample else 683)
+        else:
+            assert(sand_amount == 93 if is_sample else 28821)
+        print(f"Part {num}: {sand_amount}", "(sample)" if is_sample else "")
 
-    print(f"Part {num}: {sand_amount}", "(sample)" if is_sample else "")
-
-    if (is_sample):
-        create_gif(sand_frames, rocks, dimensions, is_part1)
-    else:
-        print("Skipping gif creation (only works for small sample currently)")
-
-part(1)
-part(2)
+part(1, create_gifs)
+part(2, create_gifs)
