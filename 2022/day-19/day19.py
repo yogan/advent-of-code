@@ -11,6 +11,12 @@ is_sample = filename != "input.txt"
 
 verbose = False
 
+# This speeds up things a lot, but it is risky. When this is enabled,
+# and a geode bot can be produced, it will be produced and all other
+# options are ignored. There can be blueprint for which this does not work.
+# With our sample and input data, it does, though.
+optimize_for_geode_bots = True
+
 def parse(filename=filename):
     with open(filename) as f:
         blueprints = []
@@ -42,27 +48,30 @@ def possible_builds(blueprint, resources, minutes_left, is_part_2):
     ore, clay, obsidian, geode = resources
 
     builds = []
+
     # limits found by crazy guessing and a lot of trial and error
-    ore_minute_limit      = 20 if is_part_2 else 12
-    clay_minute_limit     = 10 if is_part_2 else  5
-    obsidian_minute_limit =  1
     geode_minute_limit    =  0
+    obsidian_minute_limit =  1
+    clay_minute_limit     = 10 if is_part_2 else  5
+    ore_minute_limit      = 20 if is_part_2 else 12
 
-    if ore >= ore_bot_cost \
-        and minutes_left > ore_minute_limit:
-        builds += [Build.ORE_BOT]
-
-    if ore >= clay_bot_cost \
-        and minutes_left > clay_minute_limit:
-        builds += [Build.CLAY_BOT]
+    if ore >= geode_bot_ore_cost and obsidian >= geode_bot_obsidian_cost \
+        and minutes_left > geode_minute_limit:
+        if optimize_for_geode_bots:
+            return [Build.GEODE_BOT]
+        builds += [Build.GEODE_BOT]
 
     if ore >= obsidian_bot_ore_cost and clay >= obsidian_bot_clay_cost \
         and minutes_left > obsidian_minute_limit:
         builds += [Build.OBSIDIAN_BOT]
 
-    if ore >= geode_bot_ore_cost and obsidian >= geode_bot_obsidian_cost \
-        and minutes_left > geode_minute_limit:
-        builds += [Build.GEODE_BOT]
+    if ore >= clay_bot_cost \
+        and minutes_left > clay_minute_limit:
+        builds += [Build.CLAY_BOT]
+
+    if ore >= ore_bot_cost \
+        and minutes_left > ore_minute_limit:
+        builds += [Build.ORE_BOT]
 
     # try to avoid building nothing
     if is_sample:
@@ -373,10 +382,10 @@ if __name__ == '__main__':
     print()
 
     if not verbose:
-        if is_sample:
-            print("Attention, this stuff takes a while to run (about 90s for the sample).")
-        else:
-            print("Attention, this stuff takes a while to run (about 35s for the real data).")
+        expected_run_time = 90 if is_sample else 35
+        if optimize_for_geode_bots:
+            expected_run_time = 12 if is_sample else 25
+        print(f"Attention, this stuff takes a while to run (about {expected_run_time}s).")
         print("To see some progress bars, enable verbose mode (verbose = True)")
         print()
 
