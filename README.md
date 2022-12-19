@@ -45,6 +45,9 @@
   both very helpful for long-running Python scripts
 - [Day 17](https://adventofcode.com/2022/day/17) ⭐⭐ in
   [Python](2022/day-17/day17.py) used some hints for the cycle detection of part 2
+- [Day 19](https://adventofcode.com/2022/day/19) ⭐⭐ in
+  [Python](2022/day-19/day19.py) absolutely crazy, a lot of tweaking of guessed
+  parameters to throw away states so that everything fits into memory
 
 ## [2021](https://adventofcode.com/2021) (34/50 ⭐)
 
