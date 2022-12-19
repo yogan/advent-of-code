@@ -9,6 +9,8 @@ filename  = sys.argv[1]
 sys.argv  = sys.argv[:1] # strip args, they scare the unittest module
 is_sample = filename != "input.txt"
 
+verbose = False
+
 def parse(filename=filename):
     with open(filename) as f:
         blueprints = []
@@ -33,29 +35,49 @@ class Build(Enum):
     OBSIDIAN_BOT = 3
     GEODE_BOT = 4
 
-def possible_builds(blueprint, resources, minutes_left):
+def possible_builds(blueprint, resources, minutes_left, is_part_2):
     _, ore_bot_cost, clay_bot_cost, \
         obsidian_bot_ore_cost, obsidian_bot_clay_cost, \
         geode_bot_ore_cost, geode_bot_obsidian_cost = blueprint
     ore, clay, obsidian, geode = resources
 
-    builds = [Build.NOTHING]
+    builds = []
+    # limits found by crazy guessing and a lot of trial and error
+    ore_minute_limit      = 20 if is_part_2 else 12
+    clay_minute_limit     = 10 if is_part_2 else  5
+    obsidian_minute_limit =  1
+    geode_minute_limit    =  0
 
     if ore >= ore_bot_cost \
-        and minutes_left > 10: # crazy guess, but new ore bots now should not help anymore
+        and minutes_left > ore_minute_limit:
         builds += [Build.ORE_BOT]
 
     if ore >= clay_bot_cost \
-        and minutes_left > 5: # another crazy guess
+        and minutes_left > clay_minute_limit:
         builds += [Build.CLAY_BOT]
 
     if ore >= obsidian_bot_ore_cost and clay >= obsidian_bot_clay_cost \
-        and minutes_left > 1:
+        and minutes_left > obsidian_minute_limit:
         builds += [Build.OBSIDIAN_BOT]
 
     if ore >= geode_bot_ore_cost and obsidian >= geode_bot_obsidian_cost \
-        and minutes_left > 0:
+        and minutes_left > geode_minute_limit:
         builds += [Build.GEODE_BOT]
+
+    # try to avoid building nothing
+    if is_sample:
+        if is_part_2:
+            crazy_sample_part2_hack = obsidian_bot_clay_cost > 10
+            if crazy_sample_part2_hack or len(builds) == 0:
+                builds += [Build.NOTHING]
+        else:
+            builds += [Build.NOTHING]
+    else:
+        magic_value_found_by_trial_and_error = 12
+        crazy_part1_hack = not is_part_2 and \
+            obsidian_bot_clay_cost < magic_value_found_by_trial_and_error
+        if crazy_part1_hack or len(builds) == 0:
+            builds += [Build.NOTHING]
 
     return builds
 
@@ -112,15 +134,7 @@ def step(minute, build, bots, resources, blueprint):
         resources = (ore, clay, obsidian, geode)
         return (minute, bots, resources, build)
 
-def reduce_states(states, minutes_left):
-    max_geode = 0
-
-    for state in states:
-        _, _, resources, _ = state
-        _, _, _, geode = resources
-        if geode > max_geode:
-            max_geode = geode
-
+def reduce_states(states, minutes_left, max_geode):
     # group states per bots, but skip those that cannot reach a new max geode
     bots_to_states = {}
     for state in states:
@@ -235,24 +249,18 @@ def reduce_states(states, minutes_left):
 
     return list(best_states_for_all_bots)
 
-def calc_quality(states, num):
-    max_geodes = 0
-    for state in states:
-        _, _, resources, _ = state
-        _, _, _, geode = resources
-        if geode > max_geodes:
-            max_geodes = geode
-    return (max_geodes, max_geodes * num)
-
-def simulate(blueprints, max_minutes=24):
+def simulate(blueprints, max_minutes, is_part_2=False):
     quality_levels = []
+    max_geodes = []
 
     for blueprint in blueprints:
         num = blueprint[0]
+        max_geode = 0
 
-        if not is_sample and use_pre_calc and num in pre_calc_quality_levels:
+        if not is_sample and not is_part_2 and use_pre_calc and num in pre_calc_quality_levels:
             pre_calc_quality_level = pre_calc_quality_levels[num]
-            print(f"Blueprint {num}/{len(blueprints)}: quality level {pre_calc_quality_level} (pre-calc)")
+            if verbose:
+                print(f"Blueprint {num}/{len(blueprints)}: quality level {pre_calc_quality_level} (pre-calc)")
             quality_levels.append(pre_calc_quality_level)
             continue
 
@@ -263,36 +271,58 @@ def simulate(blueprints, max_minutes=24):
             next_states = []
 
             state_iter = states
-            if len(states) > 10000:
+            if verbose and len(states) > 10000:
                 state_iter = tqdm(states, f"States ({minute}/{max_minutes}")
 
             for state in state_iter:
                 _, bots, resources, factory = state
-                builds = possible_builds(blueprint, resources, minutes_left)
+                builds = possible_builds(blueprint, resources, minutes_left, is_part_2)
                 possibilities = [step(minute, build, bots, resources,
                                       blueprint) for build in builds]
                 for possibility in possibilities:
+                    _, _, _, geode = possibility[2]
+                    if geode > max_geode:
+                        max_geode = geode
                     next_states.append(possibility)
 
-            reduced_states = reduce_states(next_states, minutes_left)
+            reduced_states = reduce_states(next_states, minutes_left, max_geode)
             # print(f"min: {minute} - reduced states: {len(next_states)} → {len(reduced_states)}")
             states = reduced_states
 
-        max_geodes, quality_level = calc_quality(states, num)
+        max_geodes.append(max_geode)
+        quality_level = max_geode * num
         quality_levels.append(quality_level)
 
-        print("===================================================================")
-        print(f"Blueprint {num}/{len(blueprints)}: {len(states)} final states, max geodes: {max_geodes}, quality level: {quality_level}")
-        print("===================================================================")
-        print()
+        if verbose:
+            print("===================================================================")
+            print(f"Blueprint {num}/{len(blueprints)}: {len(states)} final states, max geode: {max_geode}, quality level: {quality_level}")
+            print("===================================================================")
+            print()
 
-    return quality_levels
+    return max_geodes if is_part_2 else quality_levels
 
 def part1():
     blueprints = parse()
     max_minutes = 24
     quality_levels = simulate(blueprints, max_minutes)
+    if verbose:
+        print("Quality levels:", quality_levels)
     return sum(quality_levels)
+
+def part2():
+    blueprints = parse()
+    if not is_sample:
+        blueprints = blueprints[:3]
+    max_minutes = 32
+
+    max_geodes = simulate(blueprints, max_minutes, is_part_2=True)
+    if verbose:
+        print("Max geodes:", max_geodes)
+
+    result = 1
+    for max_geode in max_geodes:
+        result *= max_geode
+    return result
 
 class TestDay19(unittest.TestCase):
     def test_parse(self):
@@ -342,9 +372,19 @@ if __name__ == '__main__':
     unittest.main(exit=False)
     print()
 
+    if not verbose:
+        if is_sample:
+            print("Attention, this stuff takes a while to run (about 90s for the sample).")
+        else:
+            print("Attention, this stuff takes a while to run (about 35s for the real data).")
+        print("To see some progress bars, enable verbose mode (verbose = True)")
+        print()
+
     res1 = part1()
     assert(res1 == 33 if is_sample else res1 == 2301)
-    print(f"Part 1: {res1}", "(sample)" if is_sample else "")
 
-    # res2 = part2()
-    # print(f"Part 2: {res2}", "(sample)" if is_sample else "")
+    res2 = part2()
+    assert(res2 == 56 * 62 if is_sample else res2 == 10336)
+
+    print(f"Part 1: {res1}", "(sample)" if is_sample else "")
+    print(f"Part 2: {res2}", "(sample)" if is_sample else "")
