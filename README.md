@@ -48,6 +48,8 @@
 - [Day 19](https://adventofcode.com/2022/day/19) ⭐⭐ in
   [Python](2022/day-19/day19.py) absolutely crazy, a lot of tweaking of guessed
   parameters to throw away states so that everything fits into memory
+- [Day 20](https://adventofcode.com/2022/day/20) ⭐⭐ in
+  [Python](2022/day-20/day20.py) modulo goes brrrr
 
 ## [2021](https://adventofcode.com/2021) (34/50 ⭐)
 

@@ -19,7 +19,7 @@ def from_indexed_pairs(pairs):
     return [n for n, _ in pairs]
 
 def print_nums(pairs):
-    print(", ".join([f"{n:5}" for n in from_indexed_pairs(pairs)][:25]))
+    print(", ".join([f"{n}" for n in from_indexed_pairs(pairs)][:25]))
 
 def new_index(idx, num, length):
     if num == 0:
@@ -37,14 +37,11 @@ def new_index(idx, num, length):
 
     return new_index
 
-def move(pairs, n_orig, idx_orig):
-    if n_orig == 0:
-        return pairs # noop for 0
-
+def move(pairs, idx_orig):
     length = len(pairs)
 
     for pos, (n, idx) in enumerate(pairs):
-        if (n, idx) == (n_orig, idx_orig):
+        if idx == idx_orig:
             new_pos = new_index(pos, n, length)
 
             pair_removed = pairs[:pos] + pairs[pos+1:]
@@ -53,12 +50,16 @@ def move(pairs, n_orig, idx_orig):
                     + [(n, idx)] \
                     + pair_removed[new_pos:]
 
-def find_coordinates(numbers):
+def find_coordinates(numbers, rounds=1):
+    if rounds != 1:
+        key = 811589153
+        numbers = [num * key for num in numbers]
+
     pairs = to_indexed_pairs(numbers)
 
-    for number, idx in pairs:
-        pairs = move(pairs, number, idx)
-        # print_nums(pairs)
+    for round in range(rounds):
+        for idx in range(len(pairs)):
+            pairs = move(pairs, idx)
 
     for i, (n, _) in enumerate(pairs):
         if n == 0:
@@ -70,7 +71,13 @@ def find_coordinates(numbers):
 def part1():
     numbers = parse()
     coordinates = find_coordinates(numbers)
-    print("Coordinates:", coordinates)
+    print("Coordinates (part 1):", coordinates)
+    return sum(coordinates)
+
+def part2():
+    numbers = parse()
+    coordinates = find_coordinates(numbers, rounds=10)
+    print("Coordinates (part 2):", coordinates)
     return sum(coordinates)
 
 class TestDay20(unittest.TestCase):
@@ -87,8 +94,8 @@ class TestDay20(unittest.TestCase):
         pairs = to_indexed_pairs(self.sample)
         results = []
 
-        for number, idx in pairs:
-            pairs = move(pairs, number, idx)
+        for _, idx in pairs:
+            pairs = move(pairs, idx)
             results.append(from_indexed_pairs(pairs))
 
         self.assertEqual([
@@ -101,7 +108,7 @@ class TestDay20(unittest.TestCase):
             [1, 2, -3, 4, 0, 3, -2],
         ], results)
 
-    def test_find_coordinates(self):
+    def test_find_coordinates_part_1(self):
         numbers = parse()
         coordinates = find_coordinates(numbers)
         if is_sample:
@@ -109,6 +116,13 @@ class TestDay20(unittest.TestCase):
         else:
             self.assertEqual([9989, -2204, -5582], coordinates)
 
+    def test_find_coordinates_part_1(self):
+        numbers = parse()
+        coordinates = find_coordinates(numbers, rounds=10)
+        if is_sample:
+            self.assertEqual([811589153, 2434767459, -1623178306], coordinates)
+        else:
+            self.assertEqual([-767763338738, 685792834285, 6723204543452], coordinates)
 
 if __name__ == '__main__':
     unittest.main(exit=False)
@@ -116,6 +130,7 @@ if __name__ == '__main__':
 
     res1 = part1()
     print(f"Part 1: {res1}", "(sample)" if is_sample else "")
+    print()
 
-    # res2 = part2()
-    # print(f"Part 2: {res2}", "(sample)" if is_sample else "")
+    res2 = part2()
+    print(f"Part 2: {res2}", "(sample)" if is_sample else "")
