@@ -51,7 +51,7 @@
 - [Day 20](https://adventofcode.com/2022/day/20) ⭐⭐ in
   [Python](2022/day-20/day20.py) modulo goes brrrr
 - [Day 21](https://adventofcode.com/2122/day/21) ⭐⭐ in
-  [Python](2022/day-21/day21.py) expression trees and brute force with binary search
+  [Python](2022/day-21/day21.py) expression trees and brute force binary search (with a bit of luck)
 
 ## [2021](https://adventofcode.com/2021) (34/50 ⭐)
 
