@@ -5,10 +5,6 @@ else
     input="sample.txt"
 fi
 
-if command -v pypy3 >/dev/null 2>&1; then
-    pypy3 day*.py "$input"
-else
-    # echo to stderr
-    echo "pypy3 not found, using python3 instead" >&2
-    python3 day*.py "$input"
-fi
+# No pypy here, using match which requires Python >= 3.10.
+# pypy3 in Ubuntu 22.04 is only at 3.8
+python3 day*.py "$input"
