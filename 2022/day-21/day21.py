@@ -7,11 +7,12 @@ filename  = sys.argv[1]
 sys.argv  = sys.argv[:1] # strip args, they scare the unittest module
 is_sample = filename != "input.txt"
 
-YELL = 0
-ADD  = 1
-SUB  = 2
-MUL  = 3
-DIV  = 4
+class Op:
+    YELL = 'num'
+    ADD  = '+'
+    SUB  = '-'
+    MUL  = '*'
+    DIV  = '/'
 
 def parse(filename=filename):
     with open(filename) as f:
@@ -21,26 +22,31 @@ def parse(filename=filename):
             name = words[0].replace(":", "")
             if len(words) == 2:
                 num = int(words[1])
-                monkeys[name] = (YELL, num)
+                monkeys[name] = (Op.YELL, num)
             elif len(words) == 4:
                 left = words[1]
+                op = words[2]
                 right = words[3]
-                if words[2] == "+":
-                    monkeys[name] = (ADD, left, right)
-                elif words[2] == "-":
-                    monkeys[name] = (SUB, left, right)
-                elif words[2] == "*":
-                    monkeys[name] = (MUL, left, right)
-                elif words[2] == "/":
-                    monkeys[name] = (DIV, left, right)
-                else:
-                    assert(False)
+                monkeys[name] = (op, left, right)
             else:
-                assert(False)
+                raise Exception(f"Unexpected number of words (${len(words)})")
         return monkeys
 
+def math(op, left, right):
+    match op:
+        case Op.ADD:
+            return left + right
+        case Op.SUB:
+            return left - right
+        case Op.MUL:
+            return left * right
+        case Op.DIV:
+            return left // right
+
+    raise Exception(f"Unknown operation: {op}")
+
 def calc(monkey, monkeys, expr=False):
-    if monkey[0] == YELL:
+    if monkey[0] == Op.YELL:
         return monkey[1]
 
     op, left_name, right_name = monkey
@@ -50,17 +56,8 @@ def calc(monkey, monkeys, expr=False):
 
     if expr:
         return [op, left, right]
-
-    if op == ADD:
-        return left + right
-    elif op == SUB:
-        return left - right
-    elif op == MUL:
-        return left * right
-    elif op == DIV:
-        return left // right
-
-    assert(False)
+    else:
+        return math(op, left, right)
 
 def evaluate(expr, guess=None):
     if expr == 'SECRET' and guess is not None:
@@ -75,14 +72,7 @@ def evaluate(expr, guess=None):
     right = evaluate(right, guess)
 
     if isinstance(left, int) and isinstance(right, int):
-        if op == ADD:
-            return left + right
-        elif op == SUB:
-            return left - right
-        elif op == MUL:
-            return left * right
-        elif op == DIV:
-            return left // right
+        return math(op, left, right)
 
     return (op, left, right)
 
@@ -97,7 +87,7 @@ def prepare(monkeys):
     elif isinstance(right_expr, int):
         return (left_expr, right_expr)
 
-    assert(False)
+    raise Exception("At least one side of the root must be a number.")
 
 def search(expression, target):
     window = 100 if is_sample else 10012312312312 # chosen by fair dice roll
@@ -107,10 +97,7 @@ def search(expression, target):
         assert(guess1 < guess2)
 
         res1 = evaluate(expression, guess1)
-        too_low1 = res1 < target
-
         res2 = evaluate(expression, guess2)
-        too_low2 = res2 < target
 
         if res1 == target:
             print("Found after", step + 1, 'steps of "clever" searching.')
@@ -119,26 +106,30 @@ def search(expression, target):
             print("Found after", step + 1, 'steps of "clever" searching.')
             return guess2
 
-        if too_low1 and too_low2:
-            # both too low, move up one window
-            guess1 = guess2
-            guess2 = guess1 + window
-        elif too_low1 and not too_low2:
-            # res is in [guess1, guess2], try lower half of that
-            window = abs(guess1 - guess2) // 2
-            guess1 = guess1 + 1
-            guess2 = guess1 + window
-        elif not too_low1 and too_low2:
-            # res is in [guess2, guess1], try lower half of that
-            window = abs(guess1 - guess2) // 2
-            guess1 = min(guess1, guess2) + 1
-            guess2 = min(guess1, guess2) + window
-        else:
-            # both too high
-            guess1 = guess2 + 1
-            guess2 = guess2 + window
+        too_low1 = res1 < target
+        too_low2 = res2 < target
 
-    assert(False)
+        match (too_low1, too_low2):
+            case (True, True):
+                # both too low, move up one window
+                guess1 = guess2
+                guess2 = guess1 + window
+            case (True, False):
+                # res is in [guess1, guess2], try lower half of that
+                window = abs(guess1 - guess2) // 2
+                guess1 = guess1 + 1
+                guess2 = guess1 + window
+            case (False, True):
+                # res is in [guess2, guess1], try lower half of that
+                window = abs(guess1 - guess2) // 2
+                guess1 = min(guess1, guess2) + 1
+                guess2 = min(guess1, guess2) + window
+            case (False, False):
+                # both too high
+                guess1 = guess2 + 1
+                guess2 = guess2 + window
+
+    raise Exception(f"Failed to find solution after {step} steps.")
 
 def part1():
     monkeys = parse()
@@ -147,10 +138,7 @@ def part1():
 
 def part2():
     monkeys = parse()
-
-    human = monkeys["humn"]
-    assert(human[0] == YELL)
-    monkeys["humn"] = (YELL, "SECRET")
+    monkeys["humn"] = (Op.YELL, "SECRET")
 
     (unsolved_expression, target) = prepare(monkeys)
     return search(unsolved_expression, target)
