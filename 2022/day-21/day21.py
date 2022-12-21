@@ -62,7 +62,7 @@ def calc(monkey, monkeys, expr=False):
 
     assert(False)
 
-def simplify(expr, guess=None):
+def evaluate(expr, guess=None):
     if expr == 'SECRET' and guess is not None:
         return guess
 
@@ -71,8 +71,8 @@ def simplify(expr, guess=None):
 
     op, left, right = expr
 
-    left  = simplify(left, guess)
-    right = simplify(right, guess)
+    left  = evaluate(left, guess)
+    right = evaluate(right, guess)
 
     if isinstance(left, int) and isinstance(right, int):
         if op == ADD:
@@ -86,43 +86,30 @@ def simplify(expr, guess=None):
 
     return (op, left, right)
 
-def part1():
-    monkeys = parse()
-    root = monkeys["root"]
-    return calc(root, monkeys)
+def prepare(monkeys):
+    _, left_name, right_name = monkeys["root"]
 
-def part2():
-    monkeys = parse()
-
-    human = monkeys["humn"]
-    assert(human[0] == YELL)
-    monkeys["humn"] = (YELL, "SECRET")
-
-    root  = monkeys["root"]
-    _, left_name, right_name = root
-
-    left_expr  = simplify(calc(monkeys[left_name],  monkeys, expr=True))
-    right_expr = simplify(calc(monkeys[right_name], monkeys, expr=True))
+    left_expr  = evaluate(calc(monkeys[left_name],  monkeys, expr=True))
+    right_expr = evaluate(calc(monkeys[right_name], monkeys, expr=True))
 
     if isinstance(left_expr, int):
-        target   = left_expr
-        to_solve = right_expr
+        return (right_expr, left_expr)
     elif isinstance(right_expr, int):
-        target   = right_expr
-        to_solve = left_expr
-    else:
-        assert(False)
+        return (left_expr, right_expr)
 
+    assert(False)
+
+def search(expression, target):
     window = 100 if is_sample else 10012312312312 # chosen by fair dice roll
     (guess1, guess2) = 1, window
 
     for step in range(420):
         assert(guess1 < guess2)
 
-        res1 = simplify(left_expr, guess1)
+        res1 = evaluate(expression, guess1)
         too_low1 = res1 < target
 
-        res2 = simplify(left_expr, guess2)
+        res2 = evaluate(expression, guess2)
         too_low2 = res2 < target
 
         if res1 == target:
@@ -151,7 +138,22 @@ def part2():
             guess1 = guess2 + 1
             guess2 = guess2 + window
 
-    return None
+    assert(False)
+
+def part1():
+    monkeys = parse()
+    root = monkeys["root"]
+    return calc(root, monkeys)
+
+def part2():
+    monkeys = parse()
+
+    human = monkeys["humn"]
+    assert(human[0] == YELL)
+    monkeys["humn"] = (YELL, "SECRET")
+
+    (unsolved_expression, target) = prepare(monkeys)
+    return search(unsolved_expression, target)
 
 class TestDay21(unittest.TestCase):
     def test_parse(self):
