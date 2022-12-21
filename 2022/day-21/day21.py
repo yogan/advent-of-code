@@ -41,6 +41,8 @@ def math(op, left, right):
         case Op.MUL:
             return left * right
         case Op.DIV:
+            if (left % right) != 0:
+                raise ValueError(f"Division of {left} by {right} is not an integer.")
             return left // right
 
     raise Exception(f"Unknown operation: {op}")
@@ -59,14 +61,14 @@ def calc(monkey, monkeys, expr=False):
     else:
         return math(op, left, right)
 
-def evaluate(expr, guess=None):
-    if expr == 'SECRET' and guess is not None:
+def evaluate(expression, guess=None):
+    if expression == 'SECRET' and guess is not None:
         return guess
 
-    if isinstance(expr, int) or expr == 'SECRET':
-        return expr
+    if isinstance(expression, int) or expression == 'SECRET':
+        return expression
 
-    op, left, right = expr
+    op, left, right = expression
 
     left  = evaluate(left, guess)
     right = evaluate(right, guess)
@@ -75,6 +77,16 @@ def evaluate(expr, guess=None):
         return math(op, left, right)
 
     return (op, left, right)
+
+def safe_evaluate(expression, guess):
+    res = None
+    while res is None:
+        try:
+            res = evaluate(expression, guess)
+        except ValueError:
+            # retry until we get a clean integer division
+            guess += 1
+    return (res, guess)
 
 def prepare(monkeys):
     _, left_name, right_name = monkeys["root"]
@@ -90,14 +102,27 @@ def prepare(monkeys):
     raise Exception("At least one side of the root must be a number.")
 
 def search(expression, target):
-    window = 100 if is_sample else 10012312312312 # chosen by fair dice roll
+    # Value chosen by fair dice roll.
+    # More seriously, it's a value where for both the sample and the real input
+    # a result is found after a reasonable number of steps (35 and 41, respectively).
+    # The reason why we need "luck" by choosing a good starting value here is
+    # that the safe_evaluate function can be very slow when it encounters a non
+    # integer division, as it only increases the guess value by one until it
+    # eventually succeeds.
+    # If for different input data, the search does not succeed (it's limited to
+    # 420 steps), we can either:
+    #   - try with a different window size until we are lucky
+    #   - disable the "safe" integer division stuff, but then we might encounter
+    #     false results (which again can be "fixed" by a different window size)
+    window = 1012312312312
+
     (guess1, guess2) = 1, window
 
     for step in range(420):
         assert(guess1 < guess2)
 
-        res1 = evaluate(expression, guess1)
-        res2 = evaluate(expression, guess2)
+        (res1, guess1) = safe_evaluate(expression, guess1)
+        (res2, guess2) = safe_evaluate(expression, guess2)
 
         if res1 == target:
             print("Found after", step + 1, 'steps of "clever" searching.')
