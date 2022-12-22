@@ -5,7 +5,10 @@ if len(sys.argv) != 2:
     sys.exit(1)
 filename  = sys.argv[1]
 sys.argv  = sys.argv[:1] # strip args, they scare the unittest module
-is_sample = filename != "input.txt"
+is_input  = filename == "input.txt"
+is_sample = filename == "sample.txt"
+is_extra  = filename == "sample_extra.txt"
+is_trans  = filename == "sample_transformed.txt"
 
 def parse(filename=filename):
     with open(filename) as f:
@@ -63,9 +66,11 @@ def turn(direction, turn):
 def col_idx(c, r, min_max):
     return c - min_max[r][0]
 
-def travel(rows, min_max, path):
+def travel(rows, min_max, path, cube=False):
     dir  = Direction.RIGHT
     r, c = (0, min_max[0][0])
+    if cube:
+        d = 50 if is_input else 4
 
     assert rows[r][col_idx(c, r, min_max)] == ".", "can't start on a wall"
     # print(f"    START    {r},{c} dir: {dir_to_str(dir)}")
@@ -119,13 +124,22 @@ def travel(rows, min_max, path):
 
             # print(f"steps: {move:2d} -> {r},{c} {dir_to_str(dir)}")
 
-    print(f"Final position: {r+1}, {c+1} {dir_to_str(dir)}")
     return (r+1, c+1, dir)
+
+def password(r, c, dir):
+    return 1000 * r + 4 * c + dir
 
 def part1():
     rows, min_max, path = parse()
     (r, c, dir) = travel(rows, min_max, path)
-    return 1000 * r + 4 * c + dir
+    print(f"Final position: {r+1}, {c+1} {dir_to_str(dir)}")
+    return password(r, c, dir)
+
+def part2():
+    rows, min_max, path = parse()
+    (r, c, dir) = travel(rows, min_max, path, cube=True)
+    print(f"Final position: {r+1}, {c+1} {dir_to_str(dir)}")
+    return password(r, c, dir)
 
 class TestDay22(unittest.TestCase):
     def test_parse(self):
@@ -142,7 +156,7 @@ class TestDay22(unittest.TestCase):
             self.assertEqual("...#", first_row)
             self.assertEqual("......#.", last_row)
             self.assertEqual([10,'R',5,'L',5,'R',10,'L',4,'R',5,'L',5], path)
-        else:
+        elif is_input:
             self.assertEqual(200, len(rows))
             self.assertEqual((50, 149), first_line_min_max)
             self.assertEqual(( 0,  49), last_line_min_max)
@@ -165,19 +179,21 @@ class TestDay22(unittest.TestCase):
         (r, c, dir) = travel(rows, min_max, path)
         if is_sample:
             self.assertEqual((6, 8, Direction.RIGHT), (r, c, dir))
-        else:
+        elif is_input:
             self.assertEqual((97, 89, Direction.RIGHT), (r, c, dir))
 
 if __name__ == '__main__':
-    if filename == 'sample.txt' or filename == 'input.txt':
+    if is_input or is_sample:
         unittest.main(exit=False)
         print()
 
     res1 = part1()
-    assert(res1 == 6032 if is_sample else res1 == 97356)
+    if is_sample or is_trans:
+        assert res1 == 6032
+    elif is_input:
+        assert res1 == 97356
     print(f"Part 1: {res1}", "(sample)" if is_sample else "")
-    # print()
+    print()
 
-    # res2 = part2()
-    # assert(res2 == 301 if is_sample else res2 == 3560324848168)
-    # print(f"Part 2: {res2}", "(sample)" if is_sample else "")
+    res2 = part2()
+    print(f"Part 2: {res2}", "(sample)" if is_sample else "")
