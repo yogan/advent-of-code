@@ -1,5 +1,6 @@
 import unittest, sys
 from collections import defaultdict
+from tqdm import trange
 
 if len(sys.argv) != 2:
     print("Missing input file.")
@@ -139,6 +140,41 @@ def part1():
 
     return count_empty_tiles(elves)
 
+def part2():
+    elves = parse()
+    rounds = 2342
+
+    rnd_iter = range(1, rounds + 1) if is_sample else trange(1, rounds + 1)
+    for rnd in rnd_iter:
+        proposals = move_proposals(elves, rnd)
+
+        counts = defaultdict(int)
+        for target in proposals.values():
+            counts[target] += 1
+
+        moves = 0
+        new_elves = set()
+
+        for current, proposal in proposals.items():
+            if counts[proposal] > 1:
+                new_elves.add(current)
+            else:
+                new_elves.add(proposal)
+                if current != proposal:
+                    moves += 1
+
+        elves = new_elves
+
+        # if is_sample and (10 or rnd == 19 or rnd == 20):
+        #     print(f"\n== End of Round {rnd} == moves: {moves} ==")
+        #     print_field(elves)
+        #     print()
+
+        if moves == 0:
+            return rnd
+
+    assert False, "no stable state found after {rounds} rounds"
+
 class TestDay23(unittest.TestCase):
     def test_parse(self):
         elves = parse()
@@ -225,6 +261,10 @@ class TestDay23(unittest.TestCase):
     def test_part1(self):
         self.assertEqual(110 if is_sample else 3970, part1())
 
+    def test_part2(self):
+        if is_sample:
+            self.assertEqual(20, part2())
+
 if __name__ == '__main__':
     if is_sample:
         unittest.main(exit=False)
@@ -232,7 +272,7 @@ if __name__ == '__main__':
 
     res1 = part1()
     print(f"Part 1: {res1}", "(sample)" if is_sample else "")
-    # print()
+    print()
 
-    # res2 = part2()
-    # print(f"Part 2: {res2}", "(sample)" if is_sample else "")
+    res2 = part2()
+    print(f"Part 2: {res2}", "(sample)" if is_sample else "")
