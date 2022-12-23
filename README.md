@@ -52,8 +52,10 @@
   parameters to throw away states so that everything fits into memory
 - [Day 20](https://adventofcode.com/2022/day/20) ⭐⭐ in
   [Python](2022/day-20/day20.py) modulo goes brrrr
-- [Day 21](https://adventofcode.com/2122/day/21) ⭐⭐ in
+- [Day 21](https://adventofcode.com/2022/day/21) ⭐⭐ in
   [Python](2022/day-21/day21.py) expression trees and brute force binary search (with a bit of luck)
+- [Day 23](https://adventofcode.com/2022/day/23) ⭐⭐ in
+  [Python](2022/day-23/day23.py) actually quite nice and clean code (pattern matching, list/set comprehensions)
 
 ## [2021](https://adventofcode.com/2021) (34/50 ⭐)
 
