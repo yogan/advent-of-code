@@ -2,7 +2,7 @@
 
 ## [2022](https://adventofcode.com/2022)
 
-**Language count:** 12
+**Language count:** 13
 
 - [Day 01](https://adventofcode.com/2022/day/1) ⭐⭐ in
   [fish](2022/day-01/day01.fish)
@@ -56,6 +56,8 @@
   [Python](2022/day-21/day21.py) expression trees and brute force binary search (with a bit of luck)
 - [Day 23](https://adventofcode.com/2022/day/23) ⭐⭐ in
   [Python](2022/day-23/day23.py) actually quite nice and clean code (pattern matching, list/set comprehensions)
+- [Day 25](https://adventofcode.com/2022/day/25) ⭐ in
+  [Haskell](2022/day-25/day25.hs) last day, took the chance to increase my language count
 
 ## [2021](https://adventofcode.com/2021) (34/50 ⭐)
 
