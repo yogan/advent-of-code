@@ -1,8 +1,6 @@
 # [Advent of Code](https://adventofcode.com)
 
-## [2022](https://adventofcode.com/2022)
-
-**Language count:** 13
+## [2022](https://adventofcode.com/2022) (13 Languages, 44/50 ⭐)
 
 - [Day 01](https://adventofcode.com/2022/day/1) ⭐⭐ in
   [fish](2022/day-01/day01.fish)
@@ -43,6 +41,7 @@
   [Python](2022/day-15/day15.py) "Use the force, Brute!"  
   Learned about *PyPy* and *tqdm* (see [day 15 README](2022/day-15/README.md)),
   both very helpful for long-running Python scripts
+- [Day 16](https://adventofcode.com/2022/day/16) ❌❌
 - [Day 17](https://adventofcode.com/2022/day/17) ⭐⭐ in
   [Python](2022/day-17/day17.py) used some hints for the cycle detection of part 2
 - [Day 18](https://adventofcode.com/2022/day/18) ⭐⭐ in
@@ -54,9 +53,12 @@
   [Python](2022/day-20/day20.py) modulo goes brrrr
 - [Day 21](https://adventofcode.com/2022/day/21) ⭐⭐ in
   [Python](2022/day-21/day21.py) expression trees and brute force binary search (with a bit of luck)
+- [Day 22](https://adventofcode.com/2022/day/22) ⭐❌ in
+  [Python](2022/day-22/day22.py) part 1 only
 - [Day 23](https://adventofcode.com/2022/day/23) ⭐⭐ in
   [Python](2022/day-23/day23.py) actually quite nice and clean code (pattern matching, list/set comprehensions)
-- [Day 25](https://adventofcode.com/2022/day/25) ⭐ in
+- [Day 24](https://adventofcode.com/2022/day/24) ❌❌
+- [Day 25](https://adventofcode.com/2022/day/25) ⭐❌ in
   [Haskell](2022/day-25/day25.hs) last day, took the chance to increase my language count
 
 ## [2021](https://adventofcode.com/2021) (34/50 ⭐)
