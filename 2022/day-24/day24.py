@@ -1,7 +1,6 @@
 import unittest, sys
 from math import gcd
 from collections import deque
-from tqdm import tqdm
 
 if len(sys.argv) != 2:
     print("Missing input file.")
@@ -102,7 +101,12 @@ def next_coords(r, c, blizzard, valley):
         case _:
             raise Exception(f"Unknown blizzard: {blizzard}")
 
-def get_next(valley):
+blizzard_cache = {}
+
+def get_next(valley, blizzard_cycle):
+    if blizzard_cycle in blizzard_cache:
+        return blizzard_cache[blizzard_cycle]
+
     next_valley = empty_valley(valley)
 
     for r, row in enumerate(valley):
@@ -116,6 +120,8 @@ def get_next(valley):
             for blizzard in entry:
                 r2, c2 = next_coords(r, c, blizzard, valley)
                 next_valley[r2][c2].append(blizzard)
+
+    blizzard_cache[blizzard_cycle] = next_valley
 
     return next_valley
 
@@ -157,28 +163,23 @@ def bfs(valley, pos, end):
     queue = deque()
     queue.append((0, pos, valley))
 
-    if not is_sample:
-        visited_states = 150937  # BFS currently takes > 6 min. :-/
-        t = tqdm(total=visited_states)
-
     while queue:
         minute, pos, valley = queue.popleft()
+        minute += 1
+        blizzard_cycle = minute % cycles
 
-        valley = get_next(valley)
+        valley = get_next(valley, blizzard_cycle)
         free = free_positions(valley, pos, end)
 
         if end in free:
-            # print("Visited states:", len(visited)))
-            return minute + 1
+            return minute
 
         for next_pos in free:
-            q_entry = (minute + 1, next_pos, valley)
-            v_entry = ((minute + 1) % cycles, next_pos)
+            q_entry = (minute, next_pos, valley)
+            v_entry = (blizzard_cycle, next_pos)
             if v_entry not in visited:
                 queue.append(q_entry)
                 visited.add(v_entry)
-                if not is_sample:
-                    t.update()
 
     assert False, "got lost in the blizzards"
 
@@ -234,8 +235,7 @@ if __name__ == '__main__':
         print("─" * 70)
 
     res1 = part1()
-    if is_sample:
-        assert res1 == 18, res1
+    assert res1 == 18 if is_sample else 373
     print(f"Part 1: {res1}", "(sample)" if is_sample else "")
 
     # print()
