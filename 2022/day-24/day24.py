@@ -125,7 +125,7 @@ def get_next(valley, blizzard_cycle):
 
     return next_valley
 
-def free_positions(valley, pos, end):
+def free_positions(valley, pos, start, end):
     r, c = pos
     candidates = [
         (r - 1, c),
@@ -136,11 +136,13 @@ def free_positions(valley, pos, end):
     ]
     free = []
     for r, c in candidates:
-        if (r, c) == end:
-            return [end]
-        if r < 1 or c < 1 or r > len(valley) - 1 or c > len(valley[r]) - 1:
+        if (r, c) in [start, end]:
+            # Needs to be before the "in the valley" range check below, because
+            # the start/end positions are outside the valley, but still valid.
+            free.append((r, c))
+        elif r < 1 or c < 1 or r > len(valley) - 1 or c > len(valley[r]) - 1:
             continue
-        if valley[r][c] == []:
+        elif valley[r][c] == []:
             free.append((r, c))
     return free
 
@@ -154,14 +156,17 @@ def calc_cycle(valley):
     width  = len(valley[0]) - walls
     return width * height // gcd(width, height)
 
-def bfs(valley, pos, end):
+def bfs(valley, start, end):
     cycles = calc_cycle(valley)
 
     visited = set()
-    visited.add((0, pos))
+    visited.add((0, start))
 
     queue = deque()
-    queue.append((0, pos, valley))
+    queue.append((0, start, valley))
+
+    target = end
+    minutes = []
 
     while queue:
         minute, pos, valley = queue.popleft()
@@ -169,10 +174,19 @@ def bfs(valley, pos, end):
         blizzard_cycle = minute % cycles
 
         valley = get_next(valley, blizzard_cycle)
-        free = free_positions(valley, pos, end)
+        free = free_positions(valley, pos, start, end)
 
-        if end in free:
-            return minute
+        if target in free:
+            minutes.append(minute)
+            if len(minutes) == 3:
+                return minutes
+            else:
+                queue.clear()
+                queue.append((minute, target, valley))
+                visited.clear()
+                visited.add((minute % cycles, target))
+                target = start if len(minutes) == 1 else end
+                continue
 
         for next_pos in free:
             q_entry = (minute, next_pos, valley)
@@ -182,12 +196,6 @@ def bfs(valley, pos, end):
                 visited.add(v_entry)
 
     assert False, "got lost in the blizzards"
-
-def part1():
-    valley = parse()
-    (pos), (end) = find_start_and_end(valley)
-
-    return bfs(valley, pos, end)
 
 class TestDay24(unittest.TestCase):
     def test_parse_matches_dimensions(self):
@@ -234,10 +242,12 @@ if __name__ == '__main__':
         unittest.main(exit=False)
         print("─" * 70)
 
-    res1 = part1()
-    assert res1 == 18 if is_sample else 373
-    print(f"Part 1: {res1}", "(sample)" if is_sample else "")
+    valley = parse()
+    (start), (end) = find_start_and_end(valley)
+    [part1, _, part2] = bfs(valley, start, end)
 
-    # print()
-    # res2 = part2()
-    # print(f"Part 2: {res2}", "(sample)" if is_sample else "")
+    assert part1 == 18 if is_sample else 373
+    assert part2 == 54 if is_sample else 997
+
+    print(f"Part 1: {part1}", "(sample)" if is_sample else "")
+    print(f"Part 2: {part2}", "(sample)" if is_sample else "")
