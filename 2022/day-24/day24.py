@@ -158,23 +158,17 @@ def bfs(valley, pos, end):
     queue.append((0, pos, valley))
 
     if not is_sample:
-        estimate = 373  # once calculated, the "estimate" is quite precise ;-)
-        bar_format = "{desc}: {n_fmt}/{total_fmt} {percentage:3.0f}%" \
-                   + "|{bar}|[{elapsed}<{remaining}]"
-        t = tqdm(total=estimate, desc="Minute", bar_format=bar_format,
-                 smoothing=0.1)
+        visited_states = 150937  # BFS currently takes > 6 min. :-/
+        t = tqdm(total=visited_states)
 
     while queue:
         minute, pos, valley = queue.popleft()
-
-        if not is_sample:
-            t.update(minute - t.n)
 
         valley = get_next(valley)
         free = free_positions(valley, pos, end)
 
         if end in free:
-            print("Visited states:", len(visited))
+            # print("Visited states:", len(visited)))
             return minute + 1
 
         for next_pos in free:
@@ -183,6 +177,8 @@ def bfs(valley, pos, end):
             if v_entry not in visited:
                 queue.append(q_entry)
                 visited.add(v_entry)
+                if not is_sample:
+                    t.update()
 
     assert False, "got lost in the blizzards"
 
