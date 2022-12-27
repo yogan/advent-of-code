@@ -1,11 +1,11 @@
 #!/bin/sh
 
 # defaults when no args:
-run_sample_trans=1
 run_real=1
+run_sample=1
 
 # off by default:
-run_sample=0
+run_sample_trans=0
 run_sample_extra=0
 
 if [ "$1" = "--sample" ]; then
