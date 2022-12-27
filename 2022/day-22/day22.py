@@ -41,8 +41,8 @@ class Direction:
     LEFT  = 2
     UP    = 3
 
-def dir_to_str(dir):
-    match dir:
+def dir_to_str(direction):
+    match direction:
         case Direction.UP:
             return "↑"
         case Direction.RIGHT:
@@ -52,7 +52,7 @@ def dir_to_str(dir):
         case Direction.LEFT:
             return "←"
 
-    assert False, f"invalid direction {dir}"
+    assert False, f"invalid direction {direction}"
 
 def turn(direction, turn):
     match turn:
@@ -66,80 +66,84 @@ def turn(direction, turn):
 def col_idx(c, r, min_max):
     return c - min_max[r][0]
 
+def walk(r, c, steps, direction, rows, min_max):
+    assert steps > 0, f"invalid steps {steps}"
+
+    match direction:
+        case Direction.LEFT | Direction.RIGHT:
+            dc = 1 if direction == Direction.RIGHT else -1
+            for _ in range(steps):
+                c_next = c + dc
+                # print(f"             {r},{c}", list(min_max[r]), c_next)
+                (c_min, c_max) = min_max[r]
+                if c_next < c_min:
+                    c_next = c_max  # left edge reached - wrap to right
+                elif c_next > c_max:
+                    c_next = c_min  # right edge reached - wrap to left
+                target = rows[r][col_idx(c_next, r, min_max)]
+                if target == '#':
+                    break
+                c = c_next
+
+        case Direction.UP | Direction.DOWN:
+            dr = 1 if direction == Direction.DOWN else -1
+            for _ in range(steps):
+                r_next = r + dr
+                # print(f"             {r},{c}", list(min_max[r]), r_next)
+                if r_next < 0:
+                    r_next = len(rows) - 1  # top edge - wrap to bottom
+                elif r_next >= len(rows):
+                    r_next = 0              # bottom edge - wrap to top
+                # we need to keep moving if r_next is out of bounds
+                while True:
+                    valid = min_max[r_next][0] <= c <= min_max[r_next][1]
+                    if valid:
+                        break
+                    r_next += dr
+                    if r_next < 0:
+                        r_next = len(rows) - 1  # top edge - wrap to bottom
+                    elif r_next >= len(rows):
+                        r_next = 0              # bottom edge - wrap to top
+                target = rows[r_next][col_idx(c, r_next, min_max)]
+                if target == '#':
+                    break
+                r = r_next
+
+    return r, c
+
 def travel(rows, min_max, path, cube=False):
-    dir  = Direction.RIGHT
+    direction = Direction.RIGHT
     r, c = (0, min_max[0][0])
     if cube:
         d = 50 if is_input else 4
 
     assert rows[r][col_idx(c, r, min_max)] == ".", "can't start on a wall"
-    # print(f"    START    {r},{c} dir: {dir_to_str(dir)}")
+    # print(f"    START    {r},{c} direction: {dir_to_str(direction)}")
 
     for move in path:
         if move in ['L', 'R']:
-            dir = turn(dir, move)
-            # print(f" turn:  {move} -> {r},{c} dir: {dir_to_str(dir)}")
+            direction = turn(direction, move)
+            # print(f" turn:  {move} -> {r},{c} direction: {dir_to_str(direction)}")
         else:
-            assert move > 0, f"invalid steps {move}"
+            r, c = walk(r, c, move, direction, rows, min_max)
+            # print(f"steps: {move:2d} -> {r},{c} {dir_to_str(direction)}")
 
-            match dir:
-                case Direction.LEFT | Direction.RIGHT:
-                    dc = 1 if dir == Direction.RIGHT else -1
-                    for _ in range(move):
-                        c_next = c + dc
-                        # print(f"             {r},{c}", list(min_max[r]), c_next)
-                        (c_min, c_max) = min_max[r]
-                        if c_next < c_min:
-                            c_next = c_max  # left edge reached - wrap to right
-                        elif c_next > c_max:
-                            c_next = c_min  # right edge reached - wrap to left
-                        target = rows[r][col_idx(c_next, r, min_max)]
-                        if target == '#':
-                            break
-                        c = c_next
+    return (r+1, c+1, direction)
 
-                case Direction.UP | Direction.DOWN:
-                    dr = 1 if dir == Direction.DOWN else -1
-                    for _ in range(move):
-                        r_next = r + dr
-                        # print(f"             {r},{c}", list(min_max[r]), r_next)
-                        if r_next < 0:
-                            r_next = len(rows) - 1  # top edge - wrap to bottom
-                        elif r_next >= len(rows):
-                            r_next = 0              # bottom edge - wrap to top
-                        # we need to keep moving if r_next is out of bounds
-                        while True:
-                            valid = min_max[r_next][0] <= c <= min_max[r_next][1]
-                            if valid:
-                                break
-                            r_next += dr
-                            if r_next < 0:
-                                r_next = len(rows) - 1  # top edge - wrap to bottom
-                            elif r_next >= len(rows):
-                                r_next = 0              # bottom edge - wrap to top
-                        target = rows[r_next][col_idx(c, r_next, min_max)]
-                        if target == '#':
-                            break
-                        r = r_next
-
-            # print(f"steps: {move:2d} -> {r},{c} {dir_to_str(dir)}")
-
-    return (r+1, c+1, dir)
-
-def password(r, c, dir):
-    return 1000 * r + 4 * c + dir
+def password(r, c, direction):
+    return 1000 * r + 4 * c + direction
 
 def part1():
     rows, min_max, path = parse()
-    (r, c, dir) = travel(rows, min_max, path)
-    print(f"Final position: {r+1}, {c+1} {dir_to_str(dir)}")
-    return password(r, c, dir)
+    (r, c, direction) = travel(rows, min_max, path)
+    print(f"Final position: {r+1}, {c+1} {dir_to_str(direction)}")
+    return password(r, c, direction)
 
 def part2():
     rows, min_max, path = parse()
-    (r, c, dir) = travel(rows, min_max, path, cube=True)
-    print(f"Final position: {r+1}, {c+1} {dir_to_str(dir)}")
-    return password(r, c, dir)
+    (r, c, direction) = travel(rows, min_max, path, cube=True)
+    print(f"Final position: {r+1}, {c+1} {dir_to_str(direction)}")
+    return password(r, c, direction)
 
 class TestDay22(unittest.TestCase):
     def test_parse(self):
@@ -176,11 +180,11 @@ class TestDay22(unittest.TestCase):
 
     def test_travel(self):
         rows, min_max, path = parse()
-        (r, c, dir) = travel(rows, min_max, path)
+        (r, c, direction) = travel(rows, min_max, path)
         if is_sample:
-            self.assertEqual((6, 8, Direction.RIGHT), (r, c, dir))
+            self.assertEqual((6, 8, Direction.RIGHT), (r, c, direction))
         elif is_input:
-            self.assertEqual((97, 89, Direction.RIGHT), (r, c, dir))
+            self.assertEqual((97, 89, Direction.RIGHT), (r, c, direction))
 
 if __name__ == '__main__':
     if is_input or is_sample:
