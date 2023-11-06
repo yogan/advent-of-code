@@ -18,9 +18,8 @@
 10R5L5R10L4R5L5
 
 This is identical to sample.txt, but transformed so that it matches the shape of
-input.txt. Both part 1 and part 2 should give the same results as the original
-sample.txt (6032 and 5031). Since it is way easier to implement a solution that
-has hardcoded transformations for the edges it is nice to have the sample working.
+input.txt. Since it is way easier to implement a solution that has hardcoded
+transformations for the edges it is nice to have the sample working.
 
 Taken from:
 https://old.reddit.com/r/adventofcode/comments/zst7z3/2022_day_22_part_2_improved_example_input_working/

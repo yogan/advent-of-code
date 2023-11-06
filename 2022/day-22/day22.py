@@ -5,10 +5,10 @@ if len(sys.argv) != 2:
     sys.exit(1)
 filename  = sys.argv[1]
 sys.argv  = sys.argv[:1] # strip args, they scare the unittest module
-is_input  = filename == "input.txt"
-is_sample = filename == "sample.txt"
-is_extra  = filename == "sample_extra.txt"
-is_trans  = filename == "sample_transformed.txt"
+
+is_input  = filename == "input.txt"               # should pass part 1 and 2
+is_sample = filename == "sample.txt"              # should pass only part 1
+is_trans  = filename == "sample_transformed.txt"  # should pass only part 2
 
 def parse(filename=filename):
     with open(filename) as f:
@@ -130,7 +130,7 @@ def walk(r, c, steps, direction, rows, min_max):
 #         6666
 #         6666
 #    14   6666
-def face(r, c, d):
+def calc_face(r, c, d):
     if 0 <= r < d:
         if d <= c < 2*d:
             return 1
@@ -151,10 +151,16 @@ def face(r, c, d):
     raise ValueError(f"{r, c} is off the cube for side length {d}")
 
 def walk_cube(r, c, steps, direction, side_len, rows, min_max):
-    # print("side_len", side_len)
-
     # NOTES:
     # min_max probably useless, use side_len instead
+
+    face = calc_face(r, c, side_len)
+    # print(f"face {face} at {r},{c} facing {dir_to_str(direction)}")
+
+    # TODO rewrite stuff below for cube, watch for changing faces
+
+    # TODO
+    d_next = direction
 
     match direction:
         case Direction.LEFT | Direction.RIGHT:
@@ -196,7 +202,7 @@ def walk_cube(r, c, steps, direction, side_len, rows, min_max):
                     break
                 r = r_next
 
-    return r, c
+    return r, c, d_next
 
 def travel(rows, min_max, path, cube=False):
     direction = Direction.RIGHT
@@ -214,7 +220,7 @@ def travel(rows, min_max, path, cube=False):
         else:
             assert move > 0, f"invalid steps {move}"
             if cube:
-                r, c = walk_cube(r, c, move, direction, side_len, rows, min_max)
+                r, c, direction = walk_cube(r, c, move, direction, side_len, rows, min_max)
             else:
                 r, c = walk(r, c, move, direction, rows, min_max)
             # print(f"steps: {move:2d} -> {r},{c} {dir_to_str(direction)}")
@@ -277,72 +283,108 @@ class TestDay22(unittest.TestCase):
         elif is_input:
             self.assertEqual((97, 89, Direction.RIGHT), (r, c, direction))
 
-    def test_face_sample(self):
+    def test_calc_face_sample(self):
         side_len = 4  # side length of sample(_transformed).txt
 
-        # face 1
-        self.assertEqual(1, face( 0,  4, side_len))
-        self.assertEqual(1, face( 0,  7, side_len))
-        self.assertEqual(1, face( 3,  4, side_len))
-        self.assertEqual(1, face( 3,  7, side_len))
+        self.assertEqual(1, calc_face( 0,  4, side_len))
+        self.assertEqual(1, calc_face( 0,  7, side_len))
+        self.assertEqual(1, calc_face( 3,  4, side_len))
+        self.assertEqual(1, calc_face( 3,  7, side_len))
 
-        # face 2
-        self.assertEqual(2, face( 0,  8, side_len))
-        self.assertEqual(2, face( 0, 11, side_len))
-        self.assertEqual(2, face( 3,  8, side_len))
-        self.assertEqual(2, face( 3, 11, side_len))
+        self.assertEqual(2, calc_face( 0,  8, side_len))
+        self.assertEqual(2, calc_face( 0, 11, side_len))
+        self.assertEqual(2, calc_face( 3,  8, side_len))
+        self.assertEqual(2, calc_face( 3, 11, side_len))
 
-        # face 3
-        self.assertEqual(3, face( 4,  4, side_len))
-        self.assertEqual(3, face( 4,  7, side_len))
-        self.assertEqual(3, face( 7,  4, side_len))
-        self.assertEqual(3, face( 7,  7, side_len))
+        self.assertEqual(3, calc_face( 4,  4, side_len))
+        self.assertEqual(3, calc_face( 4,  7, side_len))
+        self.assertEqual(3, calc_face( 7,  4, side_len))
+        self.assertEqual(3, calc_face( 7,  7, side_len))
 
-        # face 4
-        self.assertEqual(4, face( 8,  0, side_len))
-        self.assertEqual(4, face( 8,  3, side_len))
-        self.assertEqual(4, face(11,  0, side_len))
-        self.assertEqual(4, face(11,  3, side_len))
+        self.assertEqual(4, calc_face( 8,  0, side_len))
+        self.assertEqual(4, calc_face( 8,  3, side_len))
+        self.assertEqual(4, calc_face(11,  0, side_len))
+        self.assertEqual(4, calc_face(11,  3, side_len))
 
-        # face 5
-        self.assertEqual(5, face( 8,  4, side_len))
-        self.assertEqual(5, face( 8,  7, side_len))
-        self.assertEqual(5, face(11,  4, side_len))
-        self.assertEqual(5, face(11,  7, side_len))
+        self.assertEqual(5, calc_face( 8,  4, side_len))
+        self.assertEqual(5, calc_face( 8,  7, side_len))
+        self.assertEqual(5, calc_face(11,  4, side_len))
+        self.assertEqual(5, calc_face(11,  7, side_len))
 
-        # face 6
-        self.assertEqual(6, face(12,  0, side_len))
-        self.assertEqual(6, face(12,  3, side_len))
-        self.assertEqual(6, face(14,  0, side_len))
-        self.assertEqual(6, face(14,  3, side_len))
+        self.assertEqual(6, calc_face(12,  0, side_len))
+        self.assertEqual(6, calc_face(12,  3, side_len))
+        self.assertEqual(6, calc_face(15,  0, side_len))
+        self.assertEqual(6, calc_face(15,  3, side_len))
 
         # off the cube
-        with self.assertRaises(ValueError):
-            face( 0,  0, side_len)
-            face( 0, 12, side_len)
-            face( 4,  8, side_len)
-            face( 7,  3, side_len)
-            face( 7,  8, side_len)
-            face( 8,  8, side_len)
-            face(11,  8, side_len)
-            face(12,  4, side_len)
-            face(14,  4, side_len)
-            face(15,  0, side_len)
-            face(15,  1, side_len)
-            face(15, 15, side_len)
+        self.assertRaises(ValueError, lambda: calc_face( 0,  0, side_len))
+        self.assertRaises(ValueError, lambda: calc_face( 0, 12, side_len))
+        self.assertRaises(ValueError, lambda: calc_face( 4,  8, side_len))
+        self.assertRaises(ValueError, lambda: calc_face( 7,  3, side_len))
+        self.assertRaises(ValueError, lambda: calc_face( 7,  8, side_len))
+        self.assertRaises(ValueError, lambda: calc_face( 8,  8, side_len))
+        self.assertRaises(ValueError, lambda: calc_face(11,  8, side_len))
+        self.assertRaises(ValueError, lambda: calc_face(12,  4, side_len))
+        self.assertRaises(ValueError, lambda: calc_face(15,  4, side_len))
+        self.assertRaises(ValueError, lambda: calc_face(16,  0, side_len))
+        self.assertRaises(ValueError, lambda: calc_face(16,  1, side_len))
+        self.assertRaises(ValueError, lambda: calc_face(16, 15, side_len))
+
+    def test_calc_face_input(self):
+        side_len = 50  # side length of input.txt
+
+        self.assertEqual(1, calc_face(  0,  50, side_len))
+        self.assertEqual(1, calc_face(  0,  99, side_len))
+        self.assertEqual(1, calc_face( 49,  50, side_len))
+        self.assertEqual(1, calc_face( 49,  99, side_len))
+
+        self.assertEqual(2, calc_face(  0, 100, side_len))
+        self.assertEqual(2, calc_face(  0, 149, side_len))
+        self.assertEqual(2, calc_face( 49, 100, side_len))
+        self.assertEqual(2, calc_face( 49, 149, side_len))
+
+        self.assertEqual(3, calc_face( 50,  50, side_len))
+        self.assertEqual(3, calc_face( 50,  99, side_len))
+        self.assertEqual(3, calc_face( 99,  50, side_len))
+        self.assertEqual(3, calc_face( 99,  99, side_len))
+
+        self.assertEqual(4, calc_face(100,   0, side_len))
+        self.assertEqual(4, calc_face(100,  49, side_len))
+        self.assertEqual(4, calc_face(149,   0, side_len))
+        self.assertEqual(4, calc_face(149,  49, side_len))
+
+        self.assertEqual(5, calc_face(100,  50, side_len))
+        self.assertEqual(5, calc_face(100,  99, side_len))
+        self.assertEqual(5, calc_face(149,  50, side_len))
+        self.assertEqual(5, calc_face(149,  99, side_len))
+
+        self.assertEqual(6, calc_face(150,   0, side_len))
+        self.assertEqual(6, calc_face(150,  49, side_len))
+        self.assertEqual(6, calc_face(199,   0, side_len))
+        self.assertEqual(6, calc_face(199,  49, side_len))
+
+        # off the cube
+        self.assertRaises(ValueError, lambda: calc_face(  0,  0, side_len))
+        self.assertRaises(ValueError, lambda: calc_face(  0, 49, side_len))
+        self.assertRaises(ValueError, lambda: calc_face( 99, 49, side_len))
+        self.assertRaises(ValueError, lambda: calc_face(150, 50, side_len))
+        self.assertRaises(ValueError, lambda: calc_face(199, 50, side_len))
+        self.assertRaises(ValueError, lambda: calc_face(200,  0, side_len))
+        self.assertRaises(ValueError, lambda: calc_face(200, 33, side_len))
+        self.assertRaises(ValueError, lambda: calc_face(200, 66, side_len))
 
 if __name__ == '__main__':
-    if is_input or is_sample:
-        unittest.main(exit=False)
-        print()
+    unittest.main(exit=False)
+    print()
 
     res1 = part1()
     if is_sample:
         assert res1 == 6032
     elif is_input:
         assert res1 == 97356
-    print(f"Part 1: {res1}", "(sample)" if is_sample else "")
+    print(f"Part 1: {res1}", "(sample)" if is_sample or is_trans else "")
     print()
 
-    res2 = part2()
-    print(f"Part 2: {res2}", "(sample)" if is_sample else "")
+    if is_trans or is_input:
+        res2 = part2()
+        print(f"Part 2: {res2}", "(sample)" if is_sample or is_trans else "")
