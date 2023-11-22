@@ -21,4 +21,4 @@ ENV DDPPATH="/usr/local/share/ddp"
 WORKDIR /app
 COPY . /app
 
-CMD ["bash", "./run_tests.sh"]
+CMD ["bash", "./test-templates.sh"]
