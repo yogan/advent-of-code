@@ -6,7 +6,7 @@ Binde "Duden/Texte" ein.
 Der Text Eingabe ist "zunächst leer".
 Lies den Text in "Eingabedaten.text" und speichere ihn in Eingabe.
 [ Schreibe den Text Eingabe auf eine Zeile. ]
-Schreibe den Text "-----" auf eine Zeile.
+[ Schreibe den Text "-----" auf eine Zeile. ]
 
 Die Text Liste Zeilen ist Eingabe an '\n' gespalten.
 
