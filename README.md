@@ -105,3 +105,8 @@ Lua, C#, Python, Haskell)*
 - [Day 14](https://adventofcode.com/2020/day/14) ⭐⭐ in [Rust](2020-rust/src/day14.rs) (paired with [dnnr](https://github.com/dnnr)) with some OO and enum, but ugly mask code
 - [Day 15](https://adventofcode.com/2020/day/15) ⭐⭐ in [Rust](2020-rust/src/day15.rs) (paired with [RussellSnyder](https://github.com/RussellSnyder) and [dnnr](https://github.com/dnnr)) "we test in production" edition
 - [Day 16](https://adventofcode.com/2020/day/16) ⭐⭐ in [Rust](2020-rust/src/day16.rs) (paired with [RussellSnyder](https://github.com/RussellSnyder)) loop da whoop
+
+## [2015](https://adventofcode.com/2015) (2/50 ⭐)
+
+- [Day 02](https://adventofcode.com/2015/day/2) ⭐⭐ in
+  [DDP (Die Deutsche Programmiersprache)](2015/day-02/2015-Tag-02.ddp)
