@@ -3,11 +3,12 @@ Binde "Duden/Dateisystem" ein.
 Binde "Duden/Listen" ein.
 Binde "Duden/Mathe" ein.
 Binde "Duden/Texte" ein.
+Binde "Duden/Sortierung" ein.
 
 Der Text Eingabe ist "zunächst leer".
 Lies den Text in "input.txt" und speichere ihn in Eingabe.
+[ Lies den Text in "sample.txt" und speichere ihn in Eingabe. ]
 Die Text Liste Zeilen ist Eingabe an '\n' gespalten.
-
 
 Die Funktion FindeSeitenflächen mit den Parametern Seitenlänge, Breite und Höhe vom Typ Zahl, Zahl und Zahl, gibt eine Zahlen Liste zurück, macht:
     Die Zahl ErsteSeite ist Seitenlänge mal Breite.
@@ -31,7 +32,19 @@ Die Funktion KleinsteSeite mit dem Parameter Flächen vom Typ Zahlen Liste, gibt
 Und kann so benutzt werden:
     "die kleinste der Flächen <Flächen>"
 
+Die Funktion BerechneBandlänge mit dem Parameter Dimensionen vom Typ Zahlen Liste, gibt eine Zahl zurück, macht:
+    Die Zahlen Liste SortierteDimensionen ist Dimensionen sortiert.
+    Die Zahl a ist SortierteDimensionen an der Stelle 1.
+    Die Zahl b ist SortierteDimensionen an der Stelle 2.
+    Die Zahl c ist SortierteDimensionen an der Stelle 3.
+    Die Zahl Band ist a plus a plus b plus b.
+    Die Zahl Schleife ist a mal b mal c.
+    Gib Band plus Schleife zurück.
+Und kann so benutzt werden:
+    "die Bandlänge einer Box mit den Abmessungen <Dimensionen>"
+
 Die Zahl BenötigtesGeschenkpapier ist 0.
+Die Zahl BenötigtesGeschenkbandlänge ist 0.
 
 Für jeden Text Zeile in Zeilen, mache:
     Die Text Liste Zahlentexte ist Zeile an 'x' gespalten.
@@ -43,7 +56,11 @@ Für jeden Text Zeile in Zeilen, mache:
     Die Zahlen Liste Seitenflächen ist die Seitenflächen einer Box mit den Abmessungen Seitenlänge x Breite x Höhe.
     Die Zahl Oberfläche ist die Oberfläche einer Box mit den Seitenflächen Seitenflächen.
     Die Zahl KleinsteSeitenfläche ist die kleinste der Flächen Seitenflächen.
-
     Speichere BenötigtesGeschenkpapier plus Oberfläche plus KleinsteSeitenfläche in BenötigtesGeschenkpapier.
 
+    Die Zahlen Liste Dimensionen ist eine Liste, die aus Seitenlänge, Breite, Höhe besteht.
+    Die Zahl Bandlänge ist die Bandlänge einer Box mit den Abmessungen Dimensionen.
+    Speichere BenötigtesGeschenkbandlänge plus Bandlänge in BenötigtesGeschenkbandlänge.
+
 Schreibe ("Es werden " verkettet mit BenötigtesGeschenkpapier als Text verkettet mit " Quadratfuß Geschenkpapier benötigt.") auf eine Zeile.
+Schreibe ("Es werden " verkettet mit BenötigtesGeschenkbandlänge als Text verkettet mit " Fuß Geschenkband benötigt.") auf eine Zeile.
