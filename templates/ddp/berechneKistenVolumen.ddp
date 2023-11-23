@@ -2,12 +2,10 @@ Binde "Duden/Ausgabe" ein.
 Binde "Duden/Dateisystem" ein.
 Binde "Duden/Listen" ein.
 Binde "Duden/Texte" ein.
+Binde "Duden/Sortierung" ein.
 
 Der Text Eingabe ist "zunächst leer".
 Lies den Text in "Eingabedaten.text" und speichere ihn in Eingabe.
-[ Schreibe den Text Eingabe auf eine Zeile. ]
-[ Schreibe den Text "-----" auf eine Zeile. ]
-
 Die Text Liste Zeilen ist Eingabe an '\n' gespalten.
 
 Die Funktion BerechneVolumen mit den Parametern Seitenlänge, Breite und Höhe vom Typ Zahl, Zahl und Zahl, gibt eine Zahl zurück, macht:
@@ -16,6 +14,7 @@ Und kann so benutzt werden:
     "das Volumen einer Box mit den Abmessungen <Seitenlänge> x <Breite> x <Höhe>"
 
 Die Zahl Gesamtvolumen ist 0.
+Die Zahlen Liste Volumina ist eine leere Zahlen Liste.
 
 Für jeden Text Zeile in Zeilen, mache:
     Die Text Liste Zahlentexte ist Zeile an 'x' gespalten.
@@ -25,7 +24,11 @@ Für jeden Text Zeile in Zeilen, mache:
     Die Zahl Höhe ist (Zahlentexte an der Stelle 3) als Zahl.
 
     Die Zahl Volumen ist das Volumen einer Box mit den Abmessungen Seitenlänge x Breite x Höhe.
-    [ Schreibe ("Volumen: " verkettet mit Volumen als Text) auf eine Zeile. ]
     Speichere Gesamtvolumen plus Volumen in Gesamtvolumen.
+    Füge Volumen an Volumina an.
+
+Die Zahlen Liste SortierteVolumina ist Volumina sortiert.
+Die Zahl dasKleinsteVolumen ist SortierteVolumina an der Stelle 1.
 
 Schreibe ("Das Gesamtvolumen beträgt " verkettet mit Gesamtvolumen als Text) auf eine Zeile.
+Schreibe ("Das kleinste Volumen ist " verkettet mit dasKleinsteVolumen als Text) auf eine Zeile.
