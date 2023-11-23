@@ -27,7 +27,7 @@ Lua, C#, Python, Haskell)*
 - [Day 08](https://adventofcode.com/2022/day/8) ⭐⭐ in
   [Fortran](2022/day-08/day08.f90)
   ([tests](2022/day-08/tests.f90)) 🧑‍🔬 with GOTO!
-  (paired with Anna)
+  (paired with [@raborlattinchen](https://github.com/raborlattinchen))
 - [Day 09](https://adventofcode.com/2022/day/9) ⭐⭐ in
   [Nim](2022/day-09/day09.nim) visualizing *does* help… I learned the hard way
 - [Day 10](https://adventofcode.com/2022/day/10) ⭐⭐ in
