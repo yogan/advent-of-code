@@ -1,2 +1,2 @@
 #!/bin/sh
-kddp starte berechneKistenVolumen.ddp
+kddp starte *.ddp
