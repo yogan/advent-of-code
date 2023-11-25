@@ -2,6 +2,8 @@
 
 Not used in 2022, maybe for 2023:
 
+- DDP
+- Elixir
 - Rust
 - Kotlin
 - PHP
