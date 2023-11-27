@@ -1,6 +1,6 @@
 FROM ubuntu:23.10
 
-RUN apt-get update && apt-get install -y curl unzip build-essential locales
+RUN apt-get update && apt-get install -y curl unzip build-essential locales leiningen
 
 # install Bun
 RUN curl -fsSL https://bun.sh/install | bash
