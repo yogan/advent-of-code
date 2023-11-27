@@ -1,16 +1,27 @@
 (ns advent-of-code-template.core
   (:require [clojure.java.io :as io]
-            [clojure.string :as clojure.string]))
+            [clojure.string :as cstr]))
 
 (defn process-line [line]
-  (let [numbers (map #(Integer/parseInt %) (clojure.string/split line #"x"))]
-    numbers))
+  (mapv #(Long/parseLong %) (cstr/split line #"x")))
 
-(defn print-numbers [numbers]
-  (println "Numbers: " numbers))
+(defn surface-area [numbers]
+  (let [[l w h] numbers]
+    (+ (* 2 l w) (* 2 w h) (* 2 h l))))
+
+(defn volume [numbers] (apply * numbers))
+
+(defn part1 [dimensions]
+  (apply + (map volume dimensions)))
+
+(defn part2 [dimensions]
+  (apply + (map surface-area dimensions)))
 
 (defn -main []
-  (let [file "resources/input.txt"]
-    (with-open [reader (io/reader file)]
-      (doseq [line (line-seq reader)]
-        (print-numbers (process-line line))))))
+  (let [file "resources/input.txt"
+        lines (with-open [reader (io/reader file)]
+                (doall (map #(process-line %) (line-seq reader))))]
+    ;; (println "-----------------------------")
+    ;; (println "Lines:" lines)
+    (println "Part 1:" (part1 lines))
+    (println "Part 2:" (part2 lines))))
