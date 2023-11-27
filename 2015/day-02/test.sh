@@ -20,5 +20,3 @@ if [ "$Ergebnis2" != "$erwartet2" ]; then
     echo "Ergebnis: »$Ergebnis2«"
     exit 2
 fi
-
-echo "Test erfolgreich."
