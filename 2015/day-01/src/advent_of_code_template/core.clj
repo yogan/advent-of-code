@@ -3,13 +3,18 @@
 
 (defn map-parenthesis [line] (mapv #(if (= % \() 1 -1) line))
 
-(defn part1 [line] (apply + (map-parenthesis line)))
+(defn find-basement [chars index floor]
+  (if (or (empty? chars) (= floor -1))
+    index
+    (find-basement (rest chars) (inc index) (+ floor (first chars)))))
 
-(defn part2 [line] -1)
+(defn part1 [nums] (apply + nums))
+(defn part2 [nums] (find-basement nums 0 0))
 
 (defn -main []
   (let [file "resources/input.txt"
         line (with-open [reader (io/reader file)]
-               (first (line-seq reader)))]
-    (println "Part 1:" (part1 line))
-    (println "Part 2:" (part2 line))))
+               (first (line-seq reader)))
+        nums (map-parenthesis line)]
+    (println "Part 1:" (part1 nums))
+    (println "Part 2:" (part2 nums))))
