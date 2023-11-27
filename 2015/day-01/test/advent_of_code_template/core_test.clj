@@ -8,8 +8,25 @@
 
 (deftest part1
   (testing "part1 returns the expected result"
-    (is (= (aoc/part1 "(()(()(") 3))))
+    (let [nums (aoc/map-parenthesis "(()(()(")]
+      (is (= (aoc/part1 nums) 3)))))
 
-(deftest part2
-  (testing "part2 returns the expected result"
-    (is (= (aoc/part2 "(()(()()") -1))))
+(deftest part2-ex1
+  (testing "part2 returns the expected result for the first example"
+    (let [nums (aoc/map-parenthesis ")")]
+      (is (= (aoc/part2 nums) 1)))))
+
+(deftest part2-ex1-ext
+  (testing "part2 returns the expected result for the first example with extra input"
+    (let [nums (aoc/map-parenthesis "))))(((")]
+      (is (= (aoc/part2 nums) 1)))))
+
+(deftest part2-ex2
+  (testing "part2 returns the expected result for the second example"
+    (let [nums (aoc/map-parenthesis "()())")]
+      (is (= (aoc/part2 nums) 5)))))
+
+(deftest part2-ex2-ext
+  (testing "part2 returns the expected result for the second example with extra input"
+    (let [nums (aoc/map-parenthesis "()())))((")]
+      (is (= (aoc/part2 nums) 5)))))

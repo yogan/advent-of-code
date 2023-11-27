@@ -106,7 +106,9 @@ Lua, C#, Python, Haskell)*
 - [Day 15](https://adventofcode.com/2020/day/15) ⭐⭐ in [Rust](2020-rust/src/day15.rs) (paired with [RussellSnyder](https://github.com/RussellSnyder) and [dnnr](https://github.com/dnnr)) "we test in production" edition
 - [Day 16](https://adventofcode.com/2020/day/16) ⭐⭐ in [Rust](2020-rust/src/day16.rs) (paired with [RussellSnyder](https://github.com/RussellSnyder)) loop da whoop
 
-## [2015](https://adventofcode.com/2015) (2/50 ⭐)
+## [2015](https://adventofcode.com/2015) (4/50 ⭐)
 
+- [Day 01](https://adventofcode.com/2015/day/1) ⭐⭐ in
+  [Clojure](2015/day-01/src/advent_of_code_template/core.clj) ([Tests](2015/day-01/test/advent_of_code_template/core_test.clj))
 - [Day 02](https://adventofcode.com/2015/day/2) ⭐⭐ in
   [DDP (Die Deutsche Programmiersprache)](2015/day-02/2015-Tag-02.ddp)
