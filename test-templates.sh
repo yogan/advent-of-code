@@ -10,7 +10,7 @@ for dir in "${template_dirs[@]}"; do
     echo "==============================================================================="
 
     cd "templates/$dir" || exit 1
-    if ! ./test.sh; then
+    if ! ./test-ci.sh; then
         echo "[ERROR] Test for template $dir failed!"
         overall_exit_code=1
     fi
