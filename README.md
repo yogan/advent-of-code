@@ -1,5 +1,11 @@
 # [Advent of Code](https://adventofcode.com)
 
+## [2023](https://adventofcode.com/2023) (2/50 ⭐)
+
+- [Day 01](https://adventofcode.com/2023/day/1) ⭐⭐ in
+  [fish](2023/day-01/day01.fish)
+  with [tests](2023/day-01/test.fish)
+
 ## [2022](https://adventofcode.com/2022) (46/50 ⭐)
 
 **Languages: 13** *(fish, JavaScript, TypeScript, Perl, Ruby, C, Java, Fortran, Nim,
