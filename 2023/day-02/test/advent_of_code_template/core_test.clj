@@ -16,7 +16,6 @@
   (testing "parse-draw should parse a draw with no colors"
       (is (= (aoc/parse-draw "xxx") {:red 0 :green 0 :blue 0}))))
 
-
 (deftest parse-line-test-game-id
   (testing "parse-line should parse the game id and draws"
     (let [line "Game 23: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green"
@@ -24,7 +23,6 @@
       (is (= result [23 (list {:blue 3 :red 4 :green 0}
                               {:blue 6 :red 1 :green 2}
                               {:blue 0 :red 0 :green 2})])))))
-
 
 (deftest is-draw-possible-all-under-limits
   (testing "is-draw-possible returns true when all colors are under their limits"
@@ -45,19 +43,6 @@
   (testing "is-draw-possible returns true when blue is over the limit"
     (let [draw {:red 1 :green 13 :blue 15}]
       (is (= (aoc/is-draw-possible draw) false)))))
-
-
-(deftest all-draws-possible-all-possible
-  (testing "all-draws-possible returns true when all draws are possible"
-    (let [draws (list {:red 1 :green 2 :blue 3}
-                      {:red 4 :green 5 :blue 6})]
-      (is (= (aoc/all-draws-possible draws) true)))))
-
-(deftest all-draws-possible-one-not-possible
-  (testing "all-draws-possible returns false when one draw is not possible"
-    (let [draws (list {:red 1 :green  2 :blue 3}
-                      {:red 4 :green 14 :blue 6})]
-      (is (= (aoc/all-draws-possible draws) false)))))
 
 (defonce sample-lines
   ["Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green"

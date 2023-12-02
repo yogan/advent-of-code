@@ -22,11 +22,8 @@
        (<= (:green draw) 13)
        (<= (:blue  draw) 14)))
 
-(defn all-draws-possible [draws]
-  (every? is-draw-possible draws))
-
 (defn is-game-possible [game]
-  (all-draws-possible (second game)))
+  (every? is-draw-possible (second game)))
 
 (defn possible-game-ids [games]
   (let [possible-games (filter is-game-possible games)]
