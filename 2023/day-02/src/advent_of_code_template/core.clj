@@ -35,7 +35,24 @@
 (defn part1 [games]
   (apply + (possible-game-ids games)))
 
-(defn part2 [games] "TODO")
+(defn find-required-cubes [draws]
+  (let [red   (apply max (map :red   draws))
+        green (apply max (map :green draws))
+        blue  (apply max (map :blue  draws))]
+    {:red red :green green :blue blue}))
+
+(defn cubes-per-game [draw-list]
+  (map find-required-cubes draw-list))
+
+(defn game-power [cubes]
+  (* (:red   cubes)
+     (:green cubes)
+     (:blue  cubes)))
+
+(defn part2 [games]
+  (let [cubes (cubes-per-game (map second games))
+        powers (map game-power cubes)]
+    (apply + powers)))
 
 (defn -main []
   (let [file "resources/input.txt"

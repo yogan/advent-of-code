@@ -76,7 +76,30 @@
     (let [games (map aoc/parse-line sample-lines)]
       (is (= (aoc/part1 games) 8)))))
 
+(deftest find-required-cubes-sample-game-1
+  (testing "find-required-cubes returns the expected result for first example game"
+    (let [draws (list {:red 4 :green 0 :blue 3}
+                      {:red 1 :green 2 :blue 6}
+                      {:red 0 :green 2 :blue 0})]
+      (is (= (aoc/find-required-cubes draws)
+             {:red 4 :green 2 :blue 6})))))
+
+(deftest cubes-per-game-sample
+  (testing "cubes-per-game returns the expected result for the sample"
+    (let [games (map aoc/parse-line sample-lines)
+          draw-list (map second games)]
+      (is (= (aoc/cubes-per-game draw-list)
+             (list {:red 4  :green 2  :blue 6}
+                   {:red 1  :green 3  :blue 4}
+                   {:red 20 :green 13 :blue 6}
+                   {:red 14 :green 3  :blue 15}
+                   {:red 6  :green 3  :blue 2}))))))
+
+(deftest game-power
+  (testing "game-power returns the expected result for the first sample game"
+      (is (= (aoc/game-power {:red 4 :green 2 :blue 6}) 48))))
+
 (deftest part2
   (testing "part2 returns the expected result for the sample"
     (let [games (map aoc/parse-line sample-lines)]
-    (is (= (aoc/part2 games) "TODO")))))
+    (is (= (aoc/part2 games) 2286)))))
