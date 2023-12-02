@@ -8,10 +8,10 @@ ENV PATH="/root/.bun/bin:${PATH}"
 
 # DDP - https://ddp.le0n.dev/Bedienungsanleitung/DE/Einstieg/Installation
 RUN cd /usr/local/share/ && \
-    curl -OL https://github.com/DDP-Projekt/Kompilierer/releases/latest/download/DDP-v0.0.1-alpha-linux-amd64.tar.gz && \
-    tar -xzf ./DDP-v0.0.1-alpha-linux-amd64.tar.gz && \
-    rm ./DDP-v0.0.1-alpha-linux-amd64.tar.gz && \
-    mv DDP-v0.0.1-alpha-linux-amd64 ddp && \
+    curl -OL https://github.com/DDP-Projekt/Kompilierer/releases/latest/download/DDP-v0.1.0-alpha-linux-amd64.tar.gz && \
+    tar -xzf ./DDP-v0.1.0-alpha-linux-amd64.tar.gz && \
+    rm ./DDP-v0.1.0-alpha-linux-amd64.tar.gz && \
+    mv DDP-v0.1.0-alpha-linux-amd64 ddp && \
     cd ddp && \
     # --force only partially works, still needs some 'y' inputs, see:
     # https://github.com/DDP-Projekt/Installer/issues/1#issuecomment-1810635337
