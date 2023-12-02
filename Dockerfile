@@ -29,5 +29,3 @@ ENV PATH="/usr/local/share/zig:${PATH}"
 
 WORKDIR /app
 COPY . /app
-
-CMD ["bash", "./test-ci.sh"]

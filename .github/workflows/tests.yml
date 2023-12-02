@@ -17,5 +17,8 @@ jobs:
     - name: Build Docker image
       run: docker build -t yogans-advent-of-code .
 
-    - name: Run all tests
-      run: docker run yogans-advent-of-code
+    - name: Test templates
+      run: docker run yogans-advent-of-code ./test-templates.sh
+
+    - name: Test solutions
+      run: docker run yogans-advent-of-code ./test-solutions.sh
