@@ -20,7 +20,7 @@ Und kann so benutzt werden:
 
 Die Funktion BerechneOberfläche mit dem Parameter Seitenflächen vom Typ Zahlen Liste, gibt eine Zahl zurück, macht:
     Die Zahl Summe ist 0.
-    Für jeden Zahl Fläche in Seitenflächen, mache:
+    Für jede Zahl Fläche in Seitenflächen, mache:
         Speichere Summe plus Fläche in Summe.
     Gib Summe mal 2 zurück.
 Und kann so benutzt werden:
@@ -38,8 +38,8 @@ Die Funktion BerechneBandlänge mit dem Parameter Dimensionen vom Typ Zahlen Lis
     Die Zahl b ist SortierteDimensionen an der Stelle 2.
     Die Zahl c ist SortierteDimensionen an der Stelle 3.
     Die Zahl Band ist a plus a plus b plus b.
-    Die Zahl Schleife ist a mal b mal c.
-    Gib Band plus Schleife zurück.
+    Die Zahl Schleifenlänge ist a mal b mal c.
+    Gib Band plus Schleifenlänge zurück.
 Und kann so benutzt werden:
     "die Bandlänge einer Box mit den Abmessungen <Dimensionen>"
 
