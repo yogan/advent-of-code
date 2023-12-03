@@ -1,13 +1,10 @@
 #!/bin/bash
 current_directory=$(pwd)
-
-mapfile -t solution_dirs < <(find . -mindepth 1 -maxdepth 1 -type d -iname '20*' -printf '%f\n' | sort)
-
 overall_exit_code=0
+mapfile -t solution_dirs < <(find . -mindepth 1 -maxdepth 1 -type d -iname '20*' -printf '%f\n' | sort)
 
 for dir in "${solution_dirs[@]}"; do
     if [ ! -f "$dir/test.sh" ]; then
-        echo "[WARN] No test.sh found in $dir, skipping"
         continue
     fi
 

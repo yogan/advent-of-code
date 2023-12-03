@@ -38,5 +38,3 @@ if [ "$result2" != "$expected2" ]; then
     echo "Got:      »$result2«"
     exit 1
 fi
-
-echo "OK"
