@@ -1,2 +1,2 @@
 #!/bin/sh
-ls *.ddp | entr kddp starte *.ddp
+find . -name '*.ddp' | entr -c ./fuehre-aus.sh

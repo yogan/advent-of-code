@@ -1,2 +1,2 @@
 #!/bin/sh
-find . -name '*.fish' | entr ./test.fish
+find . -name '*.fish' | entr -c ./test.fish

@@ -1,2 +1,2 @@
 #!/bin/sh
-kddp starte *.ddp
+kddp starte ./*.ddp
