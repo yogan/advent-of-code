@@ -1,6 +1,6 @@
 FROM ubuntu:23.10
 
-RUN apt-get update && apt-get install -y curl unzip build-essential locales leiningen
+RUN apt-get update && apt-get install -y curl unzip build-essential locales leiningen pypy3
 
 # Bun - https://bun.sh/
 RUN curl -fsSL https://bun.sh/install | bash

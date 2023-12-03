@@ -114,7 +114,8 @@ def part2():
 if __name__ == '__main__':
     res1 = part1()
     assert res1 == (4361 if is_sample else 507214)
-    print(f"Part 1: {res1}", "(sample)" if is_sample else "")
+    print(f"Part 1: {res1}{' (sample)' if is_sample else ''}")
+
     res2 = part2()
     assert res2 == (467835 if is_sample else 72553319)
-    print(f"Part 2: {res2}", "(sample)" if is_sample else "")
+    print(f"Part 2: {res2}{' (sample)' if is_sample else ''}")
