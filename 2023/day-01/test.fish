@@ -9,9 +9,9 @@ set result_part_1 $(./day01.fish --part=1 <$INPUT1)
 set result_part_2 $(./day01.fish --part=2 <$INPUT2)
 
 function validate -a part expected result
-    echo -n "Part $part: "
+    echo -n "Part $part: " 1>&2
     if test $result = $expected
-        echo "OK (»$result«)"
+        echo "OK (»$result«)" 1>&2
     else
         echo "Wrong answer!"
         echo "Expected: »$expected«"
