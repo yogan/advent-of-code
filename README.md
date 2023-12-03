@@ -1,6 +1,6 @@
 # [Advent of Code](https://adventofcode.com)
 
-## [2023](https://adventofcode.com/2023) (4/50 ⭐)
+## [2023](https://adventofcode.com/2023) (6/50 ⭐)
 
 - [Day 01](https://adventofcode.com/2023/day/1) ⭐⭐ in
   [fish](2023/day-01/day01.fish)
@@ -8,6 +8,8 @@
 - [Day 02](https://adventofcode.com/2023/day/2) ⭐⭐ in
   [Clojure](2023/day-02/src/advent_of_code_template/core.clj)
   with [tests](2023/day-02/test/advent_of_code_template/core_test.clj)
+- [Day 03](https://adventofcode.com/2023/day/3) ⭐⭐ in
+  [Python](2023/day-03/day03.py)
 
 ## [2022](https://adventofcode.com/2022) (46/50 ⭐)
 
