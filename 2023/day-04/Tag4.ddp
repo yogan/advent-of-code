@@ -1,0 +1,42 @@
+Binde "Duden/Ausgabe" ein.
+Binde "Duden/Dateisystem" ein.
+Binde "Duden/Listen" ein.
+Binde "Duden/Texte" ein.
+
+Der Text Beispieldatei ist "Beispiel.text".
+Der Text Eingabedatei ist "Eingabedaten.text".
+Der Text Eingabe ist "zunächst leer".
+Lies den Text in Eingabedatei und speichere ihn in Eingabe.
+Die Text Liste Zeilen ist Eingabe an '\n' gespalten.
+
+Die Funktion ExtrahiereZahlen mit dem Parameter Eingabetext vom Typ Text, gibt eine Zahlen Liste zurück, macht:
+    Die Zahlen Liste Ausgabe ist eine leere Zahlen Liste.
+    Entferne alle ' '  vor und nach Eingabetext.
+    Die Text Liste Zahlentexte ist Eingabetext an ' ' gespalten.
+    Für jeden Text Zahlentext in Zahlentexte, mache:
+        Die Zahl x ist Zahlentext als Zahl.
+        Wenn x größer als 0 ist, Füge x an Ausgabe an.
+    Gib Ausgabe zurück.
+Und kann so benutzt werden:
+    "die Zahlen aus <Eingabetext>"
+
+Die Zahl Gesamtpunkte ist 0.
+
+Für jeden Text Zeile in Zeilen, mache:
+    Die Text Liste KarteUndZahlen ist Zeile an ':' gespalten.
+    Die Text Liste Zahlentexte ist (KarteUndZahlen an der Stelle 2) an '|' gespalten.
+    Die Zahlen Liste Gewinnerzahlen ist die Zahlen aus (Zahlentexte an der Stelle 1).
+    Die Zahlen Liste Kartenzahlen ist die Zahlen aus (Zahlentexte an der Stelle 2).
+
+    Die Zahl Punkte ist 0.
+
+    Für jede Zahl x in Kartenzahlen, mache:
+        Wenn Gewinnerzahlen x enthält, dann:
+            Wenn Punkte gleich 0 ist, dann:
+                Speichere 1 in Punkte.
+            Sonst:
+                Speichere (Punkte mal 2) in Punkte.
+
+    Speichere Gesamtpunkte plus Punkte in Gesamtpunkte.
+
+Schreibe ("Teil 1: " verkettet mit Gesamtpunkte als Text) auf eine Zeile.
