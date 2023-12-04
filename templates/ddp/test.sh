@@ -21,4 +21,4 @@ if [ "$Ergebnis2" != "$erwartet2" ]; then
     exit 2
 fi
 
-echo "Test erfolgreich."
+echo "Test erfolgreich." 1>&2
