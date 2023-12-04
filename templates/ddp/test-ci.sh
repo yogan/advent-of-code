@@ -1,2 +1,2 @@
 #!/bin/sh
-./test.sh 2>/dev/null
+./teste.sh 2>/dev/null
