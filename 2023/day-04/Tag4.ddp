@@ -8,7 +8,7 @@ Der Text Eingabedatei ist "Eingabedaten.text".
 Der Text Eingabe ist "zunächst leer".
 Lies den Text in Eingabedatei und speichere ihn in Eingabe.
 Die Text Liste Zeilen ist Eingabe an '\n' gespalten.
-Die Zahl ursprünglicheAnzahlRubbelkarten ist die Länge von Zeilen.
+Die Zahl AnzahlRubbelkarten ist die Länge von Zeilen.
 
 Die Funktion ExtrahiereZahlen mit dem Parameter Eingabetext vom Typ Text, gibt eine Zahlen Liste zurück, macht:
     Die Zahlen Liste Ausgabe ist eine leere Zahlen Liste.
@@ -21,13 +21,13 @@ Die Funktion ExtrahiereZahlen mit dem Parameter Eingabetext vom Typ Text, gibt e
 Und kann so benutzt werden:
     "die Zahlen aus <Eingabetext>"
 
+Die Zahlen Liste Rubbelkartenzähler ist eine leere Zahlen Liste.
+Für jede Zahl x von 1 bis AnzahlRubbelkarten, mache:
+    Füge 1 an Rubbelkartenzähler an.
+
 Die Zahl Gesamtpunkte ist 0.
 
-Die Zahl aktuelleKarte ist 1.
-Die Zahl AnzahlRubbelkarten ist die Länge von Zeilen.
-
-Solange aktuelleKarte kleiner als, oder AnzahlRubbelkarten ist, mache:
-    Der Text Zeile ist Zeilen an der Stelle aktuelleKarte.
+Für jeden Text Zeile in Zeilen, mache:
     Die Text Liste KarteUndZahlen ist Zeile an ':' gespalten.
     Die Text Liste wat ist (KarteUndZahlen an der Stelle 1) an ' ' gespalten.
     Der Text LetzterTeil ist wat an der Stelle (die Länge von wat).
@@ -42,21 +42,23 @@ Solange aktuelleKarte kleiner als, oder AnzahlRubbelkarten ist, mache:
     Für jede Zahl x in Kartenzahlen, mache:
         Wenn Gewinnerzahlen x enthält, dann:
             Speichere (zusätzlicheKarten plus 1) in zusätzlicheKarten.
-            Wenn aktuelleKarte kleiner als ursprünglicheAnzahlRubbelkarten ist, dann:
-                Wenn Punkte gleich 0 ist, dann:
-                    Speichere 1 in Punkte.
-                Sonst:
-                    Speichere (Punkte mal 2) in Punkte.
-
-    [ Schreibe ("aktuelle Karte: " verkettet mit aktuelleKarte als Text verkettet mit " von " verkettet mit AnzahlRubbelkarten als Text) auf eine Zeile. ]
-    Für jede Zahl Inkrement von 1 bis zusätzlicheKarten, mache:
-        Die Zahl neueKartenId ist (Id plus Inkrement).
-        Der Text ExtraKarte ist Zeilen an der Stelle neueKartenId.
-        Füge ExtraKarte an Zeilen an.
-        Speichere AnzahlRubbelkarten plus 1 in AnzahlRubbelkarten.
+            Wenn Punkte gleich 0 ist, dann:
+                Speichere 1 in Punkte.
+            Sonst:
+                Speichere (Punkte mal 2) in Punkte.
 
     Speichere Gesamtpunkte plus Punkte in Gesamtpunkte.
-    Speichere aktuelleKarte plus 1 in aktuelleKarte.
+
+    Für jede Zahl Inkrement von 1 bis zusätzlicheKarten, mache:
+        Die Zahl neueKartenId ist (Id plus Inkrement).
+        Die Zahl AnzahlAktuelleKarte ist Rubbelkartenzähler an der Stelle Id.
+        Die Zahl AnzahlNeueKarte ist Rubbelkartenzähler an der Stelle neueKartenId.
+        Die Zahl NeueAnzahlNeueKarte ist (AnzahlNeueKarte plus AnzahlAktuelleKarte).
+        Speichere NeueAnzahlNeueKarte in Rubbelkartenzähler an der Stelle neueKartenId.
+
+Die Zahl AnzahlAllerKarten ist 0.
+Für jede Zahl Anzahl in Rubbelkartenzähler, mache:
+    Speichere (AnzahlAllerKarten plus Anzahl) in AnzahlAllerKarten.
 
 Schreibe ("Teil 1: " verkettet mit Gesamtpunkte als Text) auf eine Zeile.
-Schreibe ("Teil 2: " verkettet mit AnzahlRubbelkarten als Text) auf eine Zeile.
+Schreibe ("Teil 2: " verkettet mit AnzahlAllerKarten als Text) auf eine Zeile.
