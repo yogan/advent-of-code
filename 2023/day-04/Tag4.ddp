@@ -29,9 +29,9 @@ Die Zahl Gesamtpunkte ist 0.
 
 Für jeden Text Zeile in Zeilen, mache:
     Die Text Liste KarteUndZahlen ist Zeile an ':' gespalten.
-    Die Text Liste wat ist (KarteUndZahlen an der Stelle 1) an ' ' gespalten.
-    Der Text LetzterTeil ist wat an der Stelle (die Länge von wat).
-    Die Zahl Id ist LetzterTeil als Zahl.
+    Die Text Liste Präambel ist (KarteUndZahlen an der Stelle 1) an ' ' gespalten.
+    Der Text Kartennummer ist Präambel an der Stelle (die Länge von Präambel).
+    Die Zahl Identifikationsnummer ist Kartennummer als Zahl.
     Die Text Liste Zahlentexte ist (KarteUndZahlen an der Stelle 2) an '|' gespalten.
     Die Zahlen Liste Gewinnerzahlen ist die Zahlen aus (Zahlentexte an der Stelle 1).
     Die Zahlen Liste Kartenzahlen ist die Zahlen aus (Zahlentexte an der Stelle 2).
@@ -50,11 +50,11 @@ Für jeden Text Zeile in Zeilen, mache:
     Speichere Gesamtpunkte plus Punkte in Gesamtpunkte.
 
     Für jede Zahl Inkrement von 1 bis zusätzlicheKarten, mache:
-        Die Zahl neueKartenId ist (Id plus Inkrement).
-        Die Zahl AnzahlAktuelleKarte ist Rubbelkartenzähler an der Stelle Id.
-        Die Zahl AnzahlNeueKarte ist Rubbelkartenzähler an der Stelle neueKartenId.
+        Die Zahl neueKartenIdentifikationsnummer ist (Identifikationsnummer plus Inkrement).
+        Die Zahl AnzahlAktuelleKarte ist Rubbelkartenzähler an der Stelle Identifikationsnummer.
+        Die Zahl AnzahlNeueKarte ist Rubbelkartenzähler an der Stelle neueKartenIdentifikationsnummer.
         Die Zahl NeueAnzahlNeueKarte ist (AnzahlNeueKarte plus AnzahlAktuelleKarte).
-        Speichere NeueAnzahlNeueKarte in Rubbelkartenzähler an der Stelle neueKartenId.
+        Speichere NeueAnzahlNeueKarte in Rubbelkartenzähler an der Stelle neueKartenIdentifikationsnummer.
 
 Die Zahl AnzahlAllerKarten ist 0.
 Für jede Zahl Anzahl in Rubbelkartenzähler, mache:
