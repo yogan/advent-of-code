@@ -1,6 +1,6 @@
 # [Advent of Code](https://adventofcode.com)
 
-## [2023](https://adventofcode.com/2023) (8/50 ⭐)
+## [2023](https://adventofcode.com/2023) (10/50 ⭐)
 
 - [Day 01](https://adventofcode.com/2023/day/1) ⭐⭐ in
   [fish](2023/day-01/day01.fish)
@@ -12,6 +12,9 @@
   [Python](2023/day-03/day03.py)
 - [Day 04](https://adventofcode.com/2023/day/4) ⭐⭐ in
   [DDP - Die Deutsche Programmiersprache](2023/day-04/Tag4.ddp)
+- [Day 05](https://adventofcode.com/2023/day/5) ⭐⭐ in
+  [Python](2023/day-05/day05.py) - throwing unit tests against functions until
+  stuff works out… (efficient, but complicated range based solution for part 2)
 
 ## [2022](https://adventofcode.com/2022) (46/50 ⭐)
 
