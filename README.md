@@ -1,6 +1,6 @@
 # [Advent of Code](https://adventofcode.com)
 
-## [2023](https://adventofcode.com/2023) (10/50 ⭐)
+## [2023](https://adventofcode.com/2023) (12/50 ✨)
 
 - [Day 01](https://adventofcode.com/2023/day/1) ⭐⭐ in
   [fish](2023/day-01/day01.fish)
@@ -15,8 +15,11 @@
 - [Day 05](https://adventofcode.com/2023/day/5) ⭐⭐ in
   [Python](2023/day-05/day05.py) - throwing unit tests against functions until
   stuff works out… (efficient, but complicated range based solution for part 2)
+- [Day 06](https://adventofcode.com/2023/day/6) ⭐⭐ in
+  [Zig](2023/day-06/src/main.zig) - including a memory leak that I could not
+  find; Zig is really hard 😢
 
-## [2022](https://adventofcode.com/2022) (46/50 ⭐)
+## [2022](https://adventofcode.com/2022) (46/50 ✨)
 
 **Languages: 13** *(fish, JavaScript, TypeScript, Perl, Ruby, C, Java, Fortran, Nim,
 Lua, C#, Python, Haskell)*  
@@ -82,7 +85,7 @@ Lua, C#, Python, Haskell)*
 - [Day 25](https://adventofcode.com/2022/day/25) ⭐✖️ in
   [Haskell](2022/day-25/day25.hs) 𝝺 last day, took the chance to increase my language count
 
-## [2021](https://adventofcode.com/2021) (34/50 ⭐)
+## [2021](https://adventofcode.com/2021) (34/50 ✨)
 
 - [Day 01](https://adventofcode.com/2021/day/1) ⭐⭐ in [Python](2021-python/day01.py)
 - [Day 02](https://adventofcode.com/2021/day/2) ⭐⭐ in [Python](2021-python/day02.py) (paired with [LaLisita](https://github.com/LaLisita))
@@ -104,7 +107,7 @@ Lua, C#, Python, Haskell)*
 - [Day 22](https://adventofcode.com/2021/day/22) ⭐ in [Python](2021-python/day22.py)
 - [Day 25](https://adventofcode.com/2021/day/25) ⭐⭐ in [Python](2021-python/day25.py)
 
-## [2020](https://adventofcode.com/2020) (30/50 ⭐)
+## [2020](https://adventofcode.com/2020) (30/50 ✨)
 
 - [Day 01](https://adventofcode.com/2020/day/1) ⭐⭐ in [Rust](2020-rust/src/day01.rs) (paired with [t-animal](https://github.com/t-animal) and [RussellSnyder](https://github.com/RussellSnyder))
 - [Day 02](https://adventofcode.com/2020/day/2) ⭐⭐ in [Rust](2020-rust/src/day02.rs) (paired with [dnnr](https://github.com/dnnr) and [RussellSnyder](https://github.com/RussellSnyder))
@@ -122,7 +125,7 @@ Lua, C#, Python, Haskell)*
 - [Day 15](https://adventofcode.com/2020/day/15) ⭐⭐ in [Rust](2020-rust/src/day15.rs) (paired with [RussellSnyder](https://github.com/RussellSnyder) and [dnnr](https://github.com/dnnr)) "we test in production" edition
 - [Day 16](https://adventofcode.com/2020/day/16) ⭐⭐ in [Rust](2020-rust/src/day16.rs) (paired with [RussellSnyder](https://github.com/RussellSnyder)) loop da whoop
 
-## [2015](https://adventofcode.com/2015) (4/50 ⭐)
+## [2015](https://adventofcode.com/2015) (4/50 ✨)
 
 - [Day 01](https://adventofcode.com/2015/day/1) ⭐⭐ in
   [Clojure](2015/day-01/src/advent_of_code_template/core.clj) ([Tests](2015/day-01/test/advent_of_code_template/core_test.clj))
