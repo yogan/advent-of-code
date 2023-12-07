@@ -38,6 +38,45 @@ class Card:
             return False
         return self.values > other.values
 
+    def rerank_with_joker(self):
+        self.values = [x if x != 11 else 1 for x in self.values]
+
+        remaining_cards = [c for c in self.values if c != 1]
+        jokers = 5 - len(remaining_cards)
+
+        if jokers == 0 or self.rank == CardType.FIVE:
+            return
+
+        if jokers == 4 or jokers == 5:
+            self.rank = CardType.FIVE
+            return
+
+        if jokers == 3:
+            # if remaing two cards are the same, we can make a 5 of a kind
+            if remaining_cards[0] == remaining_cards[1]:
+                self.rank = CardType.FIVE
+            else:
+                self.rank = CardType.FOUR
+            return
+
+        non_joker_values = [x for x in range(2, 15) if x != 1]
+
+        if jokers == 2:
+            # just brute force it
+            for first_joker in non_joker_values:
+                for second_joker in non_joker_values:
+                    new_rank = rank(remaining_cards + [first_joker, second_joker])
+                    if new_rank.value < self.rank.value:
+                        self.rank = new_rank
+            return
+
+        if jokers == 1:
+            # lil brute force
+            for joker in non_joker_values:
+                new_rank = rank(remaining_cards + [joker])
+                if new_rank.value < self.rank.value:
+                    self.rank = new_rank
+
 def parse_cards():
     with open(filename) as f:
         lines = [x.split() for x in f.readlines()]
@@ -151,9 +190,20 @@ class TestDay07(unittest.TestCase):
             Card('QQQJA', '483'),
         ])
 
+    def test_rerank_with_joker_four_to_five(self):
+        card = Card('KKKJK', '1')
+        card.rerank_with_joker()
+        self.assertEqual(card.rank, CardType.FIVE)
+
+    def test_rerank_with_joker_high_to_pair(self):
+        card = Card('23KTJ', '1')
+        card.rerank_with_joker()
+        self.assertEqual(card.rank, CardType.PAIR)
+
 if __name__ == '__main__':
     unittest.main(exit=False)
     print()
+    # exit(1)
 
     cards = parse_cards()
 
@@ -161,6 +211,9 @@ if __name__ == '__main__':
     assert res1 == (6440 if is_sample else 248179786)
     print(f"Part 1: {res1}{' (sample)' if is_sample else ''}")
 
-    res2 = None
-    # assert res2 == (?? if is_sample else ???)
+    for card in cards:
+        card.rerank_with_joker()
+
+    res2 = get_winnings(cards)
+    assert res2 == (5905 if is_sample else 247885995)
     print(f"Part 2: {res2}{' (sample)' if is_sample else ''}")

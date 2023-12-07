@@ -1,6 +1,6 @@
 # [Advent of Code](https://adventofcode.com)
 
-## [2023](https://adventofcode.com/2023) (12/50 ✨)
+## [2023](https://adventofcode.com/2023) (14/50 ✨)
 
 - [Day 01](https://adventofcode.com/2023/day/1) ⭐⭐ in
   [fish](2023/day-01/day01.fish)
@@ -18,6 +18,9 @@
 - [Day 06](https://adventofcode.com/2023/day/6) ⭐⭐ in
   [Zig](2023/day-06/src/main.zig) - including a memory leak that I could not
   find; Zig is really hard 😢
+- [Day 07](https://adventofcode.com/2023/day/7) ⭐⭐ in
+  [Python](2023/day-07/day07.py) - half smart, half brute force is the real
+  Joker 🃏
 
 ## [2022](https://adventofcode.com/2022) (46/50 ✨)
 
