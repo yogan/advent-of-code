@@ -1,2 +1,2 @@
 #!/bin/sh
-find . -name '*.clj' | entr -c ./run.sh
+find . -name '*.clj' | entr -cc ./run.sh

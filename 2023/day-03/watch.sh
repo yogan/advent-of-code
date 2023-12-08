@@ -1,2 +1,2 @@
 #!/bin/sh
-find . -name '*.py' | entr -c ./run.sh
+find . -name '*.py' | entr -cc ./run.sh

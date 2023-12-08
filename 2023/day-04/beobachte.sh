@@ -1,2 +1,2 @@
 #!/bin/sh
-find . -name '*.ddp' | entr -c ./fuehre-aus.sh
+find . -name '*.ddp' | entr -cc ./fuehre-aus.sh

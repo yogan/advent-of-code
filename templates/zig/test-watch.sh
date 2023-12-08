@@ -1,2 +1,2 @@
 #!/bin/sh
-find src/ -name '*.zig' | entr -c ./test.sh
+find src/ -name '*.zig' | entr -cc ./test.sh
