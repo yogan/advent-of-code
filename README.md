@@ -6,25 +6,28 @@
 
 - [Day 01](https://adventofcode.com/2023/day/1) ⭐⭐ in
   [fish](2023/day-01/day01.fish)
-  with [tests](2023/day-01/test.fish)
+  with [tests](2023/day-01/test.fish) 🐟
 - [Day 02](https://adventofcode.com/2023/day/2) ⭐⭐ in
   [Clojure](2023/day-02/src/advent_of_code_template/core.clj)
-  with [tests](2023/day-02/test/advent_of_code_template/core_test.clj)
+  with [tests](2023/day-02/test/advent_of_code_template/core_test.clj) 📃
 - [Day 03](https://adventofcode.com/2023/day/3) ⭐⭐ in
-  [Python](2023/day-03/day03.py)
+  [Python](2023/day-03/day03.py) 🐍
 - [Day 04](https://adventofcode.com/2023/day/4) ⭐⭐ in
-  [DDP - Die Deutsche Programmiersprache](2023/day-04/Tag4.ddp)
+  [DDP - Die Deutsche Programmiersprache](2023/day-04/Tag4.ddp) 🥨
 - [Day 05](https://adventofcode.com/2023/day/5) ⭐⭐ in
-  [Python](2023/day-05/day05.py) - throwing unit tests against functions until
-  stuff works out… (efficient, but complicated range based solution for part 2)
+  [Python](2023/day-05/day05.py)
+  - throwing unit tests against functions until stuff works out…
+  - efficient, but complicated range based solution for part 2 📏
 - [Day 06](https://adventofcode.com/2023/day/6) ⭐⭐ in
-  [Zig](2023/day-06/src/main.zig) - including a memory leak that I could not
-  find; Zig is really hard 😢
+  [Zig](2023/day-06/src/main.zig)
+  - including a memory leak that I could not find
+  - Zig is really hard 😢
 - [Day 07](https://adventofcode.com/2023/day/7) ⭐⭐ in
-  [Python](2023/day-07/day07.py) - half smart, half brute force is the real
-  Joker 🃏
+  [Python](2023/day-07/day07.py)
+  - half smart, half brute force is the real Joker 🃏
 - [Day 08](https://adventofcode.com/2023/day/8) ⭐⭐ in
-  [Python](2023/day-08/day08.py) - haunted solution 👻
+  [Python](2023/day-08/day08.py)
+  - haunted solution, LCM works for some reason 👻
 
 ## [2022](https://adventofcode.com/2022) (46/50 ✨)
 
