@@ -53,12 +53,13 @@ def ghost_travel(turns, map):
             pos = new_pos
             steps += 1
 
-    ends_seen = {}
+    cycle_lengths = []
     for idx, waypoints in seen.items():
-        ends_seen[idx] = [(i, pos) for i, pos in enumerate(waypoints) if pos[0].endswith("Z")]
+        ends = [pos for pos in waypoints if pos[0].endswith("Z")]
+        end_indices = [i for i, pos in enumerate(waypoints) if pos in ends]
+        cycle_lengths.append(end_indices[0] + 1)
 
-    indices = [x[0][0] + 1 for x in ends_seen.values()]
-    return lcm(indices)
+    return lcm(cycle_lengths)
 
 if __name__ == '__main__':
     turns, map = parse_map()
