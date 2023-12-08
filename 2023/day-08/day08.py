@@ -57,6 +57,12 @@ def ghost_travel(turns, map):
     for idx, waypoints in seen.items():
         ends = [pos for pos in waypoints if pos[0].endswith("Z")]
         end_indices = [i for i, pos in enumerate(waypoints) if pos in ends]
+        # This solution probably only works because for the input data, there
+        # is only a single cycle ending in an end node. Even for the small part
+        # 2 sample, this does not hold true (seconds path reaches 22Z with a
+        # left and a right direction).
+        if not is_sample:
+            assert len(end_indices) == 1
         cycle_lengths.append(end_indices[0] + 1)
 
     return lcm(cycle_lengths)
