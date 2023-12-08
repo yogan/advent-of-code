@@ -9,11 +9,11 @@ function volume([l, w, h]: Dimensions): number {
 }
 
 export function part1(boxes: Dimensions[]): number {
-    return boxes.reduce((acc, box) => acc + surfaceArea(box), 0)
+    return boxes.reduce((acc, box) => acc + volume(box), 0)
 }
 
 export function part2(boxes: Dimensions[]): number {
-    return boxes.reduce((acc, box) => acc + volume(box), 0)
+    return boxes.reduce((acc, box) => acc + surfaceArea(box), 0)
 }
 
 export function parseLine(line: string): Dimensions {

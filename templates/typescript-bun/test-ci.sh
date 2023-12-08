@@ -1,5 +1,5 @@
 #!/bin/sh
-if ! bun test; then
+if ! bun test 2>/dev/null; then
     echo "Unit tests failed!"
     exit 3
 fi
@@ -7,15 +7,17 @@ fi
 output=$(./run.sh)
 result1=$(echo "$output" | head -1)
 result2=$(echo "$output" | tail -1)
-expected1="Part 1: 4978"
-expected2="Part 2: 14545"
+expected1="Part 1: 14545"
+expected2="Part 2: 4978"
 
 if [ "$result1" != "$expected1" ]; then
-    echo "Expected '$expected1', got '$result1'"
+    echo "Expected: »$expected1«"
+    echo "Got:      »$result1«"
     exit 1
 fi
 
 if [ "$result2" != "$expected2" ]; then
-    echo "Expected '$expected2', got '$result2'"
+    echo "Expected: »$expected2«"
+    echo "Got:      »$result2«"
     exit 2
 fi
