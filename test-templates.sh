@@ -1,25 +1,19 @@
 #!/bin/bash
 current_directory=$(pwd)
-mapfile -t template_dirs < <(find templates/ -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort)
-
 overall_exit_code=0
 
-for dir in "${template_dirs[@]}"; do
-    echo "==============================================================================="
-    echo "Testing template for $dir"
-    echo "==============================================================================="
+mapfile -t template_dirs < <(find templates/ -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort)
 
+for dir in "${template_dirs[@]}"; do
+    echo -n "Testing template for $dir… "
     cd "templates/$dir" || exit 1
     if ! ./test-ci.sh; then
-        echo "[ERROR] Test for template $dir failed!"
+        echo "FAILED"
         overall_exit_code=1
+    else
+        echo "OK"
     fi
     cd "$current_directory" || exit 1
-
-    echo "==============================================================================="
-    if [ "$dir" != "${template_dirs[-1]}" ]; then
-        echo
-    fi
 done
 
 cd "$current_directory" || exit 1

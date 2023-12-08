@@ -1,9 +1,8 @@
 #!/bin/bash
 current_directory=$(pwd)
+overall_exit_code=0
 
 mapfile -t day_dirs < <(find . -mindepth 1 -maxdepth 1 -type d -iname 'day*' -printf '%f\n' | sort)
-
-overall_exit_code=0
 
 for dir in "${day_dirs[@]}"; do
     echo -n "$(basename "$current_directory")/$dir… "
