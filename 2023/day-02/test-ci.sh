@@ -1,5 +1,4 @@
 #!/bin/sh
-
 if ! ./test.sh > /dev/null 2> /dev/null ; then
     echo "Unit tests failed!"
     exit 1
@@ -12,11 +11,13 @@ expected1="Part 1: 2076"
 expected2="Part 2: 70950"
 
 if [ "$result1" != "$expected1" ]; then
-    echo "Expected '$expected1', got '$result1'"
+    echo "Expected: »$expected1«"
+    echo "Got:      »$result1«"
     exit 1
 fi
 
 if [ "$result2" != "$expected2" ]; then
-    echo "Expected '$expected2', got '$result2'"
-    exit 1
+    echo "Expected: »$expected2«"
+    echo "Got:      »$result2«"
+    exit 2
 fi
