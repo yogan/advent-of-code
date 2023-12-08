@@ -1,4 +1,5 @@
 import sys
+from math import gcd
 from collections import defaultdict
 
 if len(sys.argv) != 2:
@@ -25,11 +26,6 @@ def travel(turns, map):
         cur = map[cur][0] if direction == "L" else map[cur][1]
         steps += 1
     return steps
-
-def gcd(a, b):
-    while b:
-        a, b = b, a % b
-    return a
 
 def lcm(nums):
     lcm = nums[0]
