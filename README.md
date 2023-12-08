@@ -21,6 +21,8 @@
 - [Day 07](https://adventofcode.com/2023/day/7) ⭐⭐ in
   [Python](2023/day-07/day07.py) - half smart, half brute force is the real
   Joker 🃏
+- [Day 08](https://adventofcode.com/2023/day/8) ⭐⭐ in
+  [Python](2023/day-08/day08.py) - haunted solution 👻
 
 ## [2022](https://adventofcode.com/2022) (46/50 ✨)
 
