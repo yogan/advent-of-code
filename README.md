@@ -1,6 +1,8 @@
 # [Advent of Code](https://adventofcode.com)
 
-## [2023](https://adventofcode.com/2023) (14/50 ✨)
+## [2023](https://adventofcode.com/2023) (16/50 ✨)
+
+**Languages: 5** *(fish (1), Clojure (1), Python (4), DDP (1), Zig (1))*
 
 - [Day 01](https://adventofcode.com/2023/day/1) ⭐⭐ in
   [fish](2023/day-01/day01.fish)
