@@ -1,12 +1,11 @@
 #!/usr/bin/env fish
-set expected_part_1 "Part 1: 142"
-set expected_part_2 "Part 2: 281"
+set expected_part_1 "Part 1: 54304"
+set expected_part_2 "Part 2: 54418"
 
-set INPUT1 sample1.txt
-set INPUT2 sample2.txt
+set INPUT input.txt
 
-set result_part_1 $(./day01.fish --part=1 <$INPUT1)
-set result_part_2 $(./day01.fish --part=2 <$INPUT2)
+set result_part_1 $(./day01.fish --part=1 <$INPUT)
+set result_part_2 $(./day01.fish --part=2 <$INPUT)
 
 function validate -a part expected result
     echo -n "Part $part: " 1>&2
