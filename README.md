@@ -1,8 +1,8 @@
 # [Advent of Code](https://adventofcode.com)
 
-## [2023](https://adventofcode.com/2023) (16/50 ✨)
+## [2023](https://adventofcode.com/2023) (18/50 ✨)
 
-**Languages: 5** *(fish (1), Clojure (1), Python (4), DDP (1), Zig (1))*
+**Languages: 5** *(fish (1), Clojure (1), Python (5), DDP (1), Zig (1))*
 
 - [Day 01](https://adventofcode.com/2023/day/1) ⭐⭐ in
   [fish](2023/day-01/day01.fish)
@@ -28,6 +28,9 @@
 - [Day 08](https://adventofcode.com/2023/day/8) ⭐⭐ in
   [Python](2023/day-08/day08.py)
   - haunted solution, LCM works for some reason 👻
+- [Day 09](https://adventofcode.com/2023/day/9) ⭐⭐ in
+  [Python](2023/day-09/day09.py)
+  - easy and straightforward 🏝️
 
 ## [2022](https://adventofcode.com/2022) (46/50 ✨)
 

@@ -1,6 +1,4 @@
 import sys
-from math import gcd
-from collections import defaultdict
 
 if len(sys.argv) != 2:
     print("Missing input file.")
@@ -25,21 +23,20 @@ def predict(history):
         lines.append(next_line)
         line_idx += 1
 
-    lines[-1].append(0)
-
     for i in range(len(lines) - 2, -1, -1):
         lines[i].append(lines[i + 1][-1] + lines[i][-1])
+        lines[i].insert(0, lines[i][0] - lines[i + 1][0])
 
-    return lines[0][-1]
+    return (lines[0][-1], lines[0][0])
 
 if __name__ == '__main__':
     histories = parse()
     predictions = [predict(history) for history in histories]
 
-    res1 = sum(predictions)
+    res1 = sum(x[0] for x in predictions)
     assert res1 == (114 if is_sample else 1725987467)
     print(f"Part 1: {res1}{' (sample)' if is_sample else ''}")
 
-    # res2 = XXX(turns, map)
-    # assert res2 == (None if is_sample else None)
-    # print(f"Part 2: {res2}{' (sample)' if is_sample else ''}")
+    res2 = sum(x[1] for x in predictions)
+    assert res2 == (2 if is_sample else 971)
+    print(f"Part 2: {res2}{' (sample)' if is_sample else ''}")
