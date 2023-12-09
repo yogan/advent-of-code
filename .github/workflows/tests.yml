@@ -21,4 +21,4 @@ jobs:
       run: docker run yogans-advent-of-code ./test-templates.sh
 
     - name: Test solutions
-      run: docker run yogans-advent-of-code ./test-solutions.sh
+      run: docker run -e AOC_SESSION=${{ secrets.AOC_SESSION }} yogans-advent-of-code ./test-solutions.sh
