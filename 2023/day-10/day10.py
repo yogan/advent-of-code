@@ -76,7 +76,7 @@ def print_sketch(grid, path, inside):
             else:
                 is_inside = (x, y) in inside
                 char = '◍' if is_inside else ' '
-                color = Colors.YELLOW if is_inside else Colors.BG_BLACK
+                color = Colors.YELLOW if is_inside else Colors.BG_RESET
                 print(color + char, end='')
         print(Colors.RESET + Colors.BG_RESET)
     print(Colors.RESET + Colors.BG_RESET)
@@ -284,7 +284,7 @@ if __name__ == '__main__':
 
     if is_sample:
         print_sketch(big_grid, big_path, big_inside)
-        print_sketch(grid, path, inside)
+    print_sketch(grid, path, inside)
 
     print_and_assert("Part 1", expected1[filename], part1(path))
     print_and_assert("Part 2", expected2[filename], len(inside))
