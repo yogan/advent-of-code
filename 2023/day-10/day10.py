@@ -1,6 +1,4 @@
-import sys, unittest
-from collections import defaultdict
-from enum import Enum
+import sys
 
 if len(sys.argv) != 2:
     print("Missing input file.")
@@ -16,11 +14,11 @@ expected1 = {
     "sample4.txt": 80,
 }
 expected2 = {
-    "input.txt": None,
-    "sample1.txt": None,
-    "sample2.txt": None,
-    "sample3.txt": None,
-    "sample4.txt": None,
+    "input.txt": 595,
+    "sample1.txt": 1,
+    "sample2.txt": 4,
+    "sample3.txt": 4,
+    "sample4.txt": 10,
 }
 
 def parse():
@@ -34,17 +32,19 @@ def parse():
     return (grid, W, H, pos)
 
 class Colors:
-    RESET   = '\033[0m'
-    BLACK   = '\033[30m'
-    RED     = '\033[31m'
-    GREEN   = '\033[32m'
-    YELLOW  = '\033[33m'
-    BLUE    = '\033[34m'
-    MAGENTA = '\033[35m'
-    CYAN    = '\033[36m'
-    WHITE   = '\033[37m'
-
+    RESET      = '\033[0m'
     BG_RESET   = '\033[49m'
+    BOLD       = '\033[1m'
+
+    BLACK      = '\033[30m'
+    RED        = '\033[31m'
+    GREEN      = '\033[32m'
+    YELLOW     = '\033[33m'
+    BLUE       = '\033[34m'
+    MAGENTA    = '\033[35m'
+    CYAN       = '\033[36m'
+    WHITE      = '\033[37m'
+
     BG_BLACK   = '\033[40m'
     BG_RED     = '\033[41m'
     BG_GREEN   = '\033[42m'
@@ -54,11 +54,11 @@ class Colors:
     BG_CYAN    = '\033[46m'
     BG_WHITE   = '\033[47m'
 
-def print_sketch(grid, path):
+def print_sketch(grid, path, inside):
     for y, line in enumerate(grid):
         for x, c in enumerate(line):
             if (x, y) in path:
-                print(Colors.MAGENTA + Colors.BG_BLACK, end='')
+                print(Colors.BOLD + Colors.BLUE + Colors.BG_BLACK, end='')
                 if c == 'S':
                     print(Colors.GREEN + '×', end='')
                 elif c == '|':
@@ -74,9 +74,11 @@ def print_sketch(grid, path):
                 elif c == 'F':
                     print('┌', end='')
             else:
-                # print(Colors.RESET + Colors.BG_RESET + ' ', end='')
-                print(Colors.RESET + Colors.BG_RESET + '·', end='')
-        print()
+                is_inside = (x, y) in inside
+                char = '◍' if is_inside else ' '
+                color = Colors.YELLOW if is_inside else Colors.BG_BLACK
+                print(color + char, end='')
+        print(Colors.RESET + Colors.BG_RESET)
     print(Colors.RESET + Colors.BG_RESET)
 
 def connected_start_neighbors(grid, W, H, pos):
@@ -216,6 +218,54 @@ def zoom_in(grid, W, H, start, path):
 
     return big_grid, big_path
 
+def zoom_out(positions):
+    smaller = set()
+    for x, y in positions:
+        if x % 2 == 0 and y % 2 == 0:
+            smaller.add((x//2, y//2))
+    return smaller
+
+def inside_positions(grid, W, H, path):
+
+    def get_neighbors(pos, W, H, forbidden):
+        candidates = {
+            (pos[0]-1, pos[1]),
+            (pos[0]+1, pos[1]),
+            (pos[0], pos[1]-1),
+            (pos[0], pos[1]+1),
+        }
+        return {x for x in candidates
+                if 0 <= x[0] < W
+                and 0 <= x[1] < H
+                and x not in forbidden}
+
+    def positions_to_check(W, H, path):
+        positions = set()
+        for x in range(W):
+            for y in range(H):
+                if (x, y) not in path:
+                    positions.add((x, y))
+        return positions
+
+    def is_edge(x, y):
+        return x == 0 or x == W-1 or y == 0 or y == H-1
+
+    # start with edge positions that are not on the path
+    non_path_positions = positions_to_check(W, H, path)
+    to_check = {x for x in non_path_positions if x not in path and is_edge(*x)}
+
+    checked = set()
+    outside = set()
+
+    while to_check:
+        cur = to_check.pop()
+        checked.add(cur)
+        outside.add(cur)
+        neighbors = get_neighbors(cur, W, H, path | checked)
+        to_check.update(neighbors)
+
+    return non_path_positions - outside
+
 def part1(path):
     assert len(path) % 2 == 0, f"Path has odd length: {path}"
     return len(path) // 2
@@ -227,10 +277,14 @@ def print_and_assert(part, expected, actual):
 if __name__ == '__main__':
     grid, W, H, start = parse()
     path = walk(grid, W, H, start)
-    print_sketch(grid, path)
 
     big_grid, big_path = zoom_in(grid, W, H, start, path)
-    print_sketch(big_grid, big_path)
+    big_inside = inside_positions(big_grid, W*2, H*2, set(big_path))
+    inside = zoom_out(big_inside)
+
+    if is_sample:
+        print_sketch(big_grid, big_path, big_inside)
+        print_sketch(grid, path, inside)
 
     print_and_assert("Part 1", expected1[filename], part1(path))
-    print_and_assert("Part 2", expected2[filename], None)
+    print_and_assert("Part 2", expected2[filename], len(inside))

@@ -31,7 +31,11 @@
 - [Day 09](https://adventofcode.com/2023/day/9) ⭐⭐ in
   [Python](2023/day-09/day09.py)
   - easy and straightforward 🏝️
-
+- [Day 10](https://adventofcode.com/2023/day/10) ⭐⭐ in
+  [Python](2023/day-10/day10.py)
+  - probably way too much code and not very efficient
+  - but: with some nice Unicode visualization ꡌ
+ 
 ## [2022](https://adventofcode.com/2022) (46/50 ✨)
 
 **Languages: 13** *(fish, JavaScript, TypeScript, Perl, Ruby, C, Java, Fortran, Nim,
