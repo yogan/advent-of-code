@@ -254,14 +254,14 @@ def inside_positions(grid, W, H, path):
     non_path_positions = positions_to_check(W, H, path)
     to_check = {x for x in non_path_positions if x not in path and is_edge(*x)}
 
-    checked = set()
+    checked = path.copy()
     outside = set()
 
     while to_check:
         cur = to_check.pop()
         checked.add(cur)
         outside.add(cur)
-        neighbors = get_neighbors(cur, W, H, path | checked)
+        neighbors = get_neighbors(cur, W, H, checked)
         to_check.update(neighbors)
 
     return non_path_positions - outside
