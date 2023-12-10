@@ -271,7 +271,7 @@ def part1(path):
     return len(path) // 2
 
 def print_and_assert(part, expected, actual):
-    print(f"{part}: {actual}{' (sample)' if is_sample else ''}")
+    print(f"Part {part}: {actual}{' (sample)' if is_sample else ''}")
     assert actual == expected, f"{part} was {actual}, expected {expected}"
 
 if __name__ == '__main__':
@@ -286,5 +286,5 @@ if __name__ == '__main__':
         print_sketch(big_grid, big_path, big_inside)
     print_sketch(grid, path, inside)
 
-    print_and_assert("Part 1", expected1[filename], part1(path))
-    print_and_assert("Part 2", expected2[filename], len(inside))
+    print_and_assert(1, expected1[filename], part1(path))
+    print_and_assert(2, expected2[filename], len(inside))

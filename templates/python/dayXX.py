@@ -40,16 +40,15 @@ class TestDayXX(unittest.TestCase):
         expected = (2 + 2 + 3 + 3 + 6 + 6) + (6 * 1)
         self.assertEqual(part2([[1, 2, 3], [1, 1, 1]]), expected)
 
+def print_and_assert(part, expected, actual):
+    print(f"Part {part}: {actual}{' (sample)' if is_sample else ''}")
+    assert actual == expected, f"{part} was {actual}, expected {expected}"
+
 if __name__ == '__main__':
     unittest.main(exit=False)
     print()
 
     lines = parse()
 
-    res1 = part1(lines)
-    assert res1 == (9876 if is_sample else 14545)
-    print(f"Part 1: {res1}{' (sample)' if is_sample else ''}")
-
-    res2 = part2(lines)
-    assert res2 == (21756 if is_sample else 4978)
-    print(f"Part 2: {res2}{' (sample)' if is_sample else ''}")
+    print_and_assert(1, 9876 if is_sample else 14545, part1(lines))
+    print_and_assert(2, 21756 if is_sample else 4978, part2(lines))
