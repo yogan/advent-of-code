@@ -270,14 +270,7 @@ def part1(path):
     assert len(path) % 2 == 0, f"Path has odd length: {path}"
     return len(path) // 2
 
-def print_and_assert(part, expected, actual):
-    print(f"Part {part}: {actual}{' (sample)' if is_sample else ''}")
-    assert actual == expected, f"{part} was {actual}, expected {expected}"
-
-if __name__ == '__main__':
-    grid, W, H, start = parse()
-    path = walk(grid, W, H, start)
-
+def part2(grid, W, H, start, path):
     big_grid, big_path = zoom_in(grid, W, H, start, path)
     big_inside = inside_positions(big_grid, W*2, H*2, set(big_path))
     inside = zoom_out(big_inside)
@@ -286,5 +279,15 @@ if __name__ == '__main__':
         print_sketch(big_grid, big_path, big_inside)
     print_sketch(grid, path, inside)
 
+    return len(inside)
+
+def print_and_assert(part, expected, actual):
+    print(f"Part {part}: {actual}{' (sample)' if is_sample else ''}")
+    assert actual == expected, f"{part} was {actual}, expected {expected}"
+
+if __name__ == '__main__':
+    grid, W, H, start = parse()
+    path = walk(grid, W, H, start)
+
     print_and_assert(1, expected1[filename], part1(path))
-    print_and_assert(2, expected2[filename], len(inside))
+    print_and_assert(2, expected2[filename], part2(grid, W, H, start, path))
