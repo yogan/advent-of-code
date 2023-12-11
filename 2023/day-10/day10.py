@@ -70,13 +70,13 @@ def print_sketch(grid, path, inside):
                 elif c == '-':
                     print('─', end='')
                 elif c == 'L':
-                    print('└', end='')
+                    print('╰', end='')
                 elif c == 'J':
-                    print('┘', end='')
+                    print('╯', end='')
                 elif c == '7':
-                    print('┐', end='')
+                    print('╮', end='')
                 elif c == 'F':
-                    print('┌', end='')
+                    print('╭', end='')
             else:
                 is_inside = (x, y) in inside
                 char = '◍' if is_inside else ' '
