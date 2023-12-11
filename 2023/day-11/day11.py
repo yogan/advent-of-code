@@ -36,19 +36,15 @@ def find_galaxies(image):
     return galaxies
 
 def shortest_path(image, start, end, factor):
-    x_rows_crossed = 0
-    for r in range(min(start[0], end[0]), max(start[0], end[0])):
-        if image[r][0] == 'X':
-            x_rows_crossed += 1
-
-    x_cols_crossed = 0
-    for c in range(min(start[1], end[1]), max(start[1], end[1])):
-        if image[0][c] == 'X':
-            x_cols_crossed += 1
-
     dist = abs(start[0] - end[0]) + abs(start[1] - end[1])
 
-    return dist + (factor - 1) * (x_rows_crossed + x_cols_crossed)
+    min_row, max_row = min(start[0], end[0]), max(start[0], end[0])
+    min_col, max_col = min(start[1], end[1]), max(start[1], end[1])
+
+    x_rows = [r for r in range(min_row, max_row) if image[r][0] == 'X']
+    x_cols = [c for c in range(min_col, max_col) if image[0][c] == 'X']
+
+    return dist + (factor - 1) * (len(x_rows) + len(x_cols))
 
 def sum_distances(image, galaxies, factor):
     sum = 0
