@@ -9,9 +9,7 @@ with odd coordinates).
 
 ## Sample Input Visualization
 
-![Sample (enlarged by 2)](viz/sample_big.png)
-
-![Sample (final result)](viz/sample.png)
+![Sample](viz/sample.png)
 
 ## Real Input Visualization
 

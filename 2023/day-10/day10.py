@@ -58,8 +58,9 @@ class Colors:
     BG_CYAN    = '\033[46m'
     BG_WHITE   = '\033[47m'
 
-def print_sketch(grid, path, inside):
+def print_sketch(grid, path, inside, left_padding=0):
     for y, line in enumerate(grid):
+        print(' ' * left_padding, end='')
         for x, c in enumerate(line):
             if (x, y) in path:
                 print(Colors.BOLD + Colors.BLUE + Colors.BG_BLACK, end='')
@@ -79,7 +80,7 @@ def print_sketch(grid, path, inside):
                     print('╭', end='')
             else:
                 is_inside = (x, y) in inside
-                char = '◍' if is_inside else ' '
+                char = '⬮' if is_inside else ' '
                 color = Colors.YELLOW if is_inside else Colors.BG_RESET
                 print(color + char, end='')
         print(Colors.RESET + Colors.BG_RESET)
@@ -281,7 +282,9 @@ def part2(grid, W, H, start, path):
 
     if is_sample:
         print_sketch(big_grid, big_path, big_inside)
-    print_sketch(grid, path, inside)
+        print_sketch(grid, path, inside, left_padding=W//2)
+    else:
+        print_sketch(grid, path, inside)
 
     return len(inside)
 
