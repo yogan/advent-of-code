@@ -1,8 +1,8 @@
 # [Advent of Code](https://adventofcode.com)
 
-## [2023](https://adventofcode.com/2023) (20/50 ✨)
+## [2023](https://adventofcode.com/2023) (22/50 ✨)
 
-**Languages: 5** *(fish (1), Clojure (1), Python (6), DDP (1), Zig (1))*
+**Languages: 5** *(Python (7), fish (1), Clojure (1), DDP (1), Zig (1))*
 
 - [Day 01](https://adventofcode.com/2023/day/1) ⭐⭐ in
   [fish](2023/day-01/day01.fish)
@@ -35,6 +35,9 @@
   [Python](2023/day-10/day10.py)
   - pretty lengthy, but it prints some nice
     [Unicode visualization](2023/day-10/README.md) ꡌ
+- [Day 11](https://adventofcode.com/2023/day/11) ⭐⭐ in
+  [Python](2023/day-11/day11.py)
+  - space math 🌌
  
 ## [2022](https://adventofcode.com/2022) (46/50 ✨)
 
