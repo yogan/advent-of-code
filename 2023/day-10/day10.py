@@ -6,12 +6,15 @@ if len(sys.argv) != 2:
 filename  = sys.argv[1]
 sys.argv  = sys.argv[:1] # strip args, they scare the unittest module
 is_sample = filename.startswith('sample')
+# https://old.reddit.com/r/adventofcode/comments/18firip/2023_day_10_an_alternate_input_to_visualize/
+is_reddit = filename.startswith('reddit')
 expected1 = {
     "input.txt": 6867,
     "sample1.txt": 4,
     "sample2.txt": 23,
     "sample3.txt": 22,
     "sample4.txt": 80,
+    "reddit.txt": 3022,
 }
 expected2 = {
     "input.txt": 595,
@@ -19,6 +22,7 @@ expected2 = {
     "sample2.txt": 4,
     "sample3.txt": 4,
     "sample4.txt": 10,
+    "reddit.txt": 0,
 }
 
 def parse():
@@ -28,8 +32,8 @@ def parse():
     for x in range(W):
         for y in range(H):
             if grid[y][x] == 'S':
-                pos = (x, y)
-    return (grid, W, H, pos)
+                start = (x, y)
+    return (grid, W, H, start)
 
 class Colors:
     RESET      = '\033[0m'
@@ -174,8 +178,8 @@ def zoom_in(grid, W, H, start, path):
 
     big_path = []
 
-    big_start = (start[0]*2, start[1]*2)
-    big_grid[big_start[0]][big_start[1]] = 'S'
+    x, y = start
+    big_grid[y*2][x*2] = 'S'
 
     last = start
 

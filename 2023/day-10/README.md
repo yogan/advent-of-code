@@ -20,3 +20,12 @@ with odd coordinates).
 ![Real input (enlarged by 2, center)](viz/input_big_center.png)
 
 ![Real input (final result)](viz/input.png)
+
+## Reddit Surprise Visualization
+
+Redditor [u/Boojum](https://old.reddit.com/user/Boojum) has crafted a nice 
+[surprise input](https://old.reddit.com/r/adventofcode/comments/18firip/2023_day_10_an_alternate_input_to_visualize/).
+
+When visualized, it looks like this:
+
+![Reddit surprise](viz/reddit.png)
