@@ -21,6 +21,10 @@ RUN cd /usr/local/share/ && \
 ENV PATH="/usr/local/share/ddp/bin:${PATH}"
 ENV DDPPATH="/usr/local/share/ddp"
 
+# Rust - https://www.rust-lang.org/tools/install
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+ENV PATH="/root/.cargo/bin:${PATH}"
+
 # Zig - https://ziglang.org/learn/getting-started/
 RUN cd /usr/local/share && \
     curl -OL https://ziglang.org/builds/zig-linux-x86_64-0.12.0-dev.1753+a98d4a66e.tar.xz && \

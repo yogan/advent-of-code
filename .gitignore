@@ -2,3 +2,4 @@
 .lsp/
 .vscode/perl-lang/
 **/input.txt
+!templates/**/input.txt
