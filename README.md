@@ -1,8 +1,8 @@
 # [Advent of Code](https://adventofcode.com)
 
-## [2023](https://adventofcode.com/2023) (22/50 ✨)
+## [2023](https://adventofcode.com/2023) (24/50 ✨)
 
-**Languages: 5** *(Python (7), fish (1), Clojure (1), DDP (1), Zig (1))*
+**Languages: 5** *(Python (8), fish (1), Clojure (1), DDP (1), Zig (1))*
 
 - [Day 01](https://adventofcode.com/2023/day/1) ⭐⭐ in
   [fish](2023/day-01/day01.fish)
@@ -38,6 +38,12 @@
 - [Day 11](https://adventofcode.com/2023/day/11) ⭐⭐ in
   [Python](2023/day-11/day11.py)
   - space math 🌌
+- [Day 12](https://adventofcode.com/2023/day/12) ⭐⭐ in
+  [Python](2023/day-12/day12.py)
+  - part 1 initially brute force generating valid patterns (with some
+    optimizations)
+  - part 2 complete rewrite: recursive count of valid patterns with
+    memoization (took some inspiration for this…) 🤯
  
 ## [2022](https://adventofcode.com/2022) (46/50 ✨)
 
