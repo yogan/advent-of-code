@@ -1,8 +1,8 @@
 # [Advent of Code](https://adventofcode.com)
 
-## [2023](https://adventofcode.com/2023) (24/50 ✨)
+## [2023](https://adventofcode.com/2023) (26/50 ✨)
 
-**Languages: 5** *(Python (8), fish (1), Clojure (1), DDP (1), Zig (1))*
+**Languages: 5** *(Python (9), fish (1), Clojure (1), DDP (1), Zig (1))*
 
 - [Day 01](https://adventofcode.com/2023/day/1) ⭐⭐ in
   [fish](2023/day-01/day01.fish)
@@ -39,11 +39,20 @@
   [Python](2023/day-11/day11.py)
   - space math 🌌
 - [Day 12](https://adventofcode.com/2023/day/12) ⭐⭐ in
-  [Python](2023/day-12/day12.py)
+  [Python](2023/day-12/day12.py) 🤯
   - part 1 initially brute force generating valid patterns (with some
     optimizations)
   - part 2 complete rewrite: recursive count of valid patterns with
-    memoization (took some inspiration for this…) 🤯
+    memoization (took some inspiration for this…)
+ - [Day 13](https://adventofcode.com/2023/day/13) ⭐⭐ in
+   [Python](2023/day-13/day13.py) 🪞
+   - part 1 is just iterating over 2D arrays and comparing strings
+   - part 2 is brute forcing over the patterns with one entry swapped at each
+     position until a new row or column is found
+   - notable Python tricks:
+     - `list(zip(*arr))` transposes an array, so that columns can be treated as rows
+     - a [`for` loop can have an `else` block](https://docs.python.org/3/tutorial/controlflow.html#break-and-continue-statements-and-else-clauses-on-loops);
+       this can be used t to `break` an outer loop
  
 ## [2022](https://adventofcode.com/2022) (46/50 ✨)
 
