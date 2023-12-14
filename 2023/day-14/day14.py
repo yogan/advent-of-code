@@ -49,20 +49,58 @@ def tilt_line_east(line):
 def tilt_east(lines):
     return [tilt_line_east(line) for line in lines]
 
+def tilt_west(lines):
+    return [list(reversed(tilt_line_east(list(reversed(line)))))
+            for line in lines]
+
 def tilt_north(lines):
     # rotation stuff is a bit expensive, but shifting east is so easy to code…
     lines_east = rotate_clockwise(lines)
     lines_east_tilted = tilt_east(lines_east)
     return rotate_counter_clockwise(lines_east_tilted)
 
-def score(lines):
-    sum = 0
+def tilt_south(lines):
+    lines_west = rotate_counter_clockwise(lines)
+    lines_west_tilted = tilt_east(lines_west)
+    return rotate_clockwise(lines_west_tilted)
+
+def total_load(lines):
+    load = 0
     H = len(lines)
     for i, line in enumerate(lines):
         factor = H - i
         rounded_rocks = [rock for rock in line if rock == "O"]
-        sum += len(rounded_rocks) * factor
-    return sum
+        load += len(rounded_rocks) * factor
+    return load
+
+def cycle(map):
+    map = tilt_north(map)
+    map = tilt_west(map)
+    map = tilt_south(map)
+    return tilt_east(map)
+
+def do_cycles(map):
+    cache = {}
+    cycle_offset = 0
+
+    LIMIT = 1_000_000_000
+
+    for i in range(LIMIT):
+        key = "".join(["".join(line) for line in map])
+        if key in cache:
+            map, cycle_offset = cache[key]
+            break
+        else:
+            map = cycle(map)
+            cache[key] = (map, i)
+
+    cycle_length = i - cycle_offset
+    left = (LIMIT - cycle_offset - 1) % cycle_length
+
+    for i in range(left):
+        map = cycle(map)
+
+    return map
 
 class TestDay14(unittest.TestCase):
     def test_tilt_line_east_sample(self):
@@ -106,15 +144,15 @@ class TestDay14(unittest.TestCase):
 
 def print_and_assert(part, expected, actual):
     print(f"Part {part}: {actual}{' (sample)' if is_sample else ''}")
-    assert actual == expected, f"{part} was {actual}, expected {expected}"
+    assert actual == expected, f"Part {part} was {actual}, expected {expected}"
 
 if __name__ == '__main__':
     unittest.main(exit=False)
     print()
 
     map = parse()
-    map_tilted_north = tilt_north(map)
-    part1 = score(map_tilted_north)
+    part1 = total_load(tilt_north(map))
+    part2 = total_load(do_cycles(map))
 
     print_and_assert(1, 136 if is_sample else 109345, part1)
-    # print_and_assert(2, 21756 if is_sample else 4978, part2(lines))
+    print_and_assert(2, 64 if is_sample else 112452, part2)

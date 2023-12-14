@@ -1,8 +1,8 @@
 # [Advent of Code](https://adventofcode.com)
 
-## [2023](https://adventofcode.com/2023) (26/50 ✨)
+## [2023](https://adventofcode.com/2023) (28/50 ✨)
 
-**Languages: 5** *(Python (9), fish (1), Clojure (1), DDP (1), Zig (1))*
+**Languages: 5** *(Python (10), fish (1), Clojure (1), DDP (1), Zig (1))*
 
 - [Day 01](https://adventofcode.com/2023/day/1) ⭐⭐ in
   [fish](2023/day-01/day01.fish)
@@ -53,6 +53,12 @@
      - `list(zip(*arr))` transposes an array, so that columns can be treated as rows
      - a [`for` loop can have an `else` block](https://docs.python.org/3/tutorial/controlflow.html#break-and-continue-statements-and-else-clauses-on-loops);
        this can be used t to `break` an outer loop
+ - [Day 14](https://adventofcode.com/2023/day/14) ⭐⭐ in
+   [Python](2023/day-14/day14.py) 📡
+   - part 1 is moving stuff around in arrays (rotating a 2D array helps so that
+     only one direction has to be implemented - shifting east is easiest,
+     as we can go line by line and within a line from left to right)
+   - part 2 is all about finding cycles and not messing up modulo calculations
  
 ## [2022](https://adventofcode.com/2022) (46/50 ✨)
 
