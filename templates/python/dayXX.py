@@ -42,7 +42,7 @@ class TestDayXX(unittest.TestCase):
 
 def print_and_assert(part, expected, actual):
     print(f"Part {part}: {actual}{' (sample)' if is_sample else ''}")
-    assert actual == expected, f"{part} was {actual}, expected {expected}"
+    assert actual == expected, f"Part {part} was {actual}, expected {expected}"
 
 if __name__ == '__main__':
     unittest.main(exit=False)
