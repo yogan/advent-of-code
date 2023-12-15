@@ -1,6 +1,8 @@
 # [Advent of Code](https://adventofcode.com)
 
-![CI tests](https://github.com/yogan/advent-of-code/actions/workflows/tests.yml/badge.svg)
+[![Docker image](https://github.com/yogan/advent-of-code/actions/workflows/build.yml/badge.svg)](https://github.com/yogan/advent-of-code/actions/workflows/build.yml)
+[![Solutions](https://github.com/yogan/advent-of-code/actions/workflows/test-solutions.yml/badge.svg)](https://github.com/yogan/advent-of-code/actions/workflows/test-solutions.yml)
+[![Templates](https://github.com/yogan/advent-of-code/actions/workflows/test-templates.yml/badge.svg)](https://github.com/yogan/advent-of-code/actions/workflows/test-templates.yml)
 
 ## [2023](https://adventofcode.com/2023) (30/50 ✨)
 
