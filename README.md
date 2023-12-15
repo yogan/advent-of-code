@@ -1,8 +1,8 @@
 # [Advent of Code](https://adventofcode.com)
 
-## [2023](https://adventofcode.com/2023) (28/50 ✨)
+## [2023](https://adventofcode.com/2023) (30/50 ✨)
 
-**Languages: 5** *(Python (10), fish (1), Clojure (1), DDP (1), Zig (1))*
+**Languages: 5** *(Python (11), fish (1), Clojure (1), DDP (1), Zig (1))*
 
 - [Day 01](https://adventofcode.com/2023/day/1) ⭐⭐ in
   [fish](2023/day-01/day01.fish)
@@ -59,6 +59,9 @@
      only one direction has to be implemented - shifting east is easiest,
      as we can go line by line and within a line from left to right)
    - part 2 is all about finding cycles and not messing up modulo calculations
+ - [Day 15](https://adventofcode.com/2023/day/15) ⭐⭐ in
+   [Python](2023/day-15/day15.py) 🔍
+   - straightforward coding, one of the easiest days so far
  
 ## [2022](https://adventofcode.com/2022) (46/50 ✨)
 
