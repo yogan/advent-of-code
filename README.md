@@ -1,5 +1,7 @@
 # [Advent of Code](https://adventofcode.com)
 
+![CI tests](https://github.com/yogan/advent-of-code/actions/workflows/tests.yml/badge.svg)
+
 ## [2023](https://adventofcode.com/2023) (30/50 ✨)
 
 **Languages: 5** *(Python (11), fish (1), Clojure (1), DDP (1), Zig (1))*
