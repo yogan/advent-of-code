@@ -13,39 +13,16 @@ def parse():
 
 def get_directions(value, dir):
     if value == '.':
-        return dir
-    elif value == '/':
-        if dir == 'R':
-            return ['U']
-        elif dir == 'L':
-            return ['D']
-        elif dir == 'U':
-            return ['R']
-        elif dir == 'D':
-            return ['L']
-        else:
-            assert False, f"Unknown direction {dir}"
-    elif value == '\\':
-        if dir == 'R':
-            return ['D']
-        elif dir == 'L':
-            return ['U']
-        elif dir == 'U':
-            return ['L']
-        elif dir == 'D':
-            return ['R']
-        else:
-            assert False, f"Unknown direction {dir}"
-    elif value == '|':
-        if dir == 'R' or dir == 'L':
-            return ['U', 'D']
-        return dir
-    elif value == '-':
-        if dir == 'U' or dir == 'D':
-            return ['R', 'L']
-        return dir
-    else:
-        assert False, f"Unknown value {value}"
+        return [dir]
+
+    table = {
+        '/':  {'R': ['U'],      'L': ['D'],      'U': ['R'],      'D': ['L']},
+        '\\': {'R': ['D'],      'L': ['U'],      'U': ['L'],      'D': ['R']},
+        '|':  {'R': ['U', 'D'], 'L': ['U', 'D'], 'U': ['U'],      'D': ['D']},
+        '-':  {'R': ['R'],      'L': ['L'],      'U': ['R', 'L'], 'D': ['R', 'L']}
+    }
+
+    return table[value][dir]
 
 def move(H, W, row, col, dir):
     if dir == 'R' and col < W - 1:
