@@ -1,6 +1,6 @@
 # [Advent of Code](https://adventofcode.com)
 
-[![Docker image](https://github.com/yogan/advent-of-code/actions/workflows/build.yml/badge.svg)](https://github.com/yogan/advent-of-code/actions/workflows/build.yml)
+[![Docker image](https://github.com/yogan/advent-of-code/actions/workflows/build-docker-image.yml/badge.svg)](https://github.com/yogan/advent-of-code/actions/workflows/build.yml)
 [![Solutions](https://github.com/yogan/advent-of-code/actions/workflows/test-solutions.yml/badge.svg)](https://github.com/yogan/advent-of-code/actions/workflows/test-solutions.yml)
 [![Templates](https://github.com/yogan/advent-of-code/actions/workflows/test-templates.yml/badge.svg)](https://github.com/yogan/advent-of-code/actions/workflows/test-templates.yml)
 

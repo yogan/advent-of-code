@@ -12,7 +12,7 @@ env:
   IMAGE_NAME: yogans-advent-of-code
 
 jobs:
-  push:
+  build-and-push:
     runs-on: ubuntu-latest
 
     permissions:
@@ -22,15 +22,18 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 2 # for the Dockerfile diff below
 
-      - name: Build image
-        run: docker build . --file Dockerfile --tag $IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"
+      - name: Check Dockerfile changes
+        id: dockerfile-check
+        run: echo "dockerfile-changed=$(git diff --name-only ${{ github.sha }}^ ${{ github.sha }} | grep -c "Dockerfile")" >> $GITHUB_OUTPUT
 
-      - name: Log in to registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
-
-      - name: Push image
+      - name: Build and push image
+        if: steps.dockerfile-check.outputs.dockerfile-changed != '0'
         run: |
+          docker build . --file Dockerfile --tag $IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
           IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
