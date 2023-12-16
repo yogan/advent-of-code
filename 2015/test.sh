@@ -25,12 +25,15 @@ for day_dir in "${day_dirs[@]}"; do
         fi
     fi
 
+    start=$(date +%s.%N)
     if ! ./test-ci.sh; then
         echo "FAILED"
         exit_code=1
         cd "$cwd" || exit 1
     else
-        echo "OK"
+        end=$(date +%s.%N)
+        runtime=$(printf "%4.0f" "$(echo "($end - $start) * 1000" | bc)")
+        echo "OK ($runtime ms)"
     fi
 
     cd "$cwd" || exit 1

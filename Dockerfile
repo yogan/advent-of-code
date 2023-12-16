@@ -1,7 +1,7 @@
 FROM ubuntu:23.10
 
 RUN apt-get update && apt-get install -y \
-    curl unzip locales build-essential \
+    bc curl unzip locales build-essential \
     fish leiningen pypy3
 
 # Bun - https://bun.sh/
