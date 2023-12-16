@@ -1,12 +1,19 @@
 FROM ubuntu:23.10
 
 RUN apt-get update && apt-get install -y \
-    bc curl unzip locales build-essential \
+    bc curl ca-certificates gnupg unzip locales build-essential \
     fish leiningen pypy3
 
 # Bun - https://bun.sh/
 RUN curl -fsSL https://bun.sh/install | bash
 ENV PATH="/root/.bun/bin:${PATH}"
+
+# Node.js - https://github.com/nodesource/distributions/?tab=readme-ov-file#installation-instructions
+RUN mkdir -p /etc/apt/keyrings && \
+    curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg && \
+    echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_21.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list && \
+    apt-get update && \
+    apt-get install -y nodejs
 
 # DDP - https://ddp.le0n.dev/Bedienungsanleitung/DE/Einstieg/Installation
 RUN cd /usr/local/share/ && \
