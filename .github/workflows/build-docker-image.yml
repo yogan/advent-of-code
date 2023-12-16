@@ -23,14 +23,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2 # for the Dockerfile diff below
+          fetch-depth: 2 # for the git diff check below
 
-      - name: Check Dockerfile changes
-        id: dockerfile-check
-        run: echo "dockerfile-changed=$(git diff --name-only ${{ github.sha }}^ ${{ github.sha }} | grep -c "Dockerfile")" >> $GITHUB_OUTPUT
+      - name: Check git changes
+        id: git-diff-check
+        run: echo "changes=$(git diff --name-only ${{ github.sha }}^ ${{ github.sha }} | grep -c "^Dockerfile$")" >> $GITHUB_OUTPUT
 
       - name: Build and push image
-        if: steps.dockerfile-check.outputs.dockerfile-changed != '0'
+        if: steps.git-diff-check.outputs.changes != '0'
         run: |
           docker build . --file Dockerfile --tag $IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin

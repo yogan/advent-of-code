@@ -16,6 +16,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 2 # for the git diff check below
+
+      - name: Check git changes
+        id: git-diff-check
+        # TODO: also check for script changes (easier if moved to scripts/)
+        run: echo "changes=$(git diff --name-only ${{ github.sha }}^ ${{ github.sha }} | grep -c "^templates/")" >> $GITHUB_OUTPUT
 
       - name: Test templates
+        if: steps.git-diff-check.outputs.changes != '0'
         run: ./test-templates.sh
