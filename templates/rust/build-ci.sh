@@ -1,7 +1,6 @@
 #!/bin/sh
-TEST_LOG="test_log.txt"
-SAMPLE_LOG="sample_log.txt"
-RUN_LOG="run_log.txt"
+RUSTUP_LOG="rustup_log.txt"
+BUILD_LOG="build_log.txt"
 
 execute_command() {
     command="$1"
@@ -17,8 +16,10 @@ execute_command() {
     fi
 }
 
-execute_command "./test.sh" "$TEST_LOG"
-execute_command "./sample.sh" "$SAMPLE_LOG"
-execute_command "./run.sh" "$RUN_LOG"
+# Sometimes rustup complains that no default toolchain is configured.
+# Could be caused by network issues, see: https://stackoverflow.com/a/46864309
+execute_command "rustup default stable" "$RUSTUP_LOG"
 
-rm -f "$TEST_LOG" "$SAMPLE_LOG" "$RUN_LOG"
+execute_command "cargo build" "$BUILD_LOG"
+
+rm -f "$RUSTUP_LOG" "$BUILD_LOG"
