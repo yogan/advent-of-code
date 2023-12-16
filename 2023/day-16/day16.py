@@ -1,6 +1,12 @@
-import sys
+import sys, time, curses
 from collections import defaultdict
+from copy import deepcopy
 
+if len(sys.argv) == 3 and "--visualize" in sys.argv:
+    sys.argv.remove("--visualize")
+    visualize = True
+else:
+    visualize = False
 if len(sys.argv) != 2:
     print("Missing input file.")
     sys.exit(1)
@@ -35,14 +41,71 @@ def move(H, W, row, col, dir):
 
     return None
 
-def pewpew(layout, start):
+def map_char(dir):
+    table = {
+        '.': (' ', 0),
+        '/': ('╱', 118),
+       '\\': ('╲', 118),
+        '|': ('│', 118),
+        '-': ('─', 118),
+        'R': ('→', 198),
+        'L': ('←', 198),
+        'U': ('↑', 198),
+        'D': ('↓', 198),
+    }
+    return table[dir]
+
+def visualize_laser():
+    stdscr = curses.initscr()
+    curses.noecho()
+    curses.cbreak()
+    curses.curs_set(False)
+    stdscr.clear()
+    stdscr.keypad(True)
+
+    curses.start_color()
+    curses.use_default_colors()
+    for i in range(0, curses.COLORS):
+        curses.init_pair(i + 1, i, -1)
+
+    cropped_layout = [row[:int(curses.COLS)] for row in layout[:curses.LINES]]
+    pewpew(cropped_layout, (0, 0, 'R'), stdscr)
+
+    # wait for keypress
+    while True:
+        c = stdscr.getch()
+        break
+
+    stdscr.keypad(False)
+    curses.nocbreak()
+    curses.curs_set(True)
+    curses.echo()
+    # curses.endwin() # this clears the screen
+
+def pewpew(layout, start, stdscr=None):
     H, W = len(layout), len(layout[0])
     visited = set()
     visited.add(start)
     queue = [start]
 
+    if stdscr:
+        c = 0
+        for row in range(H):
+            for col in range(W):
+                char, color = map_char(layout[row][col])
+                stdscr.addstr(row, col, char, curses.color_pair(color))
+        stdscr.refresh()
+        time.sleep(2)
+
     while queue:
         row, col, dir = queue.pop(0)
+
+        if stdscr:
+            char, color = map_char(dir)
+            stdscr.addstr(row, col, char, curses.color_pair(color))
+            stdscr.refresh()
+            time.sleep(0.05 if is_sample else 0.005)
+
         next_dirs = get_directions(layout[row][col], dir)
         for next_dir in next_dirs:
             next = move(H, W, row, col, next_dir)
@@ -69,8 +132,12 @@ def print_and_assert(part, expected, actual):
 
 if __name__ == '__main__':
     layout = parse()
-    starts = start_positions(layout)
 
+    if visualize:
+        visualize_laser()
+        exit()
+
+    starts = start_positions(layout)
     energy_levels = [pewpew(layout, start) for start in starts]
     part1 = energy_levels[0]
     part2 = max(energy_levels)
