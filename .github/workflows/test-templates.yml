@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  test-solutions:
+  test-templates:
     runs-on: ubuntu-latest
     container: ghcr.io/yogan/yogans-advent-of-code:latest
 
