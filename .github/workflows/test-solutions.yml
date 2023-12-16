@@ -9,23 +9,35 @@ on:
       - main
 
 jobs:
-  test-solutions:
+  check-changes:
     runs-on: ubuntu-latest
-    container: ghcr.io/yogan/yogans-advent-of-code:latest
+
+    outputs:
+      changes: ${{ steps.git-diff-check.outputs.changes }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2 # for the git diff check below
+          fetch-depth: 2
 
       - name: Check git changes
         id: git-diff-check
         # TODO: also check for script changes (easier if moved to scripts/)
         run: echo "changes=$(git diff --name-only ${{ github.sha }}^ ${{ github.sha }} | grep -c "^20")" >> $GITHUB_OUTPUT
 
+  test-solutions:
+    runs-on: ubuntu-latest
+    container: ghcr.io/yogan/yogans-advent-of-code:latest
+
+    needs: check-changes
+    if: ${{ needs.check-changes.outputs.changes != '0' }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Test solutions
-        if: steps.git-diff-check.outputs.changes != '0'
         env:
           AOC_SESSION: ${{ secrets.AOC_SESSION }}
         run: ./test-solutions.sh

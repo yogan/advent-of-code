@@ -23,7 +23,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2 # for the git diff check below
+          fetch-depth: 2
 
       - name: Check git changes
         id: git-diff-check
