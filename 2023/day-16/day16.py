@@ -1,11 +1,10 @@
-import sys, unittest
+import sys
 from collections import defaultdict
 
 if len(sys.argv) != 2:
     print("Missing input file.")
     sys.exit(1)
 filename  = sys.argv[1]
-sys.argv  = sys.argv[:1] # strip args, they scare the unittest module
 is_sample = filename == "sample.txt"
 
 def parse():
@@ -36,9 +35,8 @@ def move(H, W, row, col, dir):
 
     return None
 
-def pewpew(layout):
+def pewpew(layout, start):
     H, W = len(layout), len(layout[0])
-    start = (0, 0, 'R')
     visited = set()
     visited.add(start)
     queue = [start]
@@ -52,7 +50,18 @@ def pewpew(layout):
                 visited.add(next)
                 queue.append(next)
 
-    return set([(row, col) for row, col, _ in visited])
+    return len(set([(row, col) for row, col, _ in visited]))
+
+def start_positions(layout):
+    H, W = len(layout), len(layout[0])
+
+    top_row =    [(    0, col,   'D') for col in range(W)]
+    bottom_row = [(H - 1, col,   'U') for col in range(W)]
+    left_col =   [(  row, 0,     'R') for row in range(H)]
+    right_col =  [(  row, W - 1, 'L') for row in range(H)]
+
+    # starting with left_col so that part1 start is the first entry
+    return [*left_col, *top_row, *bottom_row, *right_col]
 
 def print_and_assert(part, expected, actual):
     print(f"Part {part}: {actual}{' (sample)' if is_sample else ''}")
@@ -60,9 +69,11 @@ def print_and_assert(part, expected, actual):
 
 if __name__ == '__main__':
     layout = parse()
+    starts = start_positions(layout)
 
-    energized_tiles = pewpew(layout)
-    part1 = len(energized_tiles)
+    energy_levels = [pewpew(layout, start) for start in starts]
+    part1 = energy_levels[0]
+    part2 = max(energy_levels)
 
     print_and_assert(1, 46 if is_sample else 8551, part1)
-    # print_and_assert(2, 21756 if is_sample else 4978, part2(lines))
+    print_and_assert(2, 51 if is_sample else 8754, part2)

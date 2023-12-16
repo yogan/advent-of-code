@@ -4,9 +4,9 @@
 [![Solutions](https://github.com/yogan/advent-of-code/actions/workflows/test-solutions.yml/badge.svg)](https://github.com/yogan/advent-of-code/actions/workflows/test-solutions.yml)
 [![Templates](https://github.com/yogan/advent-of-code/actions/workflows/test-templates.yml/badge.svg)](https://github.com/yogan/advent-of-code/actions/workflows/test-templates.yml)
 
-## [2023](https://adventofcode.com/2023) (30/50 ✨)
+## [2023](https://adventofcode.com/2023) (32/50 ✨)
 
-**Languages: 5** *(Python (11), fish (1), Clojure (1), DDP (1), Zig (1))*
+**Languages: 5** *(Python (12), fish (1), Clojure (1), DDP (1), Zig (1))*
 
 - [Day 01](https://adventofcode.com/2023/day/1) ⭐⭐ in
   [fish](2023/day-01/day01.fish)
@@ -56,7 +56,7 @@
    - notable Python tricks:
      - `list(zip(*arr))` transposes an array, so that columns can be treated as rows
      - a [`for` loop can have an `else` block](https://docs.python.org/3/tutorial/controlflow.html#break-and-continue-statements-and-else-clauses-on-loops);
-       this can be used t to `break` an outer loop
+       this can be used to `break` an outer loop
  - [Day 14](https://adventofcode.com/2023/day/14) ⭐⭐ in
    [Python](2023/day-14/day14.py) 📡
    - part 1 is moving stuff around in arrays (rotating a 2D array helps so that
@@ -66,6 +66,11 @@
  - [Day 15](https://adventofcode.com/2023/day/15) ⭐⭐ in
    [Python](2023/day-15/day15.py) 🔍
    - straightforward coding, one of the easiest days so far
+ - [Day 16](https://adventofcode.com/2023/day/16) ⭐⭐ in
+   [Python](2023/day-16/day16.py) 🌋
+   - part 1 is BFS (queue work list + visited set)
+   - part 2 is brute-force of part 1 with all starting positions (not that many,
+     run-time is around 1.5 sec)
  
 ## [2022](https://adventofcode.com/2022) (46/50 ✨)
 
