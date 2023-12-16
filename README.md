@@ -6,7 +6,7 @@
 
 ## [2023](https://adventofcode.com/2023) (32/50 ✨)
 
-**Languages: 5** *(Python (12), fish (1), Clojure (1), DDP (1), Zig (1))*
+**Languages: 5** *12 × Python, 1 × fish, 1 × Clojure, 1 × DDP, 1 × Zig*
 
 - [Day 01](https://adventofcode.com/2023/day/1) ⭐⭐ in
   [fish](2023/day-01/day01.fish)
