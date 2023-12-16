@@ -71,6 +71,7 @@
    - part 1 is BFS (queue work list + visited set)
    - part 2 is brute-force of part 1 with all starting positions (not that many,
      run-time is around 1.5 sec)
+   - [terminal visualization using curses](2023/day-16/README.md)
  
 ## [2022](https://adventofcode.com/2022) (46/50 ✨)
 

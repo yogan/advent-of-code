@@ -55,6 +55,23 @@ def map_char(dir):
     }
     return table[dir]
 
+def delay(steps):
+    if steps < 5:
+        factor = 0.3
+    elif steps < 10:
+        factor = 0.2
+    elif steps < 20:
+        factor = 0.1
+    elif steps < 40:
+        factor = 0.05
+    elif steps < 100:
+        factor = 0.025
+    elif steps < 500:
+        factor = 0.0125
+    else:
+        factor = 0.008
+    time.sleep(factor)
+
 def visualize_laser():
     stdscr = curses.initscr()
     curses.noecho()
@@ -95,7 +112,8 @@ def pewpew(layout, start, stdscr=None):
                 char, color = map_char(layout[row][col])
                 stdscr.addstr(row, col, char, curses.color_pair(color))
         stdscr.refresh()
-        time.sleep(2)
+        time.sleep(1)
+        steps = 0
 
     while queue:
         row, col, dir = queue.pop(0)
@@ -104,7 +122,8 @@ def pewpew(layout, start, stdscr=None):
             char, color = map_char(dir)
             stdscr.addstr(row, col, char, curses.color_pair(color))
             stdscr.refresh()
-            time.sleep(0.05 if is_sample else 0.005)
+            delay(steps)
+            steps += 1
 
         next_dirs = get_directions(layout[row][col], dir)
         for next_dir in next_dirs:
