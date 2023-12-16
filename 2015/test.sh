@@ -6,7 +6,8 @@ year=$(basename "$cwd")
 mapfile -t day_dirs < <(find . -mindepth 1 -maxdepth 1 -type d -iname 'day*' -printf '%f\n' | sort)
 
 for day_dir in "${day_dirs[@]}"; do
-    echo -n "$year/$day_dir… "
+    lang=$(<"$day_dir/.language")
+    echo -n "$year/$day_dir ($lang)… "
 
     if [ ! -x "$day_dir/test-ci.sh" ]; then
         echo "SKIPPED (no test-ci.sh found)"

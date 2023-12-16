@@ -5,8 +5,10 @@ cwd=$(pwd)
 mapfile -t template_dirs < <(find templates/ -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort)
 
 for dir in "${template_dirs[@]}"; do
-    echo -n "Testing template for $dir… "
     cd "templates/$dir" || exit 1
+
+    lang=$(<.language)
+    echo -n "Testing $lang template… "
 
     # optional build step
     if [ -x "build-ci.sh" ]; then
