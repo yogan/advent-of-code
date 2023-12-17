@@ -87,7 +87,7 @@ def delay(steps):
         factor = 0.008
     time.sleep(factor)
 
-def visualize_laser():
+def init_curses(layout):
     stdscr = curses.initscr()
     curses.noecho()
     curses.cbreak()
@@ -105,10 +105,14 @@ def visualize_laser():
         curses.init_pair(1 + i + DC, DIR_COLORS[i], blue_bg)
     curses.init_pair(MC, MIRRORS_COLOR, black_bg)
 
+    return stdscr
+
+def start_visualization(stdscr, layout):
     cropped_layout = [row[:int(curses.COLS)] for row in layout[:curses.LINES]]
     pewpew(cropped_layout, (0, 0, 'R'), stdscr)
 
-    # wait for keypress
+def cleanup_curses(stdscr):
+    # wait for key press
     while True:
         c = stdscr.getch()
         break
@@ -119,6 +123,22 @@ def visualize_laser():
     curses.echo()
     # curses.endwin() # this clears the screen
 
+def visualize_mirrors(stdscr, H, W, layout):
+    c = 0
+    for row in range(H):
+        for col in range(W):
+            char = map_mirrors(layout[row][col])
+            stdscr.addstr(row, col, char, mirror_color())
+    stdscr.refresh()
+    time.sleep(1)
+
+def visualize_laser(stdscr, row, col, dir, steps, layout):
+    on_mirror = layout[row][col] in "/\\-|"
+    color = laser_color(steps, on_mirror)
+    stdscr.addstr(row, col, map_dirs(dir), color)
+    stdscr.refresh()
+    delay(steps)
+
 def pewpew(layout, start, stdscr=None):
     H, W = len(layout), len(layout[0])
     visited = set()
@@ -126,24 +146,14 @@ def pewpew(layout, start, stdscr=None):
     queue = [start]
 
     if stdscr:
-        c = 0
-        for row in range(H):
-            for col in range(W):
-                char = map_mirrors(layout[row][col])
-                stdscr.addstr(row, col, char, mirror_color())
-        stdscr.refresh()
-        time.sleep(1)
+        visualize_mirrors(stdscr, H, W, layout)
         steps = 0
 
     while queue:
         row, col, dir = queue.pop(0)
 
         if stdscr:
-            on_mirror = layout[row][col] in "/\\-|"
-            color = laser_color(steps, on_mirror)
-            stdscr.addstr(row, col, map_dirs(dir), color)
-            stdscr.refresh()
-            delay(steps)
+            visualize_laser(stdscr, row, col, dir, steps, layout)
             steps += 1
 
         next_dirs = get_directions(layout[row][col], dir)
@@ -163,7 +173,7 @@ def start_positions(layout):
     left_col =   [(  row, 0,     'R') for row in range(H)]
     right_col =  [(  row, W - 1, 'L') for row in range(H)]
 
-    # starting with left_col so that part1 start is the first entry
+    # starting with left_col so that part 1 start is the first entry
     return [*left_col, *top_row, *bottom_row, *right_col]
 
 def print_and_assert(part, expected, actual):
@@ -174,7 +184,9 @@ if __name__ == '__main__':
     layout = parse()
 
     if visualize:
-        visualize_laser()
+        stdscr = init_curses(layout)
+        start_visualization(stdscr, layout)
+        cleanup_curses()
         exit()
 
     starts = start_positions(layout)
