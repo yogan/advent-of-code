@@ -90,9 +90,10 @@ def visualize_laser():
     curses.use_default_colors()
     no_bg = -1
     black_bg = 0
+    blue_bg = 4
     for i in range(0, DC):
         curses.init_pair(i,      DIR_COLORS[i], no_bg)
-        curses.init_pair(i + DC, DIR_COLORS[i], black_bg)
+        curses.init_pair(i + DC, DIR_COLORS[i], blue_bg)
     curses.init_pair(MC, MIRRORS_COLOR, black_bg)
 
     cropped_layout = [row[:int(curses.COLS)] for row in layout[:curses.LINES]]
