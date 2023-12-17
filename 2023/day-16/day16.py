@@ -109,19 +109,20 @@ def init_curses(layout):
 
 def start_visualization(stdscr, layout):
     cropped_layout = [row[:int(curses.COLS)] for row in layout[:curses.LINES]]
-    pewpew(cropped_layout, (0, 0, 'R'), stdscr)
 
-def cleanup_curses(stdscr):
+    pewpew(cropped_layout, stdscr=stdscr)
+
     # wait for key press
     while True:
         c = stdscr.getch()
         break
 
+def cleanup_curses(stdscr):
     stdscr.keypad(False)
     curses.nocbreak()
     curses.curs_set(True)
     curses.echo()
-    # curses.endwin() # this clears the screen
+    curses.endwin()
 
 def visualize_mirrors(stdscr, H, W, layout):
     c = 0
@@ -139,7 +140,7 @@ def visualize_laser(stdscr, row, col, dir, steps, layout):
     stdscr.refresh()
     delay(steps)
 
-def pewpew(layout, start, stdscr=None):
+def pewpew(layout, start=(0, 0, 'R'), stdscr=None):
     H, W = len(layout), len(layout[0])
     visited = set()
     visited.add(start)
@@ -185,9 +186,8 @@ if __name__ == '__main__':
 
     if visualize:
         stdscr = init_curses(layout)
-        start_visualization(stdscr, layout)
-        cleanup_curses()
-        exit()
+        curses.wrapper(lambda stdscr: start_visualization(stdscr, layout))
+        cleanup_curses(stdscr)
 
     starts = start_positions(layout)
     energy_levels = [pewpew(layout, start) for start in starts]
