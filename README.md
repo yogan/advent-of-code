@@ -4,9 +4,9 @@
 [![Solutions](https://github.com/yogan/advent-of-code/actions/workflows/test-solutions.yml/badge.svg)](https://github.com/yogan/advent-of-code/actions/workflows/test-solutions.yml)
 [![Templates](https://github.com/yogan/advent-of-code/actions/workflows/test-templates.yml/badge.svg)](https://github.com/yogan/advent-of-code/actions/workflows/test-templates.yml)
 
-## [2023](https://adventofcode.com/2023) (32/50 ✨)
+## [2023](https://adventofcode.com/2023) (34/50 ✨)
 
-**Languages: 5** *12 × Python, 1 × fish, 1 × Clojure, 1 × DDP, 1 × Zig*
+**Languages: 5** *13 × Python, 1 × fish, 1 × Clojure, 1 × DDP, 1 × Zig*
 
 - [Day 01](https://adventofcode.com/2023/day/1) ⭐⭐ in
   [fish](2023/day-01/day01.fish)
@@ -72,6 +72,16 @@
    - part 2 is brute-force of part 1 with all starting positions (not that many,
      run-time is around 1.5 sec)
    - [terminal visualization using curses](2023/day-16/README.md)
+ - [Day 17](https://adventofcode.com/2023/day/17) ⭐⭐ in
+   [Python](2023/day-17/day17.py) 🫕
+   - part 1: Dijkstra with priority queue (`heapq`); the tricky part is to
+     include both direction and steps already taken in that direction into the
+     queue and seen set
+   - part 2: making max steps configurable and adding a min steps in same
+     direction was easy, but everything broke because I started with a single
+     entry in the queue with a fake direction of `(0, 0)`, which messed up the
+     minimum step count; solved by adding the start twice, with right and down
+     directions (`(0, 1)` and `(1, 0)`)
  
 ## [2022](https://adventofcode.com/2022) (46/50 ✨)
 

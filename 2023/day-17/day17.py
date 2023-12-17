@@ -5,18 +5,17 @@ if len(sys.argv) != 2:
     print("Missing input file.")
     sys.exit(1)
 filename  = sys.argv[1]
-sys.argv  = sys.argv[:1] # strip args, they scare the unittest module
 is_sample = filename == "sample.txt"
 
 def parse():
     return [list(map(int, list(x.strip()))) for x in open(filename).readlines()]
 
-def dijkstra(map):
+def dijkstra(map, min_steps, max_steps):
     ROWS, COLS = len(map), len(map[0])
     end = (ROWS - 1, COLS - 1)
 
-    # (heat, row, col, dr, dc, steps)
-    queue = [(0, 0, 0, 0, 0, 0)]
+    # We need two start positions, so that the direction limits for part 2 work
+    queue = [(0, 0, 0, 0, 1, 0), (0, 0, 0, 1, 0, 0)]
     seen = set()
 
     while queue:
@@ -41,12 +40,17 @@ def dijkstra(map):
             if (cur_dr, cur_dc) == (-dr, -dc):
                 continue
 
-            # no > 3 steps in the same direction
             same_dir = (cur_dr, cur_dc) == (dr, dc)
-            if steps == 3 and same_dir:
+
+            # at least min_steps steps in the same direction
+            if min_steps and steps < min_steps and not same_dir:
                 continue
 
-            next_heat = heat + map[r][c]
+            # no more than max_steps steps in the same direction
+            if steps >= max_steps and same_dir:
+                continue
+
+            next_heat  = heat + map[r][c]
             next_steps = steps + 1 if same_dir else 1
 
             heappush(queue, (next_heat, r, c, dr, dc, next_steps))
@@ -60,7 +64,5 @@ def print_and_assert(part, expected, actual):
 if __name__ == '__main__':
     map = parse()
 
-    part1 = dijkstra(map)
-
-    print_and_assert(1, 102 if is_sample else 936, part1)
-    # print_and_assert(2, 21756 if is_sample else 4978, part2(lines))
+    print_and_assert(1, 102 if is_sample else  936, dijkstra(map, None, 3))
+    print_and_assert(2,  94 if is_sample else 1157, dijkstra(map, 4, 10))
