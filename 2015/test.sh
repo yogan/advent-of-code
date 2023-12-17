@@ -18,7 +18,7 @@ for day_dir in "${day_dirs[@]}"; do
 
     if [ ! -f "input.txt" ]; then
         day=${day_dir//day-/}
-        if ! ../../get-input.sh "$year" "$day" 2>/dev/null; then
+        if ! ../../scripts/get-input.sh "$year" "$day" 2>/dev/null; then
             echo "FAILED (could not download input)"
             exit_code=1
             cd "$cwd" || exit 1

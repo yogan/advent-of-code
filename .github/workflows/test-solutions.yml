@@ -23,8 +23,7 @@ jobs:
 
       - name: Check git changes
         id: git-diff-check
-        # TODO: also check for script changes (easier if moved to scripts/)
-        run: echo "changes=$(git diff --name-only ${{ github.sha }}^ ${{ github.sha }} | grep -c "^20")" >> $GITHUB_OUTPUT
+        run: echo "changes=$(git diff --name-only ${{ github.sha }}^ ${{ github.sha }} | grep -c "^\(scripts/\|20\)")" >> $GITHUB_OUTPUT
 
   test-solutions:
     runs-on: ubuntu-latest
@@ -40,4 +39,4 @@ jobs:
       - name: Test solutions
         env:
           AOC_SESSION: ${{ secrets.AOC_SESSION }}
-        run: ./test-solutions.sh
+        run: ./scripts/test-solutions.sh
