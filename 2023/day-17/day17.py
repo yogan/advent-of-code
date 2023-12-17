@@ -22,6 +22,9 @@ def dijkstra(map, min_steps, max_steps):
         heat, row, col, cur_dr, cur_dc, steps = heappop(queue)
 
         if (row, col) == end:
+            if min_steps:
+                # NOTE: I think I just got lucky here…
+                assert steps >= min_steps, f"steps {steps} < {min_steps} (min)"
             return heat
 
         if (row, col, cur_dr, cur_dc, steps) in seen:
