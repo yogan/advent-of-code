@@ -87,7 +87,7 @@
 
 **Languages: 13** *(fish, JavaScript, TypeScript, Perl, Ruby, C, Java, Fortran, Nim,
 Lua, C#, Python, Haskell)*  
-**Ideas for 2023:** see [languages.md](languages.md)
+**Ideas for 2023:** see [2022/languages.md](2022/languages.md)
 
 - [Day 01](https://adventofcode.com/2022/day/1) ⭐⭐ in
   [fish](2022/day-01/day01.fish)
