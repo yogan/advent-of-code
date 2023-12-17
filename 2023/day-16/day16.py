@@ -41,17 +41,19 @@ def move(H, W, row, col, dir):
 
     return None
 
-# HINT: numbers from xterm-colortest need to be increased by 1
+# HINT: use xterm-colortest script to get color numbers
 
-# MIRRORS_COLOR = 34 # deep blue
-# MIRRORS_COLOR = 104 # blueish gray
-MIRRORS_COLOR = 64
+# DIR_COLORS = range(196, 220) # maaany colors (red/orange/yellow)
+# DIR_COLORS = range(196, 202) # red to pink
+# DIR_COLORS = [196, 197, 198, 160, 161, 162] # reds, very similar
+# DIR_COLORS = [112, 113, 118, 119] # bright greens, very similar
+DIR_COLORS = list(range(112, 117)) + list(range(123, 117, -1)) # green/blue gradient
+DC = len(DIR_COLORS)
 
-# DIR_COLORS = range(197, 221) # maaany colors (red/orange/yellow)
-# DIR_COLORS = range(197, 203) # red to pink
-# DIR_COLORS = [197, 198, 199, 161, 162, 163] # reds, very similar
-# DIR_COLORS = [113, 114, 119, 120] # bright greens, very similar
-DIR_COLORS = list(range(113, 118)) + list(range(124, 118, -1)) # green/blue gradient
+# MIRRORS_COLOR = 33 # deep blue
+# MIRRORS_COLOR = 103 # blueish gray
+MIRRORS_COLOR = 63
+MC = 2 * DC
 
 def map_mirrors(char):
     return char.translate(char.maketrans("/\\|-.", "╱╲│─ "))
@@ -86,8 +88,12 @@ def visualize_laser():
 
     curses.start_color()
     curses.use_default_colors()
-    for i in range(0, curses.COLORS):
-        curses.init_pair(i + 1, i, -1)
+    no_bg = -1
+    black_bg = 0
+    for i in range(0, DC):
+        curses.init_pair(i,      DIR_COLORS[i], no_bg)
+        curses.init_pair(i + DC, DIR_COLORS[i], black_bg)
+    curses.init_pair(MC, MIRRORS_COLOR, black_bg)
 
     cropped_layout = [row[:int(curses.COLS)] for row in layout[:curses.LINES]]
     pewpew(cropped_layout, (0, 0, 'R'), stdscr)
@@ -113,8 +119,9 @@ def pewpew(layout, start, stdscr=None):
         c = 0
         for row in range(H):
             for col in range(W):
-                stdscr.addstr(row, col, map_mirrors(layout[row][col]),
-                              curses.color_pair(MIRRORS_COLOR))
+                char = map_mirrors(layout[row][col])
+                color = None if char == ' ' else curses.color_pair(MC)
+                stdscr.addstr(row, col, char, color)
         stdscr.refresh()
         time.sleep(1)
         steps = 0
@@ -123,8 +130,11 @@ def pewpew(layout, start, stdscr=None):
         row, col, dir = queue.pop(0)
 
         if stdscr:
-            color = DIR_COLORS[steps % len(DIR_COLORS)]
-            stdscr.addstr(row, col, map_dirs(dir), curses.color_pair(color))
+            if layout[row][col] in "/\\-|":
+                color = curses.color_pair(steps % DC + DC)
+            else:
+                color = curses.color_pair(steps % DC)
+            stdscr.addstr(row, col, map_dirs(dir), color)
             stdscr.refresh()
             delay(steps)
             steps += 1
