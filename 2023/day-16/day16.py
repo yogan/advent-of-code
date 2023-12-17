@@ -41,8 +41,17 @@ def move(H, W, row, col, dir):
 
     return None
 
-COLOR_MIRRORS = 118
-COLOR_DIRS    = 198
+# HINT: numbers from xterm-colortest need to be increased by 1
+
+# MIRRORS_COLOR = 34 # deep blue
+# MIRRORS_COLOR = 104 # blueish gray
+MIRRORS_COLOR = 64
+
+# DIR_COLORS = range(197, 221) # maaany colors (red/orange/yellow)
+# DIR_COLORS = range(197, 203) # red to pink
+# DIR_COLORS = [197, 198, 199, 161, 162, 163] # reds, very similar
+# DIR_COLORS = [113, 114, 119, 120] # bright greens, very similar
+DIR_COLORS = list(range(113, 118)) + list(range(124, 118, -1)) # green/blue gradient
 
 def map_mirrors(char):
     return char.translate(char.maketrans("/\\|-.", "╱╲│─ "))
@@ -105,7 +114,7 @@ def pewpew(layout, start, stdscr=None):
         for row in range(H):
             for col in range(W):
                 stdscr.addstr(row, col, map_mirrors(layout[row][col]),
-                              curses.color_pair(COLOR_MIRRORS))
+                              curses.color_pair(MIRRORS_COLOR))
         stdscr.refresh()
         time.sleep(1)
         steps = 0
@@ -114,7 +123,7 @@ def pewpew(layout, start, stdscr=None):
         row, col, dir = queue.pop(0)
 
         if stdscr:
-            color = COLOR_DIRS
+            color = DIR_COLORS[steps % len(DIR_COLORS)]
             stdscr.addstr(row, col, map_dirs(dir), curses.color_pair(color))
             stdscr.refresh()
             delay(steps)
