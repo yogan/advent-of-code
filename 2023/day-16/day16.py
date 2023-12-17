@@ -41,19 +41,14 @@ def move(H, W, row, col, dir):
 
     return None
 
-def map_char(dir):
-    table = {
-        '.': (' ', 0),
-        '/': ('╱', 118),
-       '\\': ('╲', 118),
-        '|': ('│', 118),
-        '-': ('─', 118),
-        'R': ('→', 198),
-        'L': ('←', 198),
-        'U': ('↑', 198),
-        'D': ('↓', 198),
-    }
-    return table[dir]
+COLOR_MIRRORS = 118
+COLOR_DIRS    = 198
+
+def map_mirrors(char):
+    return char.translate(char.maketrans("/\\|-.", "╱╲│─ "))
+
+def map_dirs(char):
+    return char.translate(char.maketrans("RLUD", "→←↑↓"))
 
 def delay(steps):
     if steps < 5:
@@ -109,8 +104,8 @@ def pewpew(layout, start, stdscr=None):
         c = 0
         for row in range(H):
             for col in range(W):
-                char, color = map_char(layout[row][col])
-                stdscr.addstr(row, col, char, curses.color_pair(color))
+                stdscr.addstr(row, col, map_mirrors(layout[row][col]),
+                              curses.color_pair(COLOR_MIRRORS))
         stdscr.refresh()
         time.sleep(1)
         steps = 0
@@ -119,8 +114,8 @@ def pewpew(layout, start, stdscr=None):
         row, col, dir = queue.pop(0)
 
         if stdscr:
-            char, color = map_char(dir)
-            stdscr.addstr(row, col, char, curses.color_pair(color))
+            color = COLOR_DIRS
+            stdscr.addstr(row, col, map_dirs(dir), curses.color_pair(color))
             stdscr.refresh()
             delay(steps)
             steps += 1

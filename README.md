@@ -72,6 +72,7 @@
    - part 2 is brute-force of part 1 with all starting positions (not that many,
      run-time is around 1.5 sec)
    - [terminal visualization using curses](2023/day-16/README.md)
+     - `char.translate(char.maketrans("RLUD", "→←↑↓")` is a neat trick
  - [Day 17](https://adventofcode.com/2023/day/17) ⭐⭐ in
    [Python](2023/day-17/day17.py) 🫕
    - part 1: Dijkstra with priority queue (`heapq`); the tricky part is to
