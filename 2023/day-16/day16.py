@@ -53,7 +53,16 @@ DC = len(DIR_COLORS)
 # MIRRORS_COLOR = 33 # deep blue
 # MIRRORS_COLOR = 103 # blueish gray
 MIRRORS_COLOR = 63
-MC = 2 * DC
+MC = 2 * DC + 1
+
+def mirror_color():
+    return curses.color_pair(MC)
+
+def laser_color(steps, on_mirror):
+    if on_mirror:
+        return curses.color_pair(steps % DC + DC + 1)
+    else:
+        return curses.color_pair(steps % DC + 1)
 
 def map_mirrors(char):
     return char.translate(char.maketrans("/\\|-.", "╱╲│─ "))
@@ -91,9 +100,9 @@ def visualize_laser():
     no_bg = -1
     black_bg = 0
     blue_bg = 4
-    for i in range(0, DC):
-        curses.init_pair(i,      DIR_COLORS[i], no_bg)
-        curses.init_pair(i + DC, DIR_COLORS[i], blue_bg)
+    for i in range(DC):
+        curses.init_pair(1 + i,      DIR_COLORS[i], black_bg)
+        curses.init_pair(1 + i + DC, DIR_COLORS[i], blue_bg)
     curses.init_pair(MC, MIRRORS_COLOR, black_bg)
 
     cropped_layout = [row[:int(curses.COLS)] for row in layout[:curses.LINES]]
@@ -121,8 +130,7 @@ def pewpew(layout, start, stdscr=None):
         for row in range(H):
             for col in range(W):
                 char = map_mirrors(layout[row][col])
-                color = None if char == ' ' else curses.color_pair(MC)
-                stdscr.addstr(row, col, char, color)
+                stdscr.addstr(row, col, char, mirror_color())
         stdscr.refresh()
         time.sleep(1)
         steps = 0
@@ -131,10 +139,8 @@ def pewpew(layout, start, stdscr=None):
         row, col, dir = queue.pop(0)
 
         if stdscr:
-            if layout[row][col] in "/\\-|":
-                color = curses.color_pair(steps % DC + DC)
-            else:
-                color = curses.color_pair(steps % DC)
+            on_mirror = layout[row][col] in "/\\-|"
+            color = laser_color(steps, on_mirror)
             stdscr.addstr(row, col, map_dirs(dir), color)
             stdscr.refresh()
             delay(steps)
