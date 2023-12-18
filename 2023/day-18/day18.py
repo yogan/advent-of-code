@@ -10,33 +10,12 @@ def parse():
     return [(dir, int(steps), color[2:-1]) for dir, steps, color in
             [line.split() for line in open(filename).readlines()]]
 
-def trace_border(plan):
+def trace_border(movements):
     pos = (0, 0)
-    border = set()
-    border.add(pos)
+    vertices = []
+    border_len = 0
 
-    for dir, steps, _ in plan:
-        for _ in range(steps):
-            if dir == "U":
-                pos = (pos[0], pos[1] - 1)
-            elif dir == "D":
-                pos = (pos[0], pos[1] + 1)
-            elif dir == "R":
-                pos = (pos[0] + 1, pos[1])
-            elif dir == "L":
-                pos = (pos[0] - 1, pos[1])
-            else:
-                assert False, f"Unknown direction {dir}"
-
-            border.add(pos)
-
-    return border
-
-def get_vertices(plan):
-    pos = (0, 0)
-    vertices = [pos]
-
-    for dir, steps, _ in plan:
+    for dir, steps in movements:
         if dir == "U":
             pos = (pos[0], pos[1] - steps)
         elif dir == "D":
@@ -49,10 +28,11 @@ def get_vertices(plan):
             assert False, f"Unknown direction {dir}"
 
         vertices.append(pos)
+        border_len += steps
 
-    assert vertices[0] == vertices[-1], "Path does not end where it started"
+    assert vertices[-1] == (0, 0), f"Last vertex is {vertices[-1]}"
 
-    return vertices
+    return border_len, vertices
 
 # https://en.wikipedia.org/wiki/Shoelace_formula
 # https://www.youtube.com/watch?v=0KjG8Pg6LGk
@@ -71,10 +51,11 @@ def print_and_assert(part, expected, actual):
 if __name__ == '__main__':
     dig_plan = parse()
 
-    border   = trace_border(dig_plan)
-    vertices = get_vertices(dig_plan)
-    area     = shoelace_area(vertices)
-    part1    = picks_theorem(area, len(border)) + 2 # no idea why + 2…
+    movements_part_1 = [(dir, steps) for dir, steps, _ in dig_plan]
+
+    border_len, vertices = trace_border(movements_part_1)
+    area = shoelace_area(vertices)
+    part1 = picks_theorem(area, border_len) + 2 # no idea why + 2…
 
     print_and_assert(1, 62 if is_sample else 92758, part1)
     # print_and_assert(2, 21756 if is_sample else 4978, part2(lines))
