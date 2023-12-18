@@ -10,6 +10,11 @@ def parse():
     return [(dir, int(steps), color[2:-1]) for dir, steps, color in
             [line.split() for line in open(filename).readlines()]]
 
+def convert_hex_color(color):
+    dir = color[-1].translate(str.maketrans("0123", "RDLU"))
+    steps = int(color[:-1], 16)
+    return (dir, steps)
+
 def trace_border(movements):
     pos = (0, 0)
     vertices = []
@@ -34,17 +39,31 @@ def trace_border(movements):
 
     return border_len, vertices
 
-# https://en.wikipedia.org/wiki/Shoelace_formula
-# https://www.youtube.com/watch?v=0KjG8Pg6LGk
 def shoelace_area(vertices):
+    # https://en.wikipedia.org/wiki/Shoelace_formula
+    # https://www.youtube.com/watch?v=0KjG8Pg6LGk
     return abs(sum(x0 * y1 - x1 * y0 for ((x0, y0), (x1, y1)) in
                    zip(vertices, vertices[1:] + [vertices[0]]))) // 2
 
-# https://en.wikipedia.org/wiki/Pick%27s_theorem
-def picks_theorem(interior_points, boundary_points):
-    return interior_points + boundary_points // 2 - 1
+def picks_theorem(area, boundary_points):
+    # https://en.wikipedia.org/wiki/Pick%27s_theorem
+    #
+    # Pick's theorem: A = i + b/2 - 1
+    #   A: area of the polygon
+    #   i: number of points with inside the polygon
+    #   b: number of points with on the boundary of the polygon
+    #
+    # We know A and b, so we can solve for i:
+    return area - boundary_points // 2 + 1
 
-def print_and_assert(part, expected, actual):
+def calculate_lava_volume(movements):
+    boundary_points, vertices = trace_border(movements)
+    area = shoelace_area(vertices)
+    internal_points = picks_theorem(area, boundary_points)
+
+    return internal_points + boundary_points
+
+def print_and_assert(part, actual, expected):
     print(f"Part {part}: {actual}{' (sample)' if is_sample else ''}")
     assert actual == expected, f"Part {part} was {actual}, expected {expected}"
 
@@ -52,10 +71,10 @@ if __name__ == '__main__':
     dig_plan = parse()
 
     movements_part_1 = [(dir, steps) for dir, steps, _ in dig_plan]
+    movements_part_2 = [convert_hex_color(color) for _, _, color in dig_plan]
 
-    border_len, vertices = trace_border(movements_part_1)
-    area = shoelace_area(vertices)
-    part1 = picks_theorem(area, border_len) + 2 # no idea why + 2…
+    part1 = calculate_lava_volume(movements_part_1)
+    part2 = calculate_lava_volume(movements_part_2)
 
-    print_and_assert(1, 62 if is_sample else 92758, part1)
-    # print_and_assert(2, 21756 if is_sample else 4978, part2(lines))
+    print_and_assert(1, part1, 62 if is_sample else 92758)
+    print_and_assert(2, part2, 952408144115 if is_sample else 62762509300678)
