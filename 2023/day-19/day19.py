@@ -38,7 +38,7 @@ def parse(name=filename):
 
     workflows = {}
     for line in workflow_lines.split("\n"):
-        name, rules = line.split("{")
+        name, rules = line.split(chr(123))
         rules = [Rule(*rule.split(":")) if ":" in rule else Rule(None, rule)
                  for rule in rules[:-1].split(",")]
         workflows[name] = rules
