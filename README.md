@@ -4,9 +4,9 @@
 [![Solutions](https://github.com/yogan/advent-of-code/actions/workflows/test-solutions.yml/badge.svg)](https://github.com/yogan/advent-of-code/actions/workflows/test-solutions.yml)
 [![Templates](https://github.com/yogan/advent-of-code/actions/workflows/test-templates.yml/badge.svg)](https://github.com/yogan/advent-of-code/actions/workflows/test-templates.yml)
 
-## [2023](https://adventofcode.com/2023) (36/50 ✨)
+## [2023](https://adventofcode.com/2023) (38/50 ✨)
 
-**Languages: 5** *14 × Python, 1 × fish, 1 × Clojure, 1 × DDP, 1 × Zig*
+**Languages: 5** *15 × Python, 1 × fish, 1 × Clojure, 1 × DDP, 1 × Zig*
 
 - [Day 01](https://adventofcode.com/2023/day/1) ⭐⭐ in
   [fish](2023/day-01/day01.fish)
@@ -93,6 +93,13 @@
      - with the area and the number of border points (from part 1), we can
        derive the number of inner points via
        [Pick's theorem](https://en.wikipedia.org/wiki/Pick%27s_theorem)
+ - [Day 19: Aplenty](https://adventofcode.com/2023/day/19) ⭐⭐ in
+   [Python](2023/day-19/day19.py) 🔧
+   - *part 1* went pretty well; putting the input into some proper data
+     structures and then iterating over the parts and traversing the workflow
+     graph with each of them
+   - *part 2* was brutal - hardest day for me so far; since it took me a while,
+     I added a [write-up of my final algorithm](2023/day-19/README.md)
  
 ## [2022](https://adventofcode.com/2022) (46/50 ✨)
 

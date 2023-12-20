@@ -1,4 +1,5 @@
 import sys, unittest
+from collections import deque
 
 if len(sys.argv) != 2:
     print("Missing input file.")
@@ -33,6 +34,52 @@ class Rule:
                self.compare  == other.compare  and \
                self.value    == other.value
 
+    def apply(self, xl, xh, ml, mh, al, ah, sl, sh):
+        if self.compare == ">":
+            if self.category == "x":
+                xl = max(self.value + 1, xl)
+            elif self.category == "m":
+                ml = max(self.value + 1, ml)
+            elif self.category == "a":
+                al = max(self.value + 1, al)
+            elif self.category == "s":
+                sl = max(self.value + 1, sl)
+        elif self.compare == "<":
+            if self.category == "x":
+                xh = min(self.value - 1, xh)
+            elif self.category == "m":
+                mh = min(self.value - 1, mh)
+            elif self.category == "a":
+                ah = min(self.value - 1, ah)
+            elif self.category == "s":
+                sh = min(self.value - 1, sh)
+
+        return xl, xh, ml, mh, al, ah, sl, sh
+
+    def apply_inverse(self, xl, xh, ml, mh, al, ah, sl, sh):
+        if self.compare == ">":
+            # treat as <=
+            if self.category == "x":
+                xh = min(self.value, xh)
+            elif self.category == "m":
+                mh = min(self.value, mh)
+            elif self.category == "a":
+                ah = min(self.value, ah)
+            elif self.category == "s":
+                sh = min(self.value, sh)
+        elif self.compare == "<":
+            # treat as >=
+            if self.category == "x":
+                xl = max(self.value, xl)
+            elif self.category == "m":
+                ml = max(self.value, ml)
+            elif self.category == "a":
+                al = max(self.value, al)
+            elif self.category == "s":
+                sl = max(self.value, sl)
+
+        return xl, xh, ml, mh, al, ah, sl, sh
+
 def parse(name=filename):
     workflow_lines, part_lines = open(name).read().strip().split("\n\n")
 
@@ -50,7 +97,7 @@ def parse(name=filename):
 def parse_part(part_line):
     return {x[0]: int(x[2:]) for x in part_line.split(",")}
 
-def find_accepted_parts(workflows,parts):
+def find_accepted_parts(workflows, parts):
     accepted = []
 
     for part in parts:
@@ -69,6 +116,28 @@ def find_accepted_parts(workflows,parts):
                     rules = workflows[rule.target].copy()
 
     return accepted
+
+def traverse(workflows):
+    combs = 0
+    queue = deque([("in", 1, 4000, 1, 4000, 1, 4000, 1, 4000)])
+
+    while queue:
+        cur, xl, xh, ml, mh, al, ah, sl, sh = queue.popleft()
+
+        if cur == "R":
+            continue
+
+        if cur == "A":
+            combs += (xh-xl+1) * (mh-ml+1) * (ah-al+1) * (sh-sl+1)
+            continue
+
+        for rule in workflows[cur]:
+            queue.append((rule.target,
+                         *rule.apply(xl, xh, ml, mh, al, ah, sl, sh)))
+            xl, xh, ml, mh, al, ah, sl, sh = \
+                rule.apply_inverse(xl, xh, ml, mh, al, ah, sl, sh)
+
+    return combs
 
 class TestDay19(unittest.TestCase):
     def test_parse_sample(self):
@@ -106,7 +175,7 @@ if __name__ == '__main__':
     accepted = find_accepted_parts(workflows, parts)
 
     part1 = sum(sum(part.values()) for part in accepted)
-    part2 = None
+    part2 = traverse(workflows)
 
     check(1, part1, 19114 if is_sample else 432427)
-    check(2, part2)
+    check(2, part2, 167409079868000 if is_sample else 143760172569135)
