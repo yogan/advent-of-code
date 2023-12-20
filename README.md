@@ -4,9 +4,9 @@
 [![Solutions](https://github.com/yogan/advent-of-code/actions/workflows/test-solutions.yml/badge.svg)](https://github.com/yogan/advent-of-code/actions/workflows/test-solutions.yml)
 [![Templates](https://github.com/yogan/advent-of-code/actions/workflows/test-templates.yml/badge.svg)](https://github.com/yogan/advent-of-code/actions/workflows/test-templates.yml)
 
-## [2023](https://adventofcode.com/2023) (38/50 ✨)
+## [2023](https://adventofcode.com/2023) (39/50 ✨)
 
-**Languages: 5** *15 × Python, 1 × fish, 1 × Clojure, 1 × DDP, 1 × Zig*
+**Languages: 5** *16 × Python, 1 × fish, 1 × Clojure, 1 × DDP, 1 × Zig*
 
 - [Day 01](https://adventofcode.com/2023/day/1) ⭐⭐ in
   [fish](2023/day-01/day01.fish)
@@ -100,6 +100,11 @@
      graph with each of them
    - *part 2* was brutal - hardest day for me so far; since it took me a while,
      I added a [write-up of my final algorithm](2023/day-19/README.md)
+ - [Day 20](https://adventofcode.com/2023/day/20) ⭐✖️ in
+   [Python](2023/day-20/day20.py) 🔀
+   - *part 1:* implementing the modules and their behavior/states, then
+     simulating the whole thing
+   - *part 2:* missing…
  
 ## [2022](https://adventofcode.com/2022) (46/50 ✨)
 
