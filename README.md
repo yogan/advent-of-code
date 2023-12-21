@@ -4,9 +4,9 @@
 [![Solutions](https://github.com/yogan/advent-of-code/actions/workflows/test-solutions.yml/badge.svg)](https://github.com/yogan/advent-of-code/actions/workflows/test-solutions.yml)
 [![Templates](https://github.com/yogan/advent-of-code/actions/workflows/test-templates.yml/badge.svg)](https://github.com/yogan/advent-of-code/actions/workflows/test-templates.yml)
 
-## [2023](https://adventofcode.com/2023) (39/50 ✨)
+## [2023](https://adventofcode.com/2023) (40/50 ✨)
 
-**Languages: 5** *16 × Python, 1 × fish, 1 × Clojure, 1 × DDP, 1 × Zig*
+**Languages: 5** *17 × Python, 1 × fish, 1 × Clojure, 1 × DDP, 1 × Zig*
 
 - [Day 01](https://adventofcode.com/2023/day/1) ⭐⭐ in
   [fish](2023/day-01/day01.fish)
@@ -104,6 +104,10 @@
    [Python](2023/day-20/day20.py) 🔀
    - *part 1:* implementing the modules and their behavior/states, then
      simulating the whole thing
+   - *part 2:* missing…
+ - [Day 21: Step Counter](https://adventofcode.com/2023/day/21) ⭐✖️ in
+   [Python](2023/day-21/day21.py) 👣
+   - *part 1:* BFS on grid
    - *part 2:* missing…
  
 ## [2022](https://adventofcode.com/2022) (46/50 ✨)
