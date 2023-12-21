@@ -1,6 +1,7 @@
 import sys, unittest
 from collections import defaultdict, deque
 from enum import Enum
+from math import gcd
 
 if len(sys.argv) < 2:
     print("Missing input file.")
@@ -90,10 +91,12 @@ def parse(file=filename):
 
     return modules
 
-def push_button(modules):
+def push_button(modules, names_to_observe=[]):
     queue = deque([Pulse("button", "broadcaster", 0)])
     low   = 1  # initial button push
     high  = 0
+
+    activated_observers = defaultdict(lambda: False)
 
     while queue:
         pulse = queue.popleft()
@@ -106,11 +109,126 @@ def push_button(modules):
         for new_pulse in new_pulses:
             if new_pulse.value == 0:
                 low += 1
+                if new_pulse.target in names_to_observe:
+                    activated_observers[new_pulse.target] = True
             else:
                 high += 1
             queue.append(new_pulse)
 
-    return low, high
+    return low, high, activated_observers
+
+def part1():
+    modules = parse()
+    total_low, total_high = 0, 0
+
+    for _ in range(1000):
+        low, high, _ = push_button(modules)
+        total_low  += low
+        total_high += high
+
+    return total_low * total_high
+
+def assert_has_rx(modules):
+    has_rx = "rx" in [o for m in modules.values() for o in m.outputs]
+
+    if is_sample:
+        print("Part 2 (sample): n/a")
+        assert not has_rx, "unexpected rx module in sample"
+        exit(0)
+
+    assert has_rx, "no rx module"
+
+def find_circle_outputs(modules):
+    """
+    Plotting the module as a graph reveals a very specific pattern:
+
+    ```
+                 ┌─ cl ← rl ← CIRCLE1
+        rx ← lx ←┼─ rp ← rd ← CIRCLE2
+                 ├─ lb ← qb ← CIRCLE3
+                 └─ nj ← nn ← CIRCLE4
+    ```
+
+    All modules (besides `rx`) shown above are conjunctions.
+
+    The modules `rl`, `rd`, `qb`, and `nn` are conntected to circle-like
+    subgraphs, both with other in- and outputs. However, their output is what
+    eventually controls what pulses are sent to `rx`.
+
+    Let's at least assert this structure, before we fire off an algo that
+    relies on those assumptions.
+
+    The direct inputs of `lx` are what we need to observe, the are returned
+    after the assertions.
+    """
+
+    rx_pre = [mod for mod in modules.values() if "rx" in mod.outputs]
+    assert len(rx_pre) == 1
+    rx_pre = rx_pre[0]
+    assert rx_pre.name == "lx" and rx_pre.type == Type.Conjunction
+
+    lx_pre = [mod for mod in modules.values() if "lx" in mod.outputs]
+    assert set([mod.name for mod in lx_pre]) == set(["cl", "rp", "lb", "nj"])
+    assert all(mod.type == Type.Conjunction for mod in lx_pre)
+
+    lx_pre_pre = []
+    for lp in lx_pre:
+        lpp = [mod for mod in modules.values() if lp.name in mod.outputs]
+        assert len(lpp) == 1
+        lx_pre_pre.append(lpp[0])
+    assert set([mod.name for mod in lx_pre_pre]) == set(["rl", "rd", "qb", "nn"])
+    assert all(mod.type == Type.Conjunction for mod in lx_pre_pre)
+
+    return lx_pre
+
+def lcm(*args):
+    res = args[0]
+    for arg in args[1:]:
+        res = res * arg // gcd(res, arg)
+    return res
+
+def part2(modules):
+    """
+    As checked in `find_circle_outputs()`, our machine looks like this:
+
+    ```
+                 ┌─ cl ← rl ← CIRCLE1
+        rx ← lx ←┼─ rp ← rd ← CIRCLE2
+                 ├─ lb ← qb ← CIRCLE3
+                 └─ nj ← nn ← CIRCLE4
+    ```
+
+    The `lx_pre` modules (`cl`, `rp`, `lb`, `nj`) are what we need to observe.
+
+    The machine turns on when `rx` receives a low pulse, which happens when `lx`
+    sends a high pulse, which itself happens when all `lx_pre` modules are high,
+    and that finally happens when all of their inputs are low - at the same
+    time!
+
+    So, run the whole machine and observe the `lx_pre` modules. We remember the
+    number of button presses until an `lx_pre` module gets a low pulse for the
+    first time. This is the cycle length for that module.
+
+    With all cycle lengths known, we can calculate the least common multiple
+    (LCM) of all cycle lengths. This is the number of button presses until `rx`
+    receives a low pulse, and the machine turns on.
+    """
+
+    lx_pre_names = [mod.name for mod in find_circle_outputs(modules)]
+
+    cycle_length = {}
+
+    for presses in range(1, 1_000_000_000_000): # :-)
+        if len(cycle_length) == len(lx_pre_names):
+            break
+
+        _, _, activations = push_button(modules, lx_pre_names)
+
+        for name, activated in activations.items():
+            if activated and name not in cycle_length:
+                cycle_length[name] = presses
+
+    return lcm(*cycle_length.values())
 
 # --- TESTS --------------------------------------------------------------------
 class TestDay20(unittest.TestCase):
@@ -165,7 +283,7 @@ class TestDay20(unittest.TestCase):
 
     def test_sample1_single_button_push(self):
         modules = parse("sample1.txt")
-        low, high = push_button(modules)
+        low, high, _ = push_button(modules)
 
         self.assertEqual(low,  8)
         self.assertEqual(high, 4)
@@ -175,7 +293,7 @@ class TestDay20(unittest.TestCase):
         total_low, total_high = 0, 0
 
         for _ in range(1000):
-            low, high = push_button(modules)
+            low, high, _ = push_button(modules)
             total_low  += low
             total_high += high
 
@@ -187,7 +305,7 @@ class TestDay20(unittest.TestCase):
         total_low, total_high = 0, 0
 
         for _ in range(1000):
-            low, high = push_button(modules)
+            low, high, _ = push_button(modules)
             total_low  += low
             total_high += high
 
@@ -210,22 +328,13 @@ if __name__ == '__main__':
         unittest.main(exit=False)
         print()
 
-    modules = parse()
-    total_low, total_high = 0, 0
-
-    for _ in range(1000):
-        low, high = push_button(modules)
-        total_low  += low
-        total_high += high
-
-    part1 = total_low * total_high
-    part2 = None
-
     expected_part1 = {
         "sample1.txt":  32000000,
         "sample2.txt":  11687500,
         "input.txt":   794930686,
     }
+    check(1, part1(), expected_part1[filename])
 
-    check(1, part1, expected_part1[filename])
-    check(2, part2)
+    modules = parse()
+    assert_has_rx(modules)  # will exit for samples
+    check(2, part2(modules), 244465191362269)

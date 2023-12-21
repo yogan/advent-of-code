@@ -4,9 +4,9 @@
 [![Solutions](https://github.com/yogan/advent-of-code/actions/workflows/test-solutions.yml/badge.svg)](https://github.com/yogan/advent-of-code/actions/workflows/test-solutions.yml)
 [![Templates](https://github.com/yogan/advent-of-code/actions/workflows/test-templates.yml/badge.svg)](https://github.com/yogan/advent-of-code/actions/workflows/test-templates.yml)
 
-## [2023](https://adventofcode.com/2023) (40/50 ✨)
+## [2023](https://adventofcode.com/2023) (41/50 ✨)
 
-**Languages: 5** *17 × Python, 1 × fish, 1 × Clojure, 1 × DDP, 1 × Zig*
+**Languages: 5** *(17 × Python, 1 × fish, 1 × Clojure, 1 × DDP, 1 × Zig)*
 
 - [Day 01](https://adventofcode.com/2023/day/1) ⭐⭐ in
   [fish](2023/day-01/day01.fish)
@@ -100,11 +100,16 @@
      graph with each of them
    - *part 2* was brutal - hardest day for me so far; since it took me a while,
      I added a [write-up of my final algorithm](2023/day-19/README.md)
- - [Day 20](https://adventofcode.com/2023/day/20) ⭐✖️ in
+ - [Day 20: Pulse Propagation](https://adventofcode.com/2023/day/20) ⭐⭐ in
    [Python](2023/day-20/day20.py) 🔀
    - *part 1:* implementing the modules and their behavior/states, then
      simulating the whole thing
-   - *part 2:* missing…
+   - *part 2:* the solution is based on an observation about the structure of
+     the machine; with this known, cycle lengths of sub-machines can be found,
+     and the final result is the LCM of all cycle lengths; see the lengthy
+     comments of
+     [`find_circle_outputs()`](https://github.com/yogan/advent-of-code/blob/main/2023/day-20/day20.py#L141) and 
+     [`part2()`](https://github.com/yogan/advent-of-code/blob/main/2023/day-20/day20.py#L187) for details
  - [Day 21: Step Counter](https://adventofcode.com/2023/day/21) ⭐✖️ in
    [Python](2023/day-21/day21.py) 👣
    - *part 1:* BFS on grid
