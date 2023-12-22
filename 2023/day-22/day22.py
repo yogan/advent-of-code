@@ -227,16 +227,18 @@ if __name__ == '__main__':
         else:
             draw_windows(bricks)
 
-    disintegratable_blocks = 0
+    disintegratable_bricks = 0
+    brick_falls = 0
 
     for brick in tqdm(bricks):
         other_bricks = [b for b in bricks if b != brick]
-        other_bricks_dropped, drops = drop(other_bricks)
-        if drops == 0:
-            disintegratable_blocks += 1
+        other_bricks_dropped, fallen_bricks = drop(other_bricks)
+        brick_falls += fallen_bricks
+        if not fallen_bricks:
+            disintegratable_bricks += 1
 
-    part1 = disintegratable_blocks
-    part2 = None
+    part1 = disintegratable_bricks
+    part2 = brick_falls
 
     check(1, part1, 5 if is_sample else 501)
-    check(2, part2)
+    check(2, part2, 7 if is_sample else 80948)
