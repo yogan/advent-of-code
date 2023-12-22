@@ -217,17 +217,16 @@ if __name__ == '__main__':
     bricks = parse()
 
     if visualize and is_sample:
+        print("Bricks in their initial positions:")
         draw_voxels(bricks)
 
     bricks, _ = drop(bricks)
 
-    if visualize:
-        if is_sample:
-            draw_voxels(bricks)
-        else:
-            draw_windows(bricks)
+    if visualize and is_sample:
+        print("Bricks after they have dropped:")
+        draw_voxels(bricks)
 
-    disintegratable_bricks = 0
+    disintegratable_bricks = []
     brick_falls = 0
 
     for brick in tqdm(bricks):
@@ -235,9 +234,16 @@ if __name__ == '__main__':
         other_bricks_dropped, fallen_bricks = drop(other_bricks)
         brick_falls += fallen_bricks
         if not fallen_bricks:
-            disintegratable_bricks += 1
+            disintegratable_bricks.append(brick)
 
-    part1 = disintegratable_bricks
+    if visualize:
+        print("Bricks that can be disintegrated:")
+        if is_sample:
+            draw_voxels(bricks, disintegratable_bricks)
+        else:
+            draw_windows(bricks, disintegratable_bricks)
+
+    part1 = len(disintegratable_bricks)
     part2 = brick_falls
 
     check(1, part1, 5 if is_sample else 501)

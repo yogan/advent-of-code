@@ -4,9 +4,9 @@
 [![Solutions](https://github.com/yogan/advent-of-code/actions/workflows/test-solutions.yml/badge.svg)](https://github.com/yogan/advent-of-code/actions/workflows/test-solutions.yml)
 [![Templates](https://github.com/yogan/advent-of-code/actions/workflows/test-templates.yml/badge.svg)](https://github.com/yogan/advent-of-code/actions/workflows/test-templates.yml)
 
-## [2023](https://adventofcode.com/2023) (41/50 ✨)
+## [2023](https://adventofcode.com/2023) (43/50 ✨)
 
-**Languages: 5** *(17 × Python, 1 × fish, 1 × Clojure, 1 × DDP, 1 × Zig)*
+**Languages: 5** *(18 × Python, 1 × fish, 1 × Clojure, 1 × DDP, 1 × Zig)*
 
 - [Day 01](https://adventofcode.com/2023/day/1) ⭐⭐ in
   [fish](2023/day-01/day01.fish)
@@ -114,6 +114,20 @@
    [Python](2023/day-21/day21.py) 👣
    - *part 1:* BFS on grid
    - *part 2:* missing…
+ - [Day 22: Sand Slabs](https://adventofcode.com/2023/day/22) ⭐⭐ in
+   [Python](2023/day-22/day22.py) 🧱
+   - initially I tried a clever way to determine if a brick can be
+     disintegrated, but there is some bug that I cannot find - the function
+     [`can_be_disintegrated()`](https://github.com/yogan/advent-of-code/blob/main/2023/day-22/day22.py#L74)
+     (still commented out in the code) detects more bricks as disintegratable
+     than it should
+   - after a lot of debugging, I gave up and re-used the
+     [`drop()`](https://github.com/yogan/advent-of-code/blob/main/2023/day-22/day22.py#L48)
+     function; calling that on sets of bricks with one brick removed and
+     checking the bricks that fell takes a good amount of time, but gives the
+     data that is needed for both *part 1* and *part 2*
+   - the excessive debugging at least produced some nice 3D plots created with
+     [Matplotlib](https://matplotlib.org) (see [day 22 README](2023/day-22/README.md))
  
 ## [2022](https://adventofcode.com/2022) (46/50 ✨)
 
