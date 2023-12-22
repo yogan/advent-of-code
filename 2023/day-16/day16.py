@@ -1,6 +1,4 @@
 import sys, time, curses
-from collections import defaultdict
-from copy import deepcopy
 
 if len(sys.argv) == 3 and "--visualize" in sys.argv:
     sys.argv.remove("--visualize")
@@ -87,7 +85,7 @@ def delay(steps):
         factor = 0.008
     time.sleep(factor)
 
-def init_curses(layout):
+def init_curses():
     stdscr = curses.initscr()
     curses.noecho()
     curses.cbreak()
@@ -97,7 +95,6 @@ def init_curses(layout):
 
     curses.start_color()
     curses.use_default_colors()
-    no_bg = -1
     black_bg = 0
     blue_bg = 4
     for i in range(DC):
@@ -114,7 +111,7 @@ def start_visualization(stdscr, layout):
 
     # wait for key press
     while True:
-        c = stdscr.getch()
+        stdscr.getch()
         break
 
 def cleanup_curses(stdscr):
@@ -125,7 +122,6 @@ def cleanup_curses(stdscr):
     curses.endwin()
 
 def visualize_mirrors(stdscr, H, W, layout):
-    c = 0
     for row in range(H):
         for col in range(W):
             char = map_mirrors(layout[row][col])
@@ -146,9 +142,9 @@ def pewpew(layout, start=(0, 0, 'R'), stdscr=None):
     visited.add(start)
     queue = [start]
 
+    steps = 0
     if stdscr:
         visualize_mirrors(stdscr, H, W, layout)
-        steps = 0
 
     while queue:
         row, col, dir = queue.pop(0)
@@ -185,7 +181,7 @@ if __name__ == '__main__':
     layout = parse()
 
     if visualize:
-        stdscr = init_curses(layout)
+        stdscr = init_curses()
         curses.wrapper(lambda stdscr: start_visualization(stdscr, layout))
         cleanup_curses(stdscr)
 
