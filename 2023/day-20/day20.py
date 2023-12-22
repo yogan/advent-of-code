@@ -162,9 +162,7 @@ def find_circle_outputs(modules):
     after the assertions.
     """
 
-    rx_pre = [mod for mod in modules.values() if "rx" in mod.outputs]
-    assert len(rx_pre) == 1
-    rx_pre = rx_pre[0]
+    (rx_pre,) = (mod for mod in modules.values() if "rx" in mod.outputs)
     assert rx_pre.name == "lx" and rx_pre.type == Type.Conjunction
 
     lx_pre = [mod for mod in modules.values() if "lx" in mod.outputs]
@@ -173,9 +171,8 @@ def find_circle_outputs(modules):
 
     lx_pre_pre = []
     for lp in lx_pre:
-        lpp = [mod for mod in modules.values() if lp.name in mod.outputs]
-        assert len(lpp) == 1
-        lx_pre_pre.append(lpp[0])
+        (lpp,) = (mod for mod in modules.values() if lp.name in mod.outputs)
+        lx_pre_pre.append(lpp)
     assert set([mod.name for mod in lx_pre_pre]) == set(["rl", "rd", "qb", "nn"])
     assert all(mod.type == Type.Conjunction for mod in lx_pre_pre)
 
