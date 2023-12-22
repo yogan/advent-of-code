@@ -1,6 +1,13 @@
 import sys, unittest
 from collections import deque
 
+# no tqdm in Docker image (CI), but we actually don't want it there anyway
+try:
+    from tqdm import tqdm # type: ignore
+except ImportError:
+    def tqdm(iterable):
+        return iterable
+
 if len(sys.argv) == 3 and "--visualize" in sys.argv:
     sys.argv.remove("--visualize")
     visualize = True
@@ -11,7 +18,7 @@ if len(sys.argv) != 2:
     exit(1)
 filename  = sys.argv[1]
 sys.argv  = sys.argv[:1] # strip args, they confuse the unittest module
-is_sample = filename == "sample.txt"
+is_sample = filename.startswith("sample")
 
 def to_coords(left, right):
     l = tuple(map(int, left.split(",")))
@@ -41,6 +48,7 @@ def has_collision(x_min, x_max, y_min, y_max, z, bricks):
 def drop(bricks):
     settled = []
     queue = deque(sort_by_z(bricks))
+    blocks_moved = 0
 
     while queue:
         (lx, ly, lz), (rx, ry, rz) = queue.popleft()
@@ -58,45 +66,54 @@ def drop(bricks):
         z_diff = z_min - z
         assert z_diff >= 0, "brick would need to move upwards"
         settled.append(((lx, ly, lz - z_diff), (rx, ry, rz - z_diff)))
+        if z_diff > 0:
+            blocks_moved += 1
 
-    return settled
+    return settled, blocks_moved
 
-def can_be_disintegrated(brick, other_bricks):
-    (lx, ly, lz), (rx, ry, rz) = brick
+# BUG: fast, bug wrong (returns more disintegratables than there are)
+# def can_be_disintegrated(brick, other_bricks):
+#     (lx, ly, lz), (rx, ry, rz) = brick
+#
+#     x_min, x_max = min(lx, rx), max(lx, rx)
+#     y_min, y_max = min(ly, ry), max(ly, ry)
+#     z = min(lz, rz) + 1
+#
+#     above = [b for b in other_bricks
+#              if has_collision(x_min, x_max, y_min, y_max, z, [b])]
+#
+#     debug_bricks = [brick] + above
+#
+#     # for each brick above, check if we are the *only* supporting brick below
+#     for brick_above in above:
+#         (alx, aly, alz), (arx, ary, arz) = brick_above
+#
+#         ax_min, ax_max = min(alx, arx), max(alx, arx)
+#         ay_min, ay_max = min(aly, ary), max(aly, ary)
+#         az = min(alz, arz) - 1
+#
+#         below = [b for b in other_bricks
+#                  if has_collision(ax_min, ax_max, ay_min, ay_max, az, [b])]
+#         debug_bricks += below
+#         if not below:
+#             return (False, debug_bricks)
+#
+#     return (True, debug_bricks)
 
-    x_min, x_max = min(lx, rx), max(lx, rx)
-    y_min, y_max = min(ly, ry), max(ly, ry)
-    z = min(lz, rz) + 1
+def draw_windows(bricks, disintegratables=[], start=1):
+    window_size = 3 if is_sample else 8
 
-    above = [b for b in other_bricks
-             if has_collision(x_min, x_max, y_min, y_max, z, [b])]
-
-    # for each brick above, check if we are the *only* supporting brick below
-    for brick_above in above:
-        (alx, aly, alz), (arx, ary, arz) = brick_above
-
-        ax_min, ax_max = min(alx, arx), max(alx, arx)
-        ay_min, ay_max = min(aly, ary), max(aly, ary)
-        az = min(alz, arz) - 1
-
-        below = [b for b in other_bricks
-                 if has_collision(ax_min, ax_max, ay_min, ay_max, az, [b])]
-        if not below:
-            return False
-
-    # print(f"TRUE (brick {brick} can be disintegrated)")
-    return True
-
-def draw_windows(bricks, window_size):
     step_size = window_size - 1 # to get one plane overlap
-    for z_min in range(1, get_max_z(bricks) + 1, step_size):
-        draw_voxels(bricks, z_min, z_min + step_size)
 
-def draw_voxels(bricks, z_min=1, z_max=None):
+    for z_min in range(start, get_max_z(bricks) + 1, step_size):
+        draw_voxels(bricks, disintegratables=disintegratables,
+                    z_min=z_min, z_max=z_min + step_size)
+
+def draw_voxels(bricks, disintegratables=[], z_min=1, z_max=None):
     import numpy as np
     import matplotlib.pyplot as plt
     import matplotlib
-    from matplotlib.colors import hex2color
+    from matplotlib.colors import hex2color, ColorConverter
     matplotlib.use('TkAgg')
 
     if z_max is None:
@@ -110,39 +127,43 @@ def draw_voxels(bricks, z_min=1, z_max=None):
         HEIGHT = z_max - z_min + 1
 
     brick_colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd',
-                    '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf']
+                    '#8c564b', '#e377c2', '#bcbd22', '#17becf']
+
+    greys = ['#808080', '#a6a6a6', '#cccccc', '#f2f2f2']
 
     colors = np.empty((WIDTH, DEPTH, HEIGHT, 4), dtype=float)
-    voxels = np.zeros((WIDTH, DEPTH, HEIGHT), dtype=bool)
+    voxels = np.zeros((WIDTH, DEPTH, HEIGHT),    dtype=bool)
 
     for i, brick in enumerate(bricks, start=1):
         hex_color = brick_colors[i % len(brick_colors)]
-        rgb_color = np.append(hex2color(hex_color), 0.8)
+        alpha = 0.8
+        # NOTE: both variants look nice, depends on what you want to see better
+        # if disintegratables and brick not in disintegratables:
+        if disintegratables and brick in disintegratables:
+            hex_color = greys[i % len(greys)]
+            alpha = 0.2
+        rgb_color = np.append(hex2color(hex_color), alpha)
 
         for (lx, ly, lz), (rx, ry, rz) in [brick]:
-
             if z_min is not None and z_max is not None:
-                # if not (z_min <= lz <= z_max or z_min <= rz <= z_max):
-                #     continue
-                # # shift z values
                 lz -= z_min
                 rz -= z_min
 
             if lx == rx and ly == ry:
                 # pillar (z going up and down)
-                minz, maxz = min(lz, rz), max(lz, rz)
-                # limit z range even more; we already shifted z down by z_min
-                # z range wihthout shift: z_min..z_max (both inclusive)
-                # z range with shift: 0..z_max - z_min (both inclusive)
-                real_minz = max(0, minz)
-                real_maxz = min(HEIGHT - 1, maxz)
-                colors[lx, ly, real_minz:real_maxz + 1] = rgb_color
-                voxels[lx, ly, real_minz:real_maxz + 1] = True
+                minz = max(min(lz, rz), 0)
+                maxz = min(max(lz, rz), HEIGHT - 1)
+                if minz > maxz:
+                    continue
+                colors[lx, ly, minz:maxz + 1] = rgb_color
+                voxels[lx, ly, minz:maxz + 1] = True
+
             elif lx == rx and lz == rz and 0 <= lz <= HEIGHT - 1:
                 # horizontal plane (y going left and right)
                 miny, maxy = min(ly, ry), max(ly, ry)
                 colors[lx, miny:maxy + 1, lz] = rgb_color
                 voxels[lx, miny:maxy + 1, lz] = True
+
             elif ly == ry and lz == rz and 0 <= lz <= HEIGHT - 1:
                 # horizontal plane (x going left and right)
                 minx, maxx = min(lx, rx), max(lx, rx)
@@ -150,7 +171,8 @@ def draw_voxels(bricks, z_min=1, z_max=None):
                 voxels[minx:maxx + 1, ly, lz] = True
 
     ax = plt.figure().add_subplot(projection='3d')
-    ax.voxels(voxels, facecolors=colors, edgecolor='k')
+    border_color = ColorConverter.to_rgba('black', alpha=0.05)
+    ax.voxels(voxels, facecolors=colors, edgecolor=border_color)
 
     ax.set_box_aspect((WIDTH, DEPTH, HEIGHT)) # force cubes to be cubes
 
@@ -194,23 +216,27 @@ if __name__ == '__main__':
 
     bricks = parse()
 
-    # if visualize and is_sample:
-    #     draw_voxels(bricks)
+    if visualize and is_sample:
+        draw_voxels(bricks)
 
-    bricks = drop(bricks)
+    bricks, _ = drop(bricks)
 
     if visualize:
-        draw_windows(bricks, 3 if is_sample else 5)
+        if is_sample:
+            draw_voxels(bricks)
+        else:
+            draw_windows(bricks)
 
-    disintegratable = \
-            [brick for brick in bricks
-             if can_be_disintegrated(brick, [b for b in bricks if b != brick])]
+    disintegratable_blocks = 0
 
-    # print(disintegratable)
+    for brick in tqdm(bricks):
+        other_bricks = [b for b in bricks if b != brick]
+        other_bricks_dropped, drops = drop(other_bricks)
+        if drops == 0:
+            disintegratable_blocks += 1
 
-    part1 = len(disintegratable)
+    part1 = disintegratable_blocks
     part2 = None
 
-    # 565 too high
-    check(1, part1, 5 if is_sample else None)
+    check(1, part1, 5 if is_sample else 501)
     check(2, part2)
