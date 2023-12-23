@@ -1,14 +1,20 @@
 # Advent of Code 2023 Day 23: A Long Walk
 
-All scripts (`run.sh`, `sample.sh`, `watch*.sh`) accept an optional
-`--visualize` flag to print the trail maze and the found paths to the terminal.
+Part 1 was initially solved by brute-forcing all possible paths. At that time,
+there was some visualization code that was very helpful in debugging – and
+produced some nice images.
 
-For the sample, the initial empty maze is printed, followed by each individual
-found path. Finally, the longest path is shown.
+Even though part 2 required a complete rewrite, the pictures of the paths from
+part 1 are still here to enjoy.
 
-For the real input, given its size, only the longest path is printed. The
-representation is also a bit different, as you'll probably want to zoom out to
-see more of the whole maze at once.
+The visualization code can be found in
+[Git commit `5b7335b`](https://github.com/yogan/advent-of-code/blob/5b7335be31b34e8fae805e23593c548ed9fc3179/2023/day-23/day23.py#L75).
+
+The [updated code](https://github.com/yogan/advent-of-code/blob/main/2023/day-23/day23.py)
+that solves both parts operates on a graph of the maze, and therefore no longer
+has complete paths to visualize. A description of the algorithm can be found in
+the [main project README](../../README.md).
+
 
 ## Sample
 
