@@ -4,9 +4,9 @@
 [![Solutions](https://github.com/yogan/advent-of-code/actions/workflows/test-solutions.yml/badge.svg)](https://github.com/yogan/advent-of-code/actions/workflows/test-solutions.yml)
 [![Templates](https://github.com/yogan/advent-of-code/actions/workflows/test-templates.yml/badge.svg)](https://github.com/yogan/advent-of-code/actions/workflows/test-templates.yml)
 
-## [2023](https://adventofcode.com/2023) (43/50 ✨)
+## [2023](https://adventofcode.com/2023) (44/50 ✨)
 
-**Languages: 5** *(18 × Python, 1 × fish, 1 × Clojure, 1 × DDP, 1 × Zig)*
+**Languages: 5** *(19 × Python, 1 × fish, 1 × Clojure, 1 × DDP, 1 × Zig)*
 
 - [Day 01](https://adventofcode.com/2023/day/1) ⭐⭐ in
   [fish](2023/day-01/day01.fish)
@@ -128,6 +128,13 @@
      data that is needed for both *part 1* and *part 2*
    - the excessive debugging at least produced some nice 3D plots created with
      [Matplotlib](https://matplotlib.org) (see [day 22 README](2023/day-22/README.md))
+ - [Day 23: A Long Walk](https://adventofcode.com/2023/day/23) ⭐✖️ in
+   [Python](2023/day-23/day23.py) 🚶
+   - *part 1:* DFS; to get the different paths, the partial paths are stored in
+     the work queue, and used to re-initialize the visited set after a complete
+     path has been found
+   - *part 2:* missing…
+   - built some nice [terminal visualization](2023/day-23/README.md)
  
 ## [2022](https://adventofcode.com/2022) (46/50 ✨)
 
