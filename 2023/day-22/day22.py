@@ -45,9 +45,18 @@ def has_collision(x_min, x_max, y_min, y_max, z, bricks):
                     return True
     return False
 
-def drop(bricks):
+def drop(bricks, z_min=1):
     settled = []
-    queue = deque(sort_by_z(bricks))
+    to_drop = []
+
+    for brick in bricks:
+        (_, _, lz), (_, _, rz) = brick
+        if lz < z_min and rz < z_min:
+            settled.append(brick)
+        else:
+            to_drop.append(brick)
+
+    queue = deque(sort_by_z(to_drop))
     blocks_moved = 0
 
     while queue:
@@ -231,7 +240,8 @@ if __name__ == '__main__':
 
     for brick in tqdm(bricks):
         other_bricks = [b for b in bricks if b != brick]
-        other_bricks_dropped, fallen_bricks = drop(other_bricks)
+        (_, _, lz), (_, _, rz) = brick
+        _, fallen_bricks = drop(other_bricks, z_min=min(lz, rz))
         brick_falls += fallen_bricks
         if not fallen_bricks:
             disintegratable_bricks.append(brick)
