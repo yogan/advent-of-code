@@ -2,7 +2,7 @@ FROM ubuntu:23.10
 
 RUN apt-get update && apt-get install -y \
     bc curl ca-certificates gnupg unzip locales build-essential \
-    fish leiningen pypy3
+    fish leiningen pypy3 pypy3-venv
 
 # Bun - https://bun.sh/
 RUN curl -fsSL https://bun.sh/install | bash
