@@ -4,9 +4,9 @@
 [![Solutions](https://github.com/yogan/advent-of-code/actions/workflows/test-solutions.yml/badge.svg)](https://github.com/yogan/advent-of-code/actions/workflows/test-solutions.yml)
 [![Templates](https://github.com/yogan/advent-of-code/actions/workflows/test-templates.yml/badge.svg)](https://github.com/yogan/advent-of-code/actions/workflows/test-templates.yml)
 
-## [2023](https://adventofcode.com/2023) (46/50 ✨)
+## [2023](https://adventofcode.com/2023) (47/50 ✨)
 
-**Languages: 5** *(20 × Python, 1 × fish, 1 × Clojure, 1 × DDP, 1 × Zig)*
+**Languages: 5** *(21 × Python, 1 × fish, 1 × Clojure, 1 × DDP, 1 × Zig)*
 
 - [Day 01](https://adventofcode.com/2023/day/1) ⭐⭐ in
   [fish](2023/day-01/day01.fish)
@@ -149,6 +149,17 @@
      examples; learned about
      [homogeneous coordinates](https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection#Using_homogeneous_coordinates)
    - *part 2:* missing…
+ - [Day 25: Snowverload](https://adventofcode.com/2023/day/25) ⭐✖️ in
+   [Python](2023/day-25/day25.py) ❄️
+   - *part 1:* did a lot of reading on graph theory, and my conclusion was that
+     we can find a solution based on max flows, which eventually turned out to
+     be right; no further spoilers here, those are in the
+     [day 25 README](2023/day-25/README.md)
+     - used [NetworkX](https://networkx.org) for the graph stuff, which felt a
+       bit like cheating, but understanding the problem and picking the right
+       algorithms was a challenge in itself; also, using NetworkX for the first
+       time was interesting, it's a cool library to have in the toolbox
+   - *part 2:* two stars missing…
  
 ## [2022](https://adventofcode.com/2022) (46/50 ✨)
 
