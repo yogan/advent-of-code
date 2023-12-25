@@ -15,11 +15,10 @@ is_sample = filename == "sample.txt"
 def split_graph():
     G = parse()
 
-    edges_to_remove = edges_with_max_flow(G, 3)
-    assert len(edges_to_remove) == 2 * 3  # G is directed, so edges appear twice
-
-    for edge in edges_to_remove:
-        G.remove_edge(*edge)
+    for edge in edges_with_max_flow(G, 3):
+        source, target = edge
+        G.remove_edge(source, target)
+        G.remove_edge(target, source)
 
     (S, T) = get_connected_components(G)
     return S, T
@@ -27,20 +26,29 @@ def split_graph():
 def parse():
     G = nx.DiGraph()
     for line in open(filename).readlines():
-        src, targets = line.strip().split(": ")
+        source, targets = line.strip().split(": ")
         for target in targets.split():
-            G.add_edge(src, target, capacity=1)
-            G.add_edge(target, src, capacity=1)
+            G.add_edge(source, target, capacity=1)
+            G.add_edge(target, source, capacity=1)
     return G
 
 def edges_with_max_flow(G, flow):
+    seen = set()
     edges = []
-    for node in G:
-        for neighbor in G[node]:
-            max_flow = nx.maximum_flow_value(G, node, neighbor)
-            if max_flow == flow:
-                edges.append((node, neighbor))
-    return edges
+
+    for source in G:
+        for target in G[source]:
+            # skip reverse edges (G is directed, but our wires are not)
+            if (target, source) in seen:
+                continue
+            seen.add((source, target))
+
+            if nx.maximum_flow_value(G, source, target) == flow:
+                edges.append((source, target))
+                if len(edges) == 3:
+                    return edges
+
+    assert False, f"need 3 edges with flow {flow}, only found {len(edges)}"
 
 def get_connected_components(G):
     components = list(nx.connected_components(G.to_undirected()))
@@ -75,6 +83,7 @@ def check(part, actual, expected=None):
 if __name__ == '__main__':
     S, T = split_graph()
     part1 = len(S) * len(T)
+
     check(1, part1, 54 if is_sample else 589036)
 
     if visualize:
