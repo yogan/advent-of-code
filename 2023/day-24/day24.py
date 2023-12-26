@@ -76,7 +76,7 @@ def find_stone(hailstones):
     px_rock, py_rock, pz_rock = Ints('px_rock py_rock pz_rock')
     vx_rock, vy_rock, vz_rock = Ints('vx_rock vy_rock vz_rock')
 
-    for hs in hailstones:
+    for hs in hailstones[:4]:  # we only need 4 equations to solve the system
         px, py, pz = hs.position
         vx, vy, vz = hs.velocity
 
