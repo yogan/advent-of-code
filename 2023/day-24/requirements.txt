@@ -1,0 +1,2 @@
+importlib-resources # need for some reason, otherwise import z3 fails
+z3-solver

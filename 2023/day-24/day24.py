@@ -1,4 +1,5 @@
 import sys, unittest
+from z3 import *
 
 if len(sys.argv) != 2:
     print("Missing input file.")
@@ -67,6 +68,28 @@ def count_intersections(hailstones):
                 intersections += 1
 
     return intersections
+
+def find_stone(hailstones):
+    s = Solver()
+
+    # the unknowns: rock position and velocity
+    px_rock, py_rock, pz_rock = Ints('px_rock py_rock pz_rock')
+    vx_rock, vy_rock, vz_rock = Ints('vx_rock vy_rock vz_rock')
+
+    for hs in hailstones:
+        px, py, pz = hs.position
+        vx, vy, vz = hs.velocity
+
+        # x/y/z equations for collision of rock and hailstone i
+        s.add((px_rock - px) * (vy_rock - vy) == (py_rock - py) * (vx_rock - vx))
+        s.add((px_rock - px) * (vz_rock - vz) == (pz_rock - pz) * (vx_rock - vx))
+        s.add((py_rock - py) * (vy_rock - vy) == (py_rock - py) * (vy_rock - vy))
+
+    if s.check() == sat:
+        coords = s.model()[px_rock], s.model()[py_rock], s.model()[pz_rock]
+        return [c.as_long() for c in coords]  # type: ignore
+
+    assert False, "equation system was not solvable by z3"
 
 class TestDay24(unittest.TestCase):
     def assert2d(self, actual, expected):
@@ -202,7 +225,7 @@ if __name__ == '__main__':
     hailstones = parse()
 
     part1 = count_intersections(hailstones)
-    part2 = None
+    part2 = sum(find_stone(hailstones))
 
-    check(1, part1, 2 if is_sample else 13754)
-    check(2, part2)
+    check(1, part1,  2 if is_sample else 13754)
+    check(2, part2, 47 if is_sample else 711031616315001)

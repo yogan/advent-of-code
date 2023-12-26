@@ -4,7 +4,7 @@
 [![Solutions](https://github.com/yogan/advent-of-code/actions/workflows/test-solutions.yml/badge.svg)](https://github.com/yogan/advent-of-code/actions/workflows/test-solutions.yml)
 [![Templates](https://github.com/yogan/advent-of-code/actions/workflows/test-templates.yml/badge.svg)](https://github.com/yogan/advent-of-code/actions/workflows/test-templates.yml)
 
-## [2023](https://adventofcode.com/2023) (47/50 ✨)
+## [2023](https://adventofcode.com/2023) (48/50 ✨)
 
 **Languages: 5** *(21 × Python, 1 × fish, 1 × Clojure, 1 × DDP, 1 × Zig)*
 
@@ -143,12 +143,12 @@
      total distance, there is no better way than to try all possible paths (done
      via recursive DFS); my input had 36 nodes and 120 edges for part 2;
      calculation takes about 8 seconds
- - [Day 24: Never Tell Me The Odds](https://adventofcode.com/2023/day/24) ⭐✖️ 
+ - [Day 24: Never Tell Me The Odds](https://adventofcode.com/2023/day/24) ⭐⭐ 
    in [Python](2023/day-24/day24.py) 🌨️
    - *part 1:* implementing some geometry, perfectly test-driven by the elaborate
      examples; learned about
      [homogeneous coordinates](https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection#Using_homogeneous_coordinates)
-   - *part 2:* missing…
+   - *part 2:* solved with [Z3](https://github.com/Z3Prover/z3/wiki)
  - [Day 25: Snowverload](https://adventofcode.com/2023/day/25) ⭐✖️ in
    [Python](2023/day-25/day25.py) ❄️
    - *part 1:* did a lot of reading on graph theory, and my conclusion was that
