@@ -19,19 +19,18 @@ class Hailstone:
     def __repr__(self):
         return f"{self.position}@{self.velocity}"
 
+    def get_2d_line_coefficients(self):
+        px, py, _ = self.position
+        vx, vy, _ = self.velocity
+        return vy, -vx, vx * py - vy * px
+
 def parse():
     return [Hailstone(*line.strip().split(" @ "))
             for line in open(filename).readlines()]
 
-def line_coefficients(px, py, vx, vy):
-    return vy, -vx, vx * py - vy * px
-
 def intersect2d(stone1, stone2):
-    (px1, py1, _), (px2, py2, _) = stone1.position, stone2.position
-    (vx1, vy1, _), (vx2, vy2, _) = stone1.velocity, stone2.velocity
-
-    a1, b1, c1 = line_coefficients(px1, py1, vx1, vy1)
-    a2, b2, c2 = line_coefficients(px2, py2, vx2, vy2)
+    a1, b1, c1 = stone1.get_2d_line_coefficients()
+    a2, b2, c2 = stone2.get_2d_line_coefficients()
 
     # Using homogeneous coordinates, see:
     # https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection#Using_homogeneous_coordinates
