@@ -1,27 +1,21 @@
-import sys
+import sys, random
 import networkx as nx
 
-if len(sys.argv) == 3 and "--visualize" in sys.argv:
+visualize = False
+if "--visualize" in sys.argv:
     sys.argv.remove("--visualize")
     visualize = True
-else:
-    visualize = False
+
+fast = False
+if "--fast" in sys.argv:
+    sys.argv.remove("--fast")
+    fast = True
+
 if len(sys.argv) != 2:
     print("Missing input file.")
     exit(1)
 filename  = sys.argv[1]
 is_sample = filename == "sample.txt"
-
-def split_graph():
-    G = parse()
-
-    for edge in edges_with_max_flow(G, 3):
-        source, target = edge
-        G.remove_edge(source, target)
-        G.remove_edge(target, source)
-
-    (S, T) = get_connected_components(G)
-    return S, T
 
 def parse():
     G = nx.DiGraph()
@@ -31,6 +25,15 @@ def parse():
             G.add_edge(source, target, capacity=1)
             G.add_edge(target, source, capacity=1)
     return G
+
+def split_graph(G):
+    for edge in edges_with_max_flow(G, 3):
+        source, target = edge
+        G.remove_edge(source, target)
+        G.remove_edge(target, source)
+
+    (S, T) = get_connected_components(G)
+    return S, T
 
 def edges_with_max_flow(G, flow):
     seen = set()
@@ -54,6 +57,19 @@ def get_connected_components(G):
     components = list(nx.connected_components(G.to_undirected()))
     assert len(components) == 2
     return components
+
+def fast_minimum_cut(G):
+    while True:
+        u = v = random.choice(list(G.nodes))
+        while v == u:
+            v = random.choice(list(G.nodes))
+
+        cut, partition = nx.minimum_cut(G, u, v)
+        assert cut in [3, 4]  # 3 = u and v in different components, 4 = same
+
+        if cut == 3:
+            (S, T) = partition
+            return S, T
 
 def plot(G, S):
     import matplotlib.pyplot as plt
@@ -81,7 +97,15 @@ def check(part, actual, expected=None):
         print("✅")
 
 if __name__ == '__main__':
-    S, T = split_graph()
+    G = parse()
+
+    if fast:
+        # use nx's minimum_cut (0.3 s)
+        S, T = fast_minimum_cut(G)
+    else:
+        # my original idea (30 s)
+        S, T = split_graph(G)
+
     part1 = len(S) * len(T)
 
     check(1, part1, 54 if is_sample else 589036)

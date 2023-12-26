@@ -1,6 +1,14 @@
 # Advent of Code 2023 Day 25: Snowverload
 
-## Approach
+## Optimal Solution
+
+*Update*: I originally solved this as described below, which works fine, but is
+a bit slow (~ 30 seconds). I later found out that NetworkX has `minimum_cut`
+built-in, which is exactly what we need here, and much faster (~ 0.3 seconds).
+
+Both variants are in `day25.py`, run with `--fast` for the faster version.
+
+## My Original Approach
 
 To find the two components of the graph, we can use a flow-based approach. The
 flow capacity of each edge in the graph shall be 1.
