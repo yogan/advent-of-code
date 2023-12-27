@@ -4,7 +4,7 @@
 [![Solutions](https://github.com/yogan/advent-of-code/actions/workflows/test-solutions.yml/badge.svg)](https://github.com/yogan/advent-of-code/actions/workflows/test-solutions.yml)
 [![Templates](https://github.com/yogan/advent-of-code/actions/workflows/test-templates.yml/badge.svg)](https://github.com/yogan/advent-of-code/actions/workflows/test-templates.yml)
 
-## [2023](https://adventofcode.com/2023) (48/50 ✨)
+## [2023](https://adventofcode.com/2023) (50/50 ✨)
 
 **Languages: 5** *(21 × Python, 1 × fish, 1 × Clojure, 1 × DDP, 1 × Zig)*
 
@@ -110,10 +110,12 @@
      comments of
      [`find_circle_outputs()`](https://github.com/yogan/advent-of-code/blob/main/2023/day-20/day20.py#L141) and 
      [`part2()`](https://github.com/yogan/advent-of-code/blob/main/2023/day-20/day20.py#L187) for details
- - [Day 21: Step Counter](https://adventofcode.com/2023/day/21) ⭐✖️ in
+ - [Day 21: Step Counter](https://adventofcode.com/2023/day/21) ⭐⭐ in
    [Python](2023/day-21/day21.py) 👣
    - *part 1:* BFS on grid
-   - *part 2:* missing…
+   - *part 2:* crazy calculations based on a diamond shape, took a very long
+     time to get right; source has some lengthy comments including a lot of
+     ASCII art drawings of the shapes
  - [Day 22: Sand Slabs](https://adventofcode.com/2023/day/22) ⭐⭐ in
    [Python](2023/day-22/day22.py) 🧱
    - initially I tried a clever way to determine if a brick can be
@@ -149,7 +151,7 @@
      examples; learned about
      [homogeneous coordinates](https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection#Using_homogeneous_coordinates)
    - *part 2:* solved with [Z3](https://github.com/Z3Prover/z3/wiki)
- - [Day 25: Snowverload](https://adventofcode.com/2023/day/25) ⭐✖️ in
+ - [Day 25: Snowverload](https://adventofcode.com/2023/day/25) ⭐⭐ in
    [Python](2023/day-25/day25.py) ❄️
    - *part 1:* did a lot of reading on graph theory, and my conclusion was that
      we can find a solution based on max flows, which eventually turned out to
@@ -159,7 +161,7 @@
        bit like cheating, but understanding the problem and picking the right
        algorithms was a challenge in itself; also, using NetworkX for the first
        time was interesting, it's a cool library to have in the toolbox
-   - *part 2:* two stars missing…
+   - *part 2:* n/a (auto-win with all other stars)
  
 ## [2022](https://adventofcode.com/2022) (46/50 ✨)
 
