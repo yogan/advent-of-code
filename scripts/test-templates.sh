@@ -2,6 +2,21 @@
 exit_code=0
 cwd=$(pwd)
 
+execute_command() {
+    command="$1"
+    log_file="$2"
+    $command >"$log_file" 2>&1
+    exit_code=$?
+    if [ $exit_code -ne 0 ]; then
+        echo "Error running \"$command\". Printing log file \"$log_file\":" >&2
+        echo "------------------------------------------------------------" >&2
+        cat "$log_file" >&2
+        rm -f "$log_file"
+        return $exit_code
+    fi
+    rm -f "$log_file"
+}
+
 mapfile -t template_dirs < <(find templates/ -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort)
 
 for dir in "${template_dirs[@]}"; do
@@ -13,7 +28,12 @@ for dir in "${template_dirs[@]}"; do
     # optional build step
     if [ -x "build-ci.sh" ]; then
         start=$(date +%s.%N)
-        ./build-ci.sh
+        if ! execute_command "./build-ci.sh" "build.log"; then
+            echo "FAILED (build)"
+            exit_code=1
+            cd "$cwd" || exit 1
+            continue
+        fi
         end=$(date +%s.%N)
         build_runtime=$(printf "%.0f" "$(echo "($end - $start) * 1000" | bc)")
         if [ "$build_runtime" -ge 1000 ]; then
@@ -26,7 +46,7 @@ for dir in "${template_dirs[@]}"; do
     fi
 
     start=$(date +%s.%N)
-    if ! ./test-ci.sh; then
+    if ! execute_command "./test-ci.sh" "test.log"; then
         echo "FAILED"
         exit_code=1
     else
