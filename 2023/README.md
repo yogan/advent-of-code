@@ -2,47 +2,47 @@
 
 **Languages: 5** *(21 × Python, 1 × fish, 1 × Clojure, 1 × DDP, 1 × Zig)*
 
-- [Day 01](https://adventofcode.com/2023/day/1) ⭐⭐ in
+- [Day 01: Trebuchet?!](https://adventofcode.com/2023/day/1) ⭐⭐ in
   [fish](day-01/day01.fish)
   with [tests](day-01/test.fish) 🐟
-- [Day 02](https://adventofcode.com/2023/day/2) ⭐⭐ in
+- [Day 02: Cube Conundrum](https://adventofcode.com/2023/day/2) ⭐⭐ in
   [Clojure](day-02/src/advent_of_code_template/core.clj)
   with [tests](day-02/test/advent_of_code_template/core_test.clj) 📃
-- [Day 03](https://adventofcode.com/2023/day/3) ⭐⭐ in
+- [Day 03: Gear Ratios](https://adventofcode.com/2023/day/3) ⭐⭐ in
   [Python](day-03/day03.py) 🐍
-- [Day 04](https://adventofcode.com/2023/day/4) ⭐⭐ in
+- [Day 04: Scratchcards](https://adventofcode.com/2023/day/4) ⭐⭐ in
   [DDP - Die Deutsche Programmiersprache](day-04/Tag4.ddp) 🥨
-- [Day 05](https://adventofcode.com/2023/day/5) ⭐⭐ in
+- [Day 05: If You Give A Seed A Fertilizer](https://adventofcode.com/2023/day/5) ⭐⭐ in
   [Python](day-05/day05.py)
   - throwing unit tests against functions until stuff works out…
   - efficient, but complicated range based solution for *part 2* 📏
-- [Day 06](https://adventofcode.com/2023/day/6) ⭐⭐ in
+- [Day 06: Wait For It](https://adventofcode.com/2023/day/6) ⭐⭐ in
   [Zig](day-06/src/main.zig)
   - including a memory leak that I could not find
   - Zig is really hard 😢
-- [Day 07](https://adventofcode.com/2023/day/7) ⭐⭐ in
+- [Day 07: Camel Cards](https://adventofcode.com/2023/day/7) ⭐⭐ in
   [Python](day-07/day07.py)
   - half smart, half brute force is the real Joker 🃏
-- [Day 08](https://adventofcode.com/2023/day/8) ⭐⭐ in
+- [Day 08: Haunted Wasteland](https://adventofcode.com/2023/day/8) ⭐⭐ in
   [Python](day-08/day08.py)
   - haunted solution, LCM works for some reason 👻
-- [Day 09](https://adventofcode.com/2023/day/9) ⭐⭐ in
+- [Day 09: Mirage Maintenance](https://adventofcode.com/2023/day/9) ⭐⭐ in
   [Python](day-09/day09.py)
   - easy and straightforward 🏝️
-- [Day 10](https://adventofcode.com/2023/day/10) ⭐⭐ in
+- [Day 10: Pipe Maze](https://adventofcode.com/2023/day/10) ⭐⭐ in
   [Python](day-10/day10.py)
   - pretty lengthy, but it prints some nice
     [Unicode visualization](day-10/README.md) ꡌ
-- [Day 11](https://adventofcode.com/2023/day/11) ⭐⭐ in
+- [Day 11: Cosmic Expansion](https://adventofcode.com/2023/day/11) ⭐⭐ in
   [Python](day-11/day11.py)
   - space math 🌌
-- [Day 12](https://adventofcode.com/2023/day/12) ⭐⭐ in
+- [Day 12: Hot Springs](https://adventofcode.com/2023/day/12) ⭐⭐ in
   [Python](day-12/day12.py) 🤯
   - *part 1:* initially brute force generating valid patterns (with some
     optimizations)
   - *part 2:* complete rewrite: recursive count of valid patterns with
     memoization (took some inspiration for this…)
- - [Day 13](https://adventofcode.com/2023/day/13) ⭐⭐ in
+ - [Day 13: Point of Incidence](https://adventofcode.com/2023/day/13) ⭐⭐ in
    [Python](day-13/day13.py) 🪞
    - *part 1:* just iterating over 2D arrays and comparing strings
    - *part 2:* brute forcing over the patterns with one entry swapped at each
@@ -50,23 +50,23 @@
    - notable Python tricks:
      - `list(zip(*arr))` transposes an array, so that columns can be treated as rows
      - a [`for` loop can have an `else` block](https://docs.python.org/3/tutorial/controlflow.html#break-and-continue-statements-and-else-clauses-on-loops) – this can be used to `break` an outer loop
- - [Day 14](https://adventofcode.com/2023/day/14) ⭐⭐ in
+ - [Day 14: Parabolic Reflector Dish](https://adventofcode.com/2023/day/14) ⭐⭐ in
    [Python](day-14/day14.py) 📡
    - *part 1:* moving stuff around in arrays (rotating a 2D array helps so
      that only one direction has to be implemented - shifting east is easiest,
      as we can go line by line and within a line from left to right)
    - *part 2:* finding cycles and not messing up modulo calculations
- - [Day 15](https://adventofcode.com/2023/day/15) ⭐⭐ in
+ - [Day 15: Lens Library](https://adventofcode.com/2023/day/15) ⭐⭐ in
    [Python](day-15/day15.py) 🔍
    - straightforward coding, one of the easiest days so far
- - [Day 16](https://adventofcode.com/2023/day/16) ⭐⭐ in
+ - [Day 16: The Floor Will Be Lava](https://adventofcode.com/2023/day/16) ⭐⭐ in
    [Python](day-16/day16.py) 🌋
    - *part 1:* BFS (queue work list + visited set)
    - *part 2:* brute-force of *part 1* with all starting positions (not that
      many, run-time is around 1.5 sec)
    - [terminal visualization using curses](day-16/README.md)
      - `char.translate(char.maketrans("RLUD", "→←↑↓")` is a neat trick
- - [Day 17](https://adventofcode.com/2023/day/17) ⭐⭐ in
+ - [Day 17: Clumsy Crucible](https://adventofcode.com/2023/day/17) ⭐⭐ in
    [Python](day-17/day17.py) 🫕
    - *part 1:* Dijkstra with priority queue (`heapq`); the tricky part is to
      include both direction and steps already taken in that direction into the
@@ -76,7 +76,7 @@
      entry in the queue with a fake direction of `(0, 0)`, which messed up the
      minimum step count; solved by adding the start twice, with right and down
      directions (`(0, 1)` and `(1, 0)`)
- - [Day 18](https://adventofcode.com/2023/day/18) ⭐⭐ in
+ - [Day 18: Lavaduct Lagoon](https://adventofcode.com/2023/day/18) ⭐⭐ in
    [Python](day-18/day18.py) ⛏️
    - *part 1:* initially solved with a flood fill, but…
    - *part 2:* … is way to big for a flood fill, so I had to look up some math:
