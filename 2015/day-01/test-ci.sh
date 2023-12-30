@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if ! ./test.sh > /dev/null 2> /dev/null ; then
+if ! ./test.sh; then
     echo "Unit tests failed!"
     exit 1
 fi
