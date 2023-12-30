@@ -1,5 +1,5 @@
 #!/bin/sh
-if ! bun test 2>/dev/null; then
+if ! bun test; then
     echo "Unit tests failed!"
     exit 3
 fi
