@@ -33,8 +33,9 @@ def check(part, actual, expected=None):
         print("✅")
 
 if __name__ == '__main__':
-    unittest.main(exit=False)
-    print()
+    if is_sample:
+        unittest.main(exit=False)
+        print()
 
     lines = parse()
     part1 = sum([volume(x) for x in lines])
