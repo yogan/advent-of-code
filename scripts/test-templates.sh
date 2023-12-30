@@ -6,13 +6,13 @@ execute_command() {
     command="$1"
     log_file="$2"
     $command >"$log_file" 2>&1
-    exit_code=$?
-    if [ $exit_code -ne 0 ]; then
+    code=$?
+    if [ $code -ne 0 ]; then
         echo "Error running \"$command\". Printing log file \"$log_file\":" >&2
         echo "------------------------------------------------------------" >&2
         cat "$log_file" >&2
         rm -f "$log_file"
-        return $exit_code
+        return $code
     fi
     rm -f "$log_file"
 }
