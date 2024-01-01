@@ -1,4 +1,5 @@
-import sys, unittest
+import sys
+import unittest
 
 flags = set(arg for arg in sys.argv[1:] if arg.startswith("-"))
 args = [arg for arg in sys.argv[1:] if not arg.startswith("-")]
@@ -9,17 +10,23 @@ filename = args[0] if args else filename
 is_sample = filename.startswith("sample")
 run_tests = "-t" in flags or "--test" in flags
 
+
 def parse():
-    return [[int(num) for num in line.strip().split("x")]
-            for line in open(filename).readlines()]
+    return [
+        [int(num) for num in line.strip().split("x")]
+        for line in open(filename).readlines()
+    ]
+
 
 def volume(dimensions):
     l, w, h = dimensions
     return l * w * h
 
+
 class TestDayXX(unittest.TestCase):
     def test_volume(self):
         self.assertEqual(volume([2, 3, 4]), 24)
+
 
 def check(part, actual, expected=None):
     print(f"Part {part}{' (sample)' if is_sample else ''}: {actual} ", end="")
@@ -31,7 +38,8 @@ def check(part, actual, expected=None):
             exit(1)
         print("✅")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     if run_tests:
         unittest.main(exit=True)
 
