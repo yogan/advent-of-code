@@ -2,7 +2,7 @@
 FILENAME="input.txt"
 
 stderr() {
-  echo "$@" >&2
+    echo "$@" >&2
 }
 
 if [ -z "$AOC_SESSION" ]; then
@@ -18,7 +18,7 @@ else
     year=$(date +%Y)
     day=$(date +%d)
 fi
-day=$(echo "$day"| sed 's/^0*//')
+day=$(echo "$day" | sed 's/^0*//')
 
 if ! echo "$year" | grep -qE '^(201[5-9]|20[2-9][0-9])$'; then
     stderr "Invalid year: $year (must be 2015-2099)"
