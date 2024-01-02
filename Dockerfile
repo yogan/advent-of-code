@@ -39,6 +39,3 @@ RUN cd /usr/local/share && \
     rm ./zig-linux-x86_64-0.12.0-dev.1753+a98d4a66e.tar.xz && \
     mv zig-linux-x86_64-0.12.0-dev.1753+a98d4a66e zig
 ENV PATH="/usr/local/share/zig:${PATH}"
-
-WORKDIR /app
-COPY . /app
