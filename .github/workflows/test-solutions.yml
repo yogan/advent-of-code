@@ -13,7 +13,11 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      changes: ${{ steps.git-diff-check.outputs.changes }}
+      any-changes: ${{ steps.git-diff-check.outputs.any-changes }}
+      changes-2015: ${{ steps.git-diff-check.outputs.changes-2015 }}
+      changes-2023: ${{ steps.git-diff-check.outputs.changes-2023 }}
+      changes-ci: ${{ steps.git-diff-check.outputs.changes-ci }}
+      changes-scripts: ${{ steps.git-diff-check.outputs.changes-scripts }}
 
     steps:
       - name: Checkout code
@@ -21,22 +25,28 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: Check git changes
+      - name: Check Git changes
         id: git-diff-check
-        run: echo "changes=$(git diff --name-only ${{ github.sha }}^ ${{ github.sha }} | grep -c "^\(scripts/\|20\)")" >> $GITHUB_OUTPUT
+        run: ./scripts/check-git-changes.sh ${{ github.sha }}
 
   test-solutions:
     runs-on: ubuntu-latest
     container: ghcr.io/yogan/yogans-advent-of-code:latest
 
     needs: check-changes
-    if: ${{ needs.check-changes.outputs.changes != '0' }}
+    if: ${{ needs.check-changes.outputs.any-changes != '0' }}
+
+    env:
+      AOC_SESSION: ${{ secrets.AOC_SESSION }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Test solutions
-        env:
-          AOC_SESSION: ${{ secrets.AOC_SESSION }}
-        run: ./scripts/test-solutions.sh
+      - name: Test solutions for 2015
+        if: ${{ needs.check-changes.outputs.changes-2015 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
+        run: ./scripts/test-days.sh 2015
+
+      - name: Test solutions for 2023
+        if: ${{ needs.check-changes.outputs.changes-2023 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
+        run: ./scripts/test-days.sh 2023

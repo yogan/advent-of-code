@@ -1,7 +1,15 @@
 #!/bin/bash
+if [ -z "$1" ]; then
+    echo "Usage: $0 <year>" >&2
+    exit 1
+fi
+year="$1"
+
+initial_dir=$(pwd)
+cd "$year" || exit 1
+year_dir=$(pwd)
+
 exit_code=0
-cwd=$(pwd)
-year=$(basename "$cwd")
 
 execute_command() {
     command="$1"
@@ -36,7 +44,7 @@ for day_dir in "${day_dirs[@]}"; do
         if ! ../../scripts/aoc-get.sh "$year" "$day" 2>/dev/null; then
             echo "FAILED (could not download input)"
             exit_code=1
-            cd "$cwd" || exit 1
+            cd "$year_dir" || exit 1
             continue
         fi
     fi
@@ -47,7 +55,7 @@ for day_dir in "${day_dirs[@]}"; do
         if ! execute_command "./build-ci.sh" "build.log"; then
             echo "FAILED (build)"
             exit_code=1
-            cd "$cwd" || exit 1
+            cd "$year_dir" || exit 1
             continue
         fi
         end=$(date +%s.%N)
@@ -81,8 +89,8 @@ for day_dir in "${day_dirs[@]}"; do
         echo "OK ($runtime_stats)"
     fi
 
-    cd "$cwd" || exit 1
+    cd "$year_dir" || exit 1
 done
 
-cd "$cwd" || exit 1
+cd "$initial_dir" || exit 1
 exit $exit_code
