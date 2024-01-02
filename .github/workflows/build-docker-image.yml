@@ -25,12 +25,12 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: Check git changes
+      - name: Check Git changes
         id: git-diff-check
-        run: echo "changes=$(git diff --name-only ${{ github.sha }}^ ${{ github.sha }} | grep -c "^Dockerfile$")" >> $GITHUB_OUTPUT
+        run: ./scripts/check-git-changes.sh ${{ github.sha }}
 
       - name: Build and push image
-        if: steps.git-diff-check.outputs.changes != '0'
+        if: steps.git-diff-check.outputs.changes-docker != '0'
         run: |
           docker build . --file Dockerfile --tag $IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
