@@ -18,6 +18,12 @@
 #  If no arguments are given, user will be prompted for the day on stdin.
 # Your code will be passed the input and timed automatically.
 
-num=$(find src | grep day | sort | tail -1 | sed 's/^.*\([0-9][0-9]\).*$/\1/')
-echo "Running latest day, which is ${num}."
-cargo run $num
+if [ $# -eq 1 ]; then
+    num=$1
+    echo "Running day ${num}."
+else
+    num=$(find src | grep day | sort | tail -1 | sed 's/^.*\([0-9][0-9]\).*$/\1/')
+    echo "Running latest day, which is ${num}."
+fi
+
+cargo run "$num"

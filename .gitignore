@@ -2,5 +2,7 @@
 .lsp/
 .vscode/perl-lang/
 venv/
+
 **/input.txt
+2020-rust/inputs/
 !templates/**/input.txt
