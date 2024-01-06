@@ -18,4 +18,4 @@
 - [Day 20](https://adventofcode.com/2021/day/20) ⭐ in [Python](day20.py)
 - [Day 21](https://adventofcode.com/2021/day/21) ⭐⭐ in [Python](day21.py) powered by galaxy brain
 - [Day 22](https://adventofcode.com/2021/day/22) ⭐ in [Python](day22.py)
-- [Day 25](https://adventofcode.com/2021/day/25) ⭐⭐ in [Python](day25.py)
+- [Day 25](https://adventofcode.com/2021/day/25) ⭐ in [Python](day25.py)

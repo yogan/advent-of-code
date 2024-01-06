@@ -199,7 +199,7 @@ class TestDay24(unittest.TestCase):
 
 
 def split_input_file():
-    filename = "inputs/24/yogan.txt"
+    filename = "inputs/24/input.txt"
     num = 0
     with open(filename) as file:
         out_handle = None

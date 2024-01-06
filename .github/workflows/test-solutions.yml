@@ -16,6 +16,7 @@ jobs:
       any-changes: ${{ steps.git-diff-check.outputs.any-changes }}
       changes-2015: ${{ steps.git-diff-check.outputs.changes-2015 }}
       changes-2020: ${{ steps.git-diff-check.outputs.changes-2020 }}
+      changes-2021: ${{ steps.git-diff-check.outputs.changes-2021 }}
       changes-2023: ${{ steps.git-diff-check.outputs.changes-2023 }}
       changes-ci: ${{ steps.git-diff-check.outputs.changes-ci }}
       changes-scripts: ${{ steps.git-diff-check.outputs.changes-scripts }}
@@ -51,6 +52,10 @@ jobs:
       - name: Test solutions for 2020
         if: ${{ needs.check-changes.outputs.changes-2020 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
         run: ./2020-rust/test-ci.sh
+
+      - name: Test solutions for 2021
+        if: ${{ needs.check-changes.outputs.changes-2021 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
+        run: ./2021-python/test-ci.sh
 
       - name: Test solutions for 2023
         if: ${{ needs.check-changes.outputs.changes-2023 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}

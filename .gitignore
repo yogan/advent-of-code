@@ -5,4 +5,5 @@ venv/
 
 **/input.txt
 2020-rust/inputs/
+2021-python/inputs/**/input*
 !templates/**/input.txt

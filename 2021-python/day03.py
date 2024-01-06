@@ -7,7 +7,7 @@ def calc_most_common_bit(numbers, index):
     for number in numbers:
         line_bits = list(number)
         bit = line_bits[index]
-        if bit == '0':
+        if bit == "0":
             most_common_bit -= 1
         else:
             most_common_bit += 1
@@ -16,10 +16,10 @@ def calc_most_common_bit(numbers, index):
 
 
 def part1(lines):
-    digits = len(lines[0]) - 1
+    digits = len(lines[0])
 
-    gamma_bits = [0] * digits
-    epsilon_bits = [0] * digits
+    gamma_bits = ["0"] * digits
+    epsilon_bits = ["0"] * digits
 
     for i in range(digits):
         if calc_most_common_bit(lines, i) > 0:

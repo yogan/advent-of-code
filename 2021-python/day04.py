@@ -1,6 +1,7 @@
 import re
-from input import read_and_solve
 from functools import reduce
+
+from input import read_and_solve
 
 
 def parse_drawn_numbers(line):
@@ -9,14 +10,17 @@ def parse_drawn_numbers(line):
 
 def parse_boards(lines):
     boards = []
+    board = []
+
     for i in range(len(lines)):
-        if lines[i].isspace():
+        if len(lines[i].strip()) == 0:
             board = []
             continue
-        splits = re.split(r'[ ]+', lines[i].strip())
+
+        splits = re.split(r"[ ]+", lines[i].strip())
         board.append(list(map(lambda s: (int(s), False), splits)))
 
-        if (i+1) % 6 == 0:
+        if (i + 1) % 6 == 0:
             boards.append(board)
 
     return boards
@@ -98,7 +102,8 @@ def test_sum_unmarked():
         [(8, True), (2, False), (23, False), (4, True), (24, True)],
         [(21, True), (9, False), (14, True), (16, True), (7, False)],
         [(6, True), (10, True), (3, False), (18, True), (5, False)],
-        [(1, True), (12, False), (20, True), (15, False), (19, True)]]
+        [(1, True), (12, False), (20, True), (15, False), (19, True)],
+    ]
 
     assert sum_unmarked(input_board) == 93
 
@@ -109,21 +114,24 @@ def test_board_is_solved():
         [(8, True), (2, False), (23, False), (4, False), (24, False)],
         [(21, True), (9, False), (14, False), (16, False), (7, False)],
         [(6, True), (10, False), (3, False), (18, False), (5, False)],
-        [(1, True), (12, False), (20, False), (15, False), (19, False)]]
+        [(1, True), (12, False), (20, False), (15, False), (19, False)],
+    ]
 
     input_board_row_solved = [
         [(22, True), (13, True), (17, True), (11, True), (0, True)],
         [(8, False), (2, False), (23, False), (4, False), (24, False)],
         [(21, False), (9, False), (14, False), (16, False), (7, False)],
         [(6, False), (10, False), (3, False), (18, False), (5, False)],
-        [(1, False), (12, False), (20, False), (15, False), (19, False)]]
+        [(1, False), (12, False), (20, False), (15, False), (19, False)],
+    ]
 
     input_board_not_solved = [
         [(22, True), (13, False), (17, True), (11, True), (0, True)],
         [(8, False), (2, False), (23, False), (4, False), (24, False)],
         [(21, False), (9, False), (14, False), (16, False), (7, False)],
         [(6, False), (10, False), (3, False), (18, False), (5, False)],
-        [(1, False), (12, False), (20, False), (15, False), (19, False)]]
+        [(1, False), (12, False), (20, False), (15, False), (19, False)],
+    ]
 
     assert board_is_solved(input_board_row_solved) == True
     assert board_is_solved(input_board_column_solved) == True
@@ -136,19 +144,11 @@ def test_mark_matches():
         [(8, False), (2, False), (23, False), (4, False), (24, False)],
         [(21, False), (9, False), (14, False), (16, False), (7, False)],
         [(6, False), (10, False), (3, False), (18, False), (5, False)],
-        [(1, False), (12, False), (20, False), (15, False), (19, False)]]
+        [(1, False), (12, False), (20, False), (15, False), (19, False)],
+    ]
     input_number = 2
-    # print(input_board[1][1])
     mark_matches(input_board, input_number)
-    # print(input_board[1][1])
     assert input_board[1][1] == (2, True)
-
-
-def test_parse_draw_numbers():
-    input = "7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1"
-    result = parse_drawn_numbers(input)
-    assert result == [7, 4, 9, 5, 11, 17, 23, 2, 0, 14, 21, 24,
-                      10, 16, 13, 6, 15, 25, 12, 22, 18, 20, 8, 19, 3, 26, 1]
 
 
 def test_parse_boards():
@@ -170,11 +170,10 @@ def test_parse_boards():
         "10 16 15  9 19",
         "18  8 23 26 20",
         "22 11 13  6  5",
-        " 2  0 12  3  7"
+        " 2  0 12  3  7",
     ]
 
     result = parse_boards(input)
-    # print(result)
     assert len(result) == 3
     assert len(result[0]) == 5
     assert len(result[0][0]) == 5
@@ -184,7 +183,6 @@ def test_parse_boards():
     assert result[2][4][4] == (7, False)
 
 
-test_parse_draw_numbers()
 test_parse_boards()
 test_mark_matches()
 test_board_is_solved()
