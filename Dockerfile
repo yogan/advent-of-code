@@ -1,7 +1,7 @@
 FROM ubuntu:23.10
 
 RUN apt-get update && apt-get install -y \
-    bc curl ca-certificates gnupg unzip locales build-essential \
+    bc curl ca-certificates gnupg unzip locales build-essential vim \
     fish leiningen pypy3 pypy3-venv
 
 # Bun - https://bun.sh/
