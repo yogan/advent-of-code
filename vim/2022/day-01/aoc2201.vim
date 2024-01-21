@@ -6,6 +6,9 @@
 :norm gg0
 :let @v = "c$\<C-r>=\<C-r>\"\<cr>\<Esc>0j"
 :norm 999@v
-:%!sort -n
-:1,$-d
-:x! 1.out
+:%!sort -rn
+:4,$d
+:norm ggyypJJ
+:s/ /+/g
+:norm @v
+:x! out

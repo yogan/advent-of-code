@@ -1,3 +1,3 @@
 #!/bin/sh
-vim --clean -s part1.vim
-echo "Part 1: $(cat 1.out)"
+vim --clean -s aoc2201.vim
+cat out
