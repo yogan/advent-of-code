@@ -5,6 +5,7 @@ if [ -z "$1" ]; then
 fi
 year="$1"
 
+script_dir=$(dirname "$(realpath "$0")")
 initial_dir=$(pwd)
 cd "$year" || exit 1
 year_dir=$(pwd)
@@ -41,7 +42,7 @@ for day_dir in "${day_dirs[@]}"; do
 
     if [ ! -f "input.txt" ]; then
         day=${day_dir//day-/}
-        if ! ../../scripts/aoc-get.sh "$year" "$day" 2>/dev/null; then
+        if ! "$script_dir/aoc-get.sh" "$year" "$day" 2>/dev/null; then
             echo "FAILED (could not download input)"
             exit_code=1
             cd "$year_dir" || exit 1

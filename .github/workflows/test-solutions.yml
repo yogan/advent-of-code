@@ -20,6 +20,7 @@ jobs:
       changes-2023: ${{ steps.git-diff-check.outputs.changes-2023 }}
       changes-ci: ${{ steps.git-diff-check.outputs.changes-ci }}
       changes-scripts: ${{ steps.git-diff-check.outputs.changes-scripts }}
+      changes-vim: ${{ steps.git-diff-check.outputs.changes-vim }}
 
     steps:
       - name: Checkout code
@@ -60,3 +61,7 @@ jobs:
       - name: Test solutions for 2023
         if: ${{ needs.check-changes.outputs.changes-2023 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
         run: ./scripts/test-days.sh 2023
+
+      - name: Test Vim solutions
+        if: ${{ needs.check-changes.outputs.changes-vim != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
+        run: ./scripts/test-vim.sh
