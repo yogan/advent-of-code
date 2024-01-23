@@ -9,3 +9,7 @@
       [`run.sh`](2022/day-01/run.sh)) or loaded at runtime with
       `:so[urce] aoc2201.vim` (expects an empty buffer and input data in
       `input.txt`)
+- [2022 Day 02](https://adventofcode.com/2022/day/2) ⭐
+    - only part 1:
+        - [`aoc-2022-02.1.vim`](2022/day-02/aoc-2022-02.1.vim)
+        - [`aoc-2022-02.1.commented.vim`](2022/day-02/aoc-2022-02.1.commented.vim)
