@@ -1,3 +1,3 @@
 #!/bin/sh
-vim --clean -s aoc-2022-02.1.vim
+vim --clean -s aoc-2022-02.vim
 cat out
