@@ -1,3 +1,6 @@
 #!/bin/sh
-vim --clean -s aoc-2022-01.vim
+commented=$(find . -name "*.commented.vim")
+plain=$(echo "$commented" | sed 's/\.commented//g')
+sed -e '/^\("\|$\)/d' <"$commented" >"$plain"
+vim --clean -s "$plain"
 cat out
