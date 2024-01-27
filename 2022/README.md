@@ -1,18 +1,23 @@
 # [Advent of Code 2022](https://adventofcode.com/2022) (46/50 ✨)
 
-**Languages: 13** *(fish, JavaScript, TypeScript, Perl, Ruby, C, Java, Fortran, Nim,
-Lua, C#, Python, Haskell)*  
+**Languages: 14** *(fish, JavaScript, TypeScript, Perl, Ruby, C, Java, Fortran, Nim,
+Lua, C#, Python, Haskell, Vim)*  
 **Ideas for 2023:** see [languages.md](languages.md)
 
-- [Day 01](https://adventofcode.com/2022/day/1) ⭐⭐ in
-  [fish](day-01/day01.fish)
-  with [tests](day-01/test.fish)
-- [Day 02](https://adventofcode.com/2022/day/2) ⭐⭐ in
-  [JavaScript (Node/esm)](day-02/day02.mjs),
-  [tests](day-02/day02.test.mjs) for Node 19's experimental built-in test runner
-- [Day 03](https://adventofcode.com/2022/day/3) ⭐⭐ in
-  [TypeScript (Bun)](day-03/day03.ts),
-  [tests](day-03/day03.test.ts) require Bun Canary, see [README](day-03/README.md)
+- [Day 01](https://adventofcode.com/2022/day/1) ⭐⭐
+    - [fish](day-01/day01.fish) with [tests](day-01/test.fish)
+    - [Vim](../vim/2022/day-01/aoc-2022-01.vim)
+      ([commented](../vim/2022/day-01/aoc-2022-01.commented.vim))
+- [Day 02](https://adventofcode.com/2022/day/2) ⭐⭐
+    - [JavaScript (Node/esm)](day-02/day02.mjs),
+      [tests](day-02/day02.test.mjs) for Node 19's experimental built-in test runner
+    - [Vim](../vim/2022/day-02/aoc-2022-02.vim)
+      ([commented](../vim/2022/day-02/aoc-2022-02.commented.vim))
+- [Day 03](https://adventofcode.com/2022/day/3) ⭐⭐
+    - [TypeScript (Bun)](day-03/day03.ts),
+      [tests](day-03/day03.test.ts) require Bun Canary, see [README](day-03/README.md)
+    - [Vim](../vim/2022/day-03/aoc-2022-03.vim)
+      ([commented](../vim/2022/day-03/aoc-2022-03.commented.vim))
 - [Day 04](https://adventofcode.com/2022/day/4) ⭐⭐ in
   [Perl](day-04/day04.pl) with [Test2](https://metacpan.org/pod/Test2)
 - [Day 05](https://adventofcode.com/2022/day/5) ⭐⭐ in
