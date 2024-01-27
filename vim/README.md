@@ -17,3 +17,6 @@ data in a file named `input.txt` in the current working directory.
 - [2022 Day 03](https://adventofcode.com/2022/day/3) ⭐⭐
     - [`aoc-2022-03.vim`](2022/day-03/aoc-2022-03.vim)
     - [`aoc-2022-03.commented.vim`](2022/day-03/aoc-2022-03.commented.vim)
+- [2023 Day 01](https://adventofcode.com/2023/day/1) ⭐⭐
+    - [`aoc-2023-01.vim`](2023/day-01/aoc-2023-01.vim)
+    - [`aoc-2023-01.commented.vim`](2023/day-01/aoc-2023-01.commented.vim)

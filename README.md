@@ -8,5 +8,5 @@
 * [2020 solutions](2020-rust/README.md) (30/50 ✨, Rust)
 * [2021 solutions](2021-python/README.md) (34/50 ✨, Python)
 * [2022 solutions](2022/README.md) (46/50 ✨, 14 languages)
-* [2023 solutions](2023/README.md) (50/50 ✨, 5 languages, mostly Python)
+* [2023 solutions](2023/README.md) (50/50 ✨, 6 languages, mostly Python)
 * [Vim solutions](vim/README.md)

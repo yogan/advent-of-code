@@ -1,9 +1,11 @@
 # [Advent of Code 2023](https://adventofcode.com/2023) (50/50 ✨)
 
-**Languages: 5** *(21 × Python, 1 × fish, 1 × Clojure, 1 × DDP, 1 × Zig)*
+**Languages: 6** *(21 × Python, 1 × fish, 1 × Clojure, 1 × DDP, 1 × Zig, 1 × Vim)*
 
 ## [Day 01: Trebuchet?!](https://adventofcode.com/2023/day/1) 🚀
   - ⭐⭐ [fish](day-01/day01.fish) with [tests](day-01/test.fish) 🐟
+  - ⭐⭐ [Vim](../vim/2023/day-01/aoc-2023-01.vim)
+    [(commented)](../vim/2023/day-01/aoc-2023-01.commented.vim)
 
 ## [Day 02: Cube Conundrum](https://adventofcode.com/2023/day/2) 🧊
   - ⭐⭐ [Clojure](day-02/src/advent_of_code_template/core.clj)
