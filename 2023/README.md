@@ -10,11 +10,13 @@
 ## [Day 02: Cube Conundrum](https://adventofcode.com/2023/day/2) 🧊
   - ⭐⭐ [Clojure](day-02/src/advent_of_code_template/core.clj)
     with [tests](day-02/test/advent_of_code_template/core_test.clj) 📃
-  - ⭐ [Vim](../vim/2023/day-02/aoc-2023-02.vim)
+  - ⭐⭐ [Vim](../vim/2023/day-02/aoc-2023-02.vim)
     [(commented)](../vim/2023/day-02/aoc-2023-02.commented.vim)
 
 ## [Day 03: Gear Ratios](https://adventofcode.com/2023/day/3) ⚙️
   - ⭐⭐ [Python](day-03/day03.py) 🐍
+  - ⭐ [Vim](../vim/2023/day-03/aoc-2023-03.vim)
+    [(commented)](../vim/2023/day-03/aoc-2023-03.commented.vim)
 
 ## [Day 04: Scratchcards](https://adventofcode.com/2023/day/4)
   - ⭐⭐ [DDP - Die Deutsche Programmiersprache](day-04/Tag4.ddp) 🥨
