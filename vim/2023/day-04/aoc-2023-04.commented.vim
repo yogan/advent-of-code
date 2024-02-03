@@ -27,22 +27,13 @@
 " keep only the Xs (this is enough to see how many winning numbers we have)
 :%s/[^X]//g
 
-" I'm too lazy to find out how to calculate n^x in Vim, and we have a maximum
-" of 10 winning numbers, we'll use the equivalent of a lookup table: a bunch of
-" substitutions
-:%s/XXXXXXXXXX/512+
-:%s/XXXXXXXXX/256+
-:%s/XXXXXXXX/128+
-:%s/XXXXXXX/64+
-:%s/XXXXXX/32+
-:%s/XXXXX/16+
-:%s/XXXX/8+
-:%s/XXX/4+
-:%s/XX/2+
-:%s/X/1+
+" score of the card is 2 ^ (w-1), with w being the number of matches (Xs)
+" we can use substitute with an expression (\=) to calculate that:
+" col('$') is line length + 1, so pow(2, col('$')-2) is 2 ^ (w-1)
+:%s/.*/\=float2nr(pow(2, col('$')-2))
 
-" remove last +
-:$s/+$/
+" add a + to the end of each line, expect the last one (range 1,$-)
+:1,$-s/$/+
 
 " evaluate the sum via expression register
 :let @s = "vipgJ0c$\<C-r>=\<C-r>\"\<cr>\<esc>"
