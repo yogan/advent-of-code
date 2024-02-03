@@ -1,6 +1,6 @@
 #!/bin/bash
 sha=$1
-names=$(git diff --name-only "$sha"^ "$sha")
+names=$(git diff --name-only "$sha"^ "$sha" | grep -v README)
 
 changes_ci=$(echo "$names" | grep -c "^.github/workflows")
 changes_docker=$(echo "$names" | grep -c "^Dockerfile")
