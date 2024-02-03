@@ -1,0 +1,4 @@
+*.o
+*.ppu
+aoc
+aoc_test
