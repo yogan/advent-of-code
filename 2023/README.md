@@ -20,6 +20,8 @@
 
 ## [Day 04: Scratchcards](https://adventofcode.com/2023/day/4)
   - ⭐⭐ [DDP - Die Deutsche Programmiersprache](day-04/Tag4.ddp) 🥨
+  - ⭐ [Vim](../vim/2023/day-04/aoc-2023-04.vim)
+    [(commented)](../vim/2023/day-04/aoc-2023-04.commented.vim)
 
 ## [Day 05: If You Give A Seed A Fertilizer](https://adventofcode.com/2023/day/5) 🌱
   - ⭐⭐ [Python](day-05/day05.py)
