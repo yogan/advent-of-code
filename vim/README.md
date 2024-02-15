@@ -8,6 +8,9 @@ data in a file named `input.txt` in the current working directory.
 
 ## Solutions
 
+- [2015 Day 03](https://adventofcode.com/2022/day/1) ⭐
+    - [`aoc-2015-03.vim`](2015/day-03/aoc-2015-03.vim)
+    - [`aoc-2015-03.commented.vim`](2015/day-03/aoc-2015-03.commented.vim)
 - [2022 Day 01](https://adventofcode.com/2022/day/1) ⭐⭐
     - [`aoc-2022-01.vim`](2022/day-01/aoc-2022-01.vim)
     - [`aoc-2022-01.commented.vim`](2022/day-01/aoc-2022-01.commented.vim)

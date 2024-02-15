@@ -27,7 +27,7 @@ execute_command() {
     rm -f "$log_file"
 }
 
-mapfile -t day_dirs < <(find . -mindepth 1 -maxdepth 1 -type d -iname 'day*' -printf '%f\n' | sort)
+mapfile -t day_dirs < <(find -L . -mindepth 1 -maxdepth 1 -type d -iname 'day*' -printf '%f\n' | sort)
 
 for day_dir in "${day_dirs[@]}"; do
     lang=$(<"$day_dir/.language")
