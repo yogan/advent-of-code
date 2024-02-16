@@ -32,7 +32,7 @@ jobs:
     container: ghcr.io/yogan/yogans-advent-of-code:latest
 
     needs: check-changes
-    if: ${{ needs.check-changes.outputs.templates != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
+    if: ${{ needs.check-changes.outputs.changes-templates != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
 
     steps:
       - name: Checkout code
