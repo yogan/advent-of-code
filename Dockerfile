@@ -15,6 +15,9 @@ RUN mkdir -p /etc/apt/keyrings && \
     apt-get update && \
     apt-get install -y nodejs
 
+# Crystal - https://crystal-lang.org
+RUN curl -fsSL https://crystal-lang.org/install.sh | bash
+
 # DDP - https://ddp.le0n.dev/Bedienungsanleitung/DE/Einstieg/Installation
 RUN cd /usr/local/share/ && \
     curl -OL https://github.com/DDP-Projekt/Kompilierer/releases/download/v0.2.0-alpha/DDP-v0.2.0-alpha-linux-amd64.tar.gz && \
