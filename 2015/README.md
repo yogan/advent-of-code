@@ -8,3 +8,5 @@
 - [Day 03](https://adventofcode.com/2015/day/3) ⭐⭐ in
   [Vim](../vim/2015/day-03/aoc-2015-03.vim)
   ([commented](../vim/2015/day-03/aoc-2015-03.commented.vim))
+- [Day 04](https://adventofcode.com/2015/day/4) ⭐⭐ in
+  [Crystal](day-04/src/aoc.cr) ([Tests](day-04/spec/aoc_spec.cr))
