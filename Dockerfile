@@ -2,8 +2,9 @@ FROM ubuntu:23.10
 
 RUN apt-get update && apt-get install -y \
     bc curl ca-certificates gnupg unzip locales build-essential cmake \
+    libcurl3-gnutls \
     vim fish leiningen pypy3 pypy3-venv \
-    libcurl3-gnutls
+    dotnet8 dotnet-sdk-7.0
 
 # Bun - https://bun.sh/
 RUN curl -fsSL https://bun.sh/install | bash
