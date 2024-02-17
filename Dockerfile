@@ -2,7 +2,8 @@ FROM ubuntu:23.10
 
 RUN apt-get update && apt-get install -y \
     bc curl ca-certificates gnupg unzip locales build-essential vim \
-    fish leiningen pypy3 pypy3-venv
+    fish leiningen pypy3 pypy3-venv \
+    libcurl3-gnutls
 
 # Bun - https://bun.sh/
 RUN curl -fsSL https://bun.sh/install | bash
@@ -42,3 +43,11 @@ RUN cd /usr/local/share && \
     rm ./zig-linux-x86_64-0.12.0-dev.1753+a98d4a66e.tar.xz && \
     mv zig-linux-x86_64-0.12.0-dev.1753+a98d4a66e zig
 ENV PATH="/usr/local/share/zig:${PATH}"
+
+# Common LISP via Roswell
+# https://github.com/roswell/roswell/wiki/Installation
+# https://github.com/roswell/roswell/releases
+RUN curl -L https://github.com/roswell/roswell/releases/download/v23.10.14.114/roswell_23.10.14.114-1_amd64.deb --output roswell.deb && \
+    dpkg -i roswell.deb && \
+    rm roswell.deb && \
+    ros install quicklisp
