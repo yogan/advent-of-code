@@ -52,3 +52,9 @@ RUN curl -L https://github.com/roswell/roswell/releases/download/v23.10.14.114/r
     dpkg -i roswell.deb && \
     rm roswell.deb && \
     ros install quicklisp
+
+# Julia via Juliaup
+# https://julialang.org/downloads/
+# https://github.com/JuliaLang/juliaup
+RUN curl -fsSL https://install.julialang.org | sh -s -- --yes
+ENV PATH="/root/.juliaup/bin:${PATH}"
