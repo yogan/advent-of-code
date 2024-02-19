@@ -3,7 +3,7 @@ FROM ubuntu:23.10
 RUN apt-get update && apt-get install -y \
     bc curl ca-certificates gnupg unzip locales build-essential cmake \
     libcurl3-gnutls \
-    vim fish leiningen elixir nim r-base r-cran-testthat \
+    vim fish leiningen elixir nim r-base r-cran-testthat ruby3.1 \
     python3 python3-pip python3-pytest python3-pytest-subtests python3-pytest-pylint \
     pypy3 pypy3-venv \
     dotnet8 dotnet-sdk-7.0
@@ -60,3 +60,6 @@ RUN curl -L https://github.com/roswell/roswell/releases/download/v23.10.14.114/r
 # https://github.com/JuliaLang/juliaup
 RUN curl -fsSL https://install.julialang.org | sh -s -- --yes
 ENV PATH="/root/.juliaup/bin:${PATH}"
+
+# Add Ruby Minitest gem
+RUN gem install minitest
