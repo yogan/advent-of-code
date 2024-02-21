@@ -41,7 +41,7 @@ for day_dir in "${day_dirs[@]}"; do
     cd "$day_dir" || exit 1
 
     if [ ! -f "input.txt" ]; then
-        day=${day_dir//day-/}
+        day=$(echo "$day_dir" | sed -E 's/day-([0-9]+)-?.*/\1/')
         if ! "$script_dir/aoc-get.sh" "$year" "$day" 2>/dev/null; then
             echo "FAILED (could not download input)"
             exit_code=1
