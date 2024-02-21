@@ -1,4 +1,4 @@
-" ----------------------------------- part 1 -----------------------------------
+" " ----------------------------------- part 1 -----------------------------------
 
 " read input and remove blank first line
 :r input.txt|1d
@@ -46,7 +46,69 @@
 " replace line by its length, giving the number of turned on lights
 :s/.*/\=col('$') - 1
 
+" delete result line into register f
+:d f
+
+" ----------------------------------- part 2 -----------------------------------
+
+" NOTE: I tried a similar approach as in part 1, but it requires substitutions
+" within the visual block selection, which takes a very long time (~ 3h for the
+" whole thing). And it wasn't even correct…
+"
+" So it's finally time to get yeet some Vimscript against the problem.
+
+:function Part2()
+:   r input.txt|1d
+:
+:   let row = []
+:   for _ in range(1000)
+:       call add(row, 0)
+:   endfor
+:
+:   let grid = []
+:   for _ in range(1000)
+:       call add(grid, copy(row))
+:   endfor
+:
+:   for i in range(1, line('$'))
+:       let parts = split(getline(i))
+:       if parts[0] == "turn"
+:           let op = parts[1] == "on" ? 1 : -1
+:           let start = split(parts[2], ",")
+:           let end = split(parts[4], ",")
+:           for x in range(start[0], end[0])
+:               for y in range(start[1], end[1])
+:                   let grid[x][y] = max([0, grid[x][y] + op])
+:               endfor
+:           endfor
+:       elseif parts[0] == "toggle"
+:           let start = split(parts[1], ",")
+:           let end = split(parts[3], ",")
+:           for x in range(start[0], end[0])
+:               for y in range(start[1], end[1])
+:                   let grid[x][y] += 2
+:               endfor
+:           endfor
+:       endif
+:   endfor
+:
+:   let sum = 0
+:   for row in grid
+:       for val in row
+:           let sum += val
+:       endfor
+:   endfor
+:
+:   pu! =sum
+:   2,$d
+:endfunction
+
+:call Part2()
+
 " ---------------------------------- output ------------------------------------
+
+" restore part 1 result from register f
+:pu! f
 
 " kthxbye
 :x! out

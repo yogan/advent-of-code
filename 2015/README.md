@@ -15,5 +15,5 @@
   ([commented](../vim/2015/day-05/aoc-2015-05.commented.vim))
 - [Day 06](https://adventofcode.com/2015/day/6)
   - ⭐⭐ [Python](day-06-python/day06.py)
-  - ⭐ [Vim](../vim/2015/day-06/aoc-2015-06.vim)
+  - ⭐⭐ [Vim](../vim/2015/day-06/aoc-2015-06.vim)
     ([commented](../vim/2015/day-06/aoc-2015-06.commented.vim))
