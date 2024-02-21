@@ -1,25 +1,4 @@
-def part1():
-    grid = [[False] * 1000 for _ in range(1000)]
-
-    for line in open("input.txt").readlines():
-        parts = line.split(" ")
-        if parts[0] == "turn":
-            start = [int(num) for num in parts[2].split(",")]
-            end = [int(num) for num in parts[4].split(",")]
-            for x in range(start[0], end[0] + 1):
-                for y in range(start[1], end[1] + 1):
-                    grid[x][y] = parts[1] == "on"
-        elif parts[0] == "toggle":
-            start = [int(num) for num in parts[1].split(",")]
-            end = [int(num) for num in parts[3].split(",")]
-            for x in range(start[0], end[0] + 1):
-                for y in range(start[1], end[1] + 1):
-                    grid[x][y] = not grid[x][y]
-
-    return sum([row.count(True) for row in grid])
-
-
-def part2():
+def calc(is_part1):
     grid = [[0] * 1000 for _ in range(1000)]
 
     for line in open("input.txt").readlines():
@@ -30,15 +9,24 @@ def part2():
             for x in range(start[0], end[0] + 1):
                 for y in range(start[1], end[1] + 1):
                     if parts[1] == "on":
-                        grid[x][y] += 1
+                        if is_part1:
+                            grid[x][y] = 1
+                        else:
+                            grid[x][y] += 1
                     elif parts[1] == "off":
-                        grid[x][y] = max(0, grid[x][y] - 1)
+                        if is_part1:
+                            grid[x][y] = 0
+                        else:
+                            grid[x][y] = max(0, grid[x][y] - 1)
         elif parts[0] == "toggle":
             start = [int(num) for num in parts[1].split(",")]
             end = [int(num) for num in parts[3].split(",")]
             for x in range(start[0], end[0] + 1):
                 for y in range(start[1], end[1] + 1):
-                    grid[x][y] += 2
+                    if is_part1:
+                        grid[x][y] = 1 - grid[x][y]
+                    else:
+                        grid[x][y] += 2
 
     return sum([sum(row) for row in grid])
 
@@ -55,5 +43,5 @@ def check(part, actual, expected=None):
 
 
 if __name__ == "__main__":
-    check(1, part1(), 569999)
-    check(2, part2(), 17836115)
+    check(1, calc(is_part1=True), 569999)
+    check(2, calc(is_part1=False), 17836115)
