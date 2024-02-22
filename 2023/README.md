@@ -15,7 +15,7 @@
 
 ## [Day 03: Gear Ratios](https://adventofcode.com/2023/day/3) ⚙️
   - ⭐⭐ [Python](day-03-python/day03.py) 🐍
-  - ⭐ [Vim](../vim/2023/day-03/aoc-2023-03.vim)
+  - ⭐⭐ [Vim](../vim/2023/day-03/aoc-2023-03.vim)
     [(commented)](../vim/2023/day-03/aoc-2023-03.commented.vim)
 
 ## [Day 04: Scratchcards](https://adventofcode.com/2023/day/4)
