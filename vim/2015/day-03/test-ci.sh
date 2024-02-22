@@ -1,5 +1,5 @@
 #!/bin/sh
-./run.sh > /dev/null 2>&1
+../../../scripts/run-vim.sh > /dev/null 2>&1
 
 result1=$(head -1 out)
 result2=$(tail -1 out)

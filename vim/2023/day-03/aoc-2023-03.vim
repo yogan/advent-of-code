@@ -20,12 +20,9 @@
 :pu i|1d
 :function Part2()
 :   let sum = 0
-:
 :   while search('\*') " no 'W' flag, as nowrapscan is already set above
 :       normal mm
-:
 :       let numbers = []
-:
 :       for move in ['kh', 'k', 'kl', 'h', 'l', 'jh', 'j', 'jl']
 :           exe "norm `m" . move
 :           let [l, c] = [line('.'), col('.')]
@@ -38,14 +35,11 @@
 :               endif
 :           endif
 :       endfor
-:
 :       normal `m
-:
 :       if len(numbers) == 2
 :           let sum += numbers[0][3] * numbers[1][3]
 :       endif
 :   endwhile
-:
 :   %d
 :   put =sum
 :endfunction
