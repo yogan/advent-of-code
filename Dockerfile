@@ -3,7 +3,8 @@ FROM ubuntu:23.10
 RUN apt-get update && apt-get install -y \
     bc curl ca-certificates gnupg unzip locales build-essential cmake \
     libcurl3-gnutls \
-    vim fish leiningen elixir nim r-base r-cran-testthat ruby3.1 \
+    vim fish leiningen nim r-base r-cran-testthat ruby3.1 \
+    elixir erlang-base erlang-dev erlang-eunit rebar3 \
     python3 python3-pip python3-pytest python3-pytest-subtests python3-pytest-pylint \
     pypy3 pypy3-venv \
     dotnet8 dotnet-sdk-7.0
@@ -63,3 +64,12 @@ ENV PATH="/root/.juliaup/bin:${PATH}"
 
 # Add Ruby Minitest gem
 RUN gem install minitest
+
+# Gleam
+# https://gleam.run/getting-started/installing
+# Gleam requires Erlang, so we install erlang-base above.
+# (elixir would already pull it in as a dependency, but it seems clearer to install it explicitly)
+# We need erlang-eunit for unit tests, and also erlang-dev, otherwise eunit.hrl is missing
+# Gleam itself is a single static binary, so we just download it and put it in the PATH.
+# Exercism tests require rebar3, which is installed via apt as well.
+RUN curl -fsSL https://github.com/gleam-lang/gleam/releases/download/v1.0.0-rc2/gleam-v1.0.0-rc2-aarch64-unknown-linux-musl.tar.gz | tar -xzf - -C /usr/local/bin
