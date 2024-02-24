@@ -3,7 +3,7 @@ FROM ubuntu:23.10
 RUN apt-get update && apt-get install -y \
     bc curl ca-certificates gnupg unzip locales build-essential cmake \
     libcurl3-gnutls \
-    vim fish leiningen nim r-base r-cran-testthat ruby3.1 \
+    vim fish leiningen nim r-base r-cran-testthat ruby3.1 polyml \
     elixir erlang-base erlang-dev erlang-eunit rebar3 \
     python3 python3-pip python3-pytest python3-pytest-subtests python3-pytest-pylint \
     pypy3 pypy3-venv \
