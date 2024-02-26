@@ -1,13 +1,20 @@
 FROM ubuntu:23.10
 
 RUN apt-get update && apt-get install -y \
-    bc curl ca-certificates gnupg unzip locales build-essential cmake \
-    libcurl3-gnutls \
+    # base/util packages
+    bc curl ca-certificates gnupg unzip locales build-essential cmake libcurl3-gnutls \
+    # various languages directly from apt
     vim fish leiningen nim r-base r-cran-testthat ruby3.1 polyml \
     elixir erlang-base erlang-dev erlang-eunit rebar3 \
+    # Python
     python3 python3-pip python3-pytest python3-pytest-subtests python3-pytest-pylint \
     pypy3 pypy3-venv \
-    dotnet8 dotnet-sdk-7.0
+    # .NET
+    dotnet8 dotnet-sdk-7.0 \
+    # Swift deps, see: https://www.swift.org/install/linux/#installation-via-tarball
+    binutils git gnupg2 libc6-dev libcurl4-openssl-dev libedit2 libgcc-9-dev \
+    libpython3.8 libsqlite3-0 libstdc++-9-dev libxml2-dev libz3-dev pkg-config \
+    tzdata zlib1g-dev unzip
 
 # Bun - https://bun.sh/
 RUN curl -fsSL https://bun.sh/install | bash
@@ -73,3 +80,8 @@ RUN gem install minitest
 # Gleam itself is a single static binary, so we just download it and put it in the PATH.
 # Exercism tests require rebar3, which is installed via apt as well.
 RUN curl -fsSL https://github.com/gleam-lang/gleam/releases/download/v1.0.0-rc2/gleam-v1.0.0-rc2-x86_64-unknown-linux-musl.tar.gz | tar -xzf - -C /usr/local/bin
+
+# Swift
+# https://www.swift.org/install/linux/#installation-via-tarball
+# tarball has a usr/ directory, so we strip that and extract to /usr
+RUN curl -fsSL https://download.swift.org/swift-5.9.2-release/ubuntu2204/swift-5.9.2-RELEASE/swift-5.9.2-RELEASE-ubuntu22.04.tar.gz | tar -xzf - -C /usr --strip-components=2
