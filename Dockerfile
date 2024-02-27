@@ -85,3 +85,10 @@ RUN curl -fsSL https://github.com/gleam-lang/gleam/releases/download/v1.0.0-rc2/
 # https://www.swift.org/install/linux/#installation-via-tarball
 # tarball has a usr/ directory, so we strip that and extract to /usr
 RUN curl -fsSL https://download.swift.org/swift-5.9.2-release/ubuntu2204/swift-5.9.2-RELEASE/swift-5.9.2-RELEASE-ubuntu22.04.tar.gz | tar -xzf - -C /usr --strip-components=2
+
+# PowerShell universal package
+# https://learn.microsoft.com/en-us/powershell/scripting/install/install-ubuntu?view=powershell-7.4#installation-via-direct-download
+RUN curl -fsSL https://github.com/PowerShell/PowerShell/releases/download/v7.4.1/powershell_7.4.1-1.deb_amd64.deb --output powershell.deb && \
+    dpkg -i powershell.deb && \
+    rm powershell.deb && \
+    pwsh -c "Install-Module -Name Pester -Force -SkipPublisherCheck -Scope AllUsers"
