@@ -92,3 +92,15 @@ RUN curl -fsSL https://github.com/PowerShell/PowerShell/releases/download/v7.4.1
     dpkg -i powershell.deb && \
     rm powershell.deb && \
     pwsh -c "Install-Module -Name Pester -Force -SkipPublisherCheck -Scope AllUsers"
+
+# Haskell via GHCup - https://www.haskell.org/ghcup
+# Docker steps as recommended by ghcup maintainer here: https://stackoverflow.com/a/71513191/183582
+# (adapted to remove gpg verification, which did not work for some reason)
+RUN curl https://downloads.haskell.org/~ghcup/x86_64-linux-ghcup > /usr/bin/ghcup && \
+    chmod +x /usr/bin/ghcup
+ARG GHC=recommended
+ARG CABAL=latest
+ARG STACK=recommended
+RUN ghcup -v install ghc   --isolate /usr/local     --force ${GHC}   && \
+    ghcup -v install cabal --isolate /usr/local/bin --force ${CABAL} && \
+    ghcup -v install stack --isolate /usr/local/bin --force ${STACK}
