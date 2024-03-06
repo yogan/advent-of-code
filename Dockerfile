@@ -32,7 +32,7 @@ RUN curl -fsSL https://crystal-lang.org/install.sh | bash
 
 # DDP - https://ddp.le0n.dev/Bedienungsanleitung/DE/Einstieg/Installation
 RUN cd /usr/local/share/ && \
-    curl -OL https://github.com/DDP-Projekt/Kompilierer/releases/download/v0.2.0-alpha/DDP-v0.2.0-alpha-linux-amd64.tar.gz && \
+    curl -fsSLO https://github.com/DDP-Projekt/Kompilierer/releases/download/v0.2.0-alpha/DDP-v0.2.0-alpha-linux-amd64.tar.gz && \
     tar -xzf ./DDP-v0.2.0-alpha-linux-amd64.tar.gz && \
     rm ./DDP-v0.2.0-alpha-linux-amd64.tar.gz && \
     mv DDP-v0.2.0-alpha-linux-amd64 ddp && \
@@ -44,12 +44,12 @@ ENV PATH="/usr/local/share/ddp/bin:${PATH}"
 ENV DDPPATH="/usr/local/share/ddp"
 
 # Rust - https://www.rust-lang.org/tools/install
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+RUN curl --proto '=https' --tlsv1.2 -fsSL https://sh.rustup.rs | sh -s -- -y
 ENV PATH="/root/.cargo/bin:${PATH}"
 
 # Zig - https://ziglang.org/learn/getting-started/
 RUN cd /usr/local/share && \
-    curl -OL https://ziglang.org/builds/zig-linux-x86_64-0.12.0-dev.1753+a98d4a66e.tar.xz && \
+    curl -fsSLO https://ziglang.org/builds/zig-linux-x86_64-0.12.0-dev.1753+a98d4a66e.tar.xz && \
     tar -xJf ./zig-linux-x86_64-0.12.0-dev.1753+a98d4a66e.tar.xz && \
     rm ./zig-linux-x86_64-0.12.0-dev.1753+a98d4a66e.tar.xz && \
     mv zig-linux-x86_64-0.12.0-dev.1753+a98d4a66e zig
@@ -58,7 +58,7 @@ ENV PATH="/usr/local/share/zig:${PATH}"
 # Common LISP via Roswell
 # https://github.com/roswell/roswell/wiki/Installation
 # https://github.com/roswell/roswell/releases
-RUN curl -L https://github.com/roswell/roswell/releases/download/v23.10.14.114/roswell_23.10.14.114-1_amd64.deb --output roswell.deb && \
+RUN curl -fsSL https://github.com/roswell/roswell/releases/download/v23.10.14.114/roswell_23.10.14.114-1_amd64.deb --output roswell.deb && \
     dpkg -i roswell.deb && \
     rm roswell.deb && \
     ros install quicklisp
@@ -96,7 +96,7 @@ RUN curl -fsSL https://github.com/PowerShell/PowerShell/releases/download/v7.4.1
 # Haskell via GHCup - https://www.haskell.org/ghcup
 # Docker steps as recommended by ghcup maintainer here: https://stackoverflow.com/a/71513191/183582
 # (adapted to remove gpg verification, which did not work for some reason)
-RUN curl https://downloads.haskell.org/~ghcup/x86_64-linux-ghcup > /usr/bin/ghcup && \
+RUN curl -fsSL https://downloads.haskell.org/~ghcup/x86_64-linux-ghcup > /usr/bin/ghcup && \
     chmod +x /usr/bin/ghcup
 ARG GHC=recommended
 ARG CABAL=latest
