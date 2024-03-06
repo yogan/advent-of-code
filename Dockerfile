@@ -104,3 +104,13 @@ ARG STACK=recommended
 RUN ghcup -v install ghc   --isolate /usr/local     --force ${GHC}   && \
     ghcup -v install cabal --isolate /usr/local/bin --force ${CABAL} && \
     ghcup -v install stack --isolate /usr/local/bin --force ${STACK}
+
+# Scala via cs setup - https://www.scala-lang.org/download
+RUN curl -fsSL https://github.com/coursier/coursier/releases/latest/download/cs-x86_64-pc-linux.gz | \
+    gzip -d > cs && \
+    chmod +x cs && \
+    ./cs setup --yes --dir /usr/local/share/scala
+ENV PATH="/usr/local/share/scala:${PATH}"
+RUN sbt --script-version
+
+# vim: tw=0
