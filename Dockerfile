@@ -44,7 +44,7 @@ ENV PATH="/usr/local/share/ddp/bin:${PATH}"
 ENV DDPPATH="/usr/local/share/ddp"
 
 # Rust - https://www.rust-lang.org/tools/install
-RUN curl --proto '=https' --tlsv1.2 -fsSL https://sh.rustup.rs | sh -s -- -y
+RUN curl --proto '=https' --tlsv1.2 -fsSL https://sh.rustup.rs | sh -s -- -y --no-modify-path
 ENV PATH="/root/.cargo/bin:${PATH}"
 
 # Zig - https://ziglang.org/learn/getting-started/
