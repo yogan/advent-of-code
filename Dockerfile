@@ -4,7 +4,7 @@ RUN apt-get update && apt-get install -y \
     # base/util packages
     bc curl ca-certificates gnupg unzip locales build-essential cmake libcurl3-gnutls \
     # various languages directly from apt
-    vim fish leiningen nim r-base r-cran-testthat ruby3.1 polyml \
+    vim fish leiningen nim r-base r-cran-testthat ruby3.1 polyml golang-go \
     elixir erlang-base erlang-dev erlang-eunit rebar3 openjdk-8-jdk openjdk-19-jdk \
     # Python
     python3 python3-pip python3-pytest python3-pytest-subtests python3-pytest-pylint \
