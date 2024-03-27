@@ -113,4 +113,11 @@ RUN curl -fsSL https://github.com/coursier/coursier/releases/latest/download/cs-
 ENV PATH="/usr/local/share/scala:${PATH}"
 RUN sbt --script-version
 
+# Elm and elm-test
+# https://github.com/elm/compiler/blob/master/installers/linux/README.md
+RUN curl -fsSL https://github.com/elm/compiler/releases/download/0.19.1/binary-for-linux-64-bit.gz | \
+    gunzip --stdout > /usr/local/bin/elm \
+    && chmod +x /usr/local/bin/elm \
+    && npm install --global elm-test@latest-0.19.1
+
 # vim: tw=0
