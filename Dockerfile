@@ -120,4 +120,7 @@ RUN curl -fsSL https://github.com/elm/compiler/releases/download/0.19.1/binary-f
     && chmod +x /usr/local/bin/elm \
     && npm install --global elm-test@latest-0.19.1
 
+# Perl Test2::V0
+RUN cpan Test2::V0
+
 # vim: tw=0
