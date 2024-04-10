@@ -7,6 +7,10 @@ on:
   pull_request:
     branches:
       - main
+  schedule:
+    # run every night at 2:02 UTC (tests are scheduled at 2:42, so they are
+    # guaranteed to have a freshly built Docker image)
+    - cron: '2 2 * * *'
 
 env:
   IMAGE_NAME: yogans-advent-of-code
@@ -30,7 +34,7 @@ jobs:
         run: ./scripts/check-git-changes.sh ${{ github.sha }}
 
       - name: Build and push image
-        if: steps.git-diff-check.outputs.changes-docker != '0'
+        if: ${{ github.event.schedule || steps.git-diff-check.outputs.changes-docker != '0' }}
         run: |
           docker build . --file Dockerfile --tag $IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
