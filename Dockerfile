@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -y \
     # various languages directly from apt
     vim fish bats leiningen r-base r-cran-testthat ruby3.1 polyml golang-go gawk guile-3.0 \
     elixir erlang-base erlang-dev erlang-eunit rebar3 nim openjdk-8-jdk openjdk-19-jdk \
+    swi-prolog \
     # Python
     python3 python3-pip python3-pytest python3-pytest-subtests python3-pytest-pylint \
     pypy3 pypy3-venv \
