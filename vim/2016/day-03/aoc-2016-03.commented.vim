@@ -4,7 +4,7 @@
 "       ▪▄ ██▄▀▀▀█▄██ ▄▄▐▀▀▄ ▄█▀▀█ ██▪  ▐█.▪██ ▄▄▄█▀▀█ ▐█ ▌▐▌▐█· ██▀·
 "       ▐▌▐█▌▐█▄▪▐█▐███▌▐█•█▌▐█ ▪▐▌██▌. ▐█▌·▐███▌▐█ ▪▐▌██ ██▌▐█▌▐█▪·•
 "        ▀▀▀• ▀▀▀▀ ·▀▀▀ .▀  ▀ ▀  ▀ ▀▀▀  ▀▀▀ ·▀▀▀  ▀  ▀ ▀▀  █▪▀▀▀.▀
-"          Shout out to the wonderful people at JSCraftCamp 2024!
+"          Shoutout to the wonderful people at JSCraftCamp 2024!
 
 " ----------------------------------- input ------------------------------------
 
@@ -32,7 +32,7 @@
 " only keep positive numbers, those are possible triangles
 :g/^0\|-/d
 
-" line number of the last line is the result
+" line number of the last line = amount of possible triangles
 :s/.*/\=line(".")
 
 " get rid of all other lines
@@ -50,8 +50,7 @@
 " this leaves the cursor at the end, so we don't need a $ for the second put)
 :$pu x|pu
 
-" remove leading spaces again, but this time we are at the bottom, so gg instead
-" of G to move up
+" remove leading spaces again, but this time bottom to top (gg instead of G)
 :norm <gg
 
 " now it's part 1 again, so apply macro q to get the expressions, evaluate them,
@@ -64,7 +63,7 @@
 
 " ----------------------------------- output -----------------------------------
 
-" paste of part 1 from register a above current line
+" restore part 1 result from register a (! to paste above current line)
 :pu! a
 
 " kthxbye
