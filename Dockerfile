@@ -50,10 +50,10 @@ ENV PATH="/root/.cargo/bin:${PATH}"
 
 # Zig - https://ziglang.org/learn/getting-started/
 RUN cd /usr/local/share && \
-    curl -fsSLO https://ziglang.org/builds/zig-linux-x86_64-0.12.0-dev.1753+a98d4a66e.tar.xz && \
-    tar -xJf ./zig-linux-x86_64-0.12.0-dev.1753+a98d4a66e.tar.xz && \
-    rm ./zig-linux-x86_64-0.12.0-dev.1753+a98d4a66e.tar.xz && \
-    mv zig-linux-x86_64-0.12.0-dev.1753+a98d4a66e zig
+    curl -fsSLO https://ziglang.org/download/0.13.0/zig-linux-x86_64-0.13.0.tar.xz && \
+    tar -xJf ./zig-linux-x86_64-0.13.0.tar.xz && \
+    rm ./zig-linux-x86_64-0.13.0.tar.xz && \
+    mv zig-linux-x86_64-0.13.0 zig
 ENV PATH="/usr/local/share/zig:${PATH}"
 
 # Common LISP via Roswell
