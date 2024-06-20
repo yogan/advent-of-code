@@ -4,7 +4,7 @@
 result1=$(head -1 out)
 result2=$(tail -1 out)
 expected1="252"
-expected2="???"
+expected2="143"
 
 if [ "$result1" != "$expected1" ]; then
     echo "Part 1 failed"
@@ -13,9 +13,9 @@ if [ "$result1" != "$expected1" ]; then
     exit 1
 fi
 
-# if [ "$result2" != "$expected2" ]; then
-#     echo "Part 2 failed"
-#     echo "Expected: »$expected2«"
-#     echo "Received: »$result2«"
-#     exit 1
-# fi
+if [ "$result2" != "$expected2" ]; then
+    echo "Part 2 failed"
+    echo "Expected: »$expected2«"
+    echo "Received: »$result2«"
+    exit 1
+fi
