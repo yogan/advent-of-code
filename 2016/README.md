@@ -12,3 +12,6 @@
 - [Day 04](https://adventofcode.com/2016/day/4) ⭐⭐ in
   [Vim](../vim/2016/day-04/aoc-2016-04.vim)
   ([commented](../vim/2016/day-04/aoc-2016-04.commented.vim))
+- [Day 05](https://adventofcode.com/2016/day/5) ⭐⭐ in
+  [Gleam](./day-05-gleam/src/aoc_2016_day_05.gleam)
+  ([tests](./day-05-gleam/test/aoc_2016_day_05_test.gleam))
