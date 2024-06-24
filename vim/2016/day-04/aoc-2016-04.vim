@@ -1,4 +1,3 @@
-:r input.txt|1d
 :function Check(name, id, checksum)
 :   let counts = {}
 :   for char in split(substitute(a:name, '-', '', 'g'), '\zs')
@@ -15,7 +14,24 @@
 :       return 0
 :   endif
 :endfunction
+:r input.txt|1d
 :silent %s/\v(.*)-(\d+)\[(.*)\]/\=Check(submatch(1), submatch(2), submatch(3)) . '+'
 :norm vipgJ
 :s/\(.*\)+/\=eval(submatch(1))
-:x! out
+:g/./d a
+:function Decrypt(name, id)
+:   let result = ''
+:   for char in split(a:name, '\zs')
+:       if char == '-'
+:           let result .= ' '
+:       else
+:           let result .= nr2char(((char2nr(char) - 97 + a:id) % 26) + 97)
+:       endif
+:   endfor
+:   return result
+:endfunction
+:r input.txt|1d
+:silent %s/\v(.*)-(\d+)\[(.*)\]/\=Decrypt(submatch(1), submatch(2)) . '|' . submatch(2)
+:silent v/northpole/d
+:norm df|
+:pu! a|x! out

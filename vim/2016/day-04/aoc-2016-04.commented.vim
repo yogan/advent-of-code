@@ -1,8 +1,3 @@
-" ----------------------------------- input ------------------------------------
-
-" read input and remove blank first line
-:r input.txt|1d
-
 " ----------------------------------- part 1 -----------------------------------
 
 :function Check(name, id, checksum)
@@ -22,13 +17,31 @@
 :   endif
 :endfunction
 
+:r input.txt|1d
 :silent %s/\v(.*)-(\d+)\[(.*)\]/\=Check(submatch(1), submatch(2), submatch(3)) . '+'
-
 :norm vipgJ
-
 :s/\(.*\)+/\=eval(submatch(1))
+:g/./d a
+
+" ----------------------------------- part 2 -----------------------------------
+
+:function Decrypt(name, id)
+:   let result = ''
+:   for char in split(a:name, '\zs')
+:       if char == '-'
+:           let result .= ' '
+:       else
+:           let result .= nr2char(((char2nr(char) - 97 + a:id) % 26) + 97)
+:       endif
+:   endfor
+:   return result
+:endfunction
+
+:r input.txt|1d
+:silent %s/\v(.*)-(\d+)\[(.*)\]/\=Decrypt(submatch(1), submatch(2)) . '|' . submatch(2)
+:silent v/northpole/d
+:norm df|
 
 " ----------------------------------- output -----------------------------------
 
-" kthxbye
-:x! out
+:pu! a|x! out
