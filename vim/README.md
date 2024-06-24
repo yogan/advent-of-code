@@ -32,6 +32,9 @@ data in a file named `input.txt` in the current working directory.
     - [`aoc-2016-03.vim`](2016/day-03/aoc-2016-03.vim)
     - [`aoc-2016-03.commented.vim`](2016/day-03/aoc-2016-03.commented.vim)
     - solved together with the wonderful people at [JSCraftCamp 2024](https://jscraftcamp.org)
+- [2016 Day 04](https://adventofcode.com/2016/day/4) ⭐⭐
+    - [`aoc-2016-04.vim`](2016/day-04/aoc-2016-04.vim)
+    - [`aoc-2016-04.commented.vim`](2016/day-04/aoc-2016-04.commented.vim)
 
 ### 2022
 

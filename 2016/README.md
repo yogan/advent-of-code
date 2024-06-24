@@ -9,3 +9,6 @@
 - [Day 03](https://adventofcode.com/2016/day/3) ⭐⭐ in
   [Vim](../vim/2016/day-03/aoc-2016-03.vim)
   ([commented](../vim/2016/day-03/aoc-2016-03.commented.vim))
+- [Day 04](https://adventofcode.com/2016/day/4) ⭐⭐ in
+  [Vim](../vim/2016/day-04/aoc-2016-04.vim)
+  ([commented](../vim/2016/day-04/aoc-2016-04.commented.vim))
