@@ -12,17 +12,14 @@
 :d f
 :function Part2()
 :   r input.txt|1d
-:
 :   let row = []
 :   for _ in range(1000)
 :       call add(row, 0)
 :   endfor
-:
 :   let grid = []
 :   for _ in range(1000)
 :       call add(grid, copy(row))
 :   endfor
-:
 :   for i in range(1, line('$'))
 :       let parts = split(getline(i))
 :       if parts[0] == "turn"
@@ -44,14 +41,12 @@
 :           endfor
 :       endif
 :   endfor
-:
 :   let sum = 0
 :   for row in grid
 :       for val in row
 :           let sum += val
 :       endfor
 :   endfor
-:
 :   pu! =sum
 :   2,$d
 :endfunction
