@@ -1,17 +1,16 @@
-FROM ubuntu:23.10
+FROM ubuntu:24.04
 
 RUN apt-get update && apt-get install -y \
     # base/util packages
     bc curl ca-certificates gnupg unzip locales build-essential cmake libcurl3-gnutls \
+    # this brings add-apt-repository, needed later:
+    software-properties-common \
     # various languages directly from apt
-    vim fish bats leiningen r-base r-cran-testthat ruby3.1 polyml golang-go gawk guile-3.0 \
-    elixir erlang-base erlang-dev erlang-eunit rebar3 nim openjdk-8-jdk openjdk-19-jdk \
-    swi-prolog \
+    vim fish bats leiningen r-base r-cran-testthat ruby3.2 polyml golang-go gawk guile-3.0 \
+    elixir erlang-base erlang-dev erlang-eunit rebar3 nim openjdk-8-jdk swi-prolog \
     # Python
     python3 python3-pip python3-pytest python3-pytest-subtests python3-pytest-pylint \
     pypy3 pypy3-venv \
-    # .NET
-    dotnet8 dotnet-sdk-7.0 \
     # Swift deps, see: https://www.swift.org/install/linux/#installation-via-tarball
     binutils git gnupg2 libc6-dev libcurl4-openssl-dev libedit2 libgcc-9-dev \
     libpython3.8 libsqlite3-0 libstdc++-9-dev libxml2-dev libz3-dev pkg-config \
@@ -89,7 +88,12 @@ RUN curl -fsSL https://download.swift.org/swift-5.9.2-release/ubuntu2204/swift-5
 
 # PowerShell universal package
 # https://learn.microsoft.com/en-us/powershell/scripting/install/install-ubuntu?view=powershell-7.4#installation-via-direct-download
-RUN curl -fsSL https://github.com/PowerShell/PowerShell/releases/download/v7.4.1/powershell_7.4.1-1.deb_amd64.deb --output powershell.deb && \
+# Using this temp fix until the powershell package can deal with libicu74, the only version of
+# libicu available in Ubuntu 24.04. See: https://github.com/PowerShell/PowerShell/issues/21385
+RUN curl -fsSL https://launchpad.net/ubuntu/+archive/primary/+files/libicu72_72.1-3ubuntu3_amd64.deb --output libicu72.deb && \
+    dpkg -i libicu72.deb && \
+    rm libicu72.deb
+RUN curl -fsSL https://github.com/PowerShell/PowerShell/releases/download/v7.4.3/powershell_7.4.3-1.deb_amd64.deb --output powershell.deb && \
     dpkg -i powershell.deb && \
     rm powershell.deb && \
     pwsh -c "Install-Module -Name Pester -Force -SkipPublisherCheck -Scope AllUsers"
@@ -105,6 +109,24 @@ ARG STACK=recommended
 RUN ghcup -v install ghc   --isolate /usr/local     --force ${GHC}   && \
     ghcup -v install cabal --isolate /usr/local/bin --force ${CABAL} && \
     ghcup -v install stack --isolate /usr/local/bin --force ${STACK}
+
+# .NET 7 and 8
+# https://devblogs.microsoft.com/dotnet/whats-new-for-dotnet-in-ubuntu-2404/
+RUN add-apt-repository ppa:dotnet/backports && \
+    # .NET 7 (required for Exercism stuff, coming from ppa:dotnet/backports)
+    # .NET 8 (straight from the default Ubuntu repos)
+    apt-get install -y dotnet-sdk-7.0 dotnet-sdk-8.0
+
+# Java - we need a JDK19 for Exercism stuff. Ubuntu 24.04 does not have a package anymore,
+# but the old .deb from Oracle seems to do it, as long as we provide the right libc.
+RUN apt-get install -y libc6-i386 libc6-x32 && \
+    curl -fsSL https://download.oracle.com/java/19/archive/jdk-19.0.2_linux-x64_bin.deb --output jdk19.deb && \
+    dpkg -i jdk19.deb && \
+    rm jdk19.deb && \
+    update-alternatives --install /usr/bin/java java /usr/lib/jvm/jdk-19/bin/java 1 && \
+    update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/jdk-19/bin/javac 1 && \
+    update-alternatives --set java /usr/lib/jvm/jdk-19/bin/java && \
+    update-alternatives --set javac /usr/lib/jvm/jdk-19/bin/javac
 
 # Scala via cs setup - https://www.scala-lang.org/download
 RUN curl -fsSL https://github.com/coursier/coursier/releases/latest/download/cs-x86_64-pc-linux.gz | \
