@@ -35,6 +35,9 @@ data in a file named `input.txt` in the current working directory.
 - [2016 Day 04](https://adventofcode.com/2016/day/4) ⭐⭐
     - [`aoc-2016-04.vim`](2016/day-04/aoc-2016-04.vim)
     - [`aoc-2016-04.commented.vim`](2016/day-04/aoc-2016-04.commented.vim)
+- [2016 Day 06](https://adventofcode.com/2016/day/6) ⭐⭐
+    - [`aoc-2016-06.vim`](2016/day-06/aoc-2016-06.vim)
+    - [`aoc-2016-06.commented.vim`](2016/day-06/aoc-2016-06.commented.vim)
 
 ### 2022
 
