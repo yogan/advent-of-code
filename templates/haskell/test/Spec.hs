@@ -1,4 +1,4 @@
-import Lib (parseLines, part1, part2)
+import Lib
 import Test.Hspec
 
 main :: IO ()

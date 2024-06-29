@@ -1,9 +1,4 @@
-module Lib
-  ( part1,
-    part2,
-    parseLines,
-  )
-where
+module Lib where
 
 parseLines :: [String] -> [[Int]]
 parseLines = map (map read . words . map (\c -> if c == 'x' then ' ' else c))

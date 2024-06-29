@@ -1,6 +1,6 @@
 module Main (main) where
 
-import Lib (parseLines, part1, part2)
+import Lib
 import System.Environment (getArgs)
 
 main :: IO ()
