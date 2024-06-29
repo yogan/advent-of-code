@@ -50,6 +50,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Prepare Haskell/Stack stuff
+        run: ./scripts/haskell-prepare.sh
+        if: ${{ github.event.schedule || needs.check-changes.outputs.any-changes != '0' }}
+
       - name: Test solutions for 2015
         if: ${{ github.event.schedule || needs.check-changes.outputs.changes-2015 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
         run: ./scripts/test-days.sh 2015
@@ -73,3 +77,7 @@ jobs:
       - name: Test Vim solutions
         if: ${{ github.event.schedule || needs.check-changes.outputs.changes-vim != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
         run: ./scripts/test-vim.sh
+
+      - name: Clean up Haskell/Stack stuff
+        run: ./scripts/haskell-cleanup.sh
+        if: ${{ github.event.schedule || needs.check-changes.outputs.any-changes != '0' }}

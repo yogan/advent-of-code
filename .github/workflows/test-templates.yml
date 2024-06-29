@@ -41,5 +41,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Prepare Haskell/Stack stuff
+        run: ./scripts/haskell-prepare.sh
+
       - name: Test templates
         run: ./scripts/test-templates.sh
+
+      - name: Clean up Haskell/Stack stuff
+        run: ./scripts/haskell-cleanup.sh
+        if: always()
