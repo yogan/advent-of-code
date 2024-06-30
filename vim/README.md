@@ -38,6 +38,10 @@ data in a file named `input.txt` in the current working directory.
 - [2016 Day 06](https://adventofcode.com/2016/day/6) ⭐⭐
     - [`aoc-2016-06.vim`](2016/day-06/aoc-2016-06.vim)
     - [`aoc-2016-06.commented.vim`](2016/day-06/aoc-2016-06.commented.vim)
+- [2016 Day 08](https://adventofcode.com/2016/day/8) ⭐⭐
+    - [`aoc-2016-08.vim`](2016/day-08/aoc-2016-08.vim)
+    - [`aoc-2016-08.commented.vim`](2016/day-08/aoc-2016-08.commented.vim)
+    - [animated solution](2016/day-08/README.md)
 
 ### 2022
 

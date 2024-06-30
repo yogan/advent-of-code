@@ -26,3 +26,7 @@
   ([Main.hs](./day-07-haskell/app/Main.hs),
   **[Lib.hs](./day-07-haskell/src/Lib.hs)**,
   [Spec.hs](./day-07-haskell/test/Spec.hs))
+- [Day 08](https://adventofcode.com/2016/day/8) ⭐⭐ in
+  [Vim](../vim/2016/day-08/aoc-2016-08.vim)
+  ([commented](../vim/2016/day-08/aoc-2016-08.commented.vim)) -
+  [animated solution](../vim/2016/day-08/README.md)
