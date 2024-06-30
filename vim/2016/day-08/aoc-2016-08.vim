@@ -8,7 +8,7 @@
 :    call ParseLine(line)
 :    if (g:animate) | redraw | sleep 60m | endif
 :  endfor
-:  if (g:animate) | call input("Press Enter to count pixels") | endif
+:  1,$y a
 :  norm vipgJ
 :  s/\.//g
 :  s/.*/\=col('$') - 1
@@ -50,4 +50,12 @@
 :  norm D0P
 :endfunction
 :silent call Part1()
+:if (g:animate)
+:   s/.*/\=getreg("a")
+:   $d
+:   silent %s/\./ /g
+:   silent %s/#/█/g
+:else
+:   s/$/\rZJHRKCPLYJ
+:endif
 :if (!g:animate) | :x! out | endif

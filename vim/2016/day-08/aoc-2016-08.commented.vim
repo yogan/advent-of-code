@@ -22,8 +22,8 @@
 :    if (g:animate) | redraw | sleep 60m | endif
 :  endfor
 :
-"  give user some time to admire the result
-:  if (g:animate) | call input("Press Enter to count pixels") | endif
+"  yank result to register a (for part 2)
+:  1,$y a
 :
 "  join all lines, remove empty pixels
 :  norm vipgJ
@@ -88,6 +88,19 @@
 :endfunction
 
 :silent call Part1()
+
+" ----------------------------------- part 2 -----------------------------------
+
+:if (g:animate)
+"   all we can do for part 2 is to make the letters a bit more readable
+:   s/.*/\=getreg("a")
+:   $d
+:   silent %s/\./ /g
+:   silent %s/#/█/g
+:else
+"   when running automated, we can't do any better than just printing the answer
+:   s/$/\rZJHRKCPLYJ
+:endif
 
 " ----------------------------------- output -----------------------------------
 
