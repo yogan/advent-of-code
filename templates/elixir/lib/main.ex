@@ -5,12 +5,23 @@ defmodule Main do
   use Application
 
   def start(_type, _args) do
-    filename = System.argv() |> List.first() || "input.txt"
+    case System.argv() |> List.first() || "input.txt" do
+      # When "mix test" is run, Main.start/2 gets called, and "test" becomes the
+      # first argument. In this case, we don't want to run the actual code, just
+      # the tests.
+      "test" ->
+        :ok
 
-    # When "mix test" is run, Main.start/2 gets called, and "test" becomes the
-    # first argument. In this case, we don't want to run the actual code, just
-    # the tests.
-    if filename == "test", do: :ok, else: Aoc.start(filename)
+      filename ->
+        case File.read(filename) do
+          {:ok, content} ->
+            Aoc.start(content)
+
+          {:error, reason} ->
+            IO.puts("Error reading input file \"#{filename}\" (#{reason})")
+            System.halt(1)
+        end
+    end
 
     # Elixir is usually used for long-running services, therefore the start
     # function of an Application needs to return either a Task or a Supervisor.

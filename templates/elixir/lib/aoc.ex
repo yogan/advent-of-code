@@ -2,22 +2,15 @@
 Code.put_compiler_option(:ignore_module_conflict, true)
 
 defmodule Aoc do
-  def start(filename) do
-    case File.read(filename) do
-      {:ok, content} ->
-        lines =
-          content
-          |> String.trim_trailing()
-          |> String.split("\n")
-          |> Enum.map(&parse/1)
+  def start(input) do
+    lines =
+      input
+      |> String.trim_trailing()
+      |> String.split("\n")
+      |> Enum.map(&parse/1)
 
-        part1(lines) |> IO.puts()
-        part2(lines) |> IO.puts()
-
-      {:error, reason} ->
-        IO.puts("Error reading input file \"#{filename}\" (#{reason})")
-        System.halt(1)
-    end
+    part1(lines) |> IO.puts()
+    part2(lines) |> IO.puts()
   end
 
   @type box :: list(integer())
