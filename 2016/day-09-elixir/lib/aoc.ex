@@ -17,39 +17,26 @@ defmodule Aoc do
 
   @spec part1(String.t()) :: integer()
   def part1(line) do
-    line |> decompress() |> String.length()
+    line |> decompress(true)
   end
 
   @spec part2(String.t()) :: integer()
   def part2(line) do
-    line |> decompress_v2()
+    line |> decompress(false)
   end
 
-  def decompress(line) do
+  defp decompress(line, v1) do
     case String.split(line, ["(", ")"], parts: 3) do
-      [left, marker, right] -> left <> repeat(marker, right)
-      _ -> line
-    end
-  end
-
-  defp repeat(marker, str) do
-    [len, times] = marker |> String.split("x") |> Enum.map(&String.to_integer/1)
-    {left, right} = String.split_at(str, len)
-
-    String.duplicate(left, times) <> decompress(right)
-  end
-
-  def decompress_v2(line) do
-    case String.split(line, ["(", ")"], parts: 3) do
-      [left, marker, right] -> String.length(left) + repeat_v2(marker, right)
+      [left, marker, right] -> String.length(left) + repeat(marker, right, v1)
       _ -> String.length(line)
     end
   end
 
-  defp repeat_v2(marker, str) do
+  defp repeat(marker, str, v1) do
     [len, times] = marker |> String.split("x") |> Enum.map(&String.to_integer/1)
     {left, right} = String.split_at(str, len)
 
-    times * decompress_v2(left) + decompress_v2(right)
+    left_len = if v1, do: String.length(left), else: decompress(left, v1)
+    times * left_len + decompress(right, v1)
   end
 end
