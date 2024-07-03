@@ -5,7 +5,7 @@
 [![Templates](https://github.com/yogan/advent-of-code/actions/workflows/test-templates.yml/badge.svg)](https://github.com/yogan/advent-of-code/actions/workflows/test-templates.yml)
 
 * [2015 solutions](2015/README.md) 12/50 ✨ (Clojure, Crystal, DDP, Python, Vim)
-* [2016 solutions](2016/README.md) 16/50 ✨ (Vim, Gleam, Rust, Haskell)
+* [2016 solutions](2016/README.md) 18/50 ✨ (Vim, Gleam, Rust, Haskell, Elixir)
 * [2020 solutions](2020-rust/README.md) 30/50 ✨ (Rust)
 * [2021 solutions](2021-python/README.md) 34/50 ✨ (Python)
 * [2022 solutions](2022/README.md) 46/50 ✨ (14 languages)

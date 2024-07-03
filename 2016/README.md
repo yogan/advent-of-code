@@ -30,3 +30,7 @@
   [Vim](../vim/2016/day-08/aoc-2016-08.vim)
   ([commented](../vim/2016/day-08/aoc-2016-08.commented.vim)) -
   [animated solution](../vim/2016/day-08/README.md)
+- [Day 09](https://adventofcode.com/2016/day/9) ⭐⭐ in Elixir
+  (**[aoc.ex](./day-09-elixir/lib/aoc.ex)**,
+  [main.ex](./day-09-elixir/lib/main.ex),
+  [aoc_test.exs](./day-09-elixir/test/aoc_test.exs))
