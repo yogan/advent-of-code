@@ -46,4 +46,10 @@ application {
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+
+    // Show full excpetion messages on failed tests.
+    testLogging {
+        events("passed", "failed", "skipped")
+        setExceptionFormat("full")
+    }
 }
