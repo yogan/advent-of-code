@@ -12,28 +12,22 @@ fun main(args: Array<String>) {
     println("Part 2: ${part2(boxes)}")
 }
 
-fun parseLines(lines: List<String>): List<Box> {
-    return lines.map {
+fun parseLines(lines: List<String>): List<Box> =
+    lines.map {
         val (l, w, h) = it.split("x").map { it.toInt() }
         Box(l, w, h)
     }
-}
 
-fun surfaceArea(box: Box): Int {
-    val lw = box.l * box.w
-    val wh = box.w * box.h
-    val hl = box.h * box.l
-    return 2 * lw + 2 * wh + 2 * hl
-}
+fun part1(boxes: List<Box>) = boxes.sumOf { volume(it) }
 
-fun volume(box: Box): Int {
-    return box.l * box.w * box.h
-}
+fun part2(boxes: List<Box>) = boxes.sumOf { surfaceArea(it) }
 
-fun part1(boxes: List<Box>): Int {
-    return boxes.sumOf { volume(it) }
-}
+private fun volume(box: Box) = with(box) { l * w * h }
 
-fun part2(box: List<Box>): Int {
-    return box.sumOf { surfaceArea(it) }
+private fun surfaceArea(box: Box) = with(box) {
+    val lw = l * w
+    val wh = w * h
+    val hl = h * l
+
+    2 * (lw + wh + hl)
 }
