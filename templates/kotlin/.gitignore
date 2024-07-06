@@ -3,3 +3,6 @@
 
 # Ignore Gradle build output directory
 build/
+
+# Overwrite forbidden input.txt for symlink only in app dir
+!app/input.txt
