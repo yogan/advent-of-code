@@ -34,3 +34,6 @@
   (**[aoc.ex](./day-09-elixir/lib/aoc.ex)**,
   [main.ex](./day-09-elixir/lib/main.ex),
   [aoc_test.exs](./day-09-elixir/test/aoc_test.exs))
+- [Day 10](https://adventofcode.com/2016/day/10) ⭐⭐ in Kotlin
+  (**[App.kt](./day-10-kotlin/app/src/main/kotlin/aoc/App.kt)**,
+  [AppTest.kt](./day-10-kotlin/app/src/test/kotlin/aoc/AppTest.kt))
