@@ -28,6 +28,10 @@ class AppTest {
         ), instructions)
     }
 
-    @Test fun `part1 works for the example`() =
-        assertEquals(2, part1(lines, 2, 5))
+    @Test fun `balanceBots returns part 1 and part 2 sample results`() {
+        val (part1, part2) = balanceBots(lines, 2, 5)
+
+        assertEquals( 2, part1)
+        assertEquals(30, part2)
+    }
 }
