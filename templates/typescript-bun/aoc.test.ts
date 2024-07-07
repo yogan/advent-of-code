@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test"
-import { parseLine, parseInput, part1, part2 } from "./day-xx"
+import { parseLine, parseInput, part1, part2 } from "./aoc"
 
 test("parseLine should split the line by 'x'", () => {
     expect(parseLine("1x2x420")).toEqual([1, 2, 420])

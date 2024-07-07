@@ -1,4 +1,4 @@
-# TypeScript (Bun) Advent of Code Template
+# Advent of Code in TypeScript (Bun)
 
 ## Usage
 

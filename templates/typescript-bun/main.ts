@@ -1,3 +1,3 @@
-import { main } from "./day-xx"
+import { main } from "./aoc"
 
 main()
