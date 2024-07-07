@@ -2,6 +2,7 @@
 
 ## Usage
 
+- install dev dependencies: `bun install`
 - run: `./run.sh`
 - run (watch mode): `./watch.sh`
 - test: `./test.sh`
