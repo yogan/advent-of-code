@@ -50,34 +50,53 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Prepare Haskell/Stack stuff
-        run: ./scripts/haskell-prepare.sh
-        if: ${{ github.event.schedule || needs.check-changes.outputs.any-changes != '0' }}
+      - name: Mark workspace as safe for git clean
+        run: git config --global --add safe.directory $GITHUB_WORKSPACE
 
       - name: Test solutions for 2015
         if: ${{ github.event.schedule || needs.check-changes.outputs.changes-2015 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
         run: ./scripts/test-days.sh 2015
 
+      - name: Clean up after 2015
+        if: ${{ github.event.schedule || needs.check-changes.outputs.changes-2015 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
+        run: ./scripts/cleanup.sh
+
+      - name: Prepare Haskell/Stack stuff for 2016
+        run: ./scripts/haskell-prepare.sh
+        if: ${{ github.event.schedule || needs.check-changes.outputs.any-changes != '0' }}
+
       - name: Test solutions for 2016
         if: ${{ github.event.schedule || needs.check-changes.outputs.changes-2016 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
         run: ./scripts/test-days.sh 2016
+
+      - name: Clean up after 2016
+        if: ${{ github.event.schedule || needs.check-changes.outputs.changes-2016 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
+        run: ./scripts/cleanup.sh
 
       - name: Test solutions for 2020
         if: ${{ github.event.schedule || needs.check-changes.outputs.changes-2020 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
         run: ./2020-rust/test-ci.sh
 
+      - name: Clean up after 2020
+        if: ${{ github.event.schedule || needs.check-changes.outputs.changes-2020 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
+        run: ./scripts/cleanup.sh
+
       - name: Test solutions for 2021
         if: ${{ github.event.schedule || needs.check-changes.outputs.changes-2021 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
         run: ./2021-python/test-ci.sh
+
+      - name: Clean up after 2021
+        if: ${{ github.event.schedule || needs.check-changes.outputs.changes-2021 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
+        run: ./scripts/cleanup.sh
 
       - name: Test solutions for 2023
         if: ${{ github.event.schedule || needs.check-changes.outputs.changes-2023 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
         run: ./scripts/test-days.sh 2023
 
+      - name: Clean up after 2023
+        if: ${{ github.event.schedule || needs.check-changes.outputs.changes-2023 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
+        run: ./scripts/cleanup.sh
+
       - name: Test Vim solutions
         if: ${{ github.event.schedule || needs.check-changes.outputs.changes-vim != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
         run: ./scripts/test-vim.sh
-
-      - name: Clean up Haskell/Stack stuff
-        run: ./scripts/haskell-cleanup.sh
-        if: ${{ github.event.schedule || needs.check-changes.outputs.any-changes != '0' }}

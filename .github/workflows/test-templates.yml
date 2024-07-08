@@ -47,6 +47,9 @@ jobs:
       - name: Test templates
         run: ./scripts/test-templates.sh
 
-      - name: Clean up Haskell/Stack stuff
-        run: ./scripts/haskell-cleanup.sh
+      - name: Mark workspace as safe for git clean
+        run: git config --global --add safe.directory $GITHUB_WORKSPACE
+
+      - name: Clean up
+        run: ./scripts/cleanup.sh
         if: always()
