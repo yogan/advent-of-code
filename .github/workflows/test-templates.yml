@@ -41,15 +41,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Prepare Haskell/Stack stuff
-        run: ./scripts/haskell-prepare.sh
-
       - name: Test templates
-        run: ./scripts/test-templates.sh
-
-      - name: Mark workspace as safe for git clean
-        run: git config --global --add safe.directory $GITHUB_WORKSPACE
-
-      - name: Clean up
-        run: ./scripts/cleanup.sh
-        if: always()
+        run: |
+          ./scripts/haskell-prepare.sh
+          ./scripts/test-templates.sh
+          git config --global --add safe.directory $GITHUB_WORKSPACE
+          ./scripts/cleanup.sh
