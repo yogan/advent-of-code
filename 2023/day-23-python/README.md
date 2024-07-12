@@ -10,7 +10,7 @@ part 1 are still here to enjoy.
 The visualization code can be found in
 [Git commit `5b7335b`](https://github.com/yogan/advent-of-code/blob/5b7335be31b34e8fae805e23593c548ed9fc3179/2023/day-23/day23.py#L75).
 
-The [updated code](https://github.com/yogan/advent-of-code/blob/main/2023/day-23/day23.py)
+The [updated code](https://github.com/yogan/advent-of-code/blob/main/2023/day-23-python/day23.py)
 that solves both parts operates on a graph of the maze, and therefore no longer
 has complete paths to visualize. A description of the algorithm can be found in
 the [main project README](../../README.md).
