@@ -2,7 +2,7 @@ FROM ubuntu:24.04
 
 RUN apt-get update && apt-get install -y \
     # base/util packages
-    bc curl ca-certificates gnupg unzip locales build-essential cmake libcurl3-gnutls \
+    bc curl ca-certificates gnupg unzip locales build-essential cmake libcurl3-gnutls fd-find \
     # this brings add-apt-repository, needed later:
     software-properties-common \
     # various languages directly from apt
