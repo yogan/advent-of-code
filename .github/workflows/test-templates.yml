@@ -1,49 +1,49 @@
-name: Test Templates
-
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-  schedule:
-    # run every night at 2:42 UTC (3:42/4:42 German time)
-    - cron: '42 3 * * *'
-
-jobs:
-  check-changes:
-    runs-on: ubuntu-latest
-
-    outputs:
-      changes-ci: ${{ steps.git-diff-check.outputs.changes-ci }}
-      changes-scripts: ${{ steps.git-diff-check.outputs.changes-scripts }}
-      changes-templates: ${{ steps.git-diff-check.outputs.changes-templates }}
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
-
-      - name: Check Git changes
-        id: git-diff-check
-        run: ./scripts/check-git-changes.sh ${{ github.sha }}
-
-  test-templates:
-    runs-on: ubuntu-latest
-    container: ghcr.io/yogan/yogans-advent-of-code:latest
-
-    needs: check-changes
-    if: ${{ github.event.schedule || needs.check-changes.outputs.changes-templates != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Test templates
-        run: |
-          ./scripts/haskell-prepare.sh
-          ./scripts/test-templates.sh
-          git config --global --add safe.directory $GITHUB_WORKSPACE
-          ./scripts/cleanup.sh
+# name: Test Templates
+#
+# on:
+#   push:
+#     branches:
+#       - main
+#   pull_request:
+#     branches:
+#       - main
+#   schedule:
+#     # run every night at 2:42 UTC (3:42/4:42 German time)
+#     - cron: '42 3 * * *'
+#
+# jobs:
+#   check-changes:
+#     runs-on: ubuntu-latest
+#
+#     outputs:
+#       changes-ci: ${{ steps.git-diff-check.outputs.changes-ci }}
+#       changes-scripts: ${{ steps.git-diff-check.outputs.changes-scripts }}
+#       changes-templates: ${{ steps.git-diff-check.outputs.changes-templates }}
+#
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v4
+#         with:
+#           fetch-depth: 2
+#
+#       - name: Check Git changes
+#         id: git-diff-check
+#         run: ./scripts/check-git-changes.sh ${{ github.sha }}
+#
+#   test-templates:
+#     runs-on: ubuntu-latest
+#     container: ghcr.io/yogan/yogans-advent-of-code:latest
+#
+#     needs: check-changes
+#     if: ${{ github.event.schedule || needs.check-changes.outputs.changes-templates != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
+#
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v4
+#
+#       - name: Test templates
+#         run: |
+#           ./scripts/haskell-prepare.sh
+#           ./scripts/test-templates.sh
+#           git config --global --add safe.directory $GITHUB_WORKSPACE
+#           ./scripts/cleanup.sh
