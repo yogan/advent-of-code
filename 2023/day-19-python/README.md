@@ -19,11 +19,11 @@ applying the *inverse* of the rule. So, for example:
 Once this has become clear, the implementation is not that hard:
 
 - updating the ranges bases is done by
-  [`apply()`](https://github.com/yogan/advent-of-code/blob/main/2023/day-19/day19.py#L37)
-  and [`apply_inverse()`](https://github.com/yogan/advent-of-code/blob/main/2023/day-19/day19.py#L59)
+  [`apply()`](https://github.com/yogan/advent-of-code/blob/main/2023/day-19-python/day19.py#L37)
+  and [`apply_inverse()`](https://github.com/yogan/advent-of-code/blob/main/2023/day-19-python/day19.py#L59)
   in the `Rule` class
 - path-finding is done via DFS with a queue in
-  [`traverse()`](https://github.com/yogan/advent-of-code/blob/main/2023/day-19/day19.py#L120)
+  [`traverse()`](https://github.com/yogan/advent-of-code/blob/main/2023/day-19-python/day19.py#L120)
   - the range values are kept in tuples besides the current node in the queue
   - to not mix things up, we *first* have to enqueue the target node of a rule
     with the (regularly) updated range values, and *then* locally update the
