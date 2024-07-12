@@ -2,6 +2,7 @@
 .lsp/
 .vscode/perl-lang/
 venv/
+node_modules/
 
 **/input.txt
 2020-rust/inputs/
