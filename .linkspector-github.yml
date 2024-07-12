@@ -1,0 +1,7 @@
+dirs: [ '.' ]
+useGitIgnore: true
+modifiedFilesOnly: false
+ignorePatterns:
+  # Reddit links currently don't work in GitHub Actions, see:
+  # https://github.com/UmbrellaDocs/linkspector/issues/76
+  - pattern: '^https://(old\.|www\.)?reddit\.com'
