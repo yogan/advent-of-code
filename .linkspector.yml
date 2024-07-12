@@ -1,3 +1,7 @@
 dirs: [ '.' ]
 useGitIgnore: true
 modifiedFilesOnly: false
+replacementPatterns:
+  # old.reddit.com -> www.reddit.com (fails in CI with 403 for some reason)
+  - pattern: "https?://old.reddit.com"
+    replacement: 'https://www.reddit.com'
