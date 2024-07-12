@@ -1,0 +1,21 @@
+name: Check README Links
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  schedule:
+    # run every night at 2:42 UTC (3:42/4:42 German time)
+    - cron: '42 3 * * *'
+
+jobs:
+  linkspector:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Check READMEs
+        run: npx @umbrelladocs/linkspector check
