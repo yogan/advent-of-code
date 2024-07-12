@@ -12,6 +12,15 @@ on:
     - cron: '42 3 * * *'
 
 jobs:
+  linkspector-script:
+    runs-on: ubuntu-latest
+    container: ghcr.io/yogan/yogans-advent-of-code:latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Check READMEs
+        run: npx @umbrelladocs/linkspector check
+
   markdown-link-check-script:
     runs-on: ubuntu-latest
     container: ghcr.io/yogan/yogans-advent-of-code:latest

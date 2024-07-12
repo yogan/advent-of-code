@@ -1,0 +1,36 @@
+# files:
+#   - 2015/README.md
+#   - 2015/day-01-clojure/README.md
+#   - 2016/README.md
+#   - 2016/day-05-gleam/README.md
+#   - 2016/day-09-elixir/README.md
+#   - 2016/day-11-typescript/README.md
+#   - 2020-rust/README.md
+#   - 2021-python/README.md
+#   - 2022/README.md
+#   - 2022/day-03-typescript/README.md
+#   - 2022/day-07-java/README.md
+#   - 2022/day-14-python/README.md
+#   - 2022/day-15-python/README.md
+#   - 2022/day-18-python/README.md
+#   - 2023/README.md
+#   - 2023/day-04-ddp/README.md
+#   - 2023/day-06-zig/README.md
+#   - 2023/day-10-python/README.md
+#   - 2023/day-16-python/README.md
+#   - 2023/day-19-python/README.md
+#   - 2023/day-22-python/README.md
+#   - 2023/day-23-python/README.md
+#   - 2023/day-25-python/README.md
+#   - README.md
+#   - templates/clojure/README.md
+#   - templates/ddp/README.md
+#   - templates/elixir/README.md
+#   - templates/python/README.md
+#   - templates/typescript-bun/README.md
+#   - templates/zig/README.md
+#   - vim/2016/day-08/README.md
+#   - vim/README.md
+dirs:
+  - .
+useGitIgnore: true
