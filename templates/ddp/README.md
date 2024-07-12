@@ -5,6 +5,9 @@
 - [DDP Webseite](https://ddp.le0n.dev/)
 - [Bedienungsanleitung](https://ddp.le0n.dev/Bedienungsanleitung/)
 
+- [Dummy link to see if stuff is working (ok)](https://zogan.de)
+- [Dummy link to see if stuff is working (fail)](https://zogan.de/lulnein)
+
 ## TL;DR Dev Setup
 
 - [Installation wie beschrieben](https://ddp.le0n.dev/Bedienungsanleitung/DE/Einstieg/Installation)
