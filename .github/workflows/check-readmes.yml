@@ -14,7 +14,6 @@ on:
 jobs:
   linkspector-script:
     runs-on: ubuntu-latest
-    container: ghcr.io/yogan/yogans-advent-of-code:latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
