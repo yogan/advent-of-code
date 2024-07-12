@@ -12,7 +12,16 @@ on:
     - cron: '42 3 * * *'
 
 jobs:
-  markdown-link-check:
+  markdown-link-check-script:
+    runs-on: ubuntu-latest
+    container: ghcr.io/yogan/yogans-advent-of-code:latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Check READMEs
+        run: ./scripts/check-readmes.sh
+
+  markdown-link-check-action:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
