@@ -1,8 +1,9 @@
 # [Advent of Code](https://adventofcode.com)
 
-[![Docker image](https://github.com/yogan/advent-of-code/actions/workflows/build-docker-image.yml/badge.svg)](https://github.com/yogan/advent-of-code/actions/workflows/build.yml)
+[![Docker image](https://github.com/yogan/advent-of-code/actions/workflows/build-docker-image.yml/badge.svg)](https://github.com/yogan/advent-of-code/actions/workflows/build-docker-image.yml)
 [![Solutions](https://github.com/yogan/advent-of-code/actions/workflows/test-solutions.yml/badge.svg)](https://github.com/yogan/advent-of-code/actions/workflows/test-solutions.yml)
 [![Templates](https://github.com/yogan/advent-of-code/actions/workflows/test-templates.yml/badge.svg)](https://github.com/yogan/advent-of-code/actions/workflows/test-templates.yml)
+[![README links](https://github.com/yogan/advent-of-code/actions/workflows/check-readme-links.yml/badge.svg)](https://github.com/yogan/advent-of-code/actions/workflows/check-readme-links.yml)
 
 * [2015 solutions](2015/README.md) 12/50 ✨ (Clojure, Crystal, DDP, Python, Vim)
 * [2016 solutions](2016/README.md) 20/50 ✨ (Vim, Gleam, Rust, Haskell, Elixir, Kotlin)
