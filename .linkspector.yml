@@ -34,3 +34,4 @@
 dirs:
   - .
 useGitIgnore: true
+modifiedFilesOnly: false
