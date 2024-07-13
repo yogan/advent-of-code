@@ -1,2 +1,2 @@
 #!/bin/sh
-bun run main.ts
+bun run main.ts "$@"

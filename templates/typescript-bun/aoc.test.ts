@@ -6,7 +6,7 @@ test("parseLine should split the line by 'x'", () => {
 })
 
 test("parseInput should parse the input file", async () => {
-    const boxes = await parseInput()
+    const boxes = await parseInput("input.txt")
 
     expect(boxes).toHaveLength(5)
     expect(boxes[0]).toEqual([1, 1, 1])

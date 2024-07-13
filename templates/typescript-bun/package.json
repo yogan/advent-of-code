@@ -2,5 +2,11 @@
   "dependencies": {},
   "devDependencies": {
     "bun-types": "^1.1.18"
+  },
+  "prettier": {
+    "trailingComma": "es5",
+    "tabWidth": 4,
+    "semi": false,
+    "singleQuote": true
   }
 }
