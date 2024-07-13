@@ -6,7 +6,49 @@ export type State = { elevator: number; floors: Set<Item>[] }
 export async function main() {
     const filename = process.argv[2] || 'input.txt'
     const initialState = await parseInput(filename)
-    console.log('Part 1:', part1(initialState))
+
+    console.log('Part 1:', simulate(initialState))
+    console.log('Part 2:', simulate(addPart2ItemsToGroundFloor(initialState)))
+}
+
+export function simulate(initialState: State): number {
+    const seen = new Set([serialize(initialState)])
+    const queue = [{ steps: 0, state: initialState }]
+
+    while (queue.length > 0) {
+        const { steps, state } = queue.shift()!
+
+        for (const next of nextStates(state)) {
+            const serialized = serialize(next)
+            if (seen.has(serialized)) {
+                continue
+            }
+            seen.add(serialized)
+
+            if (isFinalState(next)) {
+                return steps + 1
+            }
+
+            queue.push({ steps: steps + 1, state: next })
+        }
+    }
+
+    throw new Error('No solution found')
+}
+
+function addPart2ItemsToGroundFloor(state: State): State {
+    const groundFloor = new Set<Item>([
+        ...state.floors[0],
+        { element: 'EL', type: 'chip' },
+        { element: 'EL', type: 'generator' },
+        { element: 'DI', type: 'chip' },
+        { element: 'DI', type: 'generator' },
+    ])
+
+    return {
+        elevator: state.elevator,
+        floors: [groundFloor, ...state.floors.slice(1)],
+    }
 }
 
 async function parseInput(filename: string): Promise<State> {
@@ -35,31 +77,55 @@ export function parseLine(line: string): Set<Item> {
 
 export function nextStates(state: State): State[] {
     const states: State[] = []
+    const canGoUp = state.elevator < 3
+    const canGoDown = state.elevator > 0
 
-    if (state.elevator < 3) {
-        // move one floor up
+    if (canGoUp) {
         states.push(...findNextStates(state, state.elevator + 1))
     }
 
-    if (state.elevator > 0) {
-        // move one floor down
-        states.push(...findNextStates(state, state.elevator - 1))
+    if (canGoDown) {
+        // only move items down if there are other items below (to get them)
+        const floorsBelow = state.floors.slice(0, state.elevator)
+        if (floorsBelow.some((f) => f.size > 0)) {
+            states.push(...findNextStates(state, state.elevator - 1))
+        }
     }
 
     return states
 }
 
 function findNextStates(state: State, target: number): State[] {
+    const goingUp = state.elevator < target
     const currentFloorItems = [...state.floors[state.elevator]]
     const targetFloorItems = [...state.floors[target]]
 
-    const candidates = combinations(currentFloorItems, 1).concat(
-        combinations(currentFloorItems, 2)
-    )
+    const safeCandidates = []
+    let singleItemsToCheck = [...currentFloorItems]
 
-    const safeCandidates = candidates.filter((candidate) =>
-        isSafe([...candidate, ...targetFloorItems])
-    )
+    for (const pair of pairs(currentFloorItems)) {
+        if (isSafe([...pair, ...targetFloorItems])) {
+            if (goingUp) {
+                // when going up, we take a safe pair of two items instead of
+                // them individually to reduce steps
+                safeCandidates.push(pair)
+            } else {
+                // when going down, we rather take only one of them down with us
+                safeCandidates.push([pair[0]])
+                safeCandidates.push([pair[1]])
+            }
+            // avoid checking safety of the two items individually
+            singleItemsToCheck = singleItemsToCheck.filter(
+                (item) => item !== pair[0] && item !== pair[1]
+            )
+        }
+    }
+
+    for (const item of singleItemsToCheck) {
+        if (isSafe([item, ...targetFloorItems])) {
+            safeCandidates.push([item])
+        }
+    }
 
     return safeCandidates.map((candidate) => {
         const itemsOfCurrentFloor = new Set(
@@ -71,29 +137,25 @@ function findNextStates(state: State, target: number): State[] {
             ...candidate,
         ])
 
-        // going down
-        if (state.elevator > target) {
-            return {
-                elevator: target,
-                floors: [
-                    ...state.floors.slice(0, target),
-                    itemsOfTargetFloor,
-                    itemsOfCurrentFloor,
-                    ...state.floors.slice(state.elevator + 1),
-                ],
-            }
-        }
-
-        // going up
-        return {
-            elevator: target,
-            floors: [
-                ...state.floors.slice(0, state.elevator),
-                itemsOfCurrentFloor,
-                itemsOfTargetFloor,
-                ...state.floors.slice(target + 1),
-            ],
-        }
+        return goingUp
+            ? {
+                  elevator: target,
+                  floors: [
+                      ...state.floors.slice(0, state.elevator),
+                      itemsOfCurrentFloor,
+                      itemsOfTargetFloor,
+                      ...state.floors.slice(target + 1),
+                  ],
+              }
+            : {
+                  elevator: target,
+                  floors: [
+                      ...state.floors.slice(0, target),
+                      itemsOfTargetFloor,
+                      itemsOfCurrentFloor,
+                      ...state.floors.slice(state.elevator + 1),
+                  ],
+              }
     })
 }
 
@@ -113,30 +175,47 @@ export function isSafe(items: Item[]): boolean {
     })
 }
 
-export function combinations<T>(items: T[], count: number): T[][] {
-    if (count === 0) {
-        return [[]]
+export function pairs<T>(items: T[]): [T, T][] {
+    const result: [T, T][] = []
+
+    for (let i = 0; i < items.length; i++) {
+        for (let j = i + 1; j < items.length; j++) {
+            result.push([items[i], items[j]])
+        }
     }
 
-    if (items.length === 0) {
-        return []
-    }
-
-    const [first, ...rest] = items
-    const withFirst = combinations(rest, count - 1).map((c) => [first, ...c])
-    const withoutFirst = combinations(rest, count)
-    return [...withFirst, ...withoutFirst]
+    return result
 }
 
 export function serialize(state: State): string {
-    const serializeItem = (item: Item) =>
-        item.type === 'chip' ? item.element + '-C' : item.element + '-G'
+    // Here lies all the optimization: we only care about the number of single
+    // items and chip/generator pairs on each floor.
+    // This way, we treat states that are structurally the same as equal, which
+    // significantly reduces the search space. This can be done, because to get
+    // the number of steps to move everything to the top floor, we don't need to
+    // know the exact position of each item.
 
     let result = String(state.elevator)
 
     for (const items of state.floors) {
-        const hashItems = [...items].map(serializeItem).sort().join(',')
-        result += `|${hashItems}`
+        let singles = 0
+        let pairs = 0
+
+        for (const item of items) {
+            const hasPairedItem = [...items].some(
+                (other) =>
+                    other !== item &&
+                    other.element === item.element &&
+                    other.type !== item.type
+            )
+            if (hasPairedItem) {
+                pairs++
+            } else {
+                singles++
+            }
+        }
+
+        result += `|${singles},${pairs / 2}`
     }
 
     return result
@@ -147,31 +226,4 @@ export function isFinalState(state: State): boolean {
         state.elevator === 3 &&
         state.floors.slice(0, 3).every((f) => f.size === 0)
     )
-}
-
-export function part1(initialState: State): number {
-    const seen = new Set<string>([serialize(initialState)])
-    const queue = [{ steps: 0, state: initialState }]
-
-    let minSteps = Infinity
-
-    while (queue.length > 0) {
-        const { steps, state } = queue.shift()!
-
-        for (const next of nextStates(state)) {
-            const serialized = serialize(next)
-            if (seen.has(serialized)) {
-                continue
-            }
-            seen.add(serialized)
-
-            if (isFinalState(next)) {
-                minSteps = Math.min(minSteps, steps + 1)
-            }
-
-            queue.push({ steps: steps + 1, state: next })
-        }
-    }
-
-    return minSteps
 }

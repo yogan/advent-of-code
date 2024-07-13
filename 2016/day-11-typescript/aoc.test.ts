@@ -2,14 +2,20 @@ import { describe, expect, it } from 'bun:test'
 import {
     Item,
     State,
-    combinations,
     serialize,
     isSafe,
     nextStates,
     parseLine,
     isFinalState,
-    part1,
+    simulate,
+    pairs,
 } from './aoc'
+
+describe('simulate', () => {
+    it('returns a minimum steps of 11 for the sample input', () => {
+        expect(simulate(initialSampleState)).toBe(11)
+    })
+})
 
 describe('parseLine', () => {
     const sample = [
@@ -61,6 +67,76 @@ describe('parseLine', () => {
                 { type: 'generator', element: 'RU' },
             ])
         )
+    })
+})
+
+describe('nextStates', () => {
+    it('works for the initial state of the sample input', () => {
+        // - we can only move from 0 to 1
+        // - elevator needs at least one item for power, but also has a cap of 2
+        // - so, we could move either HY or LI, or both
+        // - but we can't bring the LI chip, as there is no LI generator on the
+        //   1st floor, so it would be destroyed
+        // -> only possible move is to bring HY chip from 0 to 1
+        const expectedStates: State[] = [
+            {
+                elevator: 1,
+                floors: [
+                    new Set<Item>([{ type: 'chip', element: 'LI' }]),
+                    new Set<Item>([
+                        { type: 'generator', element: 'HY' },
+                        { type: 'chip', element: 'HY' },
+                    ]),
+                    new Set<Item>([{ type: 'generator', element: 'LI' }]),
+                    new Set<Item>(),
+                ],
+            },
+        ]
+
+        expect(nextStates(initialSampleState)).toEqual(expectedStates)
+    })
+
+    it('works for the second state of the sample input', () => {
+        const state: State = {
+            elevator: 1,
+            floors: [
+                new Set<Item>([{ type: 'chip', element: 'LI' }]),
+                new Set<Item>([
+                    { type: 'generator', element: 'HY' },
+                    { type: 'chip', element: 'HY' },
+                ]),
+                new Set<Item>([{ type: 'generator', element: 'LI' }]),
+                new Set<Item>(),
+            ],
+        }
+        const next = nextStates(state)
+
+        expect(next.length).toBe(2)
+        expect(next).toContainEqual({
+            elevator: 2,
+            floors: [
+                new Set<Item>([{ type: 'chip', element: 'LI' }]),
+                new Set<Item>([]),
+                new Set<Item>([
+                    { type: 'generator', element: 'LI' },
+                    { type: 'generator', element: 'HY' },
+                    { type: 'chip', element: 'HY' },
+                ]),
+                new Set<Item>(),
+            ],
+        })
+        expect(next).toContainEqual({
+            elevator: 0,
+            floors: [
+                new Set<Item>([
+                    { type: 'chip', element: 'LI' },
+                    { type: 'chip', element: 'HY' },
+                ]),
+                new Set<Item>([{ type: 'generator', element: 'HY' }]),
+                new Set<Item>([{ type: 'generator', element: 'LI' }]),
+                new Set<Item>(),
+            ],
+        })
     })
 })
 
@@ -119,34 +195,35 @@ describe('isSafe', () => {
     })
 })
 
-describe('combinations', () => {
-    it('works on an empty list', () => {
-        expect(combinations([], 0)).toEqual([[]])
-        expect(combinations([], 1)).toEqual([])
-        expect(combinations([], 2)).toEqual([])
-        expect(combinations([], 99)).toEqual([])
+describe('pairs', () => {
+    it('works for an empty list', () => {
+        expect(pairs([])).toEqual([])
     })
 
-    it('works for singles', () => {
-        expect(combinations([1, 2, 3], 1)).toEqual([[1], [2], [3]])
+    it('works for a list with one element', () => {
+        expect(pairs([1])).toEqual([])
     })
 
-    it('works for pairs', () => {
-        expect(combinations([1, 2, 3], 2)).toEqual([
+    it('works for a list with two elements', () => {
+        expect(pairs([1, 2])).toEqual([[1, 2]])
+    })
+
+    it('works for a list with three elements', () => {
+        expect(pairs([1, 2, 3])).toEqual([
             [1, 2],
             [1, 3],
             [2, 3],
         ])
     })
 
-    it('works for triples', () => {
-        expect(combinations([1, 2], 3)).toEqual([])
-        expect(combinations([1, 2, 3], 3)).toEqual([[1, 2, 3]])
-        expect(combinations([1, 2, 3, 4], 3)).toEqual([
-            [1, 2, 3],
-            [1, 2, 4],
-            [1, 3, 4],
-            [2, 3, 4],
+    it('works for a list with four elements', () => {
+        expect(pairs([1, 2, 3, 4])).toEqual([
+            [1, 2],
+            [1, 3],
+            [1, 4],
+            [2, 3],
+            [2, 4],
+            [3, 4],
         ])
     })
 })
@@ -164,118 +241,8 @@ const initialSampleState: State = {
     ],
 }
 
-describe('nextStates', () => {
-    it('works for the initial state of the sample input', () => {
-        // - we can only move from 0 to 1
-        // - elevator needs at least one item for power, but also has a cap of 2
-        // - so, we could move either HY or LI, or both
-        // - but we can't bring the LI chip, as there is no LI generator on the
-        //   1st floor, so it would be destroyed
-        // -> only possible move is to bring HY chip from 0 to 1
-        const expectedStates: State[] = [
-            {
-                elevator: 1,
-                floors: [
-                    new Set<Item>([{ type: 'chip', element: 'LI' }]),
-                    new Set<Item>([
-                        { type: 'generator', element: 'HY' },
-                        { type: 'chip', element: 'HY' },
-                    ]),
-                    new Set<Item>([{ type: 'generator', element: 'LI' }]),
-                    new Set<Item>(),
-                ],
-            },
-        ]
-
-        expect(nextStates(initialSampleState)).toEqual(expectedStates)
-    })
-
-    it('works for the second state of the sample input', () => {
-        const state: State = {
-            elevator: 1,
-            floors: [
-                new Set<Item>([{ type: 'chip', element: 'LI' }]),
-                new Set<Item>([
-                    { type: 'generator', element: 'HY' },
-                    { type: 'chip', element: 'HY' },
-                ]),
-                new Set<Item>([{ type: 'generator', element: 'LI' }]),
-                new Set<Item>(),
-            ],
-        }
-        const next = nextStates(state)
-
-        expect(next.length).toBe(3)
-        expect(next).toContainEqual({
-            elevator: 2,
-            floors: [
-                new Set<Item>([{ type: 'chip', element: 'LI' }]),
-                new Set<Item>([{ type: 'chip', element: 'HY' }]),
-                new Set<Item>([
-                    { type: 'generator', element: 'LI' },
-                    { type: 'generator', element: 'HY' },
-                ]),
-                new Set<Item>(),
-            ],
-        })
-        expect(next).toContainEqual({
-            elevator: 2,
-            floors: [
-                new Set<Item>([{ type: 'chip', element: 'LI' }]),
-                new Set<Item>([]),
-                new Set<Item>([
-                    { type: 'generator', element: 'LI' },
-                    { type: 'generator', element: 'HY' },
-                    { type: 'chip', element: 'HY' },
-                ]),
-                new Set<Item>(),
-            ],
-        })
-        expect(next).toContainEqual({
-            elevator: 0,
-            floors: [
-                new Set<Item>([
-                    { type: 'chip', element: 'LI' },
-                    { type: 'chip', element: 'HY' },
-                ]),
-                new Set<Item>([{ type: 'generator', element: 'HY' }]),
-                new Set<Item>([{ type: 'generator', element: 'LI' }]),
-                new Set<Item>(),
-            ],
-        })
-    })
-})
-
 describe('serialize', () => {
-    it('works for a state with no items', () => {
-        expect(
-            serialize({
-                elevator: 23,
-                floors: [
-                    new Set<Item>(),
-                    new Set<Item>(),
-                    new Set<Item>(),
-                    new Set<Item>(),
-                ],
-            })
-        ).toBe('23||||')
-    })
-
-    it('works for a state with one item per floor', () => {
-        expect(
-            serialize({
-                elevator: 1,
-                floors: [
-                    new Set<Item>([{ type: 'chip', element: 'LI' }]),
-                    new Set<Item>([{ type: 'generator', element: 'HY' }]),
-                    new Set<Item>([{ type: 'generator', element: 'LI' }]),
-                    new Set<Item>([{ type: 'chip', element: 'HY' }]),
-                ],
-            })
-        ).toBe('1|LI-C|HY-G|LI-G|HY-C')
-    })
-
-    it('sorts items per floor alphabetically', () => {
+    it('counts pairs and single items per floor', () => {
         expect(
             serialize({
                 elevator: 1,
@@ -297,7 +264,7 @@ describe('serialize', () => {
                     new Set<Item>([{ type: 'chip', element: 'HY' }]),
                 ],
             })
-        ).toBe('1||AB-G,CD-G,XY-G|AB-C,AB-G,CD-C,EF-C,LI-C,LI-G|HY-C')
+        ).toBe('1|0,0|3,0|2,2|1,0')
     })
 })
 
@@ -323,11 +290,5 @@ describe('isFinalState', () => {
         }
 
         expect(isFinalState(state)).toBe(true)
-    })
-})
-
-describe('part1', () => {
-    it('returns a minimum steps of 11 for the sample input', () => {
-        expect(part1(initialSampleState)).toBe(11)
     })
 })
