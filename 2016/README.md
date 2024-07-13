@@ -37,3 +37,13 @@
 - [Day 10](https://adventofcode.com/2016/day/10) ⭐⭐ in Kotlin
   (**[App.kt](./day-10-kotlin/app/src/main/kotlin/aoc/App.kt)**,
   [AppTest.kt](./day-10-kotlin/app/src/test/kotlin/aoc/AppTest.kt))
+- [Day 11](https://adventofcode.com/2016/day/11) ⭐⭐ in TypeScript (Bun)
+  (**[aoc.ts](./day-11-typescript/aoc.ts)**,
+  [aoc.test.ts](./day-11-typescript/aoc.test.ts))
+  - the first really challenging problem of 2016
+  - BFS approach with seen states skipping
+  - initially by serializing states and comparing them, which was fine for part
+    1, but way too slow for part 2
+  - optimization for part 2 was to treat states as structurally identical -
+    swapping single items or pairs between the floors would not matter for the
+    number of required steps
