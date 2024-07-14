@@ -6,11 +6,12 @@ def main
     .lines
     .map { |line| line.split(" ") }
 
-  puts part1(ops)
+  puts run(ops)
+  puts run(ops, 1)
 end
 
-def part1(ops : Array(Array(String))) : Int32
-  a, b, c, d, pc = 0, 0, 0, 0, 0
+def run(ops : Array(Array(String)), c_init = 0) : Int32
+  a, b, c, d, pc = 0, 0, c_init, 0, 0
 
   while pc < ops.size
     op = ops[pc]
