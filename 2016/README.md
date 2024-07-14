@@ -47,3 +47,8 @@
   - optimization for part 2 was to treat states as structurally identical -
     swapping single items or pairs between the floors would not matter for the
     number of required steps
+- [Day 12](https://adventofcode.com/2016/day/12) ⭐⭐ in Crystal
+  (**[aoc.cr](./day-12-crystal/src/aoc.cr)**,
+  [aoc_spec.cr](./day-12-crystal/spec/aoc_spec.cr))
+  - straight-forward mini assembly interpreter
+  - a language with `eval` would have reduce the code a lot…
