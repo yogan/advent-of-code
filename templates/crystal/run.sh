@@ -1,2 +1,2 @@
 #!/bin/sh
-crystal run src/main.cr
+crystal run src/main.cr -- "$@"

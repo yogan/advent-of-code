@@ -1,2 +1,2 @@
 #!/bin/sh
-find . -name '*.cr' -or -name '*.txt' | entr -cc ./test.sh
+fd | entr -cc ./test.sh
