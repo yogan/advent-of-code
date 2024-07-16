@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y \
     software-properties-common \
     # various languages directly from apt
     vim fish bats leiningen r-base r-cran-testthat ruby3.2 polyml golang-go gawk guile-3.0 \
-    elixir erlang-base erlang-dev erlang-eunit rebar3 nim openjdk-8-jdk swi-prolog \
+    crystal elixir erlang-base erlang-dev erlang-eunit rebar3 nim openjdk-8-jdk swi-prolog \
     # Python
     python3 python3-pip python3-pytest python3-pytest-subtests python3-pytest-pylint \
     pypy3 pypy3-venv \
@@ -26,9 +26,6 @@ RUN mkdir -p /etc/apt/keyrings && \
     echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_21.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list && \
     apt-get update && \
     apt-get install -y nodejs
-
-# Crystal - https://crystal-lang.org
-RUN curl -fsSL https://crystal-lang.org/install.sh | bash
 
 # DDP - https://ddp.le0n.dev/Bedienungsanleitung/DE/Einstieg/Installation
 RUN cd /usr/local/share/ && \
