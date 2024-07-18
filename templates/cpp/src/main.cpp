@@ -2,5 +2,5 @@
 #include <iostream>
 
 int main() {
-    std::cout << "1 + 1 = " << add(1, 1) << std::endl;
+    std::cout << "Part 1: " << add(1, 0) << std::endl;
 }
