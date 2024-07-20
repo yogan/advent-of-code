@@ -1,8 +1,7 @@
 #!/bin/sh
-cd build || exit 1
-if cmake --build .; then
+if (cd build && cmake --build .); then
     clear
-    ./aoc
+    ./build/aoc "$@"
 else
     exit 1
 fi

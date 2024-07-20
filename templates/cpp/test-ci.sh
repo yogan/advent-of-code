@@ -7,7 +7,7 @@ fi
 output=$(./build/aoc)
 result1=$(echo "$output" | head -1)
 # result2=$(echo "$output" | tail -1)
-expected1="Part 1: 1"
+expected1="Part 1: 14545"
 # expected2="Part 2: ?"
 
 if [ "$result1" != "$expected1" ]; then

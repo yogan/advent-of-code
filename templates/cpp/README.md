@@ -15,3 +15,4 @@ those packages (on Ubuntu 22.04) are what eventually seemed to be working:
 - prepare CMake build once with `./build-ci.sh`
 - build and run with `./run.sh [sample.txt]`
 - watch mode: `fd | entr -cc ./run.sh [sample.txt]`
+- watch mode for tests: `fd | entr -cc ./test.sh`
