@@ -18,10 +18,14 @@ TEST_CASE("printable_maze returns the sample maze") {
     REQUIRE(maze[6] == "#...##.###");
 }
 
-TEST_CASE("part1 works for the sample input") {
-    REQUIRE(part1(7, 4, 10) == 11);
+TEST_CASE("flood_fill works for the sample input") {
+    auto [part1, part2] = flood_fill(7, 4, 10);
+    REQUIRE(part1 == 11);
+    REQUIRE(part2 == 151);
 }
 
-TEST_CASE("part1 works for the real input") {
-    REQUIRE(part1(31, 39, 1350) == 92);
+TEST_CASE("flood_fill works for the real input") {
+    auto [part1, part2] = flood_fill(31, 39, 1350);
+    REQUIRE(part1 == 92);
+    REQUIRE(part2 == 124);
 }

@@ -10,6 +10,8 @@ int main(int argc, char *argv[]) {
     }
 
     auto favorite_number = atoi(argv[1]);
+    auto [min_steps, visited] = flood_fill(31, 39, favorite_number);
 
-    cout << "Part 1: " << part1(31, 39, favorite_number) << endl;
+    cout << "Part 1: " << min_steps << endl;
+    cout << "Part 2: " << visited << endl;
 }

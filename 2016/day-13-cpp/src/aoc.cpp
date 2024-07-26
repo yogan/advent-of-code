@@ -15,6 +15,14 @@ int count_bits(int n) {
     return count;
 }
 
+int count_bits(vector<int> &visited) {
+    int count = 0;
+    for (int i : visited) {
+        count += count_bits(i);
+    }
+    return count;
+}
+
 bool is_wall(int x, int y, int favorite_number) {
     int value = x * x + 3 * x + 2 * x * y + y + y * y + favorite_number;
     return count_bits(value) % 2 != 0;
@@ -38,7 +46,7 @@ vector<string> printable_maze(int max_x, int max_y, int favorite_number) {
     return maze;
 }
 
-int part1(int target_x, int target_y, int favorite_number) {
+pair<int, int> flood_fill(int target_x, int target_y, int favorite_number) {
     vector<pair<int, int>> directions = {make_pair(0, -1), make_pair(0, 1),
                                          make_pair(-1, 0), make_pair(1, 0)};
 
@@ -47,12 +55,23 @@ int part1(int target_x, int target_y, int favorite_number) {
     queue<tuple<int, int, int>> queue;
     queue.push(make_tuple(1, 1, 0));
 
+    int min_steps = -1;
+    int visited_count = -1;
+
     while (!queue.empty()) {
         auto [x, y, steps] = queue.front();
         queue.pop();
 
-        if (x == target_x && y == target_y) {
-            return steps;
+        if (steps >= 50 && visited_count == -1) {
+            visited_count = count_bits(visited);
+        }
+
+        if (x == target_x && y == target_y && min_steps == -1) {
+            min_steps = steps;
+        }
+
+        if (min_steps != -1 && visited_count != -1) {
+            return make_pair(min_steps, visited_count);
         }
 
         for (auto [dx, dy] : directions) {
