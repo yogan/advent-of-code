@@ -57,3 +57,5 @@
   [aoc_tests.cpp](./day-13-cpp/tests/aoc_tests.cpp),
   [main.cpp](./day-13-cpp/src/main.cpp))
   - flood fill algorithm
+  - using [`std::bitset`](https://en.cppreference.com/w/cpp/utility/bitset) for
+    visited positions

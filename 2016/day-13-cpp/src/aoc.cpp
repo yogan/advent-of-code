@@ -1,3 +1,4 @@
+#include <bitset>
 #include <iostream>
 #include <queue>
 #include <string>
@@ -6,24 +7,24 @@
 
 using namespace std;
 
+const int MAX_COORD = 50;
+
 int count_bits(int n) {
-    int count = 0;
-    while (n) {
-        count += n & 1;
-        n >>= 1;
-    }
-    return count;
+    return bitset<32>(n).count();
 }
 
-int count_bits(vector<int> &visited) {
+int count_bits(bitset<MAX_COORD> bitsets[MAX_COORD]) {
     int count = 0;
-    for (int i : visited) {
-        count += count_bits(i);
+    for (int i = 0; i < MAX_COORD; i++) {
+        count += bitsets[i].count();
     }
     return count;
 }
 
 bool is_wall(int x, int y, int favorite_number) {
+    if (x < 0 || y < 0) {
+        return true;
+    }
     int value = x * x + 3 * x + 2 * x * y + y + y * y + favorite_number;
     return count_bits(value) % 2 != 0;
 }
@@ -50,7 +51,7 @@ pair<int, int> flood_fill(int target_x, int target_y, int favorite_number) {
     vector<pair<int, int>> directions = {make_pair(0, -1), make_pair(0, 1),
                                          make_pair(-1, 0), make_pair(1, 0)};
 
-    vector<int> visited(50, 0); // used as a bitset
+    bitset<MAX_COORD> visited[MAX_COORD];
 
     queue<tuple<int, int, int>> queue;
     queue.push(make_tuple(1, 1, 0));
@@ -62,7 +63,7 @@ pair<int, int> flood_fill(int target_x, int target_y, int favorite_number) {
         auto [x, y, steps] = queue.front();
         queue.pop();
 
-        if (steps >= 50 && visited_count == -1) {
+        if (steps >= MAX_COORD && visited_count == -1) {
             visited_count = count_bits(visited);
         }
 
@@ -78,12 +79,11 @@ pair<int, int> flood_fill(int target_x, int target_y, int favorite_number) {
             int xx = x + dx;
             int yy = y + dy;
 
-            if (xx < 0 || yy < 0 || is_wall(xx, yy, favorite_number) ||
-                visited[xx] & (1 << yy)) {
+            if (is_wall(xx, yy, favorite_number) || visited[xx][yy]) {
                 continue;
             }
 
-            visited[xx] |= (1 << yy);
+            visited[xx][yy] = true;
             queue.push(make_tuple(xx, yy, steps + 1));
         }
     }
