@@ -52,3 +52,8 @@
   [aoc_spec.cr](./day-12-crystal/spec/aoc_spec.cr))
   - straight-forward mini assembly interpreter
   - a language with `eval` would have reduce the code a lot…
+- [Day 13](https://adventofcode.com/2016/day/13) ⭐⭐ in C++
+  (**[aoc.cpp](./day-13-cpp/src/aoc.cpp)**,
+  [aoc_tests.cpp](./day-13-cpp/tests/aoc_tests.cpp),
+  [main.cpp](./day-13-cpp/src/main.cpp))
+  - flood fill algorithm
