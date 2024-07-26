@@ -1,3 +1,4 @@
+#include <array>
 #include <bitset>
 #include <iostream>
 #include <queue>
@@ -9,11 +10,7 @@ using namespace std;
 
 const int MAX_COORD = 50;
 
-int count_bits(int n) {
-    return bitset<32>(n).count();
-}
-
-int count_bits(bitset<MAX_COORD> bitsets[MAX_COORD]) {
+const int total_bits(const bitset<MAX_COORD> bitsets[MAX_COORD]) {
     int count = 0;
     for (int i = 0; i < MAX_COORD; i++) {
         count += bitsets[i].count();
@@ -21,7 +18,9 @@ int count_bits(bitset<MAX_COORD> bitsets[MAX_COORD]) {
     return count;
 }
 
-bool is_wall(int x, int y, int favorite_number) {
+const int count_bits(const int n) { return bitset<32>(n).count(); }
+
+const bool is_wall(const int x, const int y, const int favorite_number) {
     if (x < 0 || y < 0) {
         return true;
     }
@@ -33,7 +32,8 @@ bool is_wall(int x, int y, int favorite_number) {
  * Just here because this way we can easily test our is_wall function with the
  * sample input in a visual way.
  */
-vector<string> printable_maze(int max_x, int max_y, int favorite_number) {
+const vector<string> printable_maze(const int max_x, const int max_y,
+                                    const int favorite_number) {
     vector<string> maze;
 
     for (int y = 0; y < max_y; y++) {
@@ -47,9 +47,10 @@ vector<string> printable_maze(int max_x, int max_y, int favorite_number) {
     return maze;
 }
 
-pair<int, int> flood_fill(int target_x, int target_y, int favorite_number) {
-    vector<pair<int, int>> directions = {make_pair(0, -1), make_pair(0, 1),
-                                         make_pair(-1, 0), make_pair(1, 0)};
+const pair<int, int> flood_fill(const int target_x, const int target_y,
+                                const int favorite_number) {
+    constexpr array<pair<int, int>, 4> directions = {
+        make_pair(0, -1), make_pair(0, 1), make_pair(-1, 0), make_pair(1, 0)};
 
     bitset<MAX_COORD> visited[MAX_COORD];
 
@@ -64,7 +65,7 @@ pair<int, int> flood_fill(int target_x, int target_y, int favorite_number) {
         queue.pop();
 
         if (steps >= MAX_COORD && visited_count == -1) {
-            visited_count = count_bits(visited);
+            visited_count = total_bits(visited);
         }
 
         if (x == target_x && y == target_y && min_steps == -1) {
