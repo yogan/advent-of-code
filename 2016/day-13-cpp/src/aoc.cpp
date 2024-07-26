@@ -9,14 +9,7 @@
 using namespace std;
 
 const int MAX_COORD = 50;
-
-const int total_bits(const bitset<MAX_COORD> bitsets[MAX_COORD]) {
-    int count = 0;
-    for (int i = 0; i < MAX_COORD; i++) {
-        count += bitsets[i].count();
-    }
-    return count;
-}
+const int UNDEFINED = -1;
 
 const int count_bits(const int n) { return bitset<32>(n).count(); }
 
@@ -47,6 +40,14 @@ const vector<string> printable_maze(const int max_x, const int max_y,
     return maze;
 }
 
+const int total_bits(const bitset<MAX_COORD> bitsets[MAX_COORD]) {
+    int count = 0;
+    for (int i = 0; i < MAX_COORD; i++) {
+        count += bitsets[i].count();
+    }
+    return count;
+}
+
 const pair<int, int> flood_fill(const int target_x, const int target_y,
                                 const int favorite_number) {
     constexpr array<pair<int, int>, 4> directions = {
@@ -57,22 +58,22 @@ const pair<int, int> flood_fill(const int target_x, const int target_y,
     queue<tuple<int, int, int>> queue;
     queue.push(make_tuple(1, 1, 0));
 
-    int min_steps = -1;
-    int visited_count = -1;
+    int min_steps = UNDEFINED;
+    int visited_count = UNDEFINED;
 
     while (!queue.empty()) {
         auto [x, y, steps] = queue.front();
         queue.pop();
 
-        if (steps >= MAX_COORD && visited_count == -1) {
+        if (steps == MAX_COORD && visited_count == UNDEFINED) {
             visited_count = total_bits(visited);
         }
 
-        if (x == target_x && y == target_y && min_steps == -1) {
+        if (x == target_x && y == target_y && min_steps == UNDEFINED) {
             min_steps = steps;
         }
 
-        if (min_steps != -1 && visited_count != -1) {
+        if (min_steps != UNDEFINED && visited_count != UNDEFINED) {
             return make_pair(min_steps, visited_count);
         }
 
