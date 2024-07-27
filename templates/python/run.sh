@@ -2,4 +2,4 @@
 # shellcheck disable=SC1091
 [ -f "venv/bin/activate" ] && . venv/bin/activate
 
-pypy3 day*.py "$@"
+pypy3 aoc.py "$@"

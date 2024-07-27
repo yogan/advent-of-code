@@ -9,4 +9,4 @@
 ./run.sh [-t|--test]   # run unit tests
 ```
 
-Use `watch.sh` instead of `run.sh` to run the script on file changes.
+Use `fd | entr -cc ./run.sh [flags]` to run automatically on file changes.
