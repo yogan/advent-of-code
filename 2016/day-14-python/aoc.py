@@ -4,29 +4,33 @@ import unittest
 from functools import lru_cache
 
 
-def part1(salt):
+def find_index_64(salt, extra_rounds=0):
     index = 0
     keys = 0
 
     while True:
-        t = triplet(hash(salt, index))
+        t = triplet(hash(salt, index, extra_rounds))
         if t:
             for i in range(index + 1, index + 1001):
-                if t * 5 in hash(salt, i):
+                if t * 5 in hash(salt, i, extra_rounds):
                     keys += 1
+                    # print(f"Found key #{keys} at index {index}")
                     if keys == 64:
                         return index
         index += 1
 
 
-# Stats:
+# Stats (w/o extra rounds):
 # - no caching:              hashcount: 2330805, runtime: 5.5 s
 # - lru_cache(maxsize=999):  hashcount: 2330805, runtime: 6.7 s
 # - lru_cache(maxsize=1000): hashcount:   23721, runtime: 0.5 s
 # - lru_cache(maxsize=1001): hashcount:   23721, runtime: 0.5 s
 @lru_cache(maxsize=1000)
-def hash(salt, index):
-    return hashlib.md5(f"{salt}{index}".encode()).hexdigest()
+def hash(salt, index, extra_rounds=0):
+    h = hashlib.md5(f"{salt}{index}".encode()).hexdigest()
+    for _ in range(extra_rounds):
+        h = hashlib.md5(h.encode()).hexdigest()
+    return h
 
 
 def triplet(s):
@@ -39,6 +43,9 @@ def triplet(s):
 class Tests(unittest.TestCase):
     def test_hash(self):
         self.assertIn("cc38887a5", hash("abc", 18))
+
+    def test_extra_secure_hash(self):
+        self.assertIn("a107ff", hash("abc", 0, extra_rounds=2016))
 
     def test_triplet(self):
         self.assertEqual(triplet("abc"), None)
@@ -75,6 +82,8 @@ if __name__ == "__main__":
         unittest.main(exit=True)
 
     salt = open(filename).read().strip()
-    index_64 = part1(salt)
+    part1 = find_index_64(salt)
+    part2 = find_index_64(salt, extra_rounds=2016)
 
-    check(1, index_64, 22728 if is_sample else 15035)
+    check(1, part1, 22728 if is_sample else 15035)
+    check(2, part2, 22551 if is_sample else 19968)
