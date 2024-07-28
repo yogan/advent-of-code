@@ -62,3 +62,5 @@
 - [Day 14](https://adventofcode.com/2016/day/14) ⭐⭐ in Python
   ([aoc.py](./day-14-python/aoc.py))
   - using [`@functools.lru_cache`](https://docs.python.org/3/library/functools.html#functools.lru_cache)
+- [Day 15](https://adventofcode.com/2016/day/15) ⭐⭐ in 🧠
+  - [solved using math and an online calculator (CRT)](./day-15-math/README.md)
