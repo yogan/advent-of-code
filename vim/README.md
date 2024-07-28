@@ -42,6 +42,12 @@ data in a file named `input.txt` in the current working directory.
     - [`aoc-2016-08.vim`](2016/day-08/aoc-2016-08.vim)
     - [`aoc-2016-08.commented.vim`](2016/day-08/aoc-2016-08.commented.vim)
     - [animated solution](2016/day-08/README.md)
+- [2016 Day 15](https://adventofcode.com/2016/day/15) ⭐⭐
+    - [`aoc-2016-15.vim`](2016/day-15/aoc-2016-15.vim)
+    - [`aoc-2016-15.commented.vim`](2016/day-15/aoc-2016-15.commented.vim)
+    - [Chinese Remainder
+      Theorem](https://en.wikipedia.org/wiki/Chinese_remainder_theorem),
+      see [Day 15 README](2016/day-15/README.md)
 
 ### 2022
 

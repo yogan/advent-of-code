@@ -3,10 +3,12 @@
 The puzzle can be solved with the [Chinese Remainder
 Theorem](https://en.wikipedia.org/wiki/Chinese_remainder_theorem).
 
-## Sample
-
-- Disc 1: `t + 4 + 1 = 0 mod 5` ⇔ `t = -5 mod 5` ⇔ `t = 0 mod 5`
-- Disc 2: `t + 1 + 2 = 0 mod 2` ⇔ `t = -3 mod 2` ⇔ `t = 1 mod 2`
+Initially I solved this by hand by putting together the equations seen below and
+letting them be solved by an online calculator. Eventually I decided that code
+is always better, so I wrote the whole thing in
+[VimScript](./aoc-2016-15.commented.vim). The algorithm was shamelessly ported
+from the [Rosetta Code C# CRT
+implementation](https://rosettacode.org/wiki/Chinese_remainder_theorem#C#).
 
 ## Part 1
 
