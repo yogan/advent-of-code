@@ -28,6 +28,6 @@
   (testing "checksum works for 10000011110010000111"
     (is (= (aoc/checksum "10000011110010000111") "01100"))))
 
-(deftest part1
-  (testing "part1 works for the example in the problem description"
-    (is (= (aoc/part1 "10000" 20) "01100"))))
+(deftest dragon-checksum
+  (testing "dragon-checksum works for the example in the problem description"
+    (is (= (aoc/dragon-checksum "10000" 20) "01100"))))

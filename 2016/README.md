@@ -68,3 +68,9 @@
   - the puzzle is pretty much exactly the [Chinese Remainder
     Theorem](https://en.wikipedia.org/wiki/Chinese_remainder_theorem)
   - initially solved by hand, see [Day 15 README](../vim/2016/day-15/README.md)
+- [Day 16](https://adventofcode.com/2016/day/16) ⭐⭐ in Clojure
+  (**[core.clj](./day-16-clojure/src/advent_of_code_template/core.clj)**,
+  [core_test.clj](./day-16-clojure/test/advent_of_code_template/core_test.clj))
+  - calculating the whole thing, which is slow, but fast enough (~ 55 sec)
+  - there is probably some clever way to get the checksum fast by considering
+    the symmetry of the dragon curve, but meh…

@@ -14,7 +14,7 @@
     (apply str data)
     (recur (map #(if (apply = %) \1 \0) (partition 2 data)))))
 
-(defn part1 [input len]
+(defn dragon-checksum [input len]
   (let [data (fill input len)]
     (checksum data)))
 
@@ -22,4 +22,5 @@
   (let [file "resources/input.txt"
         input (with-open [reader (io/reader file)]
                 (seq (first (line-seq reader))))]
-    (println "Part 1:" (part1 input 272))))
+    (println "Part 1:" (dragon-checksum input 272))
+    (println "Part 2:" (dragon-checksum input 35651584))))
