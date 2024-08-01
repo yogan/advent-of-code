@@ -53,11 +53,11 @@ fn volume(l: usize, w: usize, h: usize) -> usize {
     l * w * h
 }
 
-fn part1(dimensions: &Vec<(usize, usize, usize)>) -> usize {
+fn part1(dimensions: &[(usize, usize, usize)]) -> usize {
     dimensions.iter().map(|&(l, w, h)| volume(l, w, h)).sum()
 }
 
-fn part2(dimensions: &Vec<(usize, usize, usize)>) -> usize {
+fn part2(dimensions: &[(usize, usize, usize)]) -> usize {
     dimensions
         .iter()
         .map(|&(l, w, h)| surface_area(l, w, h))
@@ -72,6 +72,7 @@ mod test {
     pub fn parse_works_for_a_single_line() {
         let input = "1x333x999999999";
         let result = parse(input);
+
         assert_eq!(result, vec![(1, 333, 999_999_999)]);
     }
 
@@ -85,6 +86,7 @@ mod test {
     pub fn parse_works_for_multiple_lines() {
         let input = multi_line_input();
         let result = parse(input);
+
         assert_eq!(result, vec![(1, 2, 3), (10, 20, 30), (111, 222, 333)]);
     }
 
@@ -92,6 +94,7 @@ mod test {
     pub fn part1_works() {
         let dimensions = vec![(1, 2, 3), (1, 1, 1)];
         let result = part1(&dimensions);
+
         assert_eq!(result, 6 + 1);
     }
 
@@ -99,6 +102,7 @@ mod test {
     pub fn part2_works() {
         let dimensions = vec![(1, 2, 3), (1, 1, 1)];
         let result = part2(&dimensions);
-        assert_eq!(result, (2 + 2 + 3 + 3 + 6 + 6) + (6 * 1));
+
+        assert_eq!(result, (2 + 2 + 3 + 3 + 6 + 6) + 6);
     }
 }
