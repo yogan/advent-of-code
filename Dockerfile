@@ -16,6 +16,14 @@ RUN apt-get update && apt-get install -y \
     libpython3.8 libsqlite3-0 libstdc++-9-dev libxml2-dev libz3-dev pkg-config \
     tzdata zlib1g-dev unzip
 
+# Remove fonts to save space (~ 260 MB).
+# This will also remove ghostscript, libgs10, and some libjs-* and r-cran-* packages,
+# but this is actually fine, as we don't need them either.
+RUN apt-get remove -y fonts-dejavu-core fonts-dejavu-extra fonts-dejavu-mono \
+    fonts-droid-fallback fonts-font-awesome fonts-glyphicons-halflings \
+    fonts-lato fonts-liberation fonts-liberation-sans-narrow fonts-mathjax \
+    fonts-noto-mono fonts-urw-base35
+
 # Bun - https://bun.sh/
 RUN curl -fsSL https://bun.sh/install | bash
 ENV PATH="/root/.bun/bin:${PATH}"
