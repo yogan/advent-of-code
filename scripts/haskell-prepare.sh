@@ -4,5 +4,6 @@
 # to create its ~/.stack directory in a directory owned by a different user.
 # We can be quicker though, by just creating the directory ourselves. After
 # that, stack will be happy to install its stuff there.
-echo "Creating $HOME/.stack directory as root"
-mkdir -p "$HOME/.stack"
+if [ -n "$GITHUB_RUN_ID" ] && [ ! -d "$HOME/.stack" ]; then
+    mkdir -p "$HOME/.stack"
+fi

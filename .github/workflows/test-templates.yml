@@ -43,7 +43,6 @@ jobs:
 
       - name: Test templates
         run: |
-          ./scripts/haskell-prepare.sh
-          ./scripts/test-templates.sh
           git config --global --add safe.directory $GITHUB_WORKSPACE
+          ./scripts/test-templates.sh
           ./scripts/cleanup.sh

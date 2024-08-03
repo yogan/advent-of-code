@@ -62,7 +62,6 @@ jobs:
       - name: Test solutions for 2016
         if: ${{ github.event.schedule || needs.check-changes.outputs.changes-2016 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
         run: |
-          ./scripts/haskell-prepare.sh
           ./scripts/test-days.sh 2016
           ./scripts/cleanup.sh
 
