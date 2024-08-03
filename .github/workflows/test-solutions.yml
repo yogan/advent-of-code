@@ -53,6 +53,12 @@ jobs:
       - name: Mark workspace as safe for git clean
         run: git config --global --add safe.directory $GITHUB_WORKSPACE
 
+      - name: Increase disk space by deleting unnecessary stuff
+        run: |
+          df -h | grep root | awk '{print $4}'
+          rm -rf /__t/CodeQL /__t/Python /__t/PyPy /__t/node /__t/go /__t/Ruby
+          df -h | grep root | awk '{print $4}'
+
       - name: Test solutions for 2015
         if: ${{ github.event.schedule || needs.check-changes.outputs.changes-2015 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
         run: |
