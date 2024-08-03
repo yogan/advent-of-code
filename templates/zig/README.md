@@ -5,9 +5,9 @@ Created with `zig init` and cleaned up a bit (lib removed, only main/exe).
 ## Usage
 
 - run: `./run.sh`
-- run (watch mode): `./watch.sh`
+- run (watch mode): `fd | entr -cc ./run.sh`
 - test: `./test.sh`
-- test (watch mode): `./test-watch.sh`
+- test (watch mode): `fd | entr -cc ./test.sh`
 
 ## Recommended Dev Environment
 
