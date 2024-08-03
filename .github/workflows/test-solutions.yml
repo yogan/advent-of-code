@@ -53,6 +53,9 @@ jobs:
       - name: Mark workspace as safe for git clean
         run: git config --global --add safe.directory $GITHUB_WORKSPACE
 
+      - name: Prepare Haskell environment
+        run: ./scripts/haskell-prepare.sh
+
       - name: Increase disk space by deleting unnecessary stuff
         run: |
           df -h | grep root | awk '{print $4}'

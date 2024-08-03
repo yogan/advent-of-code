@@ -1,7 +1,6 @@
 #!/bin/bash
 exit_code=0
 cwd=$(pwd)
-script_dir=$(realpath "$(dirname "$0")")
 
 execute_command() {
     command="$1"
@@ -25,10 +24,6 @@ for dir in "${template_dirs[@]}"; do
 
     lang=$(<.language)
     echo -n "Testing $lang template… "
-
-    if [ "$lang" = "Haskell" ]; then
-        "$script_dir/haskell-prepare.sh"
-    fi
 
     # optional build step
     if [ -x "build-ci.sh" ]; then
@@ -68,10 +63,6 @@ for dir in "${template_dirs[@]}"; do
             runtime_stats="${runtime}"
         fi
         echo "OK ($runtime_stats)"
-    fi
-
-    if [ "$lang" = "Haskell" ]; then
-        "$script_dir/haskell-cleanup.sh"
     fi
 
     cd "$cwd" || exit 1

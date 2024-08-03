@@ -50,10 +50,6 @@ for day_dir in "${day_dirs[@]}"; do
         fi
     fi
 
-    if [ "$lang" = "Haskell" ]; then
-        "$script_dir/haskell-prepare.sh"
-    fi
-
     # optional build step
     if [ -x "build-ci.sh" ]; then
         start=$(date +%s.%N)
@@ -92,14 +88,6 @@ for day_dir in "${day_dirs[@]}"; do
             runtime_stats="${runtime}"
         fi
         echo "OK ($runtime_stats)"
-    fi
-
-    if [ "$lang" = "Haskell" ]; then
-        # Running will make every next Haskell day slower, because stack will
-        # have to re-download all its stuff, but currently there are only two
-        # Haskell solutions (in two different years), so it's not a big deal.
-        # And we do run out of disk space without this… :-(
-        "$script_dir/haskell-cleanup.sh"
     fi
 
     cd "$year_dir" || exit 1
