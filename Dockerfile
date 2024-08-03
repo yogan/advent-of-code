@@ -43,6 +43,8 @@ ENV DDPPATH="/usr/local/share/ddp"
 # Rust - https://www.rust-lang.org/tools/install
 RUN curl --proto '=https' --tlsv1.2 -fsSL https://sh.rustup.rs | sh -s -- -y --no-modify-path
 ENV PATH="/root/.cargo/bin:${PATH}"
+# Remove docs (~ 700 MB), not needed in container
+RUN rm -rf /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/share/doc
 
 # Zig - https://ziglang.org/learn/getting-started/
 RUN cd /usr/local/share && \
@@ -105,7 +107,9 @@ ARG CABAL=latest
 ARG STACK=recommended
 RUN ghcup -v install ghc   --isolate /usr/local     --force ${GHC}   && \
     ghcup -v install cabal --isolate /usr/local/bin --force ${CABAL} && \
-    ghcup -v install stack --isolate /usr/local/bin --force ${STACK}
+    ghcup -v install stack --isolate /usr/local/bin --force ${STACK} && \
+# Remove docs (~ 600 MB), not needed in container
+    rm -rf /usr/local/share/doc/ghc-9.4.8
 
 # .NET 7 and 8
 # https://devblogs.microsoft.com/dotnet/whats-new-for-dotnet-in-ubuntu-2404/
