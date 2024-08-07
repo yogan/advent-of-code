@@ -1,4 +1,4 @@
-# Clojure Advent of Code Template
+# Advent of Code in Clojure 
 
 Created with `lein new app advent-of-code-template`
 

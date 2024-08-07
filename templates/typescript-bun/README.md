@@ -4,6 +4,6 @@
 
 - install dev dependencies: `bun install`
 - run: `./run.sh [sample.txt]`
-- run (watch mode): `./watch.sh [sample.txt]`
+- run (watch mode): `fd | entr -cc ./run.sh [sample.txt]`
 - test: `./test.sh`
-- test (watch mode): `./test-watch.sh`
+- test (watch mode): `fd | entr -cc ./test.sh`

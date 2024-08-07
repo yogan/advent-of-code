@@ -1,4 +1,4 @@
-# Advent of Code Zig Template
+# Advent of Code in Zig
 
 Created with `zig init` and cleaned up a bit (lib removed, only main/exe).
 
