@@ -29,19 +29,9 @@ pub fn emulate_works_for_wires() {
 }
 
 pub fn emulate_works_for_sample_test() {
-  ["d", "e", "f", "g", "h", "i", "x", "y", "nonexistent"]
+  ["d", "e", "f", "g", "h", "i", "x", "y"]
   |> list.map(fn(w) { aoc.emulate(sample, w) })
-  |> should.equal([
-    72,
-    507,
-    492,
-    114,
-    65_412,
-    65_079,
-    123,
-    456,
-    -1,
-  ])
+  |> should.equal([72, 507, 492, 114, 65_412, 65_079, 123, 456])
 }
 
 pub fn parse_input_works_for_sample_test() {

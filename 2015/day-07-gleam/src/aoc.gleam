@@ -52,153 +52,100 @@ fn run(circuit: Circuit) {
 pub fn emulate(circuit: Circuit, wire: String) -> Int {
   circuit
   |> backtrace(wire, dict.new())
-  |> result.map(fn(x) { x.0 })
-  |> result.unwrap(-1)
+  |> fn(x: #(_, _)) { x.0 }
 }
 
-fn backtrace(
-  circuit: Circuit,
-  wire: String,
-  cache: Cache,
-) -> Result(#(Int, Cache), String) {
+fn backtrace(circuit: Circuit, wire: String, cache: Cache) -> #(Int, Cache) {
   case dict.get(cache, wire) {
-    Ok(val) -> {
-      Ok(#(val, cache))
-    }
+    Ok(val) -> #(val, cache)
 
-    Error(_) -> {
+    _ -> {
       case get_wire(circuit, wire) {
-        Ok(Connection(from: from, to: _)) -> backtrace(circuit, from, cache)
+        Connection(from, _) -> backtrace(circuit, from, cache)
 
-        Ok(Data(value, _)) -> Ok(#(value, dict.insert(cache, wire, value)))
+        Data(value, _) -> #(value, dict.insert(cache, wire, value))
 
-        Ok(Gate(in: gate, out: _)) ->
+        Gate(in: gate, out: _) ->
           case gate {
             And(Value(a), Value(b)) -> {
               let res = int.bitwise_and(a, b)
-              Ok(#(res, dict.insert(cache, wire, res)))
+              #(res, dict.insert(cache, wire, res))
             }
             And(Value(a), Wire(b)) -> {
-              case backtrace(circuit, b, cache) {
-                Ok(#(b_val, b_cache)) -> {
-                  let res = int.bitwise_and(a, b_val)
-                  Ok(#(res, dict.insert(b_cache, wire, res)))
-                }
-                _ ->
-                  Error("failed to eval " <> int.to_string(a) <> " AND " <> b)
-              }
+              let #(b, cache) = backtrace(circuit, b, cache)
+              let res = int.bitwise_and(a, b)
+              #(res, dict.insert(cache, wire, res))
             }
             And(Wire(a), Value(b)) -> {
-              case backtrace(circuit, a, cache) {
-                Ok(#(a_val, a_cache)) -> {
-                  let res = int.bitwise_and(a_val, b)
-                  Ok(#(res, dict.insert(a_cache, wire, res)))
-                }
-                _ ->
-                  Error("failed to eval " <> a <> " AND " <> int.to_string(b))
-              }
+              let #(a, cache) = backtrace(circuit, a, cache)
+              let res = int.bitwise_and(a, b)
+              #(res, dict.insert(cache, wire, res))
             }
             And(Wire(a), Wire(b)) -> {
-              case backtrace(circuit, a, cache) {
-                Ok(#(a_val, a_cache)) -> {
-                  case backtrace(circuit, b, a_cache) {
-                    Ok(#(b_val, b_cache)) -> {
-                      let res = int.bitwise_and(a_val, b_val)
-                      Ok(#(res, dict.insert(b_cache, wire, res)))
-                    }
-                    _ -> Error("failed to eval " <> a <> " AND " <> b)
-                  }
-                }
-                _ -> Error("failed to eval " <> a <> " AND " <> b)
-              }
+              let #(a, cache) = backtrace(circuit, a, cache)
+              let #(b, cache) = backtrace(circuit, b, cache)
+              let res = int.bitwise_and(a, b)
+              #(res, dict.insert(cache, wire, res))
             }
 
             Or(Value(a), Value(b)) -> {
               let res = int.bitwise_or(a, b)
-              Ok(#(res, dict.insert(cache, wire, res)))
+              #(res, dict.insert(cache, wire, res))
             }
             Or(Value(a), Wire(b)) -> {
-              case backtrace(circuit, b, cache) {
-                Ok(#(b_val, b_cache)) -> {
-                  let res = int.bitwise_or(a, b_val)
-                  Ok(#(res, dict.insert(b_cache, wire, res)))
-                }
-                _ -> Error("failed to eval " <> int.to_string(a) <> " OR " <> b)
-              }
+              let #(b, cache) = backtrace(circuit, b, cache)
+              let res = int.bitwise_or(a, b)
+              #(res, dict.insert(cache, wire, res))
             }
             Or(Wire(a), Value(b)) -> {
-              case backtrace(circuit, a, cache) {
-                Ok(#(a_val, a_cache)) -> {
-                  let res = int.bitwise_or(a_val, b)
-                  Ok(#(res, dict.insert(a_cache, wire, res)))
-                }
-                _ -> Error("failed to eval " <> a <> " OR " <> int.to_string(b))
-              }
+              let #(a, cache) = backtrace(circuit, a, cache)
+              let res = int.bitwise_or(a, b)
+              #(res, dict.insert(cache, wire, res))
             }
             Or(Wire(a), Wire(b)) -> {
-              case backtrace(circuit, a, cache) {
-                Ok(#(a_val, a_cache)) -> {
-                  case backtrace(circuit, b, a_cache) {
-                    Ok(#(b_val, b_cache)) -> {
-                      let res = int.bitwise_or(a_val, b_val)
-                      Ok(#(res, dict.insert(b_cache, wire, res)))
-                    }
-                    _ -> Error("failed to eval " <> a <> " OR " <> b)
-                  }
-                }
-                _ -> Error("failed to eval " <> a <> " OR " <> b)
-              }
+              let #(a, cache) = backtrace(circuit, a, cache)
+              let #(b, cache) = backtrace(circuit, b, cache)
+              let res = int.bitwise_or(a, b)
+              #(res, dict.insert(cache, wire, res))
             }
 
             LShift(Value(a), b) -> {
               let res = int.bitwise_shift_left(a, b)
-              Ok(#(res, dict.insert(cache, wire, res)))
+              #(res, dict.insert(cache, wire, res))
             }
             LShift(Wire(a), b) -> {
-              case backtrace(circuit, a, cache) {
-                Ok(#(val, c)) -> {
-                  let res = int.bitwise_shift_left(val, b)
-                  Ok(#(res, dict.insert(c, wire, res)))
-                }
-                _ -> Error("failed to eval " <> a <> " << " <> int.to_string(b))
-              }
+              let #(a, cache) = backtrace(circuit, a, cache)
+              let res = int.bitwise_shift_left(a, b)
+              #(res, dict.insert(cache, wire, res))
             }
 
             RShift(Value(a), b) -> {
               let res = int.bitwise_shift_right(a, b)
-              Ok(#(res, dict.insert(cache, wire, res)))
+              #(res, dict.insert(cache, wire, res))
             }
             RShift(Wire(a), b) -> {
-              case backtrace(circuit, a, cache) {
-                Ok(#(val, c)) -> {
-                  let res = int.bitwise_shift_right(val, b)
-                  Ok(#(res, dict.insert(c, wire, res)))
-                }
-                _ -> Error("failed to eval " <> a <> " >> " <> int.to_string(b))
-              }
+              let #(a, cache) = backtrace(circuit, a, cache)
+              let res = int.bitwise_shift_right(a, b)
+              #(res, dict.insert(cache, wire, res))
             }
 
             Not(a) -> {
               // `int.bitwise_not` cannot be used as ints in Gleam are signed and
               // of variable bit length depending on the target platform.
               let bitwise_not_unsigned_16_bit = fn(x) { 65_535 - x }
-              case backtrace(circuit, a, cache) {
-                Ok(#(val, c)) -> {
-                  let res = bitwise_not_unsigned_16_bit(val)
-                  Ok(#(res, dict.insert(c, wire, res)))
-                }
-                _ -> Error("failed to eval NOT " <> a)
-              }
+              let #(a, cache) = backtrace(circuit, a, cache)
+              let res = bitwise_not_unsigned_16_bit(a)
+              #(res, dict.insert(cache, wire, res))
             }
           }
-        _ -> Error("wire " <> wire <> " not found")
       }
     }
   }
 }
 
-fn get_wire(circuit: Circuit, wire: String) -> Result(Connection, Nil) {
-  list.find(circuit, fn(c) { goes_to(c, wire) })
+fn get_wire(circuit: Circuit, wire: String) -> Connection {
+  let assert Ok(connection) = list.find(circuit, fn(c) { goes_to(c, wire) })
+  connection
 }
 
 fn replace_wire(circuit: Circuit, wire: String, value: Int) -> Circuit {
