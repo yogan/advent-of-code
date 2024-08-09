@@ -25,22 +25,22 @@ pub fn emulate_works_for_wires() {
     aoc.Connection(from: "c", to: "d"),
   ]
   |> aoc.emulate("d")
-  |> should.equal(Ok(123))
+  |> should.equal(123)
 }
 
 pub fn emulate_works_for_sample_test() {
   ["d", "e", "f", "g", "h", "i", "x", "y", "nonexistent"]
   |> list.map(fn(w) { aoc.emulate(sample, w) })
   |> should.equal([
-    Ok(72),
-    Ok(507),
-    Ok(492),
-    Ok(114),
-    Ok(65_412),
-    Ok(65_079),
-    Ok(123),
-    Ok(456),
-    Error("wire nonexistent not found"),
+    72,
+    507,
+    492,
+    114,
+    65_412,
+    65_079,
+    123,
+    456,
+    -1,
   ])
 }
 

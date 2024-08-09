@@ -34,13 +34,11 @@ fn run(connections: List(Connection)) {
   let part1 =
     connections
     |> emulate("a")
-    |> result.unwrap(0)
 
   let part2 =
     connections
     |> replace_wire("b", part1)
     |> emulate("a")
-    |> result.unwrap(0)
 
   [part1, part2]
   |> list.map(int.to_string)
@@ -48,13 +46,11 @@ fn run(connections: List(Connection)) {
   |> io.println
 }
 
-pub fn emulate(
-  connections: List(Connection),
-  wire: String,
-) -> Result(Int, String) {
+pub fn emulate(connections: List(Connection), wire: String) -> Int {
   connections
   |> backtrace(wire, dict.new())
   |> result.map(fn(x) { x.0 })
+  |> result.unwrap(-1)
 }
 
 fn backtrace(
