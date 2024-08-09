@@ -8,6 +8,9 @@ import gleam/result
 import gleam/string
 import simplifile
 
+pub type Circuit =
+  List(Connection)
+
 pub type Connection {
   Gate(in: Gate, out: String)
   Connection(from: String, to: String)
@@ -30,13 +33,13 @@ pub type Gate {
 type Cache =
   dict.Dict(String, Int)
 
-fn run(connections: List(Connection)) {
+fn run(circuit: Circuit) {
   let part1 =
-    connections
+    circuit
     |> emulate("a")
 
   let part2 =
-    connections
+    circuit
     |> replace_wire("b", part1)
     |> emulate("a")
 
@@ -46,15 +49,15 @@ fn run(connections: List(Connection)) {
   |> io.println
 }
 
-pub fn emulate(connections: List(Connection), wire: String) -> Int {
-  connections
+pub fn emulate(circuit: Circuit, wire: String) -> Int {
+  circuit
   |> backtrace(wire, dict.new())
   |> result.map(fn(x) { x.0 })
   |> result.unwrap(-1)
 }
 
 fn backtrace(
-  connections: List(Connection),
+  circuit: Circuit,
   wire: String,
   cache: Cache,
 ) -> Result(#(Int, Cache), String) {
@@ -64,8 +67,8 @@ fn backtrace(
     }
 
     Error(_) -> {
-      case get_wire(connections, wire) {
-        Ok(Connection(from: from, to: _)) -> backtrace(connections, from, cache)
+      case get_wire(circuit, wire) {
+        Ok(Connection(from: from, to: _)) -> backtrace(circuit, from, cache)
 
         Ok(Data(value, _)) -> Ok(#(value, dict.insert(cache, wire, value)))
 
@@ -76,7 +79,7 @@ fn backtrace(
               Ok(#(res, dict.insert(cache, wire, res)))
             }
             And(Value(a), Wire(b)) -> {
-              case backtrace(connections, b, cache) {
+              case backtrace(circuit, b, cache) {
                 Ok(#(b_val, b_cache)) -> {
                   let res = int.bitwise_and(a, b_val)
                   Ok(#(res, dict.insert(b_cache, wire, res)))
@@ -86,7 +89,7 @@ fn backtrace(
               }
             }
             And(Wire(a), Value(b)) -> {
-              case backtrace(connections, a, cache) {
+              case backtrace(circuit, a, cache) {
                 Ok(#(a_val, a_cache)) -> {
                   let res = int.bitwise_and(a_val, b)
                   Ok(#(res, dict.insert(a_cache, wire, res)))
@@ -96,9 +99,9 @@ fn backtrace(
               }
             }
             And(Wire(a), Wire(b)) -> {
-              case backtrace(connections, a, cache) {
+              case backtrace(circuit, a, cache) {
                 Ok(#(a_val, a_cache)) -> {
-                  case backtrace(connections, b, a_cache) {
+                  case backtrace(circuit, b, a_cache) {
                     Ok(#(b_val, b_cache)) -> {
                       let res = int.bitwise_and(a_val, b_val)
                       Ok(#(res, dict.insert(b_cache, wire, res)))
@@ -115,7 +118,7 @@ fn backtrace(
               Ok(#(res, dict.insert(cache, wire, res)))
             }
             Or(Value(a), Wire(b)) -> {
-              case backtrace(connections, b, cache) {
+              case backtrace(circuit, b, cache) {
                 Ok(#(b_val, b_cache)) -> {
                   let res = int.bitwise_or(a, b_val)
                   Ok(#(res, dict.insert(b_cache, wire, res)))
@@ -124,7 +127,7 @@ fn backtrace(
               }
             }
             Or(Wire(a), Value(b)) -> {
-              case backtrace(connections, a, cache) {
+              case backtrace(circuit, a, cache) {
                 Ok(#(a_val, a_cache)) -> {
                   let res = int.bitwise_or(a_val, b)
                   Ok(#(res, dict.insert(a_cache, wire, res)))
@@ -133,9 +136,9 @@ fn backtrace(
               }
             }
             Or(Wire(a), Wire(b)) -> {
-              case backtrace(connections, a, cache) {
+              case backtrace(circuit, a, cache) {
                 Ok(#(a_val, a_cache)) -> {
-                  case backtrace(connections, b, a_cache) {
+                  case backtrace(circuit, b, a_cache) {
                     Ok(#(b_val, b_cache)) -> {
                       let res = int.bitwise_or(a_val, b_val)
                       Ok(#(res, dict.insert(b_cache, wire, res)))
@@ -152,7 +155,7 @@ fn backtrace(
               Ok(#(res, dict.insert(cache, wire, res)))
             }
             LShift(Wire(a), b) -> {
-              case backtrace(connections, a, cache) {
+              case backtrace(circuit, a, cache) {
                 Ok(#(val, c)) -> {
                   let res = int.bitwise_shift_left(val, b)
                   Ok(#(res, dict.insert(c, wire, res)))
@@ -166,7 +169,7 @@ fn backtrace(
               Ok(#(res, dict.insert(cache, wire, res)))
             }
             RShift(Wire(a), b) -> {
-              case backtrace(connections, a, cache) {
+              case backtrace(circuit, a, cache) {
                 Ok(#(val, c)) -> {
                   let res = int.bitwise_shift_right(val, b)
                   Ok(#(res, dict.insert(c, wire, res)))
@@ -179,7 +182,7 @@ fn backtrace(
               // `int.bitwise_not` cannot be used as ints in Gleam are signed and
               // of variable bit length depending on the target platform.
               let bitwise_not_unsigned_16_bit = fn(x) { 65_535 - x }
-              case backtrace(connections, a, cache) {
+              case backtrace(circuit, a, cache) {
                 Ok(#(val, c)) -> {
                   let res = bitwise_not_unsigned_16_bit(val)
                   Ok(#(res, dict.insert(c, wire, res)))
@@ -194,21 +197,14 @@ fn backtrace(
   }
 }
 
-fn get_wire(
-  connections: List(Connection),
-  wire: String,
-) -> Result(Connection, Nil) {
-  list.find(connections, fn(c) { goes_to(c, wire) })
+fn get_wire(circuit: Circuit, wire: String) -> Result(Connection, Nil) {
+  list.find(circuit, fn(c) { goes_to(c, wire) })
 }
 
-fn replace_wire(
-  connections: List(Connection),
-  wire: String,
-  value: Int,
-) -> List(Connection) {
+fn replace_wire(circuit: Circuit, wire: String, value: Int) -> Circuit {
   [
     Data(value: value, for: wire),
-    ..list.filter(connections, fn(c) { !goes_to(c, wire) })
+    ..list.filter(circuit, fn(c) { !goes_to(c, wire) })
   ]
 }
 
@@ -220,7 +216,7 @@ fn goes_to(connection: Connection, wire: String) -> Bool {
   }
 }
 
-pub fn parse_input(input: String) -> Result(List(Connection), String) {
+pub fn parse_input(input: String) -> Result(Circuit, String) {
   input
   |> string.trim
   |> string.split("\n")
@@ -288,7 +284,7 @@ pub fn main() {
       case simplifile.read(from: filename) {
         Ok(content) -> {
           case parse_input(content) {
-            Ok(connections) -> run(connections)
+            Ok(circuit) -> run(circuit)
             Error(msg) ->
               io.println("Error parsing " <> filename <> ": " <> msg)
           }
