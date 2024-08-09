@@ -31,14 +31,27 @@ type Cache =
   dict.Dict(String, Int)
 
 fn run(connections: List(Connection)) {
-  connections
-  |> part1("a")
-  |> result.try(fn(x) { Ok(int.to_string(x)) })
-  |> result.unwrap_both
+  let part1 =
+    connections
+    |> emulate("a")
+    |> result.unwrap(0)
+
+  let part2 =
+    connections
+    |> replace_wire("b", part1)
+    |> emulate("a")
+    |> result.unwrap(0)
+
+  [part1, part2]
+  |> list.map(int.to_string)
+  |> string.join("\n")
   |> io.println
 }
 
-pub fn part1(connections: List(Connection), wire: String) -> Result(Int, String) {
+pub fn emulate(
+  connections: List(Connection),
+  wire: String,
+) -> Result(Int, String) {
   connections
   |> backtrace(wire, dict.new())
   |> result.map(fn(x) { x.0 })
@@ -55,18 +68,11 @@ fn backtrace(
     }
 
     Error(_) -> {
-      let con =
-        list.find(connections, fn(c) {
-          case c {
-            Gate(_, out: w) -> w == wire
-            Connection(_, to: w) -> w == wire
-            Data(_, for: w) -> w == wire
-          }
-        })
-
-      case con {
+      case get_wire(connections, wire) {
         Ok(Connection(from: from, to: _)) -> backtrace(connections, from, cache)
+
         Ok(Data(value, _)) -> Ok(#(value, dict.insert(cache, wire, value)))
+
         Ok(Gate(in: gate, out: _)) ->
           case gate {
             And(Value(a), Value(b)) -> {
@@ -107,6 +113,7 @@ fn backtrace(
                 _ -> Error("failed to eval " <> a <> " AND " <> b)
               }
             }
+
             Or(Value(a), Value(b)) -> {
               let res = int.bitwise_or(a, b)
               Ok(#(res, dict.insert(cache, wire, res)))
@@ -143,6 +150,7 @@ fn backtrace(
                 _ -> Error("failed to eval " <> a <> " OR " <> b)
               }
             }
+
             LShift(Value(a), b) -> {
               let res = int.bitwise_shift_left(a, b)
               Ok(#(res, dict.insert(cache, wire, res)))
@@ -156,6 +164,7 @@ fn backtrace(
                 _ -> Error("failed to eval " <> a <> " << " <> int.to_string(b))
               }
             }
+
             RShift(Value(a), b) -> {
               let res = int.bitwise_shift_right(a, b)
               Ok(#(res, dict.insert(cache, wire, res)))
@@ -169,6 +178,7 @@ fn backtrace(
                 _ -> Error("failed to eval " <> a <> " >> " <> int.to_string(b))
               }
             }
+
             Not(a) -> {
               // `int.bitwise_not` cannot be used as ints in Gleam are signed and
               // of variable bit length depending on the target platform.
@@ -185,6 +195,32 @@ fn backtrace(
         _ -> Error("wire " <> wire <> " not found")
       }
     }
+  }
+}
+
+fn get_wire(
+  connections: List(Connection),
+  wire: String,
+) -> Result(Connection, Nil) {
+  list.find(connections, fn(c) { goes_to(c, wire) })
+}
+
+fn replace_wire(
+  connections: List(Connection),
+  wire: String,
+  value: Int,
+) -> List(Connection) {
+  [
+    Data(value: value, for: wire),
+    ..list.filter(connections, fn(c) { !goes_to(c, wire) })
+  ]
+}
+
+fn goes_to(connection: Connection, wire: String) -> Bool {
+  case connection {
+    Gate(_, out: w) -> w == wire
+    Connection(_, to: w) -> w == wire
+    Data(_, for: w) -> w == wire
   }
 }
 

@@ -18,19 +18,19 @@ const sample = [
   aoc.Gate(in: aoc.Not("y"), out: "i"),
 ]
 
-pub fn part1_works_for_wires() {
+pub fn emulate_works_for_wires() {
   [
     aoc.Data(value: 123, for: "a"),
     aoc.Connection(from: "a", to: "b"),
     aoc.Connection(from: "c", to: "d"),
   ]
-  |> aoc.part1("d")
+  |> aoc.emulate("d")
   |> should.equal(Ok(123))
 }
 
-pub fn part1_works_for_sample_test() {
+pub fn emulate_works_for_sample_test() {
   ["d", "e", "f", "g", "h", "i", "x", "y", "nonexistent"]
-  |> list.map(fn(w) { aoc.part1(sample, w) })
+  |> list.map(fn(w) { aoc.emulate(sample, w) })
   |> should.equal([
     Ok(72),
     Ok(507),
