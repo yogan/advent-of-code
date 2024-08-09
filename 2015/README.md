@@ -14,7 +14,11 @@
 - [Day 05](https://adventofcode.com/2015/day/5) ⭐⭐ in
   [Vim](../vim/2015/day-05/aoc-2015-05.vim)
   ([commented](../vim/2015/day-05/aoc-2015-05.commented.vim))
-- [Day 06](https://adventofcode.com/2015/day/6)
-  - ⭐⭐ [Python](day-06-python/day06.py)
-  - ⭐⭐ [Vim](../vim/2015/day-06/aoc-2015-06.vim)
-    ([commented](../vim/2015/day-06/aoc-2015-06.commented.vim))
+- [Day 06](https://adventofcode.com/2015/day/6) ⭐⭐
+    - [Python](day-06-python/day06.py)
+    - [Vim](../vim/2015/day-06/aoc-2015-06.vim)
+      ([commented](../vim/2015/day-06/aoc-2015-06.commented.vim))
+- [Day 07](https://adventofcode.com/2015/day/7) ⭐⭐ in
+  [Gleam](day-07-gleam/src/aoc.gleam)
+  ([tests](day-07-gleam/test/aoc_test.gleam))
+    - pretty nice recursive solution with a cache dictionary
