@@ -54,8 +54,7 @@
 " NOTE: I tried a similar approach as in part 1, but it requires substitutions
 " within the visual block selection, which takes a very long time (~ 3h for the
 " whole thing). And it wasn't even correct…
-"
-" So it's finally time to get yeet some Vimscript against the problem.
+" So, it's finally time to yeet some Vimscript against the problem.
 
 :function Part2()
 :   r input.txt|1d
