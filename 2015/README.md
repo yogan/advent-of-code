@@ -22,7 +22,9 @@
   [Gleam](day-07-gleam/src/aoc.gleam)
   ([tests](day-07-gleam/test/aoc_test.gleam))
     - pretty nice recursive solution with a cache dictionary
-- [Day 08](https://adventofcode.com/2015/day/8) ⭐⭐ in
-  [JavaScript](day-08-javascript/aoc.mjs)
-  ([tests](day-08-javascript/aoc.test.mjs))
-    - easy thanks to `eval()`
+- [Day 08](https://adventofcode.com/2015/day/8) ⭐⭐
+    - [JavaScript](day-08-javascript/aoc.mjs)
+      ([tests](day-08-javascript/aoc.test.mjs))
+    - [Vim](../vim/2015/day-08/aoc-2015-08.vim)
+      ([commented](../vim/2015/day-08/aoc-2015-08.commented.vim))
+    - easy thanks to `eval()` (both JS and Vim)
