@@ -1,22 +1,18 @@
 #!/usr/bin/env fish
-set expected_part_1 "Part 1: 14545"
-set expected_part_2 "Part 2: 4978"
+set expected 14545 4978
+set output (./run.fish)
 
-set INPUT "input.txt"
-set result_part_1 $(./aoc.fish --part=1 <$INPUT)
-set result_part_2 $(./aoc.fish --part=2 <$INPUT)
-
-function validate -a part expected result
+function validate -a part
     echo -n "Part $part: " 1>&2
-    if test $result = $expected
-        echo "OK (»$result«)" 1>&2
+    if test $output[$part] = $expected[$part]
+        echo "OK (»$output[$part]«)" 1>&2
     else
         echo "Wrong answer!"
-        echo "Expected: »$expected«"
-        echo "Got:      »$result«"
+        echo "Expected: »$expected[$part]«"
+        echo "Got:      »$output[$part]«"
         exit 1
     end
 end
 
-validate 1 $expected_part_1 $result_part_1
-validate 2 $expected_part_2 $result_part_2
+validate 1
+validate 2

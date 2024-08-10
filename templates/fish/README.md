@@ -2,7 +2,16 @@
 
 ## Usage
 
-- run: `./run.fish`
-- run (watch mode): `fd | entr -cc ./run.fish`
-- test: `./test.fish`
-- test (watch mode): `fd | entr -cc ./test.fish`
+```sh
+./run.fish     # run with input.txt
+./sample.fish  # run with sample.txt
+./test.fish    # run tests
+```
+
+## Watch Mode
+
+```sh
+fd | entr -cc ./run.fish     # run with input.txt
+fd | entr -cc ./sample.fish  # run with sample.txt
+fd | entr -cc ./test.fish    # run tests
+```
