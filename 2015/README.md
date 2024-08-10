@@ -27,4 +27,6 @@
       ([tests](day-08-javascript/aoc.test.mjs))
     - [Vim](../vim/2015/day-08/aoc-2015-08.vim)
       ([commented](../vim/2015/day-08/aoc-2015-08.commented.vim))
-    - easy thanks to `eval()` (both JS and Vim)
+    - [fish](day-08-fish/aoc.fish) ([tests](day-08-fish/test.fish))
+    - easy thanks to `eval()` (both JS and Vim) and
+      `string escape` / `string unescape` (fish)

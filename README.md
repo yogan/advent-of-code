@@ -5,7 +5,7 @@
 [![Templates](https://github.com/yogan/advent-of-code/actions/workflows/test-templates.yml/badge.svg)](https://github.com/yogan/advent-of-code/actions/workflows/test-templates.yml)
 [![README links](https://github.com/yogan/advent-of-code/actions/workflows/check-readme-links.yml/badge.svg)](https://github.com/yogan/advent-of-code/actions/workflows/check-readme-links.yml)
 
-* [2015 solutions](2015/README.md) 16/50 ✨ (Clojure, Crystal, DDP, Python, Gleam, JavaScript, Vim)
+* [2015 solutions](2015/README.md) 16/50 ✨ (Clojure, Crystal, DDP, Python, Gleam, JavaScript, fish, Vim)
 * [2016 solutions](2016/README.md) 32/50 ✨ (Vim, Gleam, Rust, Haskell, Elixir, Kotlin, TypeScript, Crystal, C++, Python, Clojure)
 * [2020 solutions](2020-rust/README.md) 30/50 ✨ (Rust)
 * [2021 solutions](2021-python/README.md) 34/50 ✨ (Python)
