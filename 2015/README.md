@@ -30,3 +30,8 @@
     - [fish](day-08-fish/aoc.fish) ([tests](day-08-fish/test.fish))
     - easy thanks to `eval()` (both JS and Vim) and
       `string escape` / `string unescape` (fish)
+- [Day 09](https://adventofcode.com/2015/day/9) ⭐⭐ in C#:
+  [AoC.cs](day-09-csharp/AoC.cs), [AoC.Tests.cs](day-09-csharp/AoCTests.cs),
+  [Program.cs](day-09-csharp/Program.cs)
+    - small graph allows to check all permutations (luckily, as this is almost
+      the traveling salesman problem…)
