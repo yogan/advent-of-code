@@ -1,5 +1,5 @@
 #!/bin/sh
-if ! gleam test; then
+if ! ./test.sh; then
     echo "Test failed"
     exit 3
 fi
