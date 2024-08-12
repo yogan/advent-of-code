@@ -3,10 +3,14 @@ public record struct Edge(string A, string B, int Distance);
 
 public class AoC
 {
-    public static int Part1(Graph G) =>
+    public static (int min, int max) FindMinMax(Graph G) {
+        var distances = Distances(G);
+        return (distances.Min(), distances.Max());
+    }
+
+    private static IEnumerable<int> Distances(Graph G) =>
         Permutations(G.Nodes, G.Nodes.Count())
-            .Select(p => p.Zip(p.Skip(1), (a, b) => GetEdge(G, a, b).Distance).Sum())
-            .Min();
+            .Select(p => p.Zip(p.Skip(1), (a, b) => GetEdge(G, a, b).Distance).Sum());
 
     public static Graph ParseInput(IEnumerable<string> lines) {
         var edges = lines.SelectMany(line => {

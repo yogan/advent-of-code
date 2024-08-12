@@ -27,7 +27,7 @@ public class AoCTests
     }
 
     [Fact]
-    public void Part1_WorksForSample() {
-        Assert.Equal(605, AoC.Part1(AoC.ParseInput(Sample)));
+    public void FindMinMax_WorksForSample() {
+        Assert.Equal((605, 982), AoC.FindMinMax(AoC.ParseInput(Sample)));
     }
 }

@@ -7,4 +7,6 @@
 
 var input = AoC.ParseInput(File.ReadAllLines(GetPath(args[0])));
 
-Console.WriteLine(AoC.Part1(input));
+var (part1, part2) = AoC.FindMinMax(input);
+Console.WriteLine(part1);
+Console.WriteLine(part2);
