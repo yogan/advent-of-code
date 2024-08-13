@@ -84,8 +84,8 @@ pub fn main() !void {
     var bw = std.io.bufferedWriter(stdout_file);
     const stdout = bw.writer();
 
-    try stdout.print("Part 1: {d}\n", .{p1});
-    try stdout.print("Part 2: {d}\n", .{p2});
+    try stdout.print("{d}\n", .{p1});
+    try stdout.print("{d}\n", .{p2});
 
     try bw.flush();
 }

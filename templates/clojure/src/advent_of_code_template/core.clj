@@ -21,7 +21,5 @@
   (let [file "resources/input.txt"
         lines (with-open [reader (io/reader file)]
                 (doall (map #(process-line %) (line-seq reader))))]
-    ;; (println "-----------------------------")
-    ;; (println "Lines:" lines)
-    (println "Part 1:" (part1 lines))
-    (println "Part 2:" (part2 lines))))
+    (println (part1 lines))
+    (println (part2 lines))))

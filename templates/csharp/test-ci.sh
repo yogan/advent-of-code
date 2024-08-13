@@ -1,6 +1,6 @@
 #!/bin/sh
 if ! ./test.sh; then
-    echo "Test failed"
+    echo "Unit tests failed"
     exit 3
 fi
 

@@ -8,8 +8,8 @@ fun main(args: Array<String>) {
     val lines = File(args[0]).readLines()
     val boxes = parseLines(lines)
 
-    println("Part 1: ${part1(boxes)}")
-    println("Part 2: ${part2(boxes)}")
+    println(part1(boxes))
+    println(part2(boxes))
 }
 
 fun parseLines(lines: List<String>): List<Box> =

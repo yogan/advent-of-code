@@ -19,5 +19,5 @@ int main(int argc, char *argv[]) {
     auto filename = argc > 1 ? argv[1] : "input.txt";
     auto boxes = read_lines(filename);
 
-    cout << "Part 1: " << part1(boxes) << endl;
+    cout << part1(boxes) << endl;
 }

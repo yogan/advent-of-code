@@ -3,8 +3,8 @@ type Dimensions = readonly [number, number, number]
 export async function main() {
     const filename = process.argv[2] || 'input.txt'
     const boxes = await parseInput(filename)
-    console.log('Part 1:', part1(boxes))
-    console.log('Part 2:', part2(boxes))
+    console.log(part1(boxes))
+    console.log(part2(boxes))
 }
 
 export async function parseInput(filename: string): Promise<Dimensions[]> {
