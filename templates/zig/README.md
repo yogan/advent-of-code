@@ -2,19 +2,28 @@
 
 Created with `zig init` and cleaned up a bit (lib removed, only main/exe).
 
-## Usage
+## Scripts
 
-- run: `./run.sh`
-- run (watch mode): `fd | entr -cc ./run.sh`
-- test: `./test.sh`
-- test (watch mode): `fd | entr -cc ./test.sh`
+```sh
+./run.sh                    # Run with input.txt
+./sample.sh                 # Run with sample.txt
+./test.sh                   # Run the tests
+```
+
+## Watch Mode
+
+```sh
+fd | entr -cc ./run.sh      # Run with input.txt on changes
+fd | entr -cc ./sample.sh   # Run with sample.txt on changes
+fd | entr -cc ./test.sh     # Run the tests on changes
+```
 
 ## Recommended Dev Environment
 
 - setting up Zig is extracting a tarball and adding it to your path
-    - see how it's done in the Dockerfile
-- NeoVim is great; with lsp-zero and Mason:
-    - `:Mason install zls` you need to do (check with `:LspInfo`).
+    - see how it's done in the `Dockerfile`
+- NeoVim works great; with lsp-zero and Mason:
+    - `:Mason install zls`
     - restart nvim
     - check with `:LspInfo`
     - you should get syntax highlighting, completion, and even format on save

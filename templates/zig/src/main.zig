@@ -6,8 +6,8 @@ const alloc = std.heap.page_allocator;
 
 const Box = struct { l: u32, w: u32, h: u32 };
 
-pub fn readInputFile() ![]Box {
-    var file = try std.fs.cwd().openFile("input.txt", .{});
+pub fn readInputFile(filename: []const u8) ![]const Box {
+    var file = try std.fs.cwd().openFile(filename, .{});
     defer file.close();
 
     var buf: [1024]u8 = undefined;
@@ -82,14 +82,23 @@ test "part2 returns sum of surface areas of boxes" {
     try testing.expectEqual(try part2(&boxes), expected);
 }
 
-pub fn main() !void {
+pub fn main() !u8 {
+    const args = try std.process.argsAlloc(alloc);
+    defer std.process.argsFree(alloc, args);
+
+    if (args.len != 2) {
+        stderr.print("Usage: {s} <input-file>\n", .{std.fs.path.basename(args[0])});
+        return 1;
+    }
+
     const stdout_file = std.io.getStdOut().writer();
     var bw = std.io.bufferedWriter(stdout_file);
     const stdout = bw.writer();
 
-    const boxes = try readInputFile();
+    const boxes = try readInputFile(args[1]);
     try stdout.print("{d}\n", .{try part1(boxes)});
     try stdout.print("{d}\n", .{try part2(boxes)});
 
     try bw.flush();
+    return 0;
 }
