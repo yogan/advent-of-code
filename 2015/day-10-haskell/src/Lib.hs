@@ -5,9 +5,9 @@ solve input times = length $ iterate lookAndSay input !! times
 
 lookAndSay :: String -> String
 lookAndSay [] = []
-lookAndSay (d : rest) = show l ++ [d] ++ lookAndSay rest'
-  where
-    (l, rest') = findConsecutiveDigits 1 d rest
+lookAndSay (digit : rest) =
+  let (len, rest') = findConsecutiveDigits 1 digit rest
+   in show len ++ [digit] ++ lookAndSay rest'
 
 findConsecutiveDigits :: Int -> Char -> String -> (Int, String)
 findConsecutiveDigits l _ [] = (l, [])
