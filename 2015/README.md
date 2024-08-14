@@ -35,3 +35,7 @@
   [Program.cs](day-09-csharp/Program.cs)
     - small graph allows to check all permutations (luckily, as this is almost
       the traveling salesman problem…)
+- [Day 10](https://adventofcode.com/2015/day/10) ⭐⭐ in Haskell:
+  [Lib.hs](day-10-haskell/src/Lib.hs),
+  [Spec.hs](day-10-haskell/test/Spec.hs),
+  [Main.hs](day-10-haskell/app/Main.hs)
