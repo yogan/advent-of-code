@@ -17,14 +17,14 @@ main = hspec $ do
 
   describe "Find consecutive digits" $ do
     it "works for 1" $ do
-      findConsecutiveDigits 1 '1' "" `shouldBe` ((1, '1'), "")
+      findConsecutiveDigits 1 '1' "" `shouldBe` (1, "")
     it "works for 11" $ do
-      findConsecutiveDigits 1 '1' "1" `shouldBe` ((2, '1'), "")
+      findConsecutiveDigits 1 '1' "1" `shouldBe` (2, "")
     it "works for 111" $ do
-      findConsecutiveDigits 1 '1' "11" `shouldBe` ((3, '1'), "")
+      findConsecutiveDigits 1 '1' "11" `shouldBe` (3, "")
     it "works for 1112" $ do
-      findConsecutiveDigits 1 '1' "112" `shouldBe` ((3, '1'), "2")
-    it "works for 1112 starting with lenght 2" $ do
-      findConsecutiveDigits 2 '1' "12" `shouldBe` ((3, '1'), "2")
+      findConsecutiveDigits 1 '1' "112" `shouldBe` (3, "2")
+    it "works for 1112 starting with length 2" $ do
+      findConsecutiveDigits 2 '1' "12" `shouldBe` (3, "2")
     it "works for 12345" $ do
-      findConsecutiveDigits 1 '1' "2345" `shouldBe` ((1, '1'), "2345")
+      findConsecutiveDigits 1 '1' "2345" `shouldBe` (1, "2345")
