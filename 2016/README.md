@@ -24,21 +24,21 @@
   ([commented](../vim/2016/day-06/aoc-2016-06.commented.vim))
 - [Day 07](https://adventofcode.com/2016/day/7) ⭐⭐ in Haskell
   ([Main.hs](./day-07-haskell/app/Main.hs),
-  **[Lib.hs](./day-07-haskell/src/Lib.hs)**,
+  [Lib.hs](./day-07-haskell/src/Lib.hs),
   [Spec.hs](./day-07-haskell/test/Spec.hs))
 - [Day 08](https://adventofcode.com/2016/day/8) ⭐⭐ in
   [Vim](../vim/2016/day-08/aoc-2016-08.vim)
   ([commented](../vim/2016/day-08/aoc-2016-08.commented.vim)) -
   [animated solution](../vim/2016/day-08/README.md)
 - [Day 09](https://adventofcode.com/2016/day/9) ⭐⭐ in Elixir
-  (**[aoc.ex](./day-09-elixir/lib/aoc.ex)**,
+  ([aoc.ex](./day-09-elixir/lib/aoc.ex),
   [main.ex](./day-09-elixir/lib/main.ex),
   [aoc_test.exs](./day-09-elixir/test/aoc_test.exs))
 - [Day 10](https://adventofcode.com/2016/day/10) ⭐⭐ in Kotlin
-  (**[App.kt](./day-10-kotlin/app/src/main/kotlin/aoc/App.kt)**,
+  ([App.kt](./day-10-kotlin/app/src/main/kotlin/aoc/App.kt),
   [AppTest.kt](./day-10-kotlin/app/src/test/kotlin/aoc/AppTest.kt))
 - [Day 11](https://adventofcode.com/2016/day/11) ⭐⭐ in TypeScript (Bun)
-  (**[aoc.ts](./day-11-typescript/aoc.ts)**,
+  ([aoc.ts](./day-11-typescript/aoc.ts),
   [aoc.test.ts](./day-11-typescript/aoc.test.ts))
   - the first really challenging problem of 2016
   - BFS approach with seen states skipping
@@ -48,12 +48,12 @@
     swapping single items or pairs between the floors would not matter for the
     number of required steps
 - [Day 12](https://adventofcode.com/2016/day/12) ⭐⭐ in Crystal
-  (**[aoc.cr](./day-12-crystal/src/aoc.cr)**,
+  ([aoc.cr](./day-12-crystal/src/aoc.cr),
   [aoc_spec.cr](./day-12-crystal/spec/aoc_spec.cr))
   - straight-forward mini assembly interpreter
   - a language with `eval` would have reduce the code a lot…
 - [Day 13](https://adventofcode.com/2016/day/13) ⭐⭐ in C++
-  (**[aoc.cpp](./day-13-cpp/src/aoc.cpp)**,
+  ([aoc.cpp](./day-13-cpp/src/aoc.cpp),
   [aoc_tests.cpp](./day-13-cpp/tests/aoc_tests.cpp),
   [main.cpp](./day-13-cpp/src/main.cpp))
   - flood fill algorithm
@@ -70,7 +70,7 @@
   - initially solved by hand, see [Day 15 README](../vim/2016/day-15/README.md)
 - [Day 16](https://adventofcode.com/2016/day/16) ⭐⭐
   - Clojure
-    (**[core.clj](./day-16-clojure/src/advent_of_code_template/core.clj)**,
+    ([core.clj](./day-16-clojure/src/advent_of_code_template/core.clj),
     [core_test.clj](./day-16-clojure/test/advent_of_code_template/core_test.clj))
     – runtime ~ 1 minute
   - Rust ([main.rs](./day-16-rust/src/main.rs)) – runtime < 1 second
@@ -78,3 +78,10 @@
     puzzle asks for: creating the whole data string and then calculating the
     checksum), but the whole list creation stuff seems to be very slow in
     Clojure (probably due to me limited knowledge of the language)
+- [Day 17](https://adventofcode.com/2016/day/17) ⭐⭐ in C#
+  ([AoC.cs](./day-17-csharp/AoC.cs),
+  [AoCTests.cs](./day-17-csharp/AoCTests.cs),
+  [Program.cs](./day-17-csharp/Program.cs))
+  - BFS
+  - performance could be improved by caching MD5 hashes for part 2 (duplicated
+    sub-paths), but runtime is under 2 sec, so whatever
