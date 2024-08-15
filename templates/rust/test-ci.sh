@@ -1,7 +1,7 @@
 #!/bin/sh
-TEST_LOG="test_log.txt"
-SAMPLE_LOG="sample_log.txt"
-RUN_LOG="run_log.txt"
+TEST_LOG="test.log"
+SAMPLE_LOG="sample.log"
+RUN_LOG="run.log"
 
 execute_command() {
     command="$1"
@@ -18,7 +18,7 @@ execute_command() {
 }
 
 execute_command "./test.sh" "$TEST_LOG"
-execute_command "./sample.sh" "$SAMPLE_LOG"
-execute_command "./run.sh" "$RUN_LOG"
+execute_command "./run.sh sample.txt" "$SAMPLE_LOG"
+execute_command "./run.sh input.txt" "$RUN_LOG"
 
 rm -f "$TEST_LOG" "$SAMPLE_LOG" "$RUN_LOG"
