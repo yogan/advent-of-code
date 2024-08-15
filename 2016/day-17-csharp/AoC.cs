@@ -10,16 +10,19 @@ public record struct State(Pos Pos, string Path);
 
 public class AoC
 {
+    private static readonly Pos Start = new Pos(0, 0);
+    private static readonly Pos End   = new Pos(3, 3);
+
     private readonly string code;
 
     public AoC(string code) { this.code = code; }
 
     public string Part1() {
-        var queue = new Queue<State>(new [] { new State(new Pos(0, 0), "") });
+        var queue = new Queue<State>(new [] { new State(Start, "") });
 
         while(queue.Count > 0) {
             var cur = queue.Dequeue();
-            if (cur.Pos.X == 3 && cur.Pos.Y == 3) { return cur.Path; }
+            if (cur.Pos == End) { return cur.Path; }
             Next(cur).ToList().ForEach(queue.Enqueue);
         }
 
