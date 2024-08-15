@@ -5,7 +5,7 @@ defmodule Main do
   use Application
 
   def start(_type, _args) do
-    case System.argv() |> List.first() || "input.txt" do
+    case System.argv() |> List.first() do
       # When "mix test" is run, Main.start/2 gets called, and "test" becomes the
       # first argument. In this case, we don't want to run the actual code, just
       # the tests.

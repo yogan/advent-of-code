@@ -1,17 +1,15 @@
 # Advent of Code in Elixir
 
-## Usage
+## Scripts
 
 ```sh
-./run.sh [INPUTFILE]
-./test.sh
+./run.sh [FILENAME]         # Run with FILENAME (defaults to input.txt)
+./test.sh                   # Run the tests
 ```
 
-Automatically run on changes (watch mode):
+## Watch Mode
 
 ```sh
-fd | entr -cc ./run.sh [INPUTFILE]
+fd | entr -cc ./run.sh [FILENAME]
 fd | entr -cc ./test.sh
 ```
-
-When no `INPUTFILE` is provided, `input.txt` is used by default.
