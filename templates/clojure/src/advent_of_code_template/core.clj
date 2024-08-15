@@ -17,9 +17,8 @@
 (defn part2 [dimensions]
   (apply + (map surface-area dimensions)))
 
-(defn -main []
-  (let [file "resources/input.txt"
-        lines (with-open [reader (io/reader file)]
+(defn -main [filename]
+  (let [lines (with-open [reader (io/reader filename)]
                 (doall (map #(process-line %) (line-seq reader))))]
     (println (part1 lines))
     (println (part2 lines))))

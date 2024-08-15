@@ -2,12 +2,19 @@
 
 Created with `lein new app advent-of-code-template`
 
-## Usage
+## Scripts
 
-- run: `./run.sh`
-- run (watch mode): `fd | entr -cc ./run.sh`
-- test: `./test.sh`
-- test (watch mode): `fd | entr -cc ./test.sh`
+```sh
+./run.sh [FILENAME]         # Run with FILENAME (defaults to input.txt)
+./test.sh                   # Run the tests
+```
+
+## Watch Mode
+
+```sh
+fd | entr -cc ./run.sh [FILENAME]
+fd | entr -cc ./test.sh
+```
 
 ## Recommended Dev Environment
 
