@@ -16,8 +16,7 @@ vector<tuple<int, int, int>> read_lines(string filename) {
 }
 
 int main(int argc, char *argv[]) {
-    auto filename = argc > 1 ? argv[1] : "input.txt";
-    auto boxes = read_lines(filename);
+    auto boxes = read_lines(argv[1]);
 
     cout << part1(boxes) << endl;
 }

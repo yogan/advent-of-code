@@ -1,4 +1,4 @@
-# Advent of Code in Rust
+# Advent of Code in Kotlin
 
 ## Scripts
 

@@ -1,8 +1,7 @@
 type Dimensions = readonly [number, number, number]
 
 export async function main() {
-    const filename = process.argv[2] || 'input.txt'
-    const boxes = await parseInput(filename)
+    const boxes = await parseInput(process.argv[2])
     console.log(part1(boxes))
     console.log(part2(boxes))
 }

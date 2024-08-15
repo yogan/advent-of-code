@@ -3,13 +3,13 @@
 ## Scripts
 
 ```sh
-./run.sh FILENAME           # Run with input from FILENAME
+./run.sh [FILENAME]         # Run with FILENAME (defaults to input.txt)
 ./test.sh                   # Run the tests
 ```
 
 ## Watch Mode
 
 ```sh
-fd | entr -cc ./run.sh FILENAME  # Run the project on changes
-fd | entr -cc ./test.sh          # Run the tests on changes
+fd | entr -cc ./run.sh [FILENAME]
+fd | entr -cc ./test.sh
 ```

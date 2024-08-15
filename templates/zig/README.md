@@ -5,17 +5,15 @@ Created with `zig init` and cleaned up a bit (lib removed, only main/exe).
 ## Scripts
 
 ```sh
-./run.sh                    # Run with input.txt
-./sample.sh                 # Run with sample.txt
+./run.sh [FILENAME]         # Run with FILENAME (defaults to input.txt)
 ./test.sh                   # Run the tests
 ```
 
 ## Watch Mode
 
 ```sh
-fd | entr -cc ./run.sh      # Run with input.txt on changes
-fd | entr -cc ./sample.sh   # Run with sample.txt on changes
-fd | entr -cc ./test.sh     # Run the tests on changes
+fd | entr -cc ./run.sh [FILENAME]
+fd | entr -cc ./test.sh
 ```
 
 ## Recommended Dev Environment

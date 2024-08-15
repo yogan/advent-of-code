@@ -1,6 +1,6 @@
 #!/bin/sh
-if [ "$(basename "$0")" = "run.sh" ]; then
-    zig build run -- input.txt
-else
-    zig build run -- sample.txt
+filename="input.txt"
+if [ "$1" != "" ]; then
+    filename=$1
 fi
+zig build run -- "$filename"

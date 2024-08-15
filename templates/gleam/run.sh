@@ -1,8 +1,6 @@
 #!/bin/sh
-if [ "$(basename "$0")" = "run.sh" ]; then
-    input="input.txt"
-else
-    input="sample.txt"
+filename="input.txt"
+if [ "$1" != "" ]; then
+    filename=$1
 fi
-
-gleam run "$input"
+gleam run "$filename"

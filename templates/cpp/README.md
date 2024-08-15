@@ -10,9 +10,16 @@ those packages (on Ubuntu 22.04) are what eventually seemed to be working:
 - g++-12
 - cmake (3.22.1)
 
-## Usage
+## Scripts
 
-- prepare CMake build once with `./build-ci.sh`
-- build and run with `./run.sh [sample.txt]`
-- watch mode: `fd | entr -cc ./run.sh [sample.txt]`
-- watch mode for tests: `fd | entr -cc ./test.sh`
+```sh
+./run.sh [FILENAME]         # Run with FILENAME (defaults to input.txt)
+./test.sh                   # Run the tests
+```
+
+## Watch Mode
+
+```sh
+fd | entr -cc ./run.sh [FILENAME]
+fd | entr -cc ./test.sh
+```

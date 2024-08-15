@@ -4,7 +4,7 @@ if ! ./test.sh; then
     exit 3
 fi
 
-output=$(./build/aoc)
+output=$(./build/aoc input.txt)
 
 expected1=14545
 result1=$(echo "$output" | head -1)

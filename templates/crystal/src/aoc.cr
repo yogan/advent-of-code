@@ -1,8 +1,6 @@
 def main
-  filename = ARGV.size > 0 ? ARGV[0] : "input.txt"
-
   dimensions = File
-    .read(filename)
+    .read(ARGV[0])
     .lines
     .map { |line| process_line(line) }
 
