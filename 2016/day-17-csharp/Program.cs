@@ -6,5 +6,6 @@
         : Path.Combine(Environment.CurrentDirectory, "../../../", filename);
 
 var aoc = new AoC(File.ReadAllText(GetPath(args[0])).Trim());
-
-Console.WriteLine(aoc.Part1());
+var (part1, part2) = aoc.Part1And2();
+Console.WriteLine(part1);
+Console.WriteLine(part2);

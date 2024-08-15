@@ -3,16 +3,19 @@ using Xunit;
 public class AoCTests
 {
     [Fact]
-    public void Part1_Sample1() =>
-        Assert.Equal("DDRRRD", new AoC("ihgpwlah").Part1());
+    public void Part1And2_Sample1() =>
+        Assert.Equal(("DDRRRD", 370),
+                     new AoC("ihgpwlah").Part1And2());
 
     [Fact]
-    public void Part1_Sample2() =>
-        Assert.Equal("DDUDRLRRUDRD", new AoC("kglvqrro").Part1());
+    public void Part1And2_Sample2() =>
+        Assert.Equal(("DDUDRLRRUDRD", 492),
+                     new AoC("kglvqrro").Part1And2());
 
     [Fact]
-    public void Part1_Sample3() =>
-        Assert.Equal("DRURDRUDDLLDLUURRDULRLDUUDDDRR", new AoC("ulqzkmiv").Part1());
+    public void Part1And2_Sample3() =>
+        Assert.Equal(("DRURDRUDDLLDLUURRDULRLDUUDDDRR", 830),
+                     new AoC("ulqzkmiv").Part1And2());
 
     [Fact]
     public void Hash_NoSteps() =>

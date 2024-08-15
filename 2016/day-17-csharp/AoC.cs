@@ -17,16 +17,17 @@ public class AoC
 
     public AoC(string code) { this.code = code; }
 
-    public string Part1() {
+    public (string, int) Part1And2() {
         var queue = new Queue<State>(new [] { new State(Start, "") });
+        var paths = new List<string>();
 
         while(queue.Count > 0) {
             var cur = queue.Dequeue();
-            if (cur.Pos == End) { return cur.Path; }
+            if (cur.Pos == End) { paths.Add(cur.Path); continue; }
             Next(cur).ToList().ForEach(queue.Enqueue);
         }
 
-        throw new InvalidOperationException("No path found");
+        return (paths.First(), paths.Max(p => p.Length));
     }
 
     private IEnumerable<State> Next(State state) {
