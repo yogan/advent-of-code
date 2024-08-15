@@ -1,6 +1,6 @@
 #!/usr/bin/env fish
-if [ "$(basename $(status -f))" = "run.fish" ]
-    ./aoc.fish <input.txt
-else
-    ./aoc.fish <sample.txt
+set filename "input.txt"
+if test (count $argv) -ge 1
+    set filename $argv[1]
 end
+./aoc.fish <"$filename"

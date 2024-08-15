@@ -1,17 +1,15 @@
 # Advent of Code in fish
 
-## Usage
+## Scripts
 
 ```sh
-./run.fish     # run with input.txt
-./sample.fish  # run with sample.txt
-./test.fish    # run tests
+./run.fish [FILENAME]         # Run with FILENAME (defaults to input.txt)
+./test.fish                   # Run the tests
 ```
 
 ## Watch Mode
 
 ```sh
-fd | entr -cc ./run.fish     # run with input.txt
-fd | entr -cc ./sample.fish  # run with sample.txt
-fd | entr -cc ./test.fish    # run tests
+fd | entr -cc ./run.fish [FILENAME]
+fd | entr -cc ./test.sfih
 ```
