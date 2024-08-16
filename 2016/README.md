@@ -83,5 +83,6 @@
   [AoCTests.cs](./day-17-csharp/AoCTests.cs),
   [Program.cs](./day-17-csharp/Program.cs))
   - BFS
-  - performance could be improved by caching MD5 hashes for part 2 (duplicated
-    sub-paths), but runtime is under 2 sec, so whatever
+  - caching MD5 hashes does not improve performance, as the hashed strings
+    include the path taken, which is different for each step of the BFS
+  - runtime is good enough anyway (< 2 sec)
