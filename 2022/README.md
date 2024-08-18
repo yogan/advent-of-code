@@ -32,7 +32,8 @@ Lua, C#, Python, Haskell, Vim)*
   ([tests](day-08-fortran/tests.f90)) 🧑‍🔬 with GOTO!
   (paired with [@raborlattinchen](https://github.com/raborlattinchen))
 - [Day 09](https://adventofcode.com/2022/day/9) ⭐⭐ in
-  [Nim](day-09-nim/day09.nim) visualizing *does* help… I learned the hard way
+  [Nim](day-09-nim/lib.nim) ([tests](day-09-nim/tests.nim))
+  visualizing *does* help… I learned the hard way
 - [Day 10](https://adventofcode.com/2022/day/10) ⭐⭐ in
   [Lua](day-10-lua/day10.lua) ([tests](day-10-lua/day10_spec.lua))
 - [Day 11](https://adventofcode.com/2022/day/11) ⭐⭐ in

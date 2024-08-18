@@ -1,2 +1,2 @@
 #!/bin/sh
-nim compile --run --verbosity:0 day09
+nim compile --run --verbosity:0 main
