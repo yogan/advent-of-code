@@ -92,3 +92,9 @@
   [main.nim](./day-18-nim/main.nim))
   - surprisingly easy puzzle for day 18
   - very naïve solution, but part 2 runs in ~ 6 sec
+- [Day 19](https://adventofcode.com/2016/day/19) ⭐⭐ in
+  [Zig](./day-19-zig/src/main.zig)
+  - part 2 was a struggle, eventually built my own circular double-linked list
+  - the trick to get the runtime from hours to basically instant was to have a
+    pointer to the opposite of the circle, and moving that forward either one or
+    two places, depending on the oddness of the remaining elves
