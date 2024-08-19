@@ -86,3 +86,9 @@
   - caching MD5 hashes does not improve performance, as the hashed strings
     include the path taken, which is different for each step of the BFS
   - runtime is good enough anyway (< 2 sec)
+- [Day 18](https://adventofcode.com/2016/day/18) ⭐⭐ in Nim
+  ([lib.nim](./day-18-nim/lib.nim),
+  [tests.nim](./day-18-nim/tests.nim),
+  [main.nim](./day-18-nim/main.nim))
+  - surprisingly easy puzzle for day 18
+  - very naïve solution, but part 2 runs in ~ 6 sec
