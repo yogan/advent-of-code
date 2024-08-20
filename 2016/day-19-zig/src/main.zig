@@ -3,7 +3,7 @@ const stderr = std.debug;
 const testing = std.testing;
 const Allocator = std.mem.Allocator;
 
-fn readInputFile(filename: []const u8) !u32 {
+fn readInputFile(filename: []const u8) !u24 {
     var file = try std.fs.cwd().openFile(filename, .{});
     defer file.close();
 
@@ -11,15 +11,15 @@ fn readInputFile(filename: []const u8) !u32 {
     const len = try file.read(&buf);
 
     const line = std.mem.trimRight(u8, buf[0..len], "\r\n");
-    return try std.fmt.parseInt(u32, line, 10);
+    return try std.fmt.parseInt(u24, line, 10);
 }
 
-fn part1(elves: u32, alloc: Allocator) !u32 {
-    const slice = try alloc.alloc(u32, elves);
+fn part1(elves: u24, alloc: Allocator) !u24 {
+    const slice = try alloc.alloc(u24, elves);
     defer alloc.free(slice);
     @memset(slice, 1);
 
-    var i: u32 = 0;
+    var i: u24 = 0;
     while (true) {
         if (slice[i] != 0) {
             // find next elf that still has presents
@@ -43,12 +43,12 @@ fn part1(elves: u32, alloc: Allocator) !u32 {
 }
 
 const Elf = struct {
-    id: usize,
+    id: u24,
     left: *Elf,
     right: *Elf,
 };
 
-fn part2(numberOfElves: u32, alloc: Allocator) !usize {
+fn part2(numberOfElves: u24, alloc: Allocator) !u24 {
     var arena = std.heap.ArenaAllocator.init(alloc);
     defer arena.deinit();
     const arenaAlloc = arena.allocator();
@@ -58,7 +58,7 @@ fn part2(numberOfElves: u32, alloc: Allocator) !usize {
 
     const firstElf = elf;
     var target: *Elf = undefined;
-    var i: usize = 2;
+    var i: u24 = 2;
 
     while (i <= numberOfElves) {
         const nextElf = try arenaAlloc.create(Elf);
@@ -76,7 +76,7 @@ fn part2(numberOfElves: u32, alloc: Allocator) !usize {
     firstElf.left = elf;
 
     var elvesLeft = numberOfElves;
-    var e = firstElf;
+    var cur = firstElf;
 
     while (true) {
         // remove target
@@ -92,10 +92,10 @@ fn part2(numberOfElves: u32, alloc: Allocator) !usize {
 
         elvesLeft -= 1;
         if (elvesLeft == 1) {
-            return e.id;
+            return cur.id;
         }
 
-        e = e.right;
+        cur = cur.right;
     }
 }
 
