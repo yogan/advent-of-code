@@ -1,8 +1,7 @@
 const std = @import("std");
 const stderr = std.debug;
 const testing = std.testing;
-
-const alloc = std.heap.page_allocator;
+const Allocator = std.mem.Allocator;
 
 fn readInputFile(filename: []const u8) !u32 {
     var file = try std.fs.cwd().openFile(filename, .{});
@@ -15,7 +14,7 @@ fn readInputFile(filename: []const u8) !u32 {
     return try std.fmt.parseInt(u32, line, 10);
 }
 
-fn part1(elves: u32) !u32 {
+fn part1(elves: u32, alloc: Allocator) !u32 {
     const slice = try alloc.alloc(u32, elves);
     defer alloc.free(slice);
     @memset(slice, 1);
@@ -49,12 +48,12 @@ const Elf = struct {
     right: *Elf,
 };
 
-fn part2(numberOfElves: u32) !usize {
-    var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
+fn part2(numberOfElves: u32, alloc: Allocator) !usize {
+    var arena = std.heap.ArenaAllocator.init(alloc);
     defer arena.deinit();
-    const allocator = arena.allocator();
+    const arenaAlloc = arena.allocator();
 
-    var elf: *Elf = try alloc.create(Elf);
+    var elf: *Elf = try arenaAlloc.create(Elf);
     elf.* = Elf{ .id = 1, .left = undefined, .right = undefined };
 
     const firstElf = elf;
@@ -62,7 +61,7 @@ fn part2(numberOfElves: u32) !usize {
     var i: usize = 2;
 
     while (i <= numberOfElves) {
-        const nextElf = try allocator.create(Elf);
+        const nextElf = try arenaAlloc.create(Elf);
         nextElf.* = Elf{ .id = i, .left = elf, .right = undefined };
         elf.right = nextElf;
         elf = nextElf;
@@ -101,14 +100,16 @@ fn part2(numberOfElves: u32) !usize {
 }
 
 test "part1 works for five elves" {
-    try testing.expectEqual(part1(5), 3);
+    try testing.expectEqual(part1(5, testing.allocator), 3);
 }
 
 test "part2 works for five elves" {
-    try testing.expectEqual(part2(5), 2);
+    try testing.expectEqual(part2(5, testing.allocator), 2);
 }
 
 pub fn main() !u8 {
+    const alloc = std.heap.page_allocator;
+
     const args = try std.process.argsAlloc(alloc);
     defer std.process.argsFree(alloc, args);
 
@@ -122,8 +123,8 @@ pub fn main() !u8 {
     const stdout = bw.writer();
 
     const elves = try readInputFile(args[1]);
-    try stdout.print("{d}\n", .{try part1(elves)});
-    try stdout.print("{d}\n", .{try part2(elves)});
+    try stdout.print("{d}\n", .{try part1(elves, alloc)});
+    try stdout.print("{d}\n", .{try part2(elves, alloc)});
 
     try bw.flush();
     return 0;
