@@ -1,12 +1,11 @@
 const std = @import("std");
 const stderr = std.debug;
 const testing = std.testing;
-
-const alloc = std.heap.page_allocator;
+const Allocator = std.mem.Allocator;
 
 const Box = struct { l: u32, w: u32, h: u32 };
 
-pub fn readInputFile(filename: []const u8) ![]const Box {
+pub fn readInputFile(filename: []const u8, alloc: Allocator) ![]const Box {
     var file = try std.fs.cwd().openFile(filename, .{});
     defer file.close();
 
@@ -83,6 +82,8 @@ test "part2 returns sum of surface areas of boxes" {
 }
 
 pub fn main() !u8 {
+    const alloc = std.heap.page_allocator;
+
     const args = try std.process.argsAlloc(alloc);
     defer std.process.argsFree(alloc, args);
 
@@ -95,7 +96,7 @@ pub fn main() !u8 {
     var bw = std.io.bufferedWriter(stdout_file);
     const stdout = bw.writer();
 
-    const boxes = try readInputFile(args[1]);
+    const boxes = try readInputFile(args[1], alloc);
     try stdout.print("{d}\n", .{try part1(boxes)});
     try stdout.print("{d}\n", .{try part2(boxes)});
 
