@@ -8,8 +8,13 @@ const input = @embedFile("input.txt");
 const sample = @embedFile("sample.txt");
 
 const Records = struct {
-    times: []u64,
-    distances: []u64,
+    times: []const u64,
+    distances: []const u64,
+};
+
+const SingleRecord = struct {
+    time: u64,
+    distance: u64,
 };
 
 fn parseLine(allocator: Allocator, line: []const u8) ![]u64 {
@@ -97,57 +102,38 @@ test "countWinningRaces works for the third race of the sample" {
     try testing.expectEqual(countWinningRaces(record_time, distance), 9);
 }
 
-// FIXME: there is a memory leak in here, probably related to allocPrint
-fn fixKerning(allocator: Allocator, records: Records) !Records {
-    var time_str: []u8 = "";
-    for (records.times) |time| {
-        time_str = std.fmt.allocPrint(allocator, "{s}{d}", .{ time_str, time }) catch unreachable;
-    }
-    const time_num = try std.fmt.parseInt(u64, time_str, 10);
-    // allocator.free(time_str);
+fn fixKerning(allocator: Allocator, records: Records) !SingleRecord {
+    var arena = std.heap.ArenaAllocator.init(allocator);
+    defer arena.deinit();
+    const aa = arena.allocator();
 
-    var distance_str: []u8 = "";
-    for (records.distances) |distance| {
-        distance_str = std.fmt.allocPrint(allocator, "{s}{d}", .{ distance_str, distance }) catch unreachable;
+    var time: []u8 = "";
+    for (records.times) |t| {
+        time = try std.fmt.allocPrint(aa, "{s}{d}", .{ time, t });
     }
-    const distance_num = try std.fmt.parseInt(u64, distance_str, 10);
-    // allocator.free(distance_str);
 
-    const times = [_]u64{time_num};
-    const distances = [_]u64{distance_num};
-    const new_records = Records{
-        .times = @constCast(times[0..times.len]),
-        .distances = @constCast(distances[0..distances.len]),
+    var distance: []u8 = "";
+    for (records.distances) |d| {
+        distance = try std.fmt.allocPrint(aa, "{s}{d}", .{ distance, d });
+    }
+
+    return SingleRecord{
+        .time = try std.fmt.parseInt(u64, time, 10),
+        .distance = try std.fmt.parseInt(u64, distance, 10),
     };
-    return new_records;
 }
 
-// FIXME: fixKerning() is leaking memory, so the test fails; it does however
-// return the correct result, so for now we just disable the test.
+test "fixKerning concatenates the time and distance numbers of the sample" {
+    const records = Records{
+        .times = &[_]u64{ 7, 15, 30 },
+        .distances = &[_]u64{ 9, 40, 200 },
+    };
 
-// test "fixKerning concatenates the time and distance numbers of the sample" {
-//     const times = [_]u64{ 7, 15, 30 };
-//     const distances = [_]u64{ 9, 40, 200 };
-//     const records = Records{
-//         .times = @constCast(times[0..times.len]),
-//         .distances = @constCast(distances[0..distances.len]),
-//     };
-//     // defer testing.allocator.free(records.times);
-//     // defer testing.allocator.free(records.distances);
-//
-//     const result = try fixKerning(testing.allocator, records);
-//
-//     // defer testing.allocator.free(result.times);
-//     // defer testing.allocator.free(result.distances);
-//
-//     try testing.expect(std.mem.eql(u64, result.times, &.{71530}));
-//     try testing.expect(std.mem.eql(u64, result.distances, &.{940200}));
-//
-//     // testing.allocator.free(records.times);
-//     // testing.allocator.free(records.distances);
-//     // testing.allocator.free(result.times);
-//     // testing.allocator.free(result.distances);
-// }
+    const result = try fixKerning(testing.allocator, records);
+
+    try testing.expectEqual(result.time, 71530);
+    try testing.expectEqual(result.distance, 940200);
+}
 
 fn part1(records: Records) u64 {
     var result: u64 = 1;
@@ -182,10 +168,19 @@ test "part1 returns correct result for the real input" {
 
 fn part2(records: Records, allocator: Allocator) !u64 {
     const single_race_records = fixKerning(allocator, records) catch unreachable;
-    return countWinningRaces(single_race_records.times[0], single_race_records.distances[0]);
+    return countWinningRaces(single_race_records.time, single_race_records.distance);
 }
 
-// no tests for part2, because it calls fixKerning(), which leaks memory :-(
+test "part2 returns correct result for the real input" {
+    const allocator = testing.allocator;
+    const records = try parseLines(allocator, input);
+    defer allocator.free(records.times);
+    defer allocator.free(records.distances);
+
+    const result = try part2(records, allocator);
+
+    try testing.expectEqual(result, 34934171);
+}
 
 pub fn main() !void {
     const allocator = std.heap.page_allocator;
@@ -201,8 +196,8 @@ pub fn main() !void {
     var bw = std.io.bufferedWriter(stdout_file);
     const stdout = bw.writer();
 
-    try stdout.print("Part 1: {d}\n", .{p1});
-    try stdout.print("Part 2: {d}\n", .{p2});
+    try stdout.print("{d}\n", .{p1});
+    try stdout.print("{d}\n", .{p2});
 
     try bw.flush();
 }

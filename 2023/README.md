@@ -30,8 +30,8 @@
 
 ## [Day 06: Wait For It](https://adventofcode.com/2023/day/6) 🚤
   - ⭐⭐ [Zig](day-06-zig/src/main.zig)
-  - including a memory leak that I could not find
-  - Zig is really hard 😢
+  - took a long time to fix a memory leak
+  - Zig is not for the faint of heart 🫨
 
 ## [Day 07: Camel Cards](https://adventofcode.com/2023/day/7) 🐫
   - ⭐⭐ [Python](day-07-python/day07.py)

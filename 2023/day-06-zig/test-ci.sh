@@ -5,17 +5,17 @@ if ! zig build test; then
 fi
 
 output=$(./run.sh)
-result1=$(echo "$output" | head -1)
-result2=$(echo "$output" | tail -1)
-expected1="Part 1: 2065338"
-expected2="Part 2: 34934171"
 
+expected1=2065338
+result1=$(echo "$output" | head -1)
 if [ "$result1" != "$expected1" ]; then
     echo "Expected: »$expected1«"
     echo "Received: »$result1«"
     exit 1
 fi
 
+expected2=34934171
+result2=$(echo "$output" | tail -1)
 if [ "$result2" != "$expected2" ]; then
     echo "Expected: »$expected2«"
     echo "Received: »$result2«"
