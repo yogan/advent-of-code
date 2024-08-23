@@ -52,6 +52,14 @@ data in a file named `input.txt` in the current working directory.
       Theorem](https://en.wikipedia.org/wiki/Chinese_remainder_theorem),
       see [Day 15 README](2016/day-15/README.md)
 
+### 2017
+
+- [2017 Day 02](https://adventofcode.com/2017/day/2) ⭐
+    - [`aoc-2017-02.vim`](2017/day-02/aoc-2017-02.vim)
+    - [`aoc-2017-02.commented.vim`](2017/day-02/aoc-2017-02.commented.vim)
+    - part 1 solved together with wonderful people at
+      [SoCraTes 2024](https://www.socrates-conference.de)
+
 ### 2022
 
 - [2022 Day 01](https://adventofcode.com/2022/day/1) ⭐⭐
