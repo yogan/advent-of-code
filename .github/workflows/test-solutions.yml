@@ -19,6 +19,7 @@ jobs:
       any-changes: ${{ steps.git-diff-check.outputs.any-changes }}
       changes-2015: ${{ steps.git-diff-check.outputs.changes-2015 }}
       changes-2016: ${{ steps.git-diff-check.outputs.changes-2016 }}
+      changes-2017: ${{ steps.git-diff-check.outputs.changes-2017 }}
       changes-2020: ${{ steps.git-diff-check.outputs.changes-2020 }}
       changes-2021: ${{ steps.git-diff-check.outputs.changes-2021 }}
       changes-2023: ${{ steps.git-diff-check.outputs.changes-2023 }}
@@ -72,6 +73,12 @@ jobs:
         if: ${{ github.event.schedule || needs.check-changes.outputs.changes-2016 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
         run: |
           ./scripts/test-days.sh 2016
+          ./scripts/cleanup.sh
+
+      - name: Test solutions for 2017
+        if: ${{ github.event.schedule || needs.check-changes.outputs.changes-2017 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
+        run: |
+          ./scripts/test-days.sh 2017
           ./scripts/cleanup.sh
 
       - name: Test solutions for 2020

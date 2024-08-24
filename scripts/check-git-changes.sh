@@ -9,6 +9,7 @@ changes_templates=$(echo "$names" | grep -c "^templates")
 changes_vim=$(echo "$names" | grep -c "^vim")
 changes_2015=$(echo "$names" | grep -c "^2015")
 changes_2016=$(echo "$names" | grep -c "^2016")
+changes_2017=$(echo "$names" | grep -c "^2017")
 changes_2020=$(echo "$names" | grep -c "^2020")
 changes_2021=$(echo "$names" | grep -c "^2021")
 changes_2023=$(echo "$names" | grep -c "^2023")
@@ -22,6 +23,7 @@ any_changes=$((changes_ci + \
     changes_vim + \
     changes_2015 + \
     changes_2016 + \
+    changes_2017 + \
     changes_2020 + \
     changes_2021 + \
     changes_2023))
@@ -33,6 +35,7 @@ echo "changes-templates=$changes_templates" | tee -a "$GITHUB_OUTPUT"
 echo "changes-vim=$changes_vim" | tee -a "$GITHUB_OUTPUT"
 echo "changes-2015=$changes_2015" | tee -a "$GITHUB_OUTPUT"
 echo "changes-2016=$changes_2016" | tee -a "$GITHUB_OUTPUT"
+echo "changes-2017=$changes_2017" | tee -a "$GITHUB_OUTPUT"
 echo "changes-2020=$changes_2020" | tee -a "$GITHUB_OUTPUT"
 echo "changes-2021=$changes_2021" | tee -a "$GITHUB_OUTPUT"
 echo "changes-2023=$changes_2023" | tee -a "$GITHUB_OUTPUT"
