@@ -1,16 +1,27 @@
 module AoC
 
-function parseInput(lines)
-    lines = [split(line, "x") for line in lines]
-    return map(line -> Tuple(map(num -> parse(Int, num), line)), lines)
+struct Box
+    l::Int
+    w::Int
+    h::Int
 end
 
-volume(l, w, h) = l * w * h
-surfaceArea(l, w, h) = 2 * (l * w + w * h + h * l)
+function parseInput(lines::Array{String})::Array{Box}
+    toBox(nums)::Box = Box(nums...)
+    lines = [split(line, "x") for line in lines]
+    return [toBox(map(num -> parse(Int, num), line)) for line in lines]
+end
 
-part1(boxes) = sum([volume(l, w, h) for (l, w, h) in boxes])
-part2(boxes) = sum([surfaceArea(l, w, h) for (l, w, h) in boxes])
+volume(box::Box)::Int = box.l * box.w * box.h
 
-export parseInput, part1, part2
+function surfaceArea(box::Box)::Int
+    (l, w, h) = (box.l, box.w, box.h)
+    return 2 * (l * w + w * h + h * l)
+end
+
+part1(boxes)::Int = sum([volume(box) for box in boxes])
+part2(boxes)::Int = sum([surfaceArea(box) for box in boxes])
+
+export parseInput, part1, part2, Box
 
 end
