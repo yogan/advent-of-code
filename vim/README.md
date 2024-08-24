@@ -54,10 +54,10 @@ data in a file named `input.txt` in the current working directory.
 
 ### 2017
 
-- [2017 Day 02](https://adventofcode.com/2017/day/2) ⭐
+- [2017 Day 02](https://adventofcode.com/2017/day/2) ⭐⭐
     - [`aoc-2017-02.vim`](2017/day-02/aoc-2017-02.vim)
     - [`aoc-2017-02.commented.vim`](2017/day-02/aoc-2017-02.commented.vim)
-    - part 1 solved together with wonderful people at
+    - solved together with wonderful people at
       [SoCraTes 2024](https://www.socrates-conference.de)
 
 ### 2022
