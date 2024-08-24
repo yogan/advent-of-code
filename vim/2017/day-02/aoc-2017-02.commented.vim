@@ -1,3 +1,5 @@
+" -------- part 1 -------------------------------------------------------------
+
 " read input and remove blank first line
 :r input.txt|1d
 
@@ -44,6 +46,46 @@
 
 " eval the sum
 :s/.*/\=eval(submatch(0))
+
+" -------- part 2 -------------------------------------------------------------
+
+" read input, delete first line (part 1 result) to register a
+:r input.txt|1d a
+
+:function DivisibleValue(line)
+    let num_strings = split(a:line)
+    let nums = map(num_strings, 'str2nr(v:val)')
+    for i in range(0, len(nums) - 2)
+        for j in range(i + 1, len(nums) - 1)
+            let x = nums[i]
+            let y = nums[j]
+            let a = max([x, y])
+            let b = min([x, y])
+            if a % b == 0
+                return a / b
+            endif
+        endfor
+    endfor
+endfunction
+
+:function Part2()
+    let sum = 0
+    for line in getline(1, '$')
+        let sum += DivisibleValue(line)
+    endfor
+    return sum
+endfunction
+
+" -------- output -------------------------------------------------------------
+
+" calculate part 2 and put it at the top of the buffer
+:pu! =Part2()
+
+" get rid of input lines
+:silent! 2,$d
+
+" restore part 1 result from register a
+:pu! a
 
 " kthxbye
 :x! out

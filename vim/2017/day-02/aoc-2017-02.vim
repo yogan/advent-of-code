@@ -14,4 +14,30 @@
 :silent! %s/$/+
 :norm $xvipJ
 :s/.*/\=eval(submatch(0))
+:r input.txt|1d a
+:function DivisibleValue(line)
+    let num_strings = split(a:line)
+    let nums = map(num_strings, 'str2nr(v:val)')
+    for i in range(0, len(nums) - 2)
+        for j in range(i + 1, len(nums) - 1)
+            let x = nums[i]
+            let y = nums[j]
+            let a = max([x, y])
+            let b = min([x, y])
+            if a % b == 0
+                return a / b
+            endif
+        endfor
+    endfor
+endfunction
+:function Part2()
+    let sum = 0
+    for line in getline(1, '$')
+        let sum += DivisibleValue(line)
+    endfor
+    return sum
+endfunction
+:pu! =Part2()
+:silent! 2,$d
+:pu! a
 :x! out

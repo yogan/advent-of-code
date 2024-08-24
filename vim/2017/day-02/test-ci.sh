@@ -10,11 +10,11 @@ if [ "$result1" != "$expected1" ]; then
     exit 1
 fi
 
-# expected2=?
-# result2=$(tail -1 out)
-# if [ "$result2" != "$expected2" ]; then
-#     echo "Part 2 failed"
-#     echo "Expected: »$expected2«"
-#     echo "Received: »$result2«"
-#     exit 1
-# fi
+expected2=320
+result2=$(tail -1 out)
+if [ "$result2" != "$expected2" ]; then
+    echo "Part 2 failed"
+    echo "Expected: »$expected2«"
+    echo "Received: »$result2«"
+    exit 1
+fi
