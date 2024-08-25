@@ -7,7 +7,7 @@
 
 * [2015 solutions](2015/README.md) 20/50 ✨ (Clojure, Crystal, DDP, Python, Gleam, JavaScript, fish, C#, Haskell, Vim)
 * [2016 solutions](2016/README.md) 38/50 ✨ (Vim, Gleam, Rust, Haskell, Elixir, Kotlin, TypeScript, Crystal, C++, Python, Clojure, C#, Nim, Zig)
-* [2017 solutions](2017/README.md) 2/50 ✨ (Vim)
+* [2017 solutions](2017/README.md) 4/50 ✨ (Julia, Vim)
 * [2020 solutions](2020-rust/README.md) 30/50 ✨ (Rust)
 * [2021 solutions](2021-python/README.md) 34/50 ✨ (Python)
 * [2022 solutions](2022/README.md) 46/50 ✨ (14 languages)
