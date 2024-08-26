@@ -6,3 +6,4 @@ lines = readlines(filename)
 blocked = parseInput(lines)
 
 println(part1(blocked))
+println(part2(blocked))

@@ -22,8 +22,28 @@ function lowestUnblocked(blocked::Set{Range})::UInt32
     end
 end
 
-part1(blocked::Array{Range})::UInt32 = lowestUnblocked(Set(blocked))
+function countUnblocked(blocked::Set{Range})::UInt32
+    count, cur, next = 0, 0, 0
 
-export parseInput, part1, lowestUnblocked, Range
+    while !isempty(blocked)
+        matching = filter(r -> r.from <= cur <= r.to, blocked)
+
+        if (isempty(matching))
+            next = minimum([r.from for r in blocked])
+            count += next - cur
+            cur = next
+        else
+            cur = maximum([r.to for r in matching]) + 1
+            setdiff!(blocked, filter(r -> r.to < cur, blocked))
+        end
+    end
+
+    return count + 4294967295 - cur + 1
+end
+
+part1(blocked::Array{Range})::UInt32 = lowestUnblocked(Set(blocked))
+part2(blocked::Array{Range})::UInt32 = countUnblocked(Set(blocked))
+
+export Range, parseInput, lowestUnblocked, countUnblocked, part1, part2
 
 end
