@@ -98,3 +98,7 @@
   - the trick to get the runtime from hours to basically instant was to have a
     pointer to the opposite of the circle, and moving that forward either one or
     two places, depending on the oddness of the remaining elves
+- [Day 20](https://adventofcode.com/2016/day/20) ⭐⭐ in Julia
+  ([`AoC.jl`](./day-20-julia/src/AoC.jl),
+  [`main.jl`](./day-20-julia/src/main.jl),
+  [`runtests.jl`](./day-20-julia/test/runtests.jl))

@@ -6,7 +6,7 @@
 [![README links](https://github.com/yogan/advent-of-code/actions/workflows/check-readme-links.yml/badge.svg)](https://github.com/yogan/advent-of-code/actions/workflows/check-readme-links.yml)
 
 * [2015 solutions](2015/README.md) 20/50 ✨ (Clojure, Crystal, DDP, Python, Gleam, JavaScript, fish, C#, Haskell, Vim)
-* [2016 solutions](2016/README.md) 38/50 ✨ (Vim, Gleam, Rust, Haskell, Elixir, Kotlin, TypeScript, Crystal, C++, Python, Clojure, C#, Nim, Zig)
+* [2016 solutions](2016/README.md) 40/50 ✨ (Vim, Gleam, Rust, Haskell, Elixir, Kotlin, TypeScript, Crystal, C++, Python, Clojure, C#, Nim, Zig, Julia)
 * [2017 solutions](2017/README.md) 4/50 ✨ (Julia, Vim)
 * [2020 solutions](2020-rust/README.md) 30/50 ✨ (Rust)
 * [2021 solutions](2021-python/README.md) 34/50 ✨ (Python)
