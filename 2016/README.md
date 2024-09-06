@@ -102,3 +102,7 @@
   ([`AoC.jl`](./day-20-julia/src/AoC.jl),
   [`main.jl`](./day-20-julia/src/main.jl),
   [`runtests.jl`](./day-20-julia/test/runtests.jl))
+- [Day 21](https://adventofcode.com/2016/day/21) ⭐⭐ in Perl
+  ([`AoC.pm`](./day-21-perl/lib/AoC.pm),
+  [`main.pl`](./day-21-perl/main.pl),
+  [`tests.t`](./day-21-perl/t/tests.t))
