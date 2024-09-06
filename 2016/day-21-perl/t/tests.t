@@ -3,7 +3,6 @@ use warnings;
 
 use Test2::V0 -target => 'AoC';
 use Test2::Tools::Spec;
-use Data::Dumper;
 
 describe 'operations' => sub {
     it 'swap_position works' => sub {
@@ -44,6 +43,57 @@ describe 'operations' => sub {
         is AoC::move_position( "bcdea", 1, 4 ), "bdeac";
         is AoC::move_position( "bcdea", 1, 2 ), "bdcea";
         is AoC::move_position( "bdeac", 3, 0 ), "abdec";
+    };
+};
+
+describe 'inverse operations' => sub {
+    my $string = "abcde";
+
+    it 'swap_position is its own inverse' => sub {
+        my $tmp = AoC::swap_position( $string, 0, 4 );
+        is AoC::swap_position( $tmp, 0, 4 ), $string;
+    };
+
+    it 'swap_letter is its own inverse' => sub {
+        my $tmp = AoC::swap_letter( $string, "d", "b" );
+        is AoC::swap_letter( $tmp, "d", "b" ), $string;
+    };
+
+    it 'rotate_left can be inverted with rotate_right' => sub {
+        my $tmp = AoC::rotate_left( $string, 1 );
+        is AoC::rotate_right( $tmp, 1 ), $string;
+    };
+
+    it 'rotate_right can be inverted with rotate_left' => sub {
+        my $tmp = AoC::rotate_right( $string, 1 );
+        is AoC::rotate_left( $tmp, 1 ), $string;
+    };
+
+    it 'rotate_letter can be inverted with rotate_letter_inverse' => sub {
+        my $tmp = AoC::rotate_letter( $string, "b" );
+        is AoC::rotate_letter_inverse( $tmp, "b" ), $string;
+
+        $tmp = AoC::rotate_letter( $string, "d" );
+        is AoC::rotate_letter_inverse( $tmp, "d" ), $string;
+
+        $tmp = AoC::rotate_letter( $string, "e" );
+        is AoC::rotate_letter_inverse( $tmp, "e" ), $string;
+    };
+
+    it 'reverse_positions is its own inverse' => sub {
+        my $tmp = AoC::reverse_positions( $string, 0, 4 );
+        is AoC::reverse_positions( $tmp, 0, 4 ), $string;
+
+        $tmp = AoC::reverse_positions( $string, 2, 3 );
+        is AoC::reverse_positions( $tmp, 2, 3 ), $string;
+    };
+
+    it 'move_position can be inverted by swapping the indices' => sub {
+        my $tmp = AoC::move_position( $string, 1, 4 );
+        is AoC::move_position( $tmp, 4, 1 ), $string;
+
+        $tmp = AoC::move_position( $string, 3, 0 );
+        is AoC::move_position( $tmp, 0, 3 ), $string;
     };
 };
 

@@ -2,8 +2,6 @@ package AoC;
 
 use strict;
 use warnings;
-use Data::Dumper;
-use Test2::V0;
 
 sub read_file {
     my $filename = shift;
@@ -45,6 +43,16 @@ sub rotate_letter {
     return rotate_right $string, $i + $x;
 }
 
+sub rotate_letter_inverse {
+    my ( $string, $c ) = @_;
+
+    # we just brute force this, since it's only 8 possible rotations
+    for my $i ( 0 .. length($string) - 1 ) {
+        my $candidate = rotate_left $string, $i;
+        return $candidate if rotate_letter( $candidate, $c ) eq $string;
+    }
+}
+
 sub reverse_positions {
     my ( $string, $i, $j ) = @_;
     my @chars = split //, $string;
@@ -84,6 +92,36 @@ sub part1 {
         }
         elsif ( $op =~ /move position (\d+) to position (\d+)/ ) {
             $string = move_position $string, $1, $2;
+        }
+    }
+
+    return $string;
+}
+
+sub part2 {
+    my ( $string, @ops ) = @_;
+
+    for my $op ( reverse @ops ) {
+        if ( $op =~ /swap position (\d+) with position (\d+)/ ) {
+            $string = swap_position $string, $1, $2;
+        }
+        elsif ( $op =~ /swap letter (\w) with letter (\w)/ ) {
+            $string = swap_letter $string, $1, $2;
+        }
+        elsif ( $op =~ /rotate left (\d+) step/ ) {
+            $string = rotate_right $string, $1;
+        }
+        elsif ( $op =~ /rotate right (\d+) step/ ) {
+            $string = rotate_left $string, $1;
+        }
+        elsif ( $op =~ /rotate based on position of letter (\w)/ ) {
+            $string = rotate_letter_inverse $string, $1;
+        }
+        elsif ( $op =~ /reverse positions (\d+) through (\d+)/ ) {
+            $string = reverse_positions $string, $1, $2;
+        }
+        elsif ( $op =~ /move position (\d+) to position (\d+)/ ) {
+            $string = move_position $string, $2, $1;
         }
     }
 
