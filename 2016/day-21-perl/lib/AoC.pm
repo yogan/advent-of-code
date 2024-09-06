@@ -68,60 +68,42 @@ sub move_position {
     return join '', @chars;
 }
 
-sub part1 {
-    my ( $string, @ops ) = @_;
+sub solve {
+    my ( $unscramble, $string, @ops ) = @_;
 
-    for my $op (@ops) {
-        if ( $op =~ /swap position (\d+) with position (\d+)/ ) {
+    foreach (@ops) {
+        if (/swap position (\d+) with position (\d+)/) {
             $string = swap_position $string, $1, $2;
         }
-        elsif ( $op =~ /swap letter (\w) with letter (\w)/ ) {
+        elsif (/swap letter (\w) with letter (\w)/) {
             $string = swap_letter $string, $1, $2;
         }
-        elsif ( $op =~ /rotate left (\d+) step/ ) {
-            $string = rotate_left $string, $1;
+        elsif (/rotate left (\d+) step/) {
+            $string =
+              $unscramble
+              ? rotate_right $string, $1
+              : rotate_left $string, $1;
         }
-        elsif ( $op =~ /rotate right (\d+) step/ ) {
-            $string = rotate_right $string, $1;
+        elsif (/rotate right (\d+) step/) {
+            $string =
+              $unscramble
+              ? rotate_left $string, $1
+              : rotate_right $string, $1;
         }
-        elsif ( $op =~ /rotate based on position of letter (\w)/ ) {
-            $string = rotate_letter $string, $1;
+        elsif (/rotate based on position of letter (\w)/) {
+            $string =
+              $unscramble
+              ? rotate_letter_inverse $string, $1
+              : rotate_letter $string, $1;
         }
-        elsif ( $op =~ /reverse positions (\d+) through (\d+)/ ) {
+        elsif (/reverse positions (\d+) through (\d+)/) {
             $string = reverse_positions $string, $1, $2;
         }
-        elsif ( $op =~ /move position (\d+) to position (\d+)/ ) {
-            $string = move_position $string, $1, $2;
-        }
-    }
-
-    return $string;
-}
-
-sub part2 {
-    my ( $string, @ops ) = @_;
-
-    for my $op ( reverse @ops ) {
-        if ( $op =~ /swap position (\d+) with position (\d+)/ ) {
-            $string = swap_position $string, $1, $2;
-        }
-        elsif ( $op =~ /swap letter (\w) with letter (\w)/ ) {
-            $string = swap_letter $string, $1, $2;
-        }
-        elsif ( $op =~ /rotate left (\d+) step/ ) {
-            $string = rotate_right $string, $1;
-        }
-        elsif ( $op =~ /rotate right (\d+) step/ ) {
-            $string = rotate_left $string, $1;
-        }
-        elsif ( $op =~ /rotate based on position of letter (\w)/ ) {
-            $string = rotate_letter_inverse $string, $1;
-        }
-        elsif ( $op =~ /reverse positions (\d+) through (\d+)/ ) {
-            $string = reverse_positions $string, $1, $2;
-        }
-        elsif ( $op =~ /move position (\d+) to position (\d+)/ ) {
-            $string = move_position $string, $2, $1;
+        elsif (/move position (\d+) to position (\d+)/) {
+            $string =
+              $unscramble
+              ? move_position $string, $2, $1
+              : move_position $string, $1, $2;
         }
     }
 

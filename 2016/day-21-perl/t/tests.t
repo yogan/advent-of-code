@@ -110,7 +110,7 @@ describe 'part 1' => sub {
             "rotate based on position of letter d",
         );
 
-        is AoC::part1( "abcde", @sample ), "decab";
+        is AoC::solve( 0, "abcde", @sample ), "decab";
     };
 };
 
