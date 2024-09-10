@@ -11,6 +11,8 @@ RUN apt-get update && apt-get install -y \
     # Python
     python3 python3-pip python3-pytest python3-pytest-subtests python3-pytest-pylint \
     pypy3 pypy3-venv \
+    # Lua and busted as testing framework
+    lua5.4 lua-busted \
     # Swift deps, see: https://www.swift.org/install/linux/#installation-via-tarball
     binutils git gnupg2 libc6-dev libcurl4-openssl-dev libedit2 libgcc-9-dev \
     libpython3.8 libsqlite3-0 libstdc++-9-dev libxml2-dev libz3-dev pkg-config \
