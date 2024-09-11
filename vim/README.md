@@ -6,6 +6,72 @@ The `*.vim` files can either be passed to Vim with `-s <script>`, or loaded at
 runtime with `:so[urce] <script>`. The scripts expect an empty buffer and input
 data in a file named `input.txt` in the current working directory.
 
+## Patterns
+
+Some not-so-common Vim patterns that can be helpful:
+
+- reading input file into buffer without keeping an empty blank line at the top:
+    ```vim
+    " | combines commands, 1d deletes first line
+    :r input.txt|1d
+    ```
+
+- evaluating expressions (see `:help :s\=`, `:help eval()`):
+    ```vim
+    " replaces a line with e.g. 1+2+3 with 6
+    :s/.*/\=eval(submatch(0))
+    ```
+
+- getting length of current line (see `:help col()`):
+    ```vim
+    " $ is virtual char behind the last one, so - 1
+    :let l = col("$") - 1
+
+    " replace the line with its length
+    :s/.*/\=col("$") - 1
+    ```
+
+- getting number of lines in buffer (see `:help line()`):
+    ```vim
+    " fun fact, $ is the last line number here
+    :let n = line("$")
+    ```
+
+- search and replace, but get rid of message (see `:help :silent`):
+    ```vim
+    " ! to also suppress errors (e.g. "no matches")
+    :sil! %s/foo/bar/g
+    ```
+
+- running normal commands from a script (see `:help :normal`):
+    ```vim
+    " select paragraph and join lines
+    :norm vipgJ
+    ```
+
+- using `:exe` for dynamic commands and special keys (see `:help :exe`):
+    ```vim
+    " run macro q for all lines
+    :exe "norm " . line("$") . "@q"
+
+    " enter and exit insert mode with <Esc>
+    :exe "norm ccWAT\<esc>"
+    ```
+
+- building complicated macros that are still kind of readable (but watch out for
+  escaping hell):
+    ```vim
+    " imaging buffer with lines like this: 1x69x420
+    " replace x with * and evaluate the line
+    :let m1 = ':s/x/*/g'
+    :let m2 = ':s/.*/\=eval(submatch(0))/'
+    " no enter, no fun ("" instead of '' is important)
+    :let cr = "\<cr>"
+    :let @q =  m1 . cr . m2 . cr
+    " run this sucker til the end
+    :norm 999@q
+    ```
+
 ## Solutions
 
 ### 2015
