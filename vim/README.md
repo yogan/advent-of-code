@@ -75,8 +75,28 @@ Some not-so-common Vim patterns that can be helpful:
     " no enter, no fun ("" instead of '' is important)
     :let cr = "\<cr>"
     :let @q =  m1 . cr . m2 . cr
-    " run this sucker til the end
-    :norm 999@q
+    " this is a good time to manually test the macro with @q, 10@q, etc.
+    ```
+
+- running a macro on all lines (see `:help :normal`):
+    ```vim
+    " This seems to be the most sane way to do it:
+    :%norm @q
+
+    " Another option is to get the number of lines and use that:
+    :let n = line("$")
+    :exe "norm " . n . "@q"
+
+    " Or we just go nuts and do it like a psychopath:
+    :norm 9999@q
+    " The reason why this does not completely explode is that the macro stops
+    " when it reaches the end of the buffer. This happens because @ executes a
+    " register like a mapping, and mappings stop when they encounter an error.
+    " See https://stackoverflow.com/a/77800926/183582 for where this is hidden
+    " deep in the Vim docs.
+    " It still seems to be much slower then the options above. I'm just
+    " documenting it here because a bunch of my solutions use it, as I didn't
+    " know better at the time.
     ```
 
 ## Vimscript
