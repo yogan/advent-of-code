@@ -58,11 +58,12 @@ Some not-so-common Vim patterns that can be helpful:
 
 - using `:exe` for dynamic commands and special keys (see `:help :exe`):
     ```vim
-    " run macro q for all lines
-    :exe "norm " . line("$") . "@q"
+    " go down as many lines as the number in the current line says:
+    :exe "norm " . getline(".") . "j"
 
     " enter and exit insert mode with <Esc>
-    :exe "norm ccWAT\<esc>"
+    " (cw = change word, which ends up in insert mode)
+    :exe "norm cwNEW!\<esc>"
     ```
 
 - building complicated macros that are still kind of readable (but watch out for
