@@ -69,24 +69,23 @@ Some not-so-common Vim patterns that can be helpful:
 - building complicated macros that are still kind of readable (but watch out for
   escaping hell):
     ```vim
-    " imaging buffer with lines like this: 1x69x420
+    " imagine our buffer has lines like 1x69x420 that describe boxes
     " replace x with * and evaluate the line
     :let m1 = ':s/x/*/g'
-    :let m2 = ':s/.*/\=eval(submatch(0))/'
+    :let m2 = ':s/.*/\=eval(submatch(0))'
     " no enter, no fun ("" instead of '' is important)
     :let cr = "\<cr>"
     :let @q =  m1 . cr . m2 . cr
     " this is a good time to manually test the macro with @q, 10@q, etc.
     ```
 
-- running a macro on all lines (see `:help :normal`):
+- running a macro on all lines:
     ```vim
     " This seems to be the most sane way to do it:
     :%norm @q
 
     " Another option is to get the number of lines and use that:
-    :let n = line("$")
-    :exe "norm " . n . "@q"
+    :exe "norm " . line("$") . "@q"
 
     " Or we just go nuts and do it like a psychopath:
     :norm 9999@q
@@ -95,9 +94,9 @@ Some not-so-common Vim patterns that can be helpful:
     " register like a mapping, and mappings stop when they encounter an error.
     " See https://stackoverflow.com/a/77800926/183582 for where this is hidden
     " deep in the Vim docs.
-    " It still seems to be much slower then the options above. I'm just
-    " documenting it here because a bunch of my solutions use it, as I didn't
-    " know better at the time.
+    " I highly recommend not doing this, and just document it here because many
+    " of the existing solutions are using that, because I didn't know better at
+    " the time.
     ```
 
 ## Vimscript
