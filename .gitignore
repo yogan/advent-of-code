@@ -1,3 +1,4 @@
+*.sw?
 .clj-kondo/
 .lsp/
 .vscode/perl-lang/
