@@ -67,16 +67,35 @@ Some not-so-common Vim patterns that can be helpful:
     ```
 
 - building complicated macros that are still kind of readable (but watch out for
-  escaping hell):
+  escaping hell, see `:help expr-quote`, and mode changes, see
+  `:help vim-modes`)
     ```vim
-    " imagine our buffer has lines like 1x69x420 that describe boxes
-    " replace x with * and evaluate the line
-    :let m1 = ':s/x/*/g'
-    :let m2 = ':s/.*/\=eval(submatch(0))'
-    " no enter, no fun ("" instead of '' is important)
+    " Imagine our buffer has lines like 1x69x420 that describe boxes.
+
+    " Replace x with * and evaluate the line:
+    :let s1 = ':s/x/*/g'
+    :let s2 = ':s/.*/\=eval(submatch(0))'
+    " Append a + at the end of the line, use <esc> to leave insert mode:
+    :let append_plus = "A+\<esc>"
+    " Move down to next line:
+    :let move_down = "j"
+    " The enter key (only works with double quotes) to finish the :s commands:
     :let cr = "\<cr>"
-    :let @q =  m1 . cr . m2 . cr
-    " this is a good time to manually test the macro with @q, 10@q, etc.
+
+    " When the macro gets executed, the string in the register is executed as
+    " if it was typed character by character in normal mode.
+    " The substitutions in s1 and s2 are entering command line mode with ":",
+    " and we need to "press" the enter key to execute them and go back to
+    " normal mode.
+    " The characters of append_plus and move_down are just regular normal mode
+    " commands, so we let the macro "type" them as they are, no enter key
+    " needed.
+    :let @q =  s1 . cr . s2 . cr . append_plus . move_down
+    
+    " Use :reg q to check the final result of the macro.
+    " Note that special keys like <cr> and <esc> are shown as ^M and ^[.
+
+    " Now is a good time to manually test the macro with @q, 10@q, etc.
     ```
 
 - running a macro on all lines:
