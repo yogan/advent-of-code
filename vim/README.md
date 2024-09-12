@@ -82,13 +82,15 @@ Some not-so-common Vim patterns that can be helpful:
 ## Vimscript
 
 When things get tough, there is no way around Vimscript. A good guide is [Learn
-Vimscript the Hard Way](https://learnvimscriptthehardway.stevelosh.com/). Some
-helpful things:
+Vimscript the Hard Way](https://learnvimscriptthehardway.stevelosh.com/). For an
+overview of Vim's built-in functions grouped by topic, see `:help
+function-list`.
 
 - "debugging" (see `:help echo`, `:help echom`, `:help message-history`):
     ```vim
+    " just show stuff on the command line:
     :echo MyFunction()
-    " also put into message history (:mes)
+    " also put into message history (:mes):
     :echom MyFunction()
     ```
 
@@ -109,6 +111,24 @@ helpful things:
         endfor
         return chars
     endfunction
+    ```
+
+- functions and `call()` (see `:help call()`, `:help functions`):
+    ```vim
+    " On the right hand side of an assignment, or as parameters to commands,
+    " both built-in and user-defined functions (starting with a capital letter)
+    " can be called directly:
+    :let line = getline(1)
+    :echo col("$")
+    :let p1 = Part1()
+    :pu =Part2()
+    :s/\(\d+\), \(\d+\)/\=eval(submatch(1) + submatch(2))
+    :s/\(\d+\): \(\d+\)/\=DoSomeMath(submatch(1), submatch(2))
+
+    " Otherwise, we need to use `call()`:
+    :call setreg('"', join(things, "+"))
+    :call cursor(lnum, col)
+    :call MyFunction(a, b)
     ```
 
 ## Solutions
