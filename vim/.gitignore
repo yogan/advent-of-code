@@ -1,3 +1,4 @@
 out
 *.out
+*.stripped.vim
 *.sw?

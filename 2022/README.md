@@ -1,23 +1,22 @@
 # [Advent of Code 2022](https://adventofcode.com/2022) (46/50 ✨)
 
-**Languages: 14** *(fish, JavaScript, TypeScript, Perl, Ruby, C, Java, Fortran, Nim,
-Lua, C#, Python, Haskell, Vim)*  
+**Languages: 14** *(fish, JavaScript, TypeScript, Perl, Ruby, C, Java, Fortran,
+Nim, Lua, C#, Python, Haskell, Vim)*  
 **Ideas for 2023:** see [languages.md](languages.md)
 
 - [Day 01](https://adventofcode.com/2022/day/1) ⭐⭐
     - [fish](day-01-fish/day01.fish) with [tests](day-01-fish/test.fish)
-    - [Vim](../vim/2022/day-01/aoc-2022-01.vim)
-      ([commented](../vim/2022/day-01/aoc-2022-01.commented.vim))
+    - [Vim](../vim/2022/day-01/aoc.vim)
 - [Day 02](https://adventofcode.com/2022/day/2) ⭐⭐
     - [JavaScript (Node/esm)](day-02-javascript/day02.mjs),
-      [tests](day-02-javascript/day02.test.mjs) for Node 19's experimental built-in test runner
-    - [Vim](../vim/2022/day-02/aoc-2022-02.vim)
-      ([commented](../vim/2022/day-02/aoc-2022-02.commented.vim))
+      [tests](day-02-javascript/day02.test.mjs) for Node 19's experimental
+      built-in test runner
+    - [Vim](../vim/2022/day-02/aoc.vim)
 - [Day 03](https://adventofcode.com/2022/day/3) ⭐⭐
     - [TypeScript (Bun)](day-03-typescript/day03.ts),
-      [tests](day-03-typescript/day03.test.ts) require Bun Canary, see [README](day-03-typescript/README.md)
-    - [Vim](../vim/2022/day-03/aoc-2022-03.vim)
-      ([commented](../vim/2022/day-03/aoc-2022-03.commented.vim))
+      [tests](day-03-typescript/day03.test.ts) require Bun Canary, see
+      [README](day-03-typescript/README.md)
+    - [Vim](../vim/2022/day-03/aoc.vim)
 - [Day 04](https://adventofcode.com/2022/day/4) ⭐⭐ in
   [Perl](day-04-perl/day04.pl) with [Test2](https://metacpan.org/pod/Test2)
 - [Day 05](https://adventofcode.com/2022/day/5) ⭐⭐ in
@@ -42,7 +41,8 @@ Lua, C#, Python, Haskell, Vim)*
 - [Day 12](https://adventofcode.com/2022/day/12) ⭐⭐ in
   [Python](day-12-python/day12.py) no tests, but quickly done
 - [Day 13](https://adventofcode.com/2022/day/13) ⭐⭐ in
-  [Python](day-13-python/day13.py) input data is recursive and almost valid Python syntax, so Python /w `eval`
+  [Python](day-13-python/day13.py) input data is recursive and almost valid
+  Python syntax, so Python /w `eval`
 - [Day 14](https://adventofcode.com/2022/day/14) ⭐⭐ in
   [Python](day-14-python/day14.py) with [visualization](day-14-python/README.md)
 - [Day 15](https://adventofcode.com/2022/day/15) ⭐⭐ in
@@ -60,11 +60,13 @@ Lua, C#, Python, Haskell, Vim)*
 - [Day 20](https://adventofcode.com/2022/day/20) ⭐⭐ in
   [Python](day-20-python/day20.py) modulo goes brrrr
 - [Day 21](https://adventofcode.com/2022/day/21) ⭐⭐ in
-  [Python](day-21-python/day21.py) expression trees and brute force binary search (with a bit of luck)
+  [Python](day-21-python/day21.py) expression trees and brute force binary search
+  (with a bit of luck)
 - [Day 22](https://adventofcode.com/2022/day/22) ⭐✖️ in
   [Python](day-22-python/day22.py) part 1 only
 - [Day 23](https://adventofcode.com/2022/day/23) ⭐⭐ in
-  [Python](day-23-python/day23.py) actually quite nice and clean code (pattern matching, list/set comprehensions)
+  [Python](day-23-python/day23.py) actually quite nice and clean code
+  (pattern matching, list/set comprehensions)
 - [Day 24](https://adventofcode.com/2022/day/24) ⭐⭐ in
   [Python](day-24-python/day24.py) BFS (caching blizzard cycles == *huge* performance boost)
 - [Day 25](https://adventofcode.com/2022/day/25) ⭐✖️ in

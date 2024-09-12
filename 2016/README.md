@@ -1,17 +1,13 @@
 # [Advent of Code 2016](https://adventofcode.com/2016)
 
 - [Day 01](https://adventofcode.com/2016/day/1) ⭐⭐ in
-  [Vim](../vim/2016/day-01/aoc-2016-01.vim)
-  ([commented](../vim/2016/day-01/aoc-2016-01.commented.vim))
+  [Vim](../vim/2016/day-01/aoc.vim)
 - [Day 02](https://adventofcode.com/2016/day/2) ⭐⭐ in
-  [Vim](../vim/2016/day-02/aoc-2016-02.vim)
-  ([commented](../vim/2016/day-02/aoc-2016-02.commented.vim))
+  [Vim](../vim/2016/day-02/aoc.vim)
 - [Day 03](https://adventofcode.com/2016/day/3) ⭐⭐ in
-  [Vim](../vim/2016/day-03/aoc-2016-03.vim)
-  ([commented](../vim/2016/day-03/aoc-2016-03.commented.vim))
+  [Vim](../vim/2016/day-03/aoc.vim)
 - [Day 04](https://adventofcode.com/2016/day/4) ⭐⭐ in
-  [Vim](../vim/2016/day-04/aoc-2016-04.vim)
-  ([commented](../vim/2016/day-04/aoc-2016-04.commented.vim))
+  [Vim](../vim/2016/day-04/aoc.vim)
 - [Day 05](https://adventofcode.com/2016/day/5) ⭐⭐ in
   - [Gleam](./day-05-gleam/src/aoc_2016_day_05.gleam)
     ([tests](./day-05-gleam/test/aoc_2016_day_05_test.gleam))
@@ -20,15 +16,13 @@
     but not much. Gleam runs ~26 sec, while Rust runs ~19 sec. It probably comes
     down to how performant the MD5 implementations are.
 - [Day 06](https://adventofcode.com/2016/day/6) ⭐⭐ in
-  [Vim](../vim/2016/day-06/aoc-2016-06.vim)
-  ([commented](../vim/2016/day-06/aoc-2016-06.commented.vim))
+  [Vim](../vim/2016/day-06/aoc.vim)
 - [Day 07](https://adventofcode.com/2016/day/7) ⭐⭐ in Haskell
   ([Main.hs](./day-07-haskell/app/Main.hs),
   [Lib.hs](./day-07-haskell/src/Lib.hs),
   [Spec.hs](./day-07-haskell/test/Spec.hs))
 - [Day 08](https://adventofcode.com/2016/day/8) ⭐⭐ in
-  [Vim](../vim/2016/day-08/aoc-2016-08.vim)
-  ([commented](../vim/2016/day-08/aoc-2016-08.commented.vim)) -
+  [Vim](../vim/2016/day-08/aoc.vim)
   [animated solution](../vim/2016/day-08/README.md)
 - [Day 09](https://adventofcode.com/2016/day/9) ⭐⭐ in Elixir
   ([aoc.ex](./day-09-elixir/lib/aoc.ex),
@@ -63,8 +57,7 @@
   ([aoc.py](./day-14-python/aoc.py))
   - using [`@functools.lru_cache`](https://docs.python.org/3/library/functools.html#functools.lru_cache)
 - [Day 15](https://adventofcode.com/2016/day/15) ⭐⭐ in
-  [Vim](../vim/2016/day-15/aoc-2016-15.vim)
-  ([commented](../vim/2016/day-15/aoc-2016-15.commented.vim))
+  [Vim](../vim/2016/day-15/aoc.vim)
   - the puzzle is pretty much exactly the [Chinese Remainder
     Theorem](https://en.wikipedia.org/wiki/Chinese_remainder_theorem)
   - initially solved by hand, see [Day 15 README](../vim/2016/day-15/README.md)

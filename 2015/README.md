@@ -6,18 +6,15 @@
 - [Day 02](https://adventofcode.com/2015/day/2) ⭐⭐ in
   [DDP (Die Deutsche Programmiersprache)](day-02-ddp/2015-Tag-02.ddp)
 - [Day 03](https://adventofcode.com/2015/day/3) ⭐⭐ in
-  [Vim](../vim/2015/day-03/aoc-2015-03.vim)
-  ([commented](../vim/2015/day-03/aoc-2015-03.commented.vim))
+  [Vim](../vim/2015/day-03/aoc.vim)
 - [Day 04](https://adventofcode.com/2015/day/4) ⭐⭐ in
   [Crystal](day-04-crystal/src/aoc.cr)
   ([tests](day-04-crystal/spec/aoc_spec.cr))
 - [Day 05](https://adventofcode.com/2015/day/5) ⭐⭐ in
-  [Vim](../vim/2015/day-05/aoc-2015-05.vim)
-  ([commented](../vim/2015/day-05/aoc-2015-05.commented.vim))
+  [Vim](../vim/2015/day-05/aoc.vim)
 - [Day 06](https://adventofcode.com/2015/day/6) ⭐⭐
     - [Python](day-06-python/day06.py)
-    - [Vim](../vim/2015/day-06/aoc-2015-06.vim)
-      ([commented](../vim/2015/day-06/aoc-2015-06.commented.vim))
+    - [Vim](../vim/2015/day-06/aoc.vim)
 - [Day 07](https://adventofcode.com/2015/day/7) ⭐⭐ in
   [Gleam](day-07-gleam/src/aoc.gleam)
   ([tests](day-07-gleam/test/aoc_test.gleam))
@@ -25,8 +22,7 @@
 - [Day 08](https://adventofcode.com/2015/day/8) ⭐⭐
     - [JavaScript](day-08-javascript/aoc.mjs)
       ([tests](day-08-javascript/aoc.test.mjs))
-    - [Vim](../vim/2015/day-08/aoc-2015-08.vim)
-      ([commented](../vim/2015/day-08/aoc-2015-08.commented.vim))
+    - [Vim](../vim/2015/day-08/aoc.vim)
     - [fish](day-08-fish/aoc.fish) ([tests](day-08-fish/test.fish))
     - easy thanks to `eval()` (both JS and Vim) and
       `string escape` / `string unescape` (fish)

@@ -4,24 +4,20 @@
 
 ## [Day 01: Trebuchet?!](https://adventofcode.com/2023/day/1) 🚀
   - ⭐⭐ [fish](day-01-fish/day01.fish) with [tests](day-01-fish/test.fish) 🐟
-  - ⭐⭐ [Vim](../vim/2023/day-01/aoc-2023-01.vim)
-    [(commented)](../vim/2023/day-01/aoc-2023-01.commented.vim)
+  - ⭐⭐ [Vim](../vim/2023/day-01/aoc.vim)
 
 ## [Day 02: Cube Conundrum](https://adventofcode.com/2023/day/2) 🧊
   - ⭐⭐ [Clojure](day-02-clojure/src/advent_of_code_template/core.clj)
     with [tests](day-02-clojure/test/advent_of_code_template/core_test.clj) 📃
-  - ⭐⭐ [Vim](../vim/2023/day-02/aoc-2023-02.vim)
-    [(commented)](../vim/2023/day-02/aoc-2023-02.commented.vim)
+  - ⭐⭐ [Vim](../vim/2023/day-02/aoc.vim)
 
 ## [Day 03: Gear Ratios](https://adventofcode.com/2023/day/3) ⚙️
   - ⭐⭐ [Python](day-03-python/day03.py) 🐍
-  - ⭐⭐ [Vim](../vim/2023/day-03/aoc-2023-03.vim)
-    [(commented)](../vim/2023/day-03/aoc-2023-03.commented.vim)
+  - ⭐⭐ [Vim](../vim/2023/day-03/aoc.vim)
 
 ## [Day 04: Scratchcards](https://adventofcode.com/2023/day/4)
   - ⭐⭐ [DDP - Die Deutsche Programmiersprache](day-04-ddp/Tag4.ddp) 🥨
-  - ⭐⭐ [Vim](../vim/2023/day-04/aoc-2023-04.vim)
-    [(commented)](../vim/2023/day-04/aoc-2023-04.commented.vim)
+  - ⭐⭐ [Vim](../vim/2023/day-04/aoc.vim)
 
 ## [Day 05: If You Give A Seed A Fertilizer](https://adventofcode.com/2023/day/5) 🌱
   - ⭐⭐ [Python](day-05-python/day05.py)

@@ -5,10 +5,9 @@ Theorem](https://en.wikipedia.org/wiki/Chinese_remainder_theorem).
 
 Initially I solved this by hand by putting together the equations seen below and
 letting them be solved by an online calculator. Eventually I decided that code
-is always better, so I wrote the whole thing in
-[VimScript](./aoc-2016-15.commented.vim). The algorithm was shamelessly ported
-from the [Rosetta Code C# CRT
-implementation](https://rosettacode.org/wiki/Chinese_remainder_theorem#C#).
+is always better, so I wrote the whole thing in [VimScript](./aoc.vim).
+The algorithm was shamelessly ported from the
+[Rosetta Code C# CRT implementation](https://rosettacode.org/wiki/Chinese_remainder_theorem#C#).
 
 ## Part 1
 
