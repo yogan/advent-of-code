@@ -1,6 +1,5 @@
-#!/bin/sh
+#!/bin/bash
 commented=$(find . -name "*.commented.vim")
-plain=$(echo "$commented" | sed 's/\.commented//g')
+plain=${commented//\.commented/}
 sed -e '/^\("\|:\?$\)/d' <"$commented" >"$plain"
-vim --clean -s "$plain"
-cat out
+vim --clean -s "$plain" 2> >(grep -v "Vim: Warning: Output is not to a terminal" >&2)

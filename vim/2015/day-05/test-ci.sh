@@ -1,5 +1,6 @@
 #!/bin/sh
-../../../scripts/run-vim.sh > /dev/null 2>&1
+GIT_ROOT=$(git rev-parse --show-toplevel)
+"${GIT_ROOT}"/scripts/run-vim.sh
 
 result1=$(head -1 out)
 result2=$(tail -1 out)
