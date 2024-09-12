@@ -72,6 +72,38 @@ Some not-so-common Vim patterns that can be helpful:
     :norm 999@q
     ```
 
+## Vimscript
+
+When things get tough, there is no way around Vimscript. A good guide is [Learn
+Vimscript the Hard Way](https://learnvimscriptthehardway.stevelosh.com/). Some
+helpful things:
+
+- "debugging" (see `:help echo`, `:help echom`, `:help message-history`):
+    ```vim
+    :echo MyFunction()
+    " also put into message history (:mes)
+    :echom MyFunction()
+    ```
+
+- putting the result of a function to the buffer (see `:help :put`):
+    ```vim
+    " below current line:
+    :pu =MyFunction()
+    " above current line:
+    :pu! =MyFunction()
+    ```
+
+- iterating over all lines in the buffer:
+    ```vim
+    :function TotalChars()
+        let chars = 0
+        for line in getline(1, '$')
+            let chars += strlen(line)
+        endfor
+        return chars
+    endfunction
+    ```
+
 ## Solutions
 
 ### 2015
