@@ -2,9 +2,16 @@
 
 ## Usage
 
-The `*.vim` files can either be passed to Vim with `-s <script>`, or loaded at
-runtime with `:so[urce] <script>`. The scripts expect an empty buffer and input
-data in a file named `input.txt` in the current working directory.
+The scripts expect an empty buffer and input data in a file named `input.txt` in
+the current working directory.
+
+For interactive use, start Vim with `vim --clean` and load a script with
+`:so[urce] aoc.vim` (ideally comment out the `:x! out` at the end).
+
+To run a script non-interactively, use `./run.sh` which adds a bit of magic to
+keep Vim from messing up the terminal. Results are printed to stdout. As long as
+the script isn't super slow (and has the `:x! out` line active), you can even
+get a watch mode with `fd | entr -cc ./run.sh`.
 
 ## Patterns
 
