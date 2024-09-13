@@ -38,7 +38,6 @@ endfunction
     let steps = 0
     let numbers = []
     let i = 0
-    " for line in readfile("sample.txt")
     for line in readfile("input.txt")
         call add(numbers, str2nr(line))
     endfor
