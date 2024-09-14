@@ -212,6 +212,10 @@ function-list`.
     - [`aoc.vim`](2017/day-02/aoc.vim)
     - solved together with wonderful people at
       [SoCraTes 2024](https://www.socrates-conference.de)
+- [2017 Day 05](https://adventofcode.com/2017/day/5) ⭐⭐
+    - [`aoc.vim`](2017/day-05/aoc.vim)
+    - solved with my awesome colleagues at [inovex](https://www.inovex.de/)
+      Sommerplenum 2024
 
 ### 2022
 
