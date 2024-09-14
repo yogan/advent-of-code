@@ -141,6 +141,13 @@ function-list`.
     :pu! =MyFunction()
     ```
 
+- arguments need to be accessed with `a:argname` (see `:help a:`):
+    ```vim
+    :function MyFunction(foo, bar)
+        return a:foo + a:bar
+    endfunction
+    ```
+
 - iterating over all lines in the buffer:
     ```vim
     :function TotalChars()
