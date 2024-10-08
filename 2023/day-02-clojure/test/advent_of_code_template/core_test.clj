@@ -39,7 +39,7 @@
     (let [draw {:red 13 :green 13 :blue 14}]
       (is (= (aoc/is-draw-possible draw) false)))))
 
-(deftest is-draw-possible-red-over-limit
+(deftest is-draw-possible-blue-over-limit
   (testing "is-draw-possible returns true when blue is over the limit"
     (let [draw {:red 1 :green 13 :blue 15}]
       (is (= (aoc/is-draw-possible draw) false)))))
