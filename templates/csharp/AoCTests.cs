@@ -1,12 +1,14 @@
 using Xunit;
 
+namespace aoc;
+
 public class AoCTests
 {
-    static readonly string[] Sample = new [] { "1x2x3", "987x10x1" };
+    static readonly string[] Sample = ["1x2x3", "987x10x1"];
 
     [Fact]
     public void ParseInput_WorksForSample() =>
-        Assert.Equal(new [] { new Box(1, 2, 3), new Box(987, 10, 1) },
+        Assert.Equal([new Box(1, 2, 3), new Box(987, 10, 1)],
                      AoC.ParseInput(Sample));
 
     [Fact]

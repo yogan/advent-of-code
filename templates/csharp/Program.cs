@@ -1,4 +1,6 @@
-﻿static string GetPath(string filename) =>
+﻿using aoc;
+
+static string GetPath(string filename) =>
     // Hacky workaround for stupid dotnet cwd behavior, see:
     // https://github.com/dotnet/project-system/issues/3619
     File.Exists(filename)

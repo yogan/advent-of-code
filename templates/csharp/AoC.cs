@@ -1,12 +1,16 @@
-﻿public record struct Box(int Length, int Width, int Height) {
-    public int Area => 2 * (Length * Width + Width * Height + Height * Length);
-    public int Volume => Length * Width * Height;
+﻿namespace aoc;
+
+public record struct Box(int Length, int Width, int Height)
+{
+    public readonly int Area => 2 * (Length * Width + Width * Height + Height * Length);
+    public readonly int Volume => Length * Width * Height;
 }
 
-public class AoC
+public static class AoC
 {
     public static IEnumerable<Box> ParseInput(IEnumerable<string> lines) =>
-        lines.Select(line => {
+        lines.Select(line =>
+        {
             var parts = line.Split('x').Select(int.Parse).ToArray();
             return new Box(parts[0], parts[1], parts[2]);
         });
