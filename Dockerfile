@@ -125,7 +125,8 @@ RUN ghcup -v install ghc   --isolate /usr/local     --force ${GHC}   && \
 RUN add-apt-repository ppa:dotnet/backports && \
     # .NET 7 (required for Exercism stuff, coming from ppa:dotnet/backports)
     # .NET 8 (straight from the default Ubuntu repos)
-    apt-get install -y dotnet-sdk-7.0 dotnet-sdk-8.0
+    # .NET 9 (latest shit, from ppa:dotnet/backports)
+    apt-get install -y dotnet-sdk-7.0 dotnet-sdk-8.0 dotnet-sdk-9.0
 
 # Java - we need a JDK19 for Exercism stuff. Ubuntu 24.04 does not have a package anymore,
 # but the old .deb from Oracle seems to do it, as long as we provide the right libc.
