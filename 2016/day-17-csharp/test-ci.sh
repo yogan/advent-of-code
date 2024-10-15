@@ -4,10 +4,20 @@ if ! ./test.sh; then
     exit 3
 fi
 
-output=$(./run.sh input.txt)
+BINARY="./bin/Release/net9.0/aoc"
 
-expected1="DURLDRRDRD"
+if [ ! -f "$BINARY" ]; then
+    echo "Binary not found: $BINARY"
+    echo "This either means that build-ci.sh was not run, or that it failed."
+    exit 4
+fi
+
+output=$($BINARY input.txt)
+
 result1=$(echo "$output" | tail -2 | head -1)
+result2=$(echo "$output" | tail -1)
+
+expected1=DURLDRRDRD
 if [ "$result1" != "$expected1" ]; then
     echo "Expected: »$expected1«"
     echo "Received: »$result1«"

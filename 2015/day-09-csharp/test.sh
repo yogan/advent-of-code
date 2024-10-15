@@ -1,2 +1,2 @@
 #!/bin/sh
-dotnet test "$@"
+dotnet test aoc.sln
