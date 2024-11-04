@@ -1,4 +1,6 @@
-import sys, random
+import random
+import sys
+
 import networkx as nx
 
 visualize = False
@@ -14,8 +16,9 @@ if "--fast" in sys.argv:
 if len(sys.argv) != 2:
     print("Missing input file.")
     exit(1)
-filename  = sys.argv[1]
+filename = sys.argv[1]
 is_sample = filename == "sample.txt"
+
 
 def parse():
     G = nx.DiGraph()
@@ -26,6 +29,7 @@ def parse():
             G.add_edge(target, source, capacity=1)
     return G
 
+
 def split_graph(G):
     for edge in edges_with_max_flow(G, 3):
         source, target = edge
@@ -34,6 +38,7 @@ def split_graph(G):
 
     (S, T) = get_connected_components(G)
     return S, T
+
 
 def edges_with_max_flow(G, flow):
     seen = set()
@@ -53,10 +58,12 @@ def edges_with_max_flow(G, flow):
 
     assert False, f"need 3 edges with flow {flow}, only found {len(edges)}"
 
+
 def get_connected_components(G):
     components = list(nx.connected_components(G.to_undirected()))
     assert len(components) == 2
     return components
+
 
 def fast_minimum_cut(G):
     while True:
@@ -65,11 +72,14 @@ def fast_minimum_cut(G):
             v = random.choice(list(G.nodes))
 
         cut, partition = nx.minimum_cut(G, u, v)
-        assert cut in [3, 4]  # 3 = u and v in different components, 4 = same
+
+        # 3 = u and v in different components, 4 = same (try again)
+        assert cut in [3, 4], f"cut = {cut}"
 
         if cut == 3:
             (S, T) = partition
             return S, T
+
 
 def plot(G, S):
     import matplotlib.pyplot as plt
@@ -79,12 +89,13 @@ def plot(G, S):
         "node_size": 1000,
         "with_labels": True,
         "font_color": "#505050",
-        "node_color": ["#FFB6C1" if node in S else "#ADD8E6" for node in G]
+        "node_color": ["#FFB6C1" if node in S else "#ADD8E6" for node in G],
     }
 
     pos = nx.spring_layout(G, seed=13)  # tried seeds until one was nice
     nx.draw(G, pos=pos, **options)
     plt.show()
+
 
 def check(part, actual, expected=None):
     print(f"Part {part}{' (sample)' if is_sample else ''}: {actual} ", end="")
@@ -96,7 +107,8 @@ def check(part, actual, expected=None):
             exit(1)
         print("✅")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     G = parse()
 
     if fast:
