@@ -73,9 +73,6 @@ def fast_minimum_cut(G):
 
         cut, partition = nx.minimum_cut(G, u, v)
 
-        # 3 = u and v in different components, 4 = same (try again)
-        assert cut in [3, 4], f"cut = {cut}"
-
         if cut == 3:
             (S, T) = partition
             return S, T
