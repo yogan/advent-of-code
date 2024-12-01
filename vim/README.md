@@ -243,3 +243,8 @@ function-list`.
     - [`aoc.vim`](2023/day-03/aoc.vim)
 - [2023 Day 04](https://adventofcode.com/2023/day/4) ⭐⭐
     - [`aoc.vim`](2023/day-04/aoc.vim)
+
+### 2024
+
+- [2024 Day 01](https://adventofcode.com/2024/day/1) ⭐⭐
+    - [`aoc.vim`](2024/day-01/aoc.vim)

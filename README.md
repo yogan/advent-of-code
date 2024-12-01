@@ -12,4 +12,5 @@
 * [2021 solutions](2021-python/README.md) 34/50 ✨ (Python)
 * [2022 solutions](2022/README.md) 46/50 ✨ (14 languages)
 * [2023 solutions](2023/README.md) 50/50 ✨ (6 languages, mostly Python)
-* [Vim solutions](vim/README.md) 38 ✨ (from 19 days over all years)
+* [2024 solutions](2024/README.md) 2/50 ✨ (Vim)
+* [Vim solutions](vim/README.md) 40 ✨ (from 20 days over all years)
