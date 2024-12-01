@@ -15,6 +15,7 @@ end
 
 local filename = arg[1]
 local lines = read_lines(filename)
-local nodes = aoc.parse(lines)
+local cluster = aoc.parse(lines)
 
-print(aoc.part1(nodes))
+print(aoc.part1(cluster))
+print(aoc.part2(cluster))
