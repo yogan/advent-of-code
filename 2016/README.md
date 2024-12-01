@@ -99,3 +99,7 @@
   ([`AoC.pm`](./day-21-perl/lib/AoC.pm),
   [`main.pl`](./day-21-perl/main.pl),
   [`tests.t`](./day-21-perl/t/tests.t))
+- [Day 22](https://adventofcode.com/2016/day/22) ⭐ in Lua
+  ([`aoc.lua`](./day-22-lua/aoc.lua),
+  [`aoc_spec.lua`](./day-22-lua/aoc_spec.lua),
+  [`main.lua`](./day-22-lua/main.lua))
