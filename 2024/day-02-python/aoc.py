@@ -21,10 +21,7 @@ def is_safe(levels):
 
 
 def is_safe_enough(levels):
-    if is_safe(levels):
-        return True
-
-    for i in range(0, len(levels)):
+    for i in range(len(levels)):
         levels_without_i = levels[:i] + levels[i + 1 :]
         if is_safe(levels_without_i):
             return True
@@ -74,8 +71,8 @@ if __name__ == "__main__":
             print("✅")
 
     reports = parse()
-    part1 = sum(1 for report in reports if is_safe(report))
-    part2 = sum(1 for report in reports if is_safe_enough(report))
+    part1 = sum(is_safe(report) for report in reports)
+    part2 = sum(is_safe_enough(report) for report in reports)
 
     check(1, part1, 2 if is_sample else 252)
     check(2, part2, 4 if is_sample else 324)
