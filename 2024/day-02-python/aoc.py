@@ -10,23 +10,12 @@ def parse():
 
 
 def is_safe(levels):
-    diffs = [b - a for a, b in zip(levels, levels[1:])]
-    signs = [d > 0 for d in diffs]
-
-    all_increasing = all(signs)
-    all_decreasing = all(not i for i in signs)
-    diffs_in_range = all([1 <= abs(d) <= 3 for d in diffs])
-
-    return (all_increasing or all_decreasing) and diffs_in_range
+    diffs = [a - b for a, b in zip(levels, levels[1:])]
+    return all([1 <= d <= 3 for d in diffs]) or all([-3 <= d <= -1 for d in diffs])
 
 
 def is_safe_enough(levels):
-    for i in range(len(levels)):
-        levels_without_i = levels[:i] + levels[i + 1 :]
-        if is_safe(levels_without_i):
-            return True
-
-    return False
+    return any(is_safe(levels[:i] + levels[i + 1 :]) for i in range(len(levels)))
 
 
 class Tests(unittest.TestCase):
