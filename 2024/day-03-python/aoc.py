@@ -3,53 +3,49 @@ import sys
 import unittest
 
 
-def parse_lines(lines, pre_proc=False):
+def scan(lines, part2=False):
     all_lines_combined = "".join(lines).replace("\n", "")
-    if pre_proc:
-        all_lines_combined = preprocess_line(all_lines_combined)
-    return parse(all_lines_combined)
+    if part2:
+        all_lines_combined = strip_dont_ranges(all_lines_combined)
+    return eval_muls(all_lines_combined)
 
 
-def preprocess_line(line):
-    processed_line = ""
+def strip_dont_ranges(line):
+    stripped_line = ""
 
     while "don't()" in line:
         parts = line.split("don't()", maxsplit=1)
-        processed_line += parts[0]
+        stripped_line += parts[0]
         parts = parts[1].split("do()", maxsplit=1)
         if len(parts) > 1:
             line = parts[1]
         else:
             line = ""
 
-    return processed_line + line
+    return stripped_line + line
 
 
-def parse(line):
-    return [
-        [int(x) for x in match]
-        for match in re.findall(r"mul\((\d{1,3}),(\d{1,3})\)", line)
-    ]
-
-
-def add_muls(muls):
-    return sum(x * y for x, y in muls)
+def eval_muls(line):
+    return sum(
+        int(x) * int(y) for x, y in re.findall(r"mul\((\d{1,3}),(\d{1,3})\)", line)
+    )
 
 
 class Tests(unittest.TestCase):
-    def test_parse(self):
-        line = "xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))"
+    def test_strip_dont_ranges(self):
         self.assertEqual(
-            parse(line),
-            [[2, 4], [5, 5], [11, 8], [8, 5]],
-        )
-
-    def test_preprocess_line(self):
-        self.assertEqual(
-            preprocess_line(
+            strip_dont_ranges(
                 "xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))"
             ),
             "xmul(2,4)&mul[3,7]!^?mul(8,5))",
+        )
+
+    def test_eval_muls(self):
+        self.assertEqual(
+            eval_muls(
+                "xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))"
+            ),
+            2 * 4 + 5 * 5 + 11 * 8 + 8 * 5,
         )
 
 
@@ -77,11 +73,8 @@ if __name__ == "__main__":
             print("✅")
 
     lines = open(filename).readlines()
-    muls = parse_lines(lines)
-    part1 = add_muls(muls)
-
-    muls2 = parse_lines(lines, pre_proc=True)
-    part2 = add_muls(muls2)
+    part1 = scan(lines)
+    part2 = scan(lines, part2=True)
 
     check(1, part1, 161 + 161 if is_sample else 187194524)
     check(2, part2, 161 + 48 if is_sample else 127092535)
