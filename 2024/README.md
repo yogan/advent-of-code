@@ -13,3 +13,6 @@
 ## [Day 03: Mull It Over](https://adventofcode.com/2024/day/3) ✖️
   - ⭐⭐ [**C**#](day-03-csharp/AoC.cs) ([tests](day-03-csharp/AoCTests.cs))
   - ⭐⭐ [Python](day-03-python/aoc.py)
+
+## [Day 04: Ceres Search](https://adventofcode.com/2024/day/4) 🔍
+  - ⭐⭐ [Python](day-04-python/aoc.py)
