@@ -157,4 +157,12 @@ RUN curl -fsSL https://github.com/elm/compiler/releases/download/0.19.1/binary-f
 # Perl Test2::V0
 RUN cpan Test2::V0
 
+# Dart
+RUN curl -fsSL https://dl-ssl.google.com/linux/linux_signing_key.pub \
+    | gpg --dearmor -o /usr/share/keyrings/dart.gpg && \
+    echo 'deb [signed-by=/usr/share/keyrings/dart.gpg arch=amd64] https://storage.googleapis.com/download.dartlang.org/linux/debian stable main' \
+    | tee /etc/apt/sources.list.d/dart_stable.list && \
+    apt-get update && \
+    apt-get install -y dart
+
 # vim: tw=0
