@@ -1,0 +1,15 @@
+name: aoc
+description: Advent of Code in Dart
+version: 1.0.0
+repository: https://github.com/yogan/advent-of-code
+
+environment:
+  sdk: ^3.5.4
+
+# Add regular dependencies here.
+dependencies:
+  # path: ^1.8.0
+
+dev_dependencies:
+  lints: ^5.0.0
+  test: ^1.24.0

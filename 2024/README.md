@@ -1,6 +1,6 @@
-# [Advent of Code 2024](https://adventofcode.com/2024) (6/50 ✨)
+# [Advent of Code 2024](https://adventofcode.com/2024) (8/50 ✨)
 
-**Languages: 5** *(1 × Awk, 1 × Bash, 1 × C#, 2 × Python, 1 × Vim)*
+**Languages: 6** *(1 × Awk, 1 × Bash, 1 × C#, 1 × Dart, 3 × Python, 1 × Vim)*
 
 ## [Day 01: Historian Hysteria](https://adventofcode.com/2024/day/1) 📜
   - ⭐⭐ [**A**wk](day-01-awk/aoc.awk)
@@ -14,5 +14,7 @@
   - ⭐⭐ [**C**#](day-03-csharp/AoC.cs) ([tests](day-03-csharp/AoCTests.cs))
   - ⭐⭐ [Python](day-03-python/aoc.py)
 
-## [Day 04: Ceres Search](https://adventofcode.com/2024/day/4) 🔍
+## [Day 04: Ceres Search](https://adventofcode.com/2024/day/4) 🔠
+  - ⭐⭐ [**D**art](day-04-dart/lib/aoc.dart) 
+    ([tests](day-04-dart/test/aoc_test.dart))
   - ⭐⭐ [Python](day-04-python/aoc.py)
