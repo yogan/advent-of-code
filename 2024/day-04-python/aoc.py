@@ -3,7 +3,7 @@ import unittest
 
 
 def parse():
-    return [list(line.strip()) for line in open(filename).readlines()]
+    return [line.strip() for line in open(filename).readlines()]
 
 
 def count_xmas(letters):
@@ -11,139 +11,112 @@ def count_xmas(letters):
 
     for i in range(len(letters)):
         for j in range(len(letters[i])):
-            if letters[i][j] == "X":
-                # check north
-                if (
-                    i >= 3
-                    and letters[i - 1][j] == "M"
-                    and letters[i - 2][j] == "A"
-                    and letters[i - 3][j] == "S"
-                ):
-                    n += 1
+            if letters[i][j] != "X":
+                continue
 
-                # check north-east
-                if (
-                    i >= 3
-                    and j <= len(letters[i]) - 4
-                    and letters[i - 1][j + 1] == "M"
-                    and letters[i - 2][j + 2] == "A"
-                    and letters[i - 3][j + 3] == "S"
-                ):
-                    n += 1
+            # check north
+            if (
+                i >= 3
+                and letters[i - 1][j] == "M"
+                and letters[i - 2][j] == "A"
+                and letters[i - 3][j] == "S"
+            ):
+                n += 1
 
-                # check east
-                if (
-                    j <= len(letters[i]) - 4
-                    and letters[i][j + 1] == "M"
-                    and letters[i][j + 2] == "A"
-                    and letters[i][j + 3] == "S"
-                ):
-                    n += 1
+            # check north-east
+            if (
+                i >= 3
+                and j <= len(letters[i]) - 4
+                and letters[i - 1][j + 1] == "M"
+                and letters[i - 2][j + 2] == "A"
+                and letters[i - 3][j + 3] == "S"
+            ):
+                n += 1
 
-                # check south-east
-                if (
-                    i <= len(letters) - 4
-                    and j <= len(letters[i]) - 4
-                    and letters[i + 1][j + 1] == "M"
-                    and letters[i + 2][j + 2] == "A"
-                    and letters[i + 3][j + 3] == "S"
-                ):
-                    n += 1
+            # check east
+            if (
+                j <= len(letters[i]) - 4
+                and letters[i][j + 1] == "M"
+                and letters[i][j + 2] == "A"
+                and letters[i][j + 3] == "S"
+            ):
+                n += 1
 
-                # check south
-                if (
-                    i <= len(letters) - 4
-                    and letters[i + 1][j] == "M"
-                    and letters[i + 2][j] == "A"
-                    and letters[i + 3][j] == "S"
-                ):
-                    n += 1
+            # check south-east
+            if (
+                i <= len(letters) - 4
+                and j <= len(letters[i]) - 4
+                and letters[i + 1][j + 1] == "M"
+                and letters[i + 2][j + 2] == "A"
+                and letters[i + 3][j + 3] == "S"
+            ):
+                n += 1
 
-                # check south-west
-                if (
-                    i <= len(letters) - 4
-                    and j >= 3
-                    and letters[i + 1][j - 1] == "M"
-                    and letters[i + 2][j - 2] == "A"
-                    and letters[i + 3][j - 3] == "S"
-                ):
-                    n += 1
+            # check south
+            if (
+                i <= len(letters) - 4
+                and letters[i + 1][j] == "M"
+                and letters[i + 2][j] == "A"
+                and letters[i + 3][j] == "S"
+            ):
+                n += 1
 
-                # check west
-                if (
-                    j >= 3
-                    and letters[i][j - 1] == "M"
-                    and letters[i][j - 2] == "A"
-                    and letters[i][j - 3] == "S"
-                ):
-                    n += 1
+            # check south-west
+            if (
+                i <= len(letters) - 4
+                and j >= 3
+                and letters[i + 1][j - 1] == "M"
+                and letters[i + 2][j - 2] == "A"
+                and letters[i + 3][j - 3] == "S"
+            ):
+                n += 1
 
-                # check north-west
-                if (
-                    i >= 3
-                    and j >= 3
-                    and letters[i - 1][j - 1] == "M"
-                    and letters[i - 2][j - 2] == "A"
-                    and letters[i - 3][j - 3] == "S"
-                ):
-                    n += 1
+            # check west
+            if (
+                j >= 3
+                and letters[i][j - 1] == "M"
+                and letters[i][j - 2] == "A"
+                and letters[i][j - 3] == "S"
+            ):
+                n += 1
+
+            # check north-west
+            if (
+                i >= 3
+                and j >= 3
+                and letters[i - 1][j - 1] == "M"
+                and letters[i - 2][j - 2] == "A"
+                and letters[i - 3][j - 3] == "S"
+            ):
+                n += 1
 
     return n
 
 
 def count_x_mas(letters):
+    # // Checking corners clockwise like this:
+    # // 0 . 1      M . M      M . S      S . M      S . S
+    # // . A .  ->  . A .  or  . A .  or  . A .  or  . A .
+    # // 3 . 2      S . S      M . S      S . M      M . M
+    valid_corners = ["MMSS", "MSSM", "SMMS", "SSMM"]
+
     n = 0
 
     for i in range(1, len(letters) - 1):
         for j in range(1, len(letters[i]) - 1):
-            if letters[i][j] == "A":
-                # M.M
-                # .A.
-                # S.S
-                if (
-                    letters[i - 1][j - 1] == "M"
-                    and letters[i - 1][j + 1] == "M"
-                    and letters[i + 1][j - 1] == "S"
-                    and letters[i + 1][j + 1] == "S"
-                ):
-                    n += 1
-                    continue
+            if letters[i][j] != "A":
+                continue
 
-                # M.S
-                # .A.
-                # M.S
-                if (
-                    letters[i - 1][j - 1] == "M"
-                    and letters[i - 1][j + 1] == "S"
-                    and letters[i + 1][j - 1] == "M"
-                    and letters[i + 1][j + 1] == "S"
-                ):
-                    n += 1
-                    continue
+            corners = (
+                letters[i - 1][j - 1]
+                + letters[i - 1][j + 1]
+                + letters[i + 1][j + 1]
+                + letters[i + 1][j - 1]
+            )
 
-                # S.M
-                # .A.
-                # S.M
-                if (
-                    letters[i - 1][j - 1] == "S"
-                    and letters[i - 1][j + 1] == "M"
-                    and letters[i + 1][j - 1] == "S"
-                    and letters[i + 1][j + 1] == "M"
-                ):
-                    n += 1
-                    continue
-
-                # S.S
-                # .A.
-                # M.M
-                if (
-                    letters[i - 1][j - 1] == "S"
-                    and letters[i - 1][j + 1] == "S"
-                    and letters[i + 1][j - 1] == "M"
-                    and letters[i + 1][j + 1] == "M"
-                ):
-                    n += 1
-                    continue
+            if corners in valid_corners:
+                n += 1
+                continue
 
     return n
 
