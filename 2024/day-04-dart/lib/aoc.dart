@@ -3,80 +3,38 @@ List<List<String>> parseLines(List<String> lines) {
 }
 
 int part1(List<List<String>> letters) {
+  const offsets = [
+    [-1, -1],
+    [-1, 0],
+    [-1, 1],
+    [0, -1],
+    [0, 1],
+    [1, -1],
+    [1, 0],
+    [1, 1],
+  ];
+
+  var iMax = letters.length;
+  var jMax = letters[0].length;
+
   var count = 0;
 
-  for (var i = 0; i < letters.length; i++) {
-    for (var j = 0; j < letters[i].length; j++) {
-      if (letters[i][j] != 'X') {
-        continue;
-      }
+  for (var i = 0; i < iMax; i++) {
+    for (var j = 0; j < jMax; j++) {
+      if (letters[i][j] != 'X') continue;
 
-      // north
-      if (i >= 3 &&
-          letters[i - 1][j] == 'M' &&
-          letters[i - 2][j] == 'A' &&
-          letters[i - 3][j] == 'S') {
-        count++;
-      }
+      for (var offset in offsets) {
+        if (i + 3 * offset[0] < 0 ||
+            i + 3 * offset[0] >= jMax ||
+            j + 3 * offset[1] < 0 ||
+            j + 3 * offset[1] >= iMax) continue;
 
-      // north east
-      if (i >= 3 &&
-          j <= letters[i].length - 4 &&
-          letters[i - 1][j + 1] == 'M' &&
-          letters[i - 2][j + 2] == 'A' &&
-          letters[i - 3][j + 3] == 'S') {
-        count++;
-      }
+        var word = letters[i][j] +
+            letters[i + 1 * offset[0]][j + 1 * offset[1]] +
+            letters[i + 2 * offset[0]][j + 2 * offset[1]] +
+            letters[i + 3 * offset[0]][j + 3 * offset[1]];
 
-      // east
-      if (j <= letters[i].length - 4 &&
-          letters[i][j + 1] == 'M' &&
-          letters[i][j + 2] == 'A' &&
-          letters[i][j + 3] == 'S') {
-        count++;
-      }
-
-      // south east
-      if (i <= letters.length - 4 &&
-          j <= letters[i].length - 4 &&
-          letters[i + 1][j + 1] == 'M' &&
-          letters[i + 2][j + 2] == 'A' &&
-          letters[i + 3][j + 3] == 'S') {
-        count++;
-      }
-
-      // south
-      if (i <= letters.length - 4 &&
-          letters[i + 1][j] == 'M' &&
-          letters[i + 2][j] == 'A' &&
-          letters[i + 3][j] == 'S') {
-        count++;
-      }
-
-      // south west
-      if (i <= letters.length - 4 &&
-          j >= 3 &&
-          letters[i + 1][j - 1] == 'M' &&
-          letters[i + 2][j - 2] == 'A' &&
-          letters[i + 3][j - 3] == 'S') {
-        count++;
-      }
-
-      // west
-      if (j >= 3 &&
-          letters[i][j - 1] == 'M' &&
-          letters[i][j - 2] == 'A' &&
-          letters[i][j - 3] == 'S') {
-        count++;
-      }
-
-      // north west
-      if (i >= 3 &&
-          j >= 3 &&
-          letters[i - 1][j - 1] == 'M' &&
-          letters[i - 2][j - 2] == 'A' &&
-          letters[i - 3][j - 3] == 'S') {
-        count++;
+        if (word == 'XMAS') count++;
       }
     }
   }
@@ -85,57 +43,24 @@ int part1(List<List<String>> letters) {
 }
 
 int part2(List<List<String>> letters) {
+  // Checking corners clockwise like this:
+  // 0 . 1      M . M      M . S      S . M      S . S
+  // . A .  ->  . A .  or  . A .  or  . A .  or  . A .
+  // 3 . 2      S . S      M . S      S . M      M . M
+  const validCorners = ["MMSS", "MSSM", "SMMS", "SSMM"];
+
   var count = 0;
 
   for (var i = 1; i < letters.length - 1; i++) {
     for (var j = 1; j < letters[i].length - 1; j++) {
-      if (letters[i][j] != 'A') {
-        continue;
-      }
+      if (letters[i][j] != 'A') continue;
 
-      // M.M
-      // .A.
-      // S.S
-      if (letters[i - 1][j - 1] == 'M' &&
-          letters[i - 1][j + 1] == 'M' &&
-          letters[i + 1][j - 1] == 'S' &&
-          letters[i + 1][j + 1] == 'S') {
-        count++;
-        continue;
-      }
+      var corners = letters[i - 1][j - 1] +
+          letters[i - 1][j + 1] +
+          letters[i + 1][j + 1] +
+          letters[i + 1][j - 1];
 
-      // M.S
-      // .A.
-      // M.S
-      if (letters[i - 1][j - 1] == 'M' &&
-          letters[i + 1][j - 1] == 'M' &&
-          letters[i - 1][j + 1] == 'S' &&
-          letters[i + 1][j + 1] == 'S') {
-        count++;
-        continue;
-      }
-
-      // S.M
-      // .A.
-      // S.M
-      if (letters[i - 1][j + 1] == 'M' &&
-          letters[i + 1][j + 1] == 'M' &&
-          letters[i - 1][j - 1] == 'S' &&
-          letters[i + 1][j - 1] == 'S') {
-        count++;
-        continue;
-      }
-
-      // S.S
-      // .A.
-      // M.M
-      if (letters[i + 1][j - 1] == 'M' &&
-          letters[i + 1][j + 1] == 'M' &&
-          letters[i - 1][j - 1] == 'S' &&
-          letters[i - 1][j + 1] == 'S') {
-        count++;
-        continue;
-      }
+      if (validCorners.contains(corners)) count++;
     }
   }
 
