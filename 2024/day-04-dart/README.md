@@ -5,8 +5,8 @@
 ```sh
 ./run.sh [FILENAME]         # Run with FILENAME (defaults to input.txt)
 ./test.sh                   # Run the tests
-./build.sh                  # Build the project
-./test-ci.sh                # Run CI tests (using binary created by build.sh)
+./build-ci.sh               # Build the project
+./test-ci.sh                # Run CI tests (using binary created by build-ci.sh)
 ```
 
 ## Watch Mode
