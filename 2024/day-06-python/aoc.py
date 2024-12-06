@@ -6,30 +6,64 @@ def parse():
     return [list(line.strip()) for line in open(filename).readlines()]
 
 
-def part1(lines):
+def travel(lines):
     X_MAX = len(lines[0])
     Y_MAX = len(lines)
-    pos = find_guard(lines)
-    visited = {pos}
+    x, y = find_guard(lines)
+    visited = {(x, y)}
 
     while True:
-        x, y = pos
-        x_next, y_next = next_pos(pos, lines[y][x])
-        # print(f"{x=}, {y=}, {x_next=}, {y_next=}")
+        x_next, y_next = next_pos((x, y), lines[y][x])
         if x_next < 0 or x_next >= X_MAX or y_next < 0 or y_next >= Y_MAX:
             break
         if lines[y_next][x_next] == "#":
-            # print(f"OBSTACLE at {x_next=}, {y_next=}")
             lines[y][x] = rotate_right(lines[y][x])
-            # print(f"rotated to {lines[y][x]}")
         else:
-            pos = (x_next, y_next)
             lines[y_next][x_next] = lines[y][x]
             lines[y][x] = "."
-            visited.add(pos)
-            # print(f"moved to {pos}")
+            x, y = x_next, y_next
+            visited.add((x, y))
 
-    return len(visited)
+    return visited
+
+
+def has_loop(lines, guard_start):
+    X_MAX = len(lines[0])
+    Y_MAX = len(lines)
+    x, y = guard_start
+    visited = {(x, y, lines[y][x])}
+
+    while True:
+        x_next, y_next = next_pos((x, y), lines[y][x])
+        if x_next < 0 or x_next >= X_MAX or y_next < 0 or y_next >= Y_MAX:
+            break
+        if lines[y_next][x_next] == "#":
+            lines[y][x] = rotate_right(lines[y][x])
+        else:
+            lines[y_next][x_next] = lines[y][x]
+            lines[y][x] = "."
+            x, y = x_next, y_next
+            if (x, y, lines[y][x]) in visited:
+                return True
+            visited.add((x, y, lines[y][x]))
+
+    return False
+
+
+def part2(lines, visited):
+    guard_start = find_guard(lines)
+    candidates = [pos for pos in visited if pos != guard_start]
+
+    loops = 0
+
+    while candidates:
+        x, y = candidates.pop()
+        lines_copy = [line.copy() for line in lines]
+        lines_copy[y][x] = "#"
+        if has_loop(lines_copy, guard_start):
+            loops += 1
+
+    return loops
 
 
 def next_pos(pos, direction):
@@ -66,21 +100,23 @@ def find_guard(lines):
 
 
 class Tests(unittest.TestCase):
-    def test_part1(self):
+    def test_travel(self):
         self.assertEqual(
-            part1(
-                [
-                    list("....#....."),
-                    list(".........#"),
-                    list(".........."),
-                    list("..#......."),
-                    list(".......#.."),
-                    list(".........."),
-                    list(".#..^....."),
-                    list("........#."),
-                    list("#........."),
-                    list("......#..."),
-                ]
+            len(
+                travel(
+                    [
+                        list("....#....."),
+                        list(".........#"),
+                        list(".........."),
+                        list("..#......."),
+                        list(".......#.."),
+                        list(".........."),
+                        list(".#..^....."),
+                        list("........#."),
+                        list("#........."),
+                        list("......#..."),
+                    ]
+                )
             ),
             41,
         )
@@ -110,8 +146,9 @@ if __name__ == "__main__":
             print("✅")
 
     lines = parse()
-    p1 = part1(lines)
-    p2 = None
+    visited = travel([line.copy() for line in lines])
+    p1 = len(visited)
+    p2 = part2(lines, visited)
 
     check(1, p1, 41 if is_sample else 4973)
-    check(2, p2)
+    check(2, p2, 6 if is_sample else 1482)
