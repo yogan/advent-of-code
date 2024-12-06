@@ -20,7 +20,7 @@ contains
             3,5,3,9,0 /), &
          shape(expected_grid), order=(/2,1/) )
 
-      grid = read_file("day08.sample", grid_size)
+      grid = read_file("sample.txt", grid_size)
 
       if (any(grid /= expected_grid)) then
          print *, "Test failed: expected grid:"

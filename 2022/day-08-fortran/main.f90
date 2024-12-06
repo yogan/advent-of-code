@@ -7,12 +7,12 @@ program main
    integer :: sample_grid(5,5), grid(99,99)
    logical :: sample_visibility(5,5), visibility(99,99)
 
-   sample_grid = read_file("day08.sample", sample_grid_size)
+   sample_grid = read_file("sample.txt", sample_grid_size)
    sample_visibility = calc_visibility(sample_grid, sample_grid_size)
    sample_tree_count = count_visible_trees(sample_visibility)
    print *, "Part 1 (sample): ", sample_tree_count
 
-   grid = read_file("day08.in", grid_size)
+   grid = read_file("input.txt", grid_size)
    visibility = calc_visibility(grid, grid_size)
    tree_count = count_visible_trees(visibility)
    print *, "Part 1 (input): ", tree_count
