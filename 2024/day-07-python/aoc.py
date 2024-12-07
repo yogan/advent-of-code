@@ -1,5 +1,6 @@
 import sys
 import unittest
+from itertools import product
 
 
 def parse():
@@ -11,23 +12,19 @@ def parse_line(line):
     return int(target), list(map(int, rest.split(" ")))
 
 
-def possible(target, rest):
+def possible(target, rest, concat=False):
     blanks = len(rest) - 1
 
-    # Go through list of all possible combinations of operators (+ and *).
-    # The input has a maximum of 11 numbers, so there are at most 2^11 = 2048
-    # possibilities, which is fine to brute force.
-    # We use an increasing integer number as bitmask, where a 0 bit means + and
-    # a 1 bit means *.
-    for bitmask in range(2**blanks):
+    for ops in op_combinations(blanks, concat=concat):
         result = rest[0]
 
-        for i in range(blanks):
-            # Extract the i-th bit from the bitmask; multiply if 1, add if 0.
-            if (bitmask >> i) & 1:
-                result *= rest[i + 1]
-            else:
-                result += rest[i + 1]
+        for op, num in zip(ops, rest[1:]):
+            if op == "+":
+                result += num
+            elif op == "*":
+                result *= num
+            elif op == "|":
+                result = int(str(result) + str(num))
 
         if result == target:
             return True
@@ -35,13 +32,62 @@ def possible(target, rest):
     return False
 
 
+def op_combinations(blanks, concat=False):
+    return product("+*|" if concat else "+*", repeat=blanks)
+
+
 def part1(lines):
     return sum(target for target, rest in lines if possible(int(target), rest))
+
+
+def part2(lines):
+    return sum(
+        target for target, rest in lines if possible(int(target), rest, concat=True)
+    )
 
 
 class Tests(unittest.TestCase):
     def test_parse_line(self):
         self.assertEqual(parse_line("21037: 9 7 18 13"), (21037, [9, 7, 18, 13]))
+
+    def test_op_combinations(self):
+        self.assertEqual(set(op_combinations(1)), {("+",), ("*",)})
+        self.assertEqual(
+            set(op_combinations(2)), {("+", "+"), ("+", "*"), ("*", "+"), ("*", "*")}
+        )
+        self.assertEqual(
+            set(op_combinations(3)),
+            {
+                ("+", "+", "+"),
+                ("+", "+", "*"),
+                ("+", "*", "+"),
+                ("+", "*", "*"),
+                ("*", "+", "+"),
+                ("*", "+", "*"),
+                ("*", "*", "+"),
+                ("*", "*", "*"),
+            },
+        )
+
+    def test_op_combincations_concat(self):
+        concat = True
+        self.assertEqual(
+            set(op_combinations(1, concat=concat)), {("+",), ("*",), ("|",)}
+        )
+        self.assertEqual(
+            set(op_combinations(2, concat=concat)),
+            {
+                ("+", "+"),
+                ("+", "*"),
+                ("+", "|"),
+                ("*", "+"),
+                ("*", "*"),
+                ("*", "|"),
+                ("|", "+"),
+                ("|", "*"),
+                ("|", "|"),
+            },
+        )
 
     def test_possible(self):
         self.assertTrue(possible(190, [10, 19]))
@@ -53,6 +99,17 @@ class Tests(unittest.TestCase):
         self.assertFalse(possible(192, [17, 8, 14]))
         self.assertFalse(possible(21037, [9, 7, 18, 13]))
         self.assertTrue(possible(292, [11, 6, 16, 20]))
+
+    def test_possible_with_concat(self):
+        self.assertTrue(possible(190, [10, 19], concat=True))
+        self.assertTrue(possible(3267, [81, 40, 27], concat=True))
+        self.assertFalse(possible(83, [17, 5], concat=True))
+        self.assertTrue(possible(156, [15, 6], concat=True))
+        self.assertTrue(possible(7290, [6, 8, 6, 15], concat=True))
+        self.assertFalse(possible(161011, [16, 10, 13], concat=True))
+        self.assertTrue(possible(192, [17, 8, 14], concat=True))
+        self.assertFalse(possible(21037, [9, 7, 18, 13], concat=True))
+        self.assertTrue(possible(292, [11, 6, 16, 20], concat=True))
 
 
 if __name__ == "__main__":
@@ -80,7 +137,7 @@ if __name__ == "__main__":
 
     lines = parse()
     p1 = part1(lines)
-    p2 = None
+    p2 = part2(lines)
 
     check(1, p1, 3749 if is_sample else 663613490587)
-    check(2, p2)
+    check(2, p2, 11387 if is_sample else 110365987435001)
