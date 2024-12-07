@@ -8,17 +8,17 @@ def parse():
 
 
 def parse_line(line):
-    target, rest = line.split(": ")
-    return int(target), list(map(int, rest.split(" ")))
+    target, values = line.split(": ")
+    return int(target), list(map(int, values.split(" ")))
 
 
-def possible(target, rest, concat=False):
-    blanks = len(rest) - 1
+def possible(target, values, concat=False):
+    blanks = len(values) - 1
 
     for ops in op_combinations(blanks, concat=concat):
-        result = rest[0]
+        result = values[0]
 
-        for op, num in zip(ops, rest[1:]):
+        for op, num in zip(ops, values[1:]):
             if op == "+":
                 result += num
             elif op == "*":
@@ -37,12 +37,12 @@ def op_combinations(blanks, concat=False):
 
 
 def part1(lines):
-    return sum(target for target, rest in lines if possible(int(target), rest))
+    return sum(target for target, values in lines if possible(target, values))
 
 
 def part2(lines):
     return sum(
-        target for target, rest in lines if possible(int(target), rest, concat=True)
+        target for target, values in lines if possible(target, values, concat=True)
     )
 
 
