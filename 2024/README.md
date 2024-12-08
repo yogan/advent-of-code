@@ -1,7 +1,7 @@
-# [Advent of Code 2024](https://adventofcode.com/2024) (16/50 ✨)
+# [Advent of Code 2024](https://adventofcode.com/2024) (18/50 ✨)
 
 **Languages: 7** *(1 × Awk, 1 × Bash, 1 × C#, 1 × Dart, 1 × Elixir,
-6 × Python, 1 × Vim)*
+7 × Python, 1 × Vim)*
 
 ## [Day 01: Historian Hysteria](https://adventofcode.com/2024/day/1) 📜
   - ⭐⭐ [**A**wk](day-01-awk/aoc.awk)
@@ -33,3 +33,6 @@
   - ⭐⭐ [Python](day-07-python/aoc.py) using
     [`itertools.product`](https://docs.python.org/3/library/itertools.html#itertools.product)
     and brute force (run time is ~1 second, so it's fine)
+
+## [Day 08: Resonant Collinearity](https://adventofcode.com/2024/day/8) 📡
+  - ⭐⭐ [Python](day-08-python/aoc.py)

@@ -15,16 +15,27 @@ def parse(lines):
 
 
 def part1(antennas, max_r, max_c):
-    locations = set()
+    antinodes = set()
 
     for locs in antennas.values():
         for i in range(len(locs)):
-            locations |= antinodes(locs[i], locs[i + 1 :], max_r, max_c)
+            antinodes |= resonances(locs[i], locs[i + 1 :], max_r, max_c)
 
-    return len(locations)
+    return len(antinodes)
 
 
-def antinodes(antenna, others, max_r, max_c):
+def part2(antennas, max_r, max_c):
+    antinodes = set()
+
+    for locs in antennas.values():
+        antinodes |= set(locs)
+        for i in range(len(locs)):
+            antinodes |= harmonics(locs[i], locs[i + 1 :], max_r, max_c)
+
+    return len(antinodes)
+
+
+def resonances(antenna, others, max_r, max_c):
     result = set()
 
     for other in others:
@@ -38,6 +49,30 @@ def antinodes(antenna, others, max_r, max_c):
             result.add((r1, c1))
         if 0 <= r2 < max_r and 0 <= c2 < max_c:
             result.add((r2, c2))
+
+    return result
+
+
+def harmonics(antenna, others, max_r, max_c):
+    result = set()
+
+    for other in others:
+        dr = antenna[0] - other[0]
+        dc = antenna[1] - other[1]
+
+        r = antenna[0] + dr
+        c = antenna[1] + dc
+        while 0 <= r < max_r and 0 <= c < max_c:
+            result.add((r, c))
+            r += dr
+            c += dc
+
+        r = other[0] - dr
+        c = other[1] - dc
+        while 0 <= r < max_r and 0 <= c < max_c:
+            result.add((r, c))
+            r -= dr
+            c -= dc
 
     return result
 
@@ -71,9 +106,19 @@ class Tests(unittest.TestCase):
             ),
         )
 
-    def test_anti_nodes(self):
-        self.assertEqual(antinodes((3, 4), [], 9, 9), set())
-        self.assertEqual(antinodes((3, 4), [(5, 5)], 9, 9), {(1, 3), (7, 6)})
+    def test_resonances(self):
+        self.assertEqual(resonances((3, 4), [], 10, 10), set())
+        self.assertEqual(resonances((3, 4), [(5, 5)], 10, 10), {(1, 3), (7, 6)})
+
+    def test_harmonics(self):
+        self.assertEqual(
+            harmonics((0, 0), [(1, 3), (2, 1)], 10, 10),
+            {(2, 6), (3, 9), (4, 2), (6, 3), (8, 4)},
+        )
+        self.assertEqual(
+            harmonics((1, 3), [(2, 1)], 10, 10),
+            {(0, 5)},
+        )
 
 
 if __name__ == "__main__":
@@ -101,7 +146,7 @@ if __name__ == "__main__":
 
     antennas, max_r, max_c = parse(open(filename).read().splitlines())
     p1 = part1(antennas, max_r, max_c)
-    p2 = None
+    p2 = part2(antennas, max_r, max_c)
 
     check(1, p1, 14 if is_sample else 327)
-    check(2, p2)
+    check(2, p2, 34 if is_sample else 1233)
