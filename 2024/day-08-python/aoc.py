@@ -39,15 +39,14 @@ def resonances(antenna, others, max_r, max_c):
     result = set()
 
     for other in others:
-        dr = antenna[0] - other[0]
-        dc = antenna[1] - other[1]
-        r1 = antenna[0] + dr
-        c1 = antenna[1] + dc
-        r2 = other[0] - dr
-        c2 = other[1] - dc
-        if 0 <= r1 < max_r and 0 <= c1 < max_c:
+        dr, dc = antenna[0] - other[0], antenna[1] - other[1]
+        r1, c1 = antenna[0] + dr, antenna[1] + dc
+        r2, c2 = other[0] - dr, other[1] - dc
+
+        if on_map(r1, c1, max_r, max_c):
             result.add((r1, c1))
-        if 0 <= r2 < max_r and 0 <= c2 < max_c:
+
+        if on_map(r2, c2, max_r, max_c):
             result.add((r2, c2))
 
     return result
@@ -57,24 +56,25 @@ def harmonics(antenna, others, max_r, max_c):
     result = set()
 
     for other in others:
-        dr = antenna[0] - other[0]
-        dc = antenna[1] - other[1]
+        dr, dc = antenna[0] - other[0], antenna[1] - other[1]
+        r, c = antenna[0] + dr, antenna[1] + dc
 
-        r = antenna[0] + dr
-        c = antenna[1] + dc
-        while 0 <= r < max_r and 0 <= c < max_c:
+        while on_map(r, c, max_r, max_c):
             result.add((r, c))
             r += dr
             c += dc
 
-        r = other[0] - dr
-        c = other[1] - dc
-        while 0 <= r < max_r and 0 <= c < max_c:
+        r, c = other[0] - dr, other[1] - dc
+        while on_map(r, c, max_r, max_c):
             result.add((r, c))
             r -= dr
             c -= dc
 
     return result
+
+
+def on_map(r, c, max_r, max_c):
+    return 0 <= r < max_r and 0 <= c < max_c
 
 
 class Tests(unittest.TestCase):
