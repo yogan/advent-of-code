@@ -2,9 +2,13 @@ import sys
 import unittest
 
 
-def part1(disk_map):
-    blocks = gen_blocks(disk_map)
+def part1(blocks):
     defrag(blocks)
+    return checksum(blocks)
+
+
+def part2(blocks):
+    defrag_files(blocks)
     return checksum(blocks)
 
 
@@ -34,11 +38,45 @@ def defrag(blocks):
             source -= 1
 
 
+def defrag_files(blocks):
+    source_end = len(blocks) - 1
+    id = int(blocks[source_end])
+
+    while id > 0:
+        source_start = source_end
+        while source_start > 0:
+            if blocks[source_start] != str(id):
+                source_start = source_start + 1
+                break
+            source_start = source_start - 1
+        source_len = source_end - source_start + 1
+
+        target_start = find_free_range(blocks, source_len)
+        if target_start >= 0 and target_start < source_start:
+            target_end = target_start + source_len - 1
+            for t in range(target_start, target_end + 1):
+                blocks[t] = str(id)
+            for s in range(source_start, source_end + 1):
+                blocks[s] = "."
+
+        id = id - 1
+
+        source_end = source_start - 1
+        while source_end >= 0 and blocks[source_end] != str(id):
+            source_end = source_end - 1
+
+
+def find_free_range(blocks, size):
+    pattern = "." * size
+    blocks_id_stripped = [b if b == "." else "X" for b in blocks]
+    return "".join(blocks_id_stripped).find(pattern)
+
+
 def checksum(blocks):
     result = 0
     for pos, id in enumerate(blocks):
         if id == ".":
-            break
+            continue
         result += pos * int(id)
     return result
 
@@ -60,10 +98,22 @@ class Tests(unittest.TestCase):
         defrag(blocks)
         self.assertEqual(blocks, list("0099811188827773336446555566.............."))
 
+    def test_defrag_files(self):
+        blocks = list("00...111...2...333.44.5555.6666.777.888899")
+        defrag_files(blocks)
+        self.assertEqual(blocks, list("00992111777.44.333....5555.6666.....8888.."))
+
     def test_checksum(self):
         self.assertEqual(
             checksum(list("0099811188827773336446555566..............")), 1928
         )
+
+    def test_find_free_range(self):
+        blocks = list("00...111...2...333.44.5555.6666.777.888899")
+        self.assertEqual(find_free_range(blocks, 1), 2)
+        self.assertEqual(find_free_range(blocks, 2), 2)
+        self.assertEqual(find_free_range(blocks, 3), 2)
+        self.assertEqual(find_free_range(blocks, 4), -1)
 
 
 if __name__ == "__main__":
@@ -90,8 +140,9 @@ if __name__ == "__main__":
             print("✅")
 
     disk_map = open(filename).read().strip()
-    p1 = part1(disk_map)
-    p2 = None
+    blocks = gen_blocks(disk_map)
+    p1 = part1(blocks.copy())
+    p2 = part2(blocks)
 
     check(1, p1, 1928 if is_sample else 6448989155953)
-    check(2, p2)
+    check(2, p2, 2858 if is_sample else 6476642796832)
