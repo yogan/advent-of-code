@@ -6,42 +6,37 @@ def parse(filename):
     return [[int(c) for c in list(line.strip())] for line in open(filename).readlines()]
 
 
-def part1(grid):
-    return sum((score(grid, head) for head in find_trailheads(grid)))
-
-
-def find_trailheads(grid):
-    trailheads = []
+def trailheads(grid):
+    heads = []
     for r, row in enumerate(grid):
         for c, v in enumerate(row):
             if v == 0:
-                trailheads.append((r, c))
-    return trailheads
+                heads.append((r, c))
+    return heads
 
 
-def score(grid, head):
+def score_and_rating(grid, head):
     rows, cols = len(grid), len(grid[0])
-    positions = {head}
-    height = 0
+    paths = [[head]]
 
-    while positions and height < 9:
-        next_positions = set()
-        for pos in positions:
-            for n in neighbors(pos, rows, cols):
-                if grid[n[0]][n[1]] == height + 1:
-                    next_positions.add(n)
-        positions = next_positions
-        height = height + 1
+    for height in range(9):
+        next_paths = []
+        for path in paths:
+            for r, c in neighbors(path[-1], rows, cols):
+                if grid[r][c] == height + 1:
+                    next_paths.append(path + [(r, c)])
+        paths = next_paths
 
-    return len(positions)
+    peaks = set(p[-1] for p in paths)
+
+    return len(peaks), len(paths)
 
 
 def neighbors(pos, rows, cols):
     r, c = pos
     n = set()
-    deltas = [(-1, 0), (1, 0), (0, -1), (0, 1)]
-    for d in deltas:
-        rr, cc = r + d[0], c + d[1]
+    for dr, dc in ((-1, 0), (1, 0), (0, -1), (0, 1)):
+        rr, cc = r + dr, c + dc
         if 0 <= rr < rows and 0 <= cc < cols:
             n.add((rr, cc))
     return n
@@ -59,9 +54,9 @@ class Tests(unittest.TestCase):
         [1, 0, 4, 5, 6, 7, 3, 2],
     ]
 
-    def test_find_trailheads(self):
+    def test_trailheads(self):
         self.assertEqual(
-            find_trailheads(self.sample),
+            trailheads(self.sample),
             [
                 (0, 2),
                 (0, 4),
@@ -75,16 +70,16 @@ class Tests(unittest.TestCase):
             ],
         )
 
-    def test_score(self):
-        self.assertEqual(score(self.sample, (0, 2)), 5)
-        self.assertEqual(score(self.sample, (0, 4)), 6)
-        self.assertEqual(score(self.sample, (2, 4)), 5)
-        self.assertEqual(score(self.sample, (4, 6)), 3)
-        self.assertEqual(score(self.sample, (5, 2)), 1)
-        self.assertEqual(score(self.sample, (5, 5)), 3)
-        self.assertEqual(score(self.sample, (6, 0)), 5)
-        self.assertEqual(score(self.sample, (6, 6)), 3)
-        self.assertEqual(score(self.sample, (7, 1)), 5)
+    def test_score_and_rating(self):
+        self.assertEqual(score_and_rating(self.sample, (0, 2)), (5, 20))
+        self.assertEqual(score_and_rating(self.sample, (0, 4)), (6, 24))
+        self.assertEqual(score_and_rating(self.sample, (2, 4)), (5, 10))
+        self.assertEqual(score_and_rating(self.sample, (4, 6)), (3, 4))
+        self.assertEqual(score_and_rating(self.sample, (5, 2)), (1, 1))
+        self.assertEqual(score_and_rating(self.sample, (5, 5)), (3, 4))
+        self.assertEqual(score_and_rating(self.sample, (6, 0)), (5, 5))
+        self.assertEqual(score_and_rating(self.sample, (6, 6)), (3, 8))
+        self.assertEqual(score_and_rating(self.sample, (7, 1)), (5, 5))
 
     def test_neighbors(self):
         R, C = 8, 8
@@ -121,8 +116,10 @@ if __name__ == "__main__":
             print("✅")
 
     grid = parse(filename)
-    p1 = part1(grid)
-    p2 = None
+    scores_and_ratings = [score_and_rating(grid, head) for head in trailheads(grid)]
+
+    p1 = sum(score for score, _ in scores_and_ratings)
+    p2 = sum(rating for _, rating in scores_and_ratings)
 
     check(1, p1, 36 if is_sample else 698)
-    check(2, p2)
+    check(2, p2, 81 if is_sample else 1436)
