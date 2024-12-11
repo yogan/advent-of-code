@@ -1,7 +1,7 @@
-# [Advent of Code 2024](https://adventofcode.com/2024) (20/50 ✨)
+# [Advent of Code 2024](https://adventofcode.com/2024) (22/50 ✨)
 
 **Languages: 7** *(1 × Awk, 1 × Bash, 1 × C#, 1 × Dart, 1 × Elixir,
-9 × Python, 1 × Vim)*
+10 × Python, 1 × Vim)*
 
 ## [Day 01: Historian Hysteria](https://adventofcode.com/2024/day/1) 📜
   - ⭐⭐ [**A**wk](day-01-awk/aoc.awk)
@@ -43,3 +43,6 @@
 
 ## [Day 10: Hoof It](https://adventofcode.com/2024/day/10) 🌋
   - ⭐⭐ [Python](day-10-python/aoc.py)
+
+## [Day 11: Plutonian Pebbles](https://adventofcode.com/2024/day/11) 🪨
+  - ⭐⭐ [Python](day-11-python/aoc.py)

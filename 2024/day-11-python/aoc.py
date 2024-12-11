@@ -3,34 +3,53 @@ import unittest
 
 
 def parse(filename):
-    return list(map(int, open(filename).read().split()))
+    dict = {}
+    for num_str in open(filename).read().split():
+        num = int(num_str)
+        if num in dict:
+            dict[num] += 1
+        else:
+            dict[num] = 1
+    return dict
 
 
-def part1(stones):
-    for _ in range(25):
+def blinkblink(stones, times):
+    for _ in range(times):
         stones = blink(stones)
-    return len(stones)
+    return sum(stones.values())
 
 
 def blink(stones):
-    new_stones = []
-    for stone in stones:
-        stone_str = str(stone)
-        if stone == 0:
-            new_stones.append(1)
-        elif len(stone_str) % 2 == 0:
-            mid = len(stone_str) // 2
-            new_stones.append(int(stone_str[:mid]))
-            new_stones.append(int(stone_str[mid:]))
-        else:
-            new_stones.append(stone * 2024)
+    new_stones = {}
+
+    for stone, factor in stones.items():
+        for new_stone in evolve(stone):
+            if new_stone in new_stones:
+                new_stones[new_stone] += factor
+            else:
+                new_stones[new_stone] = factor
 
     return new_stones
 
 
+def evolve(stone):
+    if stone == 0:
+        return [1]
+
+    stone_str = str(stone)
+    if len(stone_str) % 2 == 0:
+        mid = len(stone_str) // 2
+        return [int(stone_str[:mid]), int(stone_str[mid:])]
+
+    return [stone * 2024]
+
+
 class Tests(unittest.TestCase):
     def test_blink(self):
-        self.assertEqual(blink([0, 1, 10, 99, 999]), [1, 2024, 1, 0, 9, 9, 2021976])
+        self.assertEqual(
+            blink({0: 1, 1: 1, 10: 1, 99: 1, 999: 1}),
+            {1: 2, 2024: 1, 0: 1, 9: 2, 2021976: 1},
+        )
 
 
 if __name__ == "__main__":
@@ -57,8 +76,8 @@ if __name__ == "__main__":
             print("✅")
 
     stones = parse(filename)
-    p1 = part1(stones)
-    p2 = None
+    p1 = blinkblink(stones, 25)
+    p2 = blinkblink(stones, 75)
 
     check(1, p1, 55312 if is_sample else 233050)
-    check(2, p2)
+    check(2, p2, 65601038650482 if is_sample else 276661131175807)
