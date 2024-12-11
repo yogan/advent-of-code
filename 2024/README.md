@@ -1,7 +1,7 @@
 # [Advent of Code 2024](https://adventofcode.com/2024) (22/50 ✨)
 
-**Languages: 7** *(1 × Awk, 1 × Bash, 1 × C#, 1 × Dart, 1 × Elixir,
-10 × Python, 1 × Vim)*
+**Languages: 7** *(1 × Awk, 1 × Bash, 1 × C#, 1 × Dart, 1 × Elixir, ½ ×
+Fortran, 10 × Python, 1 × Vim)*
 
 ## [Day 01: Historian Hysteria](https://adventofcode.com/2024/day/1) 📜
   - ⭐⭐ [**A**wk](day-01-awk/aoc.awk)
@@ -27,6 +27,9 @@
   - ⭐⭐ [Python](day-05-python/aoc.py)
 
 ## [Day 06: Guard Gallivant](https://adventofcode.com/2024/day/6) 🛡️
+  - ⭐ [**F**ortran](day-06-fortran/aoc.f90)
+    ([tests](day-06-fortran/tests.f90), [main](day-06-fortran/main.f90),
+    part 1 only)
   - ⭐⭐ [Python](day-06-python/aoc.py)
 
 ## [Day 07: Bridge Repair](https://adventofcode.com/2024/day/7) 🌉
