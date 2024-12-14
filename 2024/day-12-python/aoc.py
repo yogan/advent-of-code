@@ -7,11 +7,15 @@ def parse(filename):
     return [line.strip() for line in open(filename).readlines()]
 
 
-def part1(lines):
-    return sum(a * p for a, p in regions(lines))
+def part1(regions):
+    return sum(a * p for a, p, _ in regions)
 
 
-def regions(lines):
+def part2(regions):
+    return sum(a * s for a, _, s in regions)
+
+
+def find_regions(lines):
     rows, cols = len(lines), len(lines[0])
     seen = set()
     regions = []
@@ -20,9 +24,8 @@ def regions(lines):
             if (r, c) in seen:
                 continue
             region = flood_fill(lines, r, c, rows, cols, seen)
-            a = len(region)
-            p = perimeter(region, lines, r, c, rows, cols)
-            regions.append((a, p))
+            sides = perimeter(region, lines, r, c, rows, cols)
+            regions.append((len(region), len(sides), count_sides(sides)))
     return regions
 
 
@@ -50,13 +53,55 @@ def flood_fill(lines, r, c, rows, cols, seen):
 def perimeter(region, lines, r, c, rows, cols):
     char = lines[r][c]
     seen = set()
-    p = 0
+    sides = set()
     for r, c in region:
         seen.add((r, c))
-        for rr, cc in [(r - 1, c), (r + 1, c), (r, c - 1), (r, c + 1)]:
+        for rr, cc, side in [
+            (r - 1, c, ("T", r, c)),
+            (r + 1, c, ("B", r + 1, c)),
+            (r, c - 1, ("L", r, c)),
+            (r, c + 1, ("R", r, c + 1)),
+        ]:
             if rr < 0 or rr >= rows or cc < 0 or cc >= cols or lines[rr][cc] != char:
-                p += 1
-    return p
+                sides.add(side)
+    return sides
+
+
+def count_sides(sides):
+    res = 0
+    seen = set()
+
+    for dir, r, c in sides:
+        if (dir, r, c) in seen:
+            continue
+
+        res += 1
+        seen.add((dir, r, c))
+
+        if dir == "T" or dir == "B":
+            # add all directly left
+            cc = c - 1
+            while (dir, r, cc) in sides and (dir, r, cc) not in seen:
+                seen.add((dir, r, cc))
+                cc -= 1
+            # add all directly right
+            cc = c + 1
+            while (dir, r, cc) in sides and (dir, r, cc) not in seen:
+                seen.add((dir, r, cc))
+                cc += 1
+        else:
+            # add all directly above
+            rr = r - 1
+            while (dir, rr, c) in sides and (dir, rr, c) not in seen:
+                seen.add((dir, rr, c))
+                rr -= 1
+            # add all directly below
+            rr = r + 1
+            while (dir, rr, c) in sides and (dir, rr, c) not in seen:
+                seen.add((dir, rr, c))
+                rr += 1
+
+    return res
 
 
 class Tests(unittest.TestCase):
@@ -67,15 +112,83 @@ class Tests(unittest.TestCase):
         "EEEC",
     ]
 
-    def test_regions(self):
+    sample2 = [
+        "RRRRIICCFF",
+        "RRRRIICCCF",
+        "VVRRRCCFFF",
+        "VVRCCCJFFF",
+        "VVVVCJJCFE",
+        "VVIVCCJJEE",
+        "VVIIICJJEE",
+        "MIIIIIJJEE",
+        "MIIISIJEEE",
+        "MMMISSJEEE",
+    ]
+
+    def test_find_regions_sample1(self):
         self.assertEqual(
-            regions(self.sample1),
+            find_regions(self.sample1),
             [
-                (4, 10),  # A
-                (4, +8),  # B
-                (4, 10),  # C
-                (1, +4),  # D
-                (3, +8),  # E
+                (4, 10, 4),  # A
+                (4, +8, 4),  # B
+                (4, 10, 8),  # C
+                (1, +4, 4),  # D
+                (3, +8, 4),  # E
+            ],
+        )
+
+    def test_find_regions_sample2(self):
+        self.assertEqual(
+            find_regions(self.sample2),
+            [
+                (12, 18, 10),  # R
+                (+4, +8, +4),  # I
+                (14, 28, 22),  # C
+                (10, 18, 12),  # F
+                (13, 20, 10),  # V
+                (11, 20, 12),  # J
+                (+1, +4, +4),  # C
+                (13, 18, +8),  # E
+                (14, 22, 16),  # I
+                (+5, 12, +6),  # M
+                (+3, +8, +6),  # S
+            ],
+        )
+
+    def test_find_regions_sample_e(self):
+        self.assertEqual(
+            find_regions(
+                [
+                    "EEEEE",
+                    "EXXXX",
+                    "EEEEE",
+                    "EXXXX",
+                    "EEEEE",
+                ]
+            ),
+            [
+                (17, 36, 12),  # E
+                (+4, 10, +4),  # X top
+                (+4, 10, +4),  # X bottom
+            ],
+        )
+
+    def test_find_regions_sample_ab(self):
+        self.assertEqual(
+            find_regions(
+                [
+                    "AAAAAA",
+                    "AAABBA",
+                    "AAABBA",
+                    "ABBAAA",
+                    "ABBAAA",
+                    "AAAAAA",
+                ]
+            ),
+            [
+                (28, 40, 12),  # A
+                (+4, +8, +4),  # B top
+                (+4, +8, +4),  # B bottom
             ],
         )
 
@@ -114,7 +227,22 @@ class Tests(unittest.TestCase):
                 rows,
                 cols,
             ),
-            10,
+            {
+                # above
+                ("T", 0, 0),
+                ("T", 0, 1),
+                ("T", 0, 2),
+                ("T", 0, 3),
+                # below
+                ("B", 1, 0),
+                ("B", 1, 1),
+                ("B", 1, 2),
+                ("B", 1, 3),
+                # left
+                ("L", 0, 0),
+                # right
+                ("R", 0, 4),
+            },
         )
 
 
@@ -141,9 +269,9 @@ if __name__ == "__main__":
                 exit(1)
             print("✅")
 
-    lines = parse(filename)
-    p1 = part1(lines)
-    p2 = None
+    regions = find_regions(parse(filename))
+    p1 = part1(regions)
+    p2 = part2(regions)
 
     check(1, p1, 1930 if is_sample else 1361494)
-    check(2, p2)
+    check(2, p2, 1206 if is_sample else 830516)
