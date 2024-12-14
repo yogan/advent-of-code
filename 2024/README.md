@@ -49,3 +49,9 @@ Fortran, 10 × Python, 1 × Vim)*
 
 ## [Day 11: Plutonian Pebbles](https://adventofcode.com/2024/day/11) 🪨
   - ⭐⭐ [Python](day-11-python/aoc.py)
+
+## [Day 14: Restroom Redoubt](https://adventofcode.com/2024/day/14) 🚽
+  - ⭐⭐ [Python](day-14-python/aoc.py) part 1 is simple modulo arithmetic, part
+    2 is wild - finding the Christmas tree was not easy, I ended up with a quite
+    slow (~ 40 sec) solution that checks for the existence of a long horizontal
+    line of robots, which indicates something visually interesting

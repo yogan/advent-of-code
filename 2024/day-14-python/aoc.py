@@ -43,10 +43,43 @@ def count_quadrants(positions, max_x, max_y):
     return (top_left, top_right, bottom_left, bottom_right)
 
 
+def has_long_horizontal_line(positions, max_x, max_y):
+    for y in range(max_y):
+        longest = 0
+        count = 0
+        for x in range(1, max_x):
+            if (x, y) in positions:
+                count += 1
+            else:
+                if count > longest:
+                    longest = count
+                count = 0
+        if count > longest:
+            longest = count
+        if longest >= 10:
+            return True
+    return False
+
+
 def part1(robots, max_x, max_y):
     positions = simulate(robots, 100, max_x, max_y)
     tl, tr, bl, br = count_quadrants(positions, max_x, max_y)
     return tl * tr * bl * br
+
+
+def part2(robots, max_x, max_y):
+    for s in range(10100):
+        positions = simulate(robots, s, max_x, max_y)
+        if has_long_horizontal_line(positions, max_x, max_y):
+            # Comment in to see the Christmas tree:
+            # for y in range(max_y):
+            #     for x in range(max_x):
+            #         if (x, y) in positions:
+            #             print("#", end="")
+            #         else:
+            #             print(".", end="")
+            #     print()
+            return s
 
 
 class Tests(unittest.TestCase):
@@ -114,7 +147,7 @@ if __name__ == "__main__":
     max_x = 11 if is_sample else 101
     max_y = +7 if is_sample else 103
     p1 = part1(robots, max_x, max_y)
-    p2 = None
+    p2 = "n/a" if is_sample else part2(robots, max_x, max_y)
 
     check(1, p1, 12 if is_sample else 222208000)
-    check(2, p2)
+    check(2, p2, "n/a" if is_sample else 7623)
