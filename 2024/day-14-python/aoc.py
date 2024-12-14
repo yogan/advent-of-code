@@ -1,3 +1,4 @@
+import os
 import sys
 import unittest
 
@@ -43,22 +44,17 @@ def count_quadrants(positions, max_x, max_y):
     return (top_left, top_right, bottom_left, bottom_right)
 
 
-def has_long_horizontal_line(positions, max_x, max_y):
+def to_printable_lines(positions, max_x, max_y):
+    lines = []
     for y in range(max_y):
-        longest = 0
-        count = 0
-        for x in range(1, max_x):
+        line = ""
+        for x in range(max_x):
             if (x, y) in positions:
-                count += 1
+                line += "█"
             else:
-                if count > longest:
-                    longest = count
-                count = 0
-        if count > longest:
-            longest = count
-        if longest >= 10:
-            return True
-    return False
+                line += " "
+        lines.append(line)
+    return lines
 
 
 def part1(robots, max_x, max_y):
@@ -68,18 +64,21 @@ def part1(robots, max_x, max_y):
 
 
 def part2(robots, max_x, max_y):
-    for s in range(10100):
-        positions = simulate(robots, s, max_x, max_y)
-        if has_long_horizontal_line(positions, max_x, max_y):
+    # Brute-forcing from 1 seconds takes about 40 seconds of run time.
+    # Let's cheat in CI and start slightly before the answer to keep pipelines
+    # fast.
+    seconds = 7500 if "GITHUB_ACTIONS" in os.environ else 1
+    while True:
+        positions = simulate(robots, seconds, max_x, max_y)
+        lines = to_printable_lines(positions, max_x, max_y)
+        pattern = "█" * 16
+        has_horizontal_line = any(pattern in line for line in lines)
+        if has_horizontal_line:
             # Comment in to see the Christmas tree:
-            # for y in range(max_y):
-            #     for x in range(max_x):
-            #         if (x, y) in positions:
-            #             print("#", end="")
-            #         else:
-            #             print(".", end="")
-            #     print()
-            return s
+            # for line in lines:
+            #     print(line)
+            return seconds
+        seconds += 1
 
 
 class Tests(unittest.TestCase):
