@@ -1,7 +1,7 @@
-# [Advent of Code 2024](https://adventofcode.com/2024) (26/50 ✨)
+# [Advent of Code 2024](https://adventofcode.com/2024) (28/50 ✨)
 
 **Languages: 7** *(1 × Awk, 1 × Bash, 1 × C#, 1 × Dart, 1 × Elixir, ½ ×
-Fortran, 11 × Python, 1 × Vim)*
+Fortran, 12 × Python, 1 × Vim)*
 
 ## [Day 01: Historian Hysteria](https://adventofcode.com/2024/day/1) 📜
   - ⭐⭐ [**A**wk](day-01-awk/aoc.awk)
@@ -58,3 +58,6 @@ Fortran, 11 × Python, 1 × Vim)*
     2 is wild - finding the Christmas tree was not easy, I ended up with a quite
     slow (~ 40 sec) solution that checks for the existence of a long horizontal
     line of robots, which indicates something visually interesting
+
+## [Day 15: Warehouse Woes](https://adventofcode.com/2024/day/15) 📦
+  - ⭐⭐ [Python](day-15-python/aoc.py)
