@@ -1,7 +1,7 @@
-# [Advent of Code 2024](https://adventofcode.com/2024) (28/50 ✨)
+# [Advent of Code 2024](https://adventofcode.com/2024) (30/50 ✨)
 
 **Languages: 7** *(1 × Awk, 1 × Bash, 1 × C#, 1 × Dart, 1 × Elixir, ½ ×
-Fortran, 12 × Python, 1 × Vim)*
+Fortran, 13 × Python, 1 × Vim)*
 
 ## [Day 01: Historian Hysteria](https://adventofcode.com/2024/day/1) 📜
   - ⭐⭐ [**A**wk](day-01-awk/aoc.awk)
@@ -61,3 +61,7 @@ Fortran, 12 × Python, 1 × Vim)*
 
 ## [Day 15: Warehouse Woes](https://adventofcode.com/2024/day/15) 📦
   - ⭐⭐ [Python](day-15-python/aoc.py)
+
+## [Day 16: Reindeer Maze](https://adventofcode.com/2024/day/16) 🦌
+  - ⭐⭐ [Python](day-16-python/aoc.py) Dijkstra with priority queue (part 1),
+    BFS for nodes on all shortest paths (part 2)

@@ -33,6 +33,9 @@ def shortest_path(nodes, start, end):
         "N": (-1, 0),
     }
 
+    dist = None
+    prev = {}
+
     distances = {}
     for node in nodes:
         for dir in "ESWN":
@@ -46,21 +49,45 @@ def shortest_path(nodes, start, end):
         dist, cur, dir = queue.get()
 
         if cur == end:
-            return dist
+            break
 
         dr, dc = moves[dir]
         next = (cur[0] + dr, cur[1] + dc)
         if next in nodes:
             new_dist = dist + 1
-            if new_dist < distances[(next, dir)]:
-                distances[(next, dir)] = new_dist
+            key = (next, dir)
+            if new_dist <= distances[key]:
+                distances[key] = new_dist
+                if key in prev:
+                    prev[key].add((cur, dir))
+                else:
+                    prev[key] = {(cur, dir)}
                 queue.put((new_dist, next, dir))
 
         for new_dir in rotations[dir]:
             new_dist = dist + 1000
-            if new_dist < distances[(cur, new_dir)]:
-                distances[(cur, new_dir)] = new_dist
+            key = (cur, new_dir)
+            if new_dist <= distances[key]:
+                distances[key] = new_dist
+                if key in prev:
+                    prev[key].add((cur, dir))
+                else:
+                    prev[key] = {(cur, dir)}
                 queue.put((new_dist, cur, new_dir))
+
+    nodes_on_path = set()
+    Q = [(end, "E"), (end, "S"), (end, "W"), (end, "N")]
+    while Q:
+        cur, dir = Q.pop(0)
+        nodes_on_path.add(cur)
+        if cur == start:
+            break
+        if (cur, dir) not in prev:
+            continue
+        for prev_node, prev_dir in prev[(cur, dir)]:
+            Q.append((prev_node, prev_dir))
+
+    return dist, len(nodes_on_path)
 
 
 if __name__ == "__main__":
@@ -82,8 +109,9 @@ if __name__ == "__main__":
             print("✅")
 
     nodes, start, end = parse(filename)
-    part1 = shortest_path(nodes, start, end)
-    part2 = None
+    distance, nodes_on_path = shortest_path(nodes, start, end)
+    part1 = distance
+    part2 = nodes_on_path
 
     check(1, part1, 7036 if is_sample else 72400)
-    check(2, part2)
+    check(2, part2, 45 if is_sample else 435)
