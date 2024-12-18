@@ -1,7 +1,7 @@
-# [Advent of Code 2024](https://adventofcode.com/2024) (32/50 ✨)
+# [Advent of Code 2024](https://adventofcode.com/2024) (34/50 ✨)
 
 **Languages: 7** *(1 × Awk, 1 × Bash, 1 × C#, 1 × Dart, 1 × Elixir, ½ ×
-Fortran, 14 × Python, 1 × Vim)*
+Fortran, 15 × Python, 1 × Vim)*
 
 ## [Day 01: Historian Hysteria](https://adventofcode.com/2024/day/1) 📜
   - ⭐⭐ [**A**wk](day-01-awk/aoc.awk)
@@ -76,3 +76,9 @@ Fortran, 14 × Python, 1 × Vim)*
     that only the lowest 3 bits of the registered are used per iteration. The
     register value is then shifted right by 3 bits. This allows to find the
     right starting value by trying bit triplets for each of the output digits.
+
+## [Day 18: RAM Run](https://adventofcode.com/2024/day/18) 🏃
+  - ⭐⭐ [Python](day-18-python/aoc.py) Refreshingly easy day after the horrors
+    of day 17 part 2. Part 1 is a simple shortest path search, part 2 is just
+    checking when there is no more path, which can actually be brute forced in a
+    very naive way, or sped up significantly by using a binary search.

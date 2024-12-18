@@ -1,5 +1,4 @@
 import sys
-import unittest
 
 
 def parse():
@@ -30,22 +29,26 @@ def shortest_path(memory, bytes, size):
             queue.append(((xx, yy), steps + 1))
 
 
-class Tests(unittest.TestCase):
-    pass
+def find_first_blocking_byte(memory, start, size):
+    # Binary search in range [start, len(memory)], run time ~ 150 ms.
+    # Going linearly through the range takes a whopping 50 seconds.
+    left, right = start, len(memory)
+    while left < right:
+        mid = (left + right) // 2
+        if shortest_path(memory, mid, size):
+            left = mid + 1
+        else:
+            right = mid
+    return f"{memory[left-1][0]},{memory[left-1][1]}"
 
 
 if __name__ == "__main__":
     flags = set(arg for arg in sys.argv[1:] if arg.startswith("-"))
     args = [arg for arg in sys.argv[1:] if not arg.startswith("-")]
-    sys.argv = sys.argv[:1]  # strip args, unittest.main() doesn't like them
 
     filename = "sample.txt" if "-s" in flags or "--sample" in flags else "input.txt"
     filename = args[0] if args else filename
     is_sample = filename.startswith("sample")
-    run_tests = "-t" in flags or "--test" in flags
-
-    if run_tests:
-        unittest.main(exit=True)
 
     def check(part, actual, expected=None):
         print(f"Part {part}{' (sample)' if is_sample else ''}: {actual} ", end="")
@@ -61,7 +64,7 @@ if __name__ == "__main__":
     take = 12 if is_sample else 1024
     size = +6 if is_sample else 70
     part1 = shortest_path(memory, take, size)
-    part2 = None
+    part2 = find_first_blocking_byte(memory, take, size)
 
     check(1, part1, 22 if is_sample else 312)
-    check(2, part2)
+    check(2, part2, "6,1" if is_sample else "28,26")
