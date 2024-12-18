@@ -3,11 +3,11 @@
 *German language only, the programming language itself is German.*
 
 - [DDP-Webseite](https://ddp.im)
-- [Bedienungsanleitung](https://doku.ddp.im/de)
+- [Bedienungsanleitung](https://doku.ddp.im)
 
 ## Entwicklungsumgebung
 
-- [Installation wie beschrieben](https://doku.ddp.im/de/Einstieg/Installation)
+- [Installation wie beschrieben](https://doku.ddp.im/Einstieg/Installation)
 - Ausführen mit `kddp starte MeinProgramm.ddp`
 - Alternativ auch kompilierbar mit `kddp kompiliere MeinProgramm.ddp && ./MeinProgramm`
 - Programmierung am besten mit VS Code und der [DDP-VS-Code-Erweiterung](https://marketplace.visualstudio.com/items?itemName=DDP-Projekt.vscode-ddp)

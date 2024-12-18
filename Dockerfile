@@ -36,7 +36,7 @@ RUN mkdir -p /etc/apt/keyrings && \
     apt-get update && \
     apt-get install -y nodejs
 
-# DDP - https://ddp.le0n.dev/Bedienungsanleitung/DE/Einstieg/Installation
+# DDP - https://doku.ddp.im/Einstieg/Installation/
 RUN cd /usr/local/share/ && \
     curl -fsSLO https://github.com/DDP-Projekt/Kompilierer/releases/download/v0.2.0-alpha/DDP-v0.2.0-alpha-linux-amd64.tar.gz && \
     tar -xzf ./DDP-v0.2.0-alpha-linux-amd64.tar.gz && \
