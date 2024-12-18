@@ -1,0 +1,70 @@
+Register A: 28422061
+Register B: 0
+Register C: 0
+
+Program: 2,4,1,1,7,5,1,5,4,2,5,5,0,3,3,0
+
+--------------------------------------------------------------------------------
+
+OPERATIONS
+
+2,4
+b = combo(4) % 8
+b = a % 8
+
+1,1
+b = b ^ 1       # flip last bit
+
+7,5
+c = a >> combo(5)
+c = a >> b
+
+1,5
+b = b ^ 5₁₀
+b = b ^ 101₂
+
+4,2
+b = b ^ c
+
+5,5
+out(b % 8)
+
+0,3
+a = a >> 3      # right shift a by 3 = drop the last 3 bits
+
+3,0
+jnz 0           # goto op 0 (2,4) if a is not 0 -> program loops until a = 0
+
+--------------------------------------------------------------------------------
+
+DECOMPILED PROGRAM
+
+b = a % 8
+b = b ^ 1       # flip last bit
+c = a >> b
+b = b ^ 101₂
+b = b ^ c
+out(b % 8)
+a = a >> 3      # right shift a by 3 = drop the last 3 bits
+jnz 0           # goto op 0 (2,4) if a is not 0 -> program loops until a = 0
+
+--------------------------------------------------------------------------------
+
+OBSERVATIONS
+
+- x % 8 is the same as taking the last three bits of x
+- a is only shifted right by 3 bits each loop
+- one out() each loop
+- to get 16 digits of output, a has to have 3 * 16 = 48 bits
+
+- output is last 3 digits of b per loop
+- b starts with:
+    - last three digits of a
+    - last bit is flipped
+    - then XORed with 101
+    - then XORed with c, where c is a shifted right by the last three digits of
+      a but last bit flipped (wtf)
+
+- we should be able to find right output digits from right to left by checking
+  all 7 bit values for a, and once one is found we shift a right by 3 and try
+  again all 7 bit values for the next right digit of the output

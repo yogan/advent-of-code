@@ -1,7 +1,7 @@
-# [Advent of Code 2024](https://adventofcode.com/2024) (30/50 ✨)
+# [Advent of Code 2024](https://adventofcode.com/2024) (32/50 ✨)
 
 **Languages: 7** *(1 × Awk, 1 × Bash, 1 × C#, 1 × Dart, 1 × Elixir, ½ ×
-Fortran, 13 × Python, 1 × Vim)*
+Fortran, 14 × Python, 1 × Vim)*
 
 ## [Day 01: Historian Hysteria](https://adventofcode.com/2024/day/1) 📜
   - ⭐⭐ [**A**wk](day-01-awk/aoc.awk)
@@ -65,3 +65,14 @@ Fortran, 13 × Python, 1 × Vim)*
 ## [Day 16: Reindeer Maze](https://adventofcode.com/2024/day/16) 🦌
   - ⭐⭐ [Python](day-16-python/aoc.py) Dijkstra with priority queue (part 1),
     BFS for nodes on all shortest paths (part 2)
+
+## [Day 17: Chronospatial Computer](https://adventofcode.com/2024/day/17) 🖥️
+  - ⭐⭐ [Python](day-17-python/aoc.py) Part 1 is just simulating a CPU with
+    some op codes, but part 2 was really wild. You have to find a register
+    starting value that leads to the program outputting itself, turning it into
+    a [quine](https://en.wikipedia.org/wiki/Quine_(computing)). I had to take
+    some hints to point me in the right direction here. Analyzing the decompiled
+    program shows that the register is used in a loop to produce the output, and
+    that only the lowest 3 bits of the registered are used per iteration. The
+    register value is then shifted right by 3 bits. This allows to find the
+    right starting value by trying bit triplets for each of the output digits.
