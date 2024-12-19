@@ -1,7 +1,7 @@
 # [Advent of Code 2024](https://adventofcode.com/2024) (38/50 ✨)
 
-**Languages: 7** *(1 × Awk, 1 × Bash, 1 × C#, 1 × Dart, 1 × Elixir, 1 × Fortran,
-17 × Python, 1 × Vim)*
+**Languages: 9** *(1 × Awk, 1 × Bash, 1 × C#, 1 × Dart, 1 × Elixir, 1 × Fortran,
+1 × Gleam, 17 × Python, 1 × Vim)*
 
 ## [Day 01: Historian Hysteria](https://adventofcode.com/2024/day/1) 📜
   - ⭐⭐ [**A**wk](day-01-awk/aoc.awk)
@@ -33,6 +33,8 @@
   - ⭐⭐ [Python](day-06-python/aoc.py)
 
 ## [Day 07: Bridge Repair](https://adventofcode.com/2024/day/7) 🌉
+  - ⭐⭐ [**G**leam](day-07-gleam/src/aoc.gleam)
+    ([tests](day-07-gleam/test/aoc_test.gleam))
   - ⭐⭐ [Python](day-07-python/aoc.py) using
     [`itertools.product`](https://docs.python.org/3/library/itertools.html#itertools.product)
     and brute force (run time is ~1 second, so it's fine)
