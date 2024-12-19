@@ -1,7 +1,7 @@
-# [Advent of Code 2024](https://adventofcode.com/2024) (36/50 ✨)
+# [Advent of Code 2024](https://adventofcode.com/2024) (38/50 ✨)
 
 **Languages: 7** *(1 × Awk, 1 × Bash, 1 × C#, 1 × Dart, 1 × Elixir, ½ ×
-Fortran, 16 × Python, 1 × Vim)*
+Fortran, 17 × Python, 1 × Vim)*
 
 ## [Day 01: Historian Hysteria](https://adventofcode.com/2024/day/1) 📜
   - ⭐⭐ [**A**wk](day-01-awk/aoc.awk)
@@ -52,6 +52,9 @@ Fortran, 16 × Python, 1 × Vim)*
 
 ## [Day 12: Garden Groups](https://adventofcode.com/2024/day/12) 🪴
   - ⭐⭐ [Python](day-12-python/aoc.py) pretty tough part 2
+
+## [Day 13: Claw Contraption](https://adventofcode.com/2024/day/13) 🏗️
+  - ⭐⭐ [Python](day-13-python/aoc.py) zomg math
 
 ## [Day 14: Restroom Redoubt](https://adventofcode.com/2024/day/14) 🚽
   - ⭐⭐ [Python](day-14-python/aoc.py) part 1 is simple modulo arithmetic, part

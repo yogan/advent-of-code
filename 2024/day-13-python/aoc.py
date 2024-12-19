@@ -17,24 +17,57 @@ def parse():
     return machines
 
 
+def patch_prizes(machines):
+    for machine in machines:
+        px, py = machine["prize"]
+        machine["prize"] = (px + 10000000000000, py + 10000000000000)
+
+
+# px = ax * i + bx * j
+# py = ay * i + by * j
+#
+# Solving for i and j:
+# ax * i = px - bx * j
+# i = (px - bx * j) / ax
+#
+# bx * j = px - ax * i
+# j = (px - ax * i) / bx
+#
+# ay * i = py - by * j
+# i = (py - by * j) / ay
+#
+# by * j = py - ay * i
+# j = (py - ay * i) / by
+#
+# Equations:
+# i = (px - bx * j) / ax
+# j = (px - ax * i) / bx
+# i = (py - by * j) / ay
+# j = (py - ay * i) / by
+#
+# Substituting j:
+# i = (px - bx * ((py - ay * i) / by)) / ax
+# i = (px - bx * py / by + bx * ay * i / by) / ax
+# i = (px * by - bx * py + bx * ay * i) / (ax * by)
+# i * (ax * by - bx * ay) = px * by - bx * py
+# i = (px * by - bx * py) / (ax * by - bx * ay)
+
+
 def min_cost(machine):
     ax, ay = machine["a"]
     bx, by = machine["b"]
     px, py = machine["prize"]
 
-    best = None
-    for i in range(101):
-        for j in range(101):
-            x = ax * i + bx * j
-            y = ay * i + by * j
-            if (x, y) == (px, py):
-                cost = 3 * i + j
-                if not best or cost < best:
-                    best = cost
-    return best
+    i, i_rest = divmod(px * by - bx * py, ax * by - bx * ay)
+    j, j_rest = divmod(px - ax * i, bx)
+
+    if i_rest or j_rest:
+        return None
+
+    return 3 * i + j
 
 
-def part1(machines):
+def required_tokens(machines):
     costs = [min_cost(machine) for machine in machines]
     return sum(cost for cost in costs if cost is not None)
 
@@ -79,8 +112,9 @@ if __name__ == "__main__":
             print("✅")
 
     machines = parse()
-    p1 = part1(machines)
-    p2 = None
+    p1 = required_tokens(machines)
+    patch_prizes(machines)
+    p2 = required_tokens(machines)
 
     check(1, p1, 480 if is_sample else 40069)
-    check(2, p2)
+    check(2, p2, 875318608908 if is_sample else 71493195288102)
