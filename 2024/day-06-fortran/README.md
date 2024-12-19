@@ -12,5 +12,5 @@
 ## Watch Mode
 
 ```sh
-fd | entr -cc -s './build-ci.sh && ./test.sh; echo; ./run.sh'
+fd | entr -cc -s './build-ci.sh && ./test.sh && echo && ./run.sh'
 ```

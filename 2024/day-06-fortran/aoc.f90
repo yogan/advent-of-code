@@ -2,10 +2,12 @@ module aoc
    implicit none
 
    type :: position
-      integer :: r
-      integer :: c
+      integer :: r, c
    end type position
 
+   type :: directed_position
+      integer :: r, c, dr, dc
+   end type directed_position
 contains
 
    subroutine read_file(filename, lines)
@@ -47,17 +49,29 @@ contains
       end do
    end subroutine find_guard
 
-   subroutine part1(lab, visited, visited_size)
+   subroutine travel(lab, guard, visited, visited_size, loops)
       character(len=*), dimension(:), intent(in) :: lab
+      type(position), intent(in) :: guard
       type(position), dimension(:), intent(inout) :: visited
       integer, intent(inout) :: visited_size
-      integer :: r, c, d_tmp, dr = -1, dc = 0
+      logical, intent(inout) :: loops
+      type(directed_position), dimension(size(visited)) :: visited_dir
+      integer :: r, c, d_tmp, dr, dc, visited_dir_size
       type(position) :: pos
+      type(directed_position) :: pos_dir
 
-      call find_guard(lab, r, c)
+      loops = .false.
+      dr = -1
+      dc = 0
+      r = guard%r
+      c = guard%c
+      visited_size = 0
+      visited_dir_size = 0
 
       pos = position(r, c)
+      pos_dir = directed_position(r, c, dr, dc)
       call add_to_set(visited, visited_size, pos)
+      call add_to_set_dir(visited_dir, visited_dir_size, pos_dir)
 
       do
          if (r+dr < 1 .or. r+dr > size(lab) .or. c+dc < 1 .or. c+dc > len(lab(r))) then
@@ -71,10 +85,16 @@ contains
             r = r + dr
             c = c + dc
             pos = position(r, c)
+            pos_dir = directed_position(r, c, dr, dc)
+            if (is_in_set_dir(visited_dir, visited_dir_size, pos_dir)) then
+               loops = .true.
+               exit
+            end if
             call add_to_set(visited, visited_size, pos)
+            call add_to_set_dir(visited_dir, visited_dir_size, pos_dir)
          end if
       end do
-   end subroutine part1
+   end subroutine travel
 
    subroutine add_to_set(set, size, pos)
       type(position), dimension(:), intent(inout) :: set
@@ -82,12 +102,55 @@ contains
       type(position), intent(in) :: pos
       integer :: i
 
-      do i = 1, size
-         if (set(i)%r == pos%r .and. set(i)%c == pos%c) return
-      end do
+      if (is_in_set(set, size, pos)) return
 
       size = size + 1
       set(size) = pos
    end subroutine add_to_set
+
+   subroutine add_to_set_dir(set, size, dir_pos)
+      type(directed_position), dimension(:), intent(inout) :: set
+      integer, intent(inout) :: size
+      type(directed_position), intent(in) :: dir_pos
+      integer :: i
+
+      if (is_in_set_dir(set, size, dir_pos)) return
+
+      size = size + 1
+      set(size) = dir_pos
+   end subroutine add_to_set_dir
+
+   function is_in_set(set, size, pos) result(res)
+      type(position), dimension(:), intent(in) :: set
+      integer, intent(in) :: size
+      type(position), intent(in) :: pos
+      logical :: res
+      integer :: i
+
+      res = .false.
+      do i = 1, size
+         if (set(i)%r == pos%r .and. set(i)%c == pos%c) then
+            res = .true.
+            return
+         end if
+      end do
+   end function is_in_set
+
+   function is_in_set_dir(set, size, dir_pos) result(res)
+      type(directed_position), dimension(:), intent(in) :: set
+      integer, intent(in) :: size
+      type(directed_position), intent(in) :: dir_pos
+      logical :: res
+      integer :: i
+
+      res = .false.
+      do i = 1, size
+         if (set(i)%r  == dir_pos%r  .and. set(i)%c  == dir_pos%c .and. &
+             set(i)%dr == dir_pos%dr .and. set(i)%dc == dir_pos%dc) then
+            res = .true.
+            return
+         end if
+      end do
+   end function is_in_set_dir
 
 end module aoc
