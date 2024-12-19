@@ -9,9 +9,13 @@ def parse(filename):
     return patterns, designs
 
 
-def is_possible(patterns, design):
+def combinations(patterns, design, cache={}):
+    if design in cache:
+        return cache[design]
+
     if not design:
-        return True
+        cache[design] = 1
+        return 1
 
     rests = []
 
@@ -19,20 +23,22 @@ def is_possible(patterns, design):
         if design.startswith(pattern):
             rests.append(design[len(pattern) :])
 
-    return any(is_possible(patterns, rest) for rest in rests)
+    count = sum(combinations(patterns, rest) for rest in rests)
+    cache[design] = count
+    return count
 
 
 class Tests(unittest.TestCase):
-    def test_is_possible(self):
+    def test_combinations(self):
         patterns = ["r", "wr", "b", "g", "bwu", "rb", "gb", "br"]
-        self.assertTrue(is_possible(patterns, "brwrr"))
-        self.assertTrue(is_possible(patterns, "bggr"))
-        self.assertTrue(is_possible(patterns, "gbbr"))
-        self.assertTrue(is_possible(patterns, "rrbgbr"))
-        self.assertFalse(is_possible(patterns, "ubwu"))
-        self.assertTrue(is_possible(patterns, "bwurrg"))
-        self.assertTrue(is_possible(patterns, "brgr"))
-        self.assertFalse(is_possible(patterns, "bbrgwb"))
+        self.assertEqual(combinations(patterns, "brwrr"), 2)
+        self.assertEqual(combinations(patterns, "bggr"), 1)
+        self.assertEqual(combinations(patterns, "gbbr"), 4)
+        self.assertEqual(combinations(patterns, "rrbgbr"), 6)
+        self.assertEqual(combinations(patterns, "ubwu"), 0)
+        self.assertEqual(combinations(patterns, "bwurrg"), 1)
+        self.assertEqual(combinations(patterns, "brgr"), 2)
+        self.assertEqual(combinations(patterns, "bbrgwb"), 0)
 
 
 if __name__ == "__main__":
@@ -59,8 +65,8 @@ if __name__ == "__main__":
             print("✅")
 
     patterns, designs = parse(filename)
-    part1 = sum(is_possible(patterns, design) for design in designs)
-    part2 = None
+    part1 = sum(1 for design in designs if combinations(patterns, design))
+    part2 = sum(combinations(patterns, design) for design in designs)
 
-    check(1, part1, 6 if is_sample else 276)
-    check(2, part2)
+    check(1, part1, +6 if is_sample else 276)
+    check(2, part2, 16 if is_sample else 681226908011510)
