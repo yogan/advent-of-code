@@ -1,7 +1,7 @@
-# [Advent of Code 2024](https://adventofcode.com/2024) (38/50 ✨)
+# [Advent of Code 2024](https://adventofcode.com/2024) (40/50 ✨)
 
 **Languages: 9** *(1 × Awk, 1 × Bash, 1 × C#, 1 × Dart, 1 × Elixir, 1 × Fortran,
-1 × Gleam, 17 × Python, 1 × Vim)*
+1 × Gleam, 18 × Python, 1 × Vim)*
 
 ## [Day 01: Historian Hysteria](https://adventofcode.com/2024/day/1) 📜
   - ⭐⭐ [**A**wk](day-01-awk/aoc.awk)
@@ -90,3 +90,8 @@
 
 ## [Day 19: Line Layout](https://adventofcode.com/2024/day/19) 🧵
   - ⭐⭐ [Python](day-19-python/aoc.py) recursion goes brrr
+
+## [Day 20: Race Condition](https://adventofcode.com/2024/day/20) 🏁
+  - ⭐⭐ [Python](day-20-python/aoc.py) Very cool problem! Took some time to get
+    to a part 2 solution that is fast enough, but the end result is fantastic
+    and also solves part 2 easily.

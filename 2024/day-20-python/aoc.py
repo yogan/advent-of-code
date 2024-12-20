@@ -16,83 +16,51 @@ def parse(filename):
     return grid, rows, cols, start, end
 
 
-def possible_cheats(grid, rows, cols):
-    cheats = set()
-    for r in range(1, rows - 1):
-        for c in range(1, cols - 1):
-            if grid[r][c] != "#":
-                for dr, dc in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
-                    r1, c1 = (r + 1 * dr, c + 1 * dc)
-                    r2, c2 = (r + 2 * dr, c + 2 * dc)
-                    if (
-                        0 <= r2 < rows
-                        and 0 <= c2 < cols
-                        and grid[r1][c1] == "#"
-                        and grid[r2][c2] != "#"
-                    ):
-                        cheats.add((r1, c1))
-    return cheats
-
-
-def shortest_path(grid, rows, cols, start, end, cheat=None) -> int:
-    queue = deque([(start, 0)])
+def shortest_path(grid, rows, cols, start, end):
     visited = set()
+    queue = deque([[start]])
 
     while queue:
-        (r, c), steps = queue.popleft()
+        path = queue.popleft()
+        pos = path[-1]
 
-        if (r, c) == end:
-            return steps
+        if pos == end:
+            return path
 
-        if (r, c) in visited:
+        if pos in visited:
             continue
+        visited.add(pos)
 
-        visited.add((r, c))
-
+        r, c = pos
         for dr, dc in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
             r1, c1 = (r + dr, c + dc)
-            if (
-                0 <= r1 < rows
-                and 0 <= c1 < cols
-                and (grid[r1][c1] != "#" or (r1, c1) == cheat)
-            ):
-                queue.append(((r1, c1), steps + 1))
-
-    return -1
+            next = (r1, c1)
+            if 0 <= r1 < rows and 0 <= c1 < cols and grid[r1][c1] != "#":
+                queue.append(path + [next])
 
 
-def part1(grid, rows, cols, start, end, min_save):
-    worthwile_cheats = 0
-    regular_path_length = shortest_path(grid, rows, cols, start, end)
+def possible_cheats(path, min_saving, max_cheat_length):
+    num_cheats = 0
 
-    for cheat in possible_cheats(grid, rows, cols):
-        cheat_path_length = shortest_path(grid, rows, cols, start, end, cheat)
-        saving = regular_path_length - cheat_path_length
-        if saving >= min_save:
-            worthwile_cheats += 1
+    for i, (r1, c1) in enumerate(path):
+        for j in range(i + 1, len(path)):
+            r2, c2 = path[j]
+            manhattan_distance = abs(r1 - r2) + abs(c1 - c2)
+            if manhattan_distance > max_cheat_length:
+                continue
+            saving = j - i - manhattan_distance
+            if saving >= min_saving:
+                num_cheats += 1
 
-    return worthwile_cheats
+    return num_cheats
 
 
 class Tests(unittest.TestCase):
-    def test_possible_cheats(self):
-        grid, rows, cols, _, _ = parse("sample.txt")
-        cheats = possible_cheats(grid, rows, cols)
-
-        self.assertEqual(len(cheats), 14 + 14 + 2 + 4 + 2 + 3 + 5 * 1)
-        self.assertIn((+1, +8), cheats)
-        self.assertIn((+7, 10), cheats)
-        self.assertIn((+8, +8), cheats)
-        self.assertIn((+7, +6), cheats)
-
     def test_shortest_path(self):
         grid, rows, cols, start, end = parse("sample.txt")
-
-        self.assertEqual(shortest_path(grid, rows, cols, start, end), 84)
-        self.assertEqual(shortest_path(grid, rows, cols, start, end, (+1, +8)), 84 - 12)
-        self.assertEqual(shortest_path(grid, rows, cols, start, end, (+7, 10)), 84 - 20)
-        self.assertEqual(shortest_path(grid, rows, cols, start, end, (+8, +8)), 84 - 38)
-        self.assertEqual(shortest_path(grid, rows, cols, start, end, (+7, +6)), 84 - 64)
+        path = shortest_path(grid, rows, cols, start, end)
+        assert path is not None
+        self.assertEqual(len(path) - 1, 84)
 
 
 if __name__ == "__main__":
@@ -119,9 +87,14 @@ if __name__ == "__main__":
             print("✅")
 
     grid, rows, cols, start, end = parse(filename)
-    min_save = 10 if is_sample else 100
-    p1 = part1(grid, rows, cols, start, end, min_save)
-    p2 = None
+    no_cheat_path = shortest_path(grid, rows, cols, start, end)
+
+    p1 = possible_cheats(
+        no_cheat_path, min_saving=10 if is_sample else 100, max_cheat_length=2
+    )
+    p2 = possible_cheats(
+        no_cheat_path, min_saving=50 if is_sample else 100, max_cheat_length=20
+    )
 
     check(1, p1, 10 if is_sample else 1409)
-    check(2, p2)
+    check(2, p2, 285 if is_sample else 1012821)
