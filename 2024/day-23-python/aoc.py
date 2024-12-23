@@ -1,20 +1,19 @@
 import sys
+from collections import defaultdict
+
+G = defaultdict(set)
+three_cliques, max_cliques = [], []
 
 
-def parse(filename):
-    E = []
-    V = set()
+def parse():
     for line in open(filename).readlines():
         a, b = line.strip().split("-")
-        E.append((a, b))
-        E.append((b, a))
-        V |= {a, b}
-    return E, list(V)
+        G[a].add(b)
+        G[b].add(a)
 
 
-def solve(E, V):
-    three_cliques, max_cliques = [], []
-    bron_kerbosch(set(), set(V), set(), E, three_cliques, max_cliques)
+def solve():
+    bron_kerbosch(set(), set(G), set())
 
     p1 = sum(any(node.startswith("t") for node in c) for c in three_cliques)
     p2 = ",".join(sorted(max(max_cliques, key=len)))
@@ -22,10 +21,7 @@ def solve(E, V):
     return p1, p2
 
 
-def bron_kerbosch(R, P, X, E, three_cliques, max_cliques):
-    def neighbors(E, v):
-        return set(b for a, b in E if a == v) | set(a for a, b in E if b == v)
-
+def bron_kerbosch(R, P, X):
     if len(R) == 3:
         three_cliques.append(R)
 
@@ -34,8 +30,8 @@ def bron_kerbosch(R, P, X, E, three_cliques, max_cliques):
         return
 
     for v in P.copy():
-        N = neighbors(E, v)
-        bron_kerbosch(R | {v}, P & N, X & N, E, three_cliques, max_cliques)
+        N = G[v]
+        bron_kerbosch(R | {v}, P & N, X & N)
         P.remove(v)
         X.add(v)
 
@@ -58,7 +54,8 @@ if __name__ == "__main__":
                 exit(1)
             print("✅")
 
-    p1, p2 = solve(*parse(filename))
+    parse()
+    p1, p2 = solve()
     p2_exp = "co,de,ka,ta" if is_sample else "cl,df,ft,ir,iy,ny,qp,rb,sh,sl,sw,wm,wy"
     check(1, p1, 7 if is_sample else 1227)
     check(2, p2, p2_exp)
