@@ -1,7 +1,7 @@
-# [Advent of Code 2024](https://adventofcode.com/2024) (43/50 ✨)
+# [Advent of Code 2024](https://adventofcode.com/2024) (45/50 ✨)
 
 **Languages: 9** *(1 × Awk, 1 × Bash, 1 × C#, 1 × Dart, 1 × Elixir, 1 × Fortran,
-1 × Gleam, 21 × Python, 1 × Vim)*
+1 × Gleam, 22 × Python, 1 × Vim)*
 
 ## [Day 01: Historian Hysteria](https://adventofcode.com/2024/day/1) 📜
   - ⭐⭐ [**A**wk](day-01-awk/aoc.awk)
@@ -102,3 +102,8 @@
 ## [Day 22: Monkey Market](https://adventofcode.com/2024/day/22) 🍌
   - ⭐⭐ [Python](day-22-python/aoc.py) quite relaxing and nice after the day 21
     insanity; part 2: sliding window with extra steps
+
+## [Day 23: LAN Party](https://adventofcode.com/2024/day/23) 🕹️
+  - ⭐⭐ [Python](day-23-python/aoc.py) finding (maximum) cliques in a graph,
+    which is NP-hard; got a solution for part 2 the repeatedly grows k-cliques
+    to k+1-cliques, but it takes about an hour to finish

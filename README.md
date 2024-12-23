@@ -12,5 +12,5 @@
 * [2021 solutions](2021-python/README.md) 34/50 ✨ (Python)
 * [2022 solutions](2022/README.md) 46/50 ✨ (14 languages)
 * [2023 solutions](2023/README.md) 50/50 ✨ (6 languages, mostly Python)
-* [2024 solutions](2024/README.md) 43/50 ✨ (Awk, Bash, C#, Dart, Elixir, Fortran, Gleam, Python, Vim)
+* [2024 solutions](2024/README.md) 45/50 ✨ (Awk, Bash, C#, Dart, Elixir, Fortran, Gleam, Python, Vim)
 * [Vim solutions](vim/README.md) 40 ✨ (from 20 days over all years)
