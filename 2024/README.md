@@ -104,6 +104,8 @@
     insanity; part 2: sliding window with extra steps
 
 ## [Day 23: LAN Party](https://adventofcode.com/2024/day/23) 🕹️
-  - ⭐⭐ [Python](day-23-python/aoc.py) finding (maximum) cliques in a graph,
-    which is NP-hard; got a solution for part 2 the repeatedly grows k-cliques
-    to k+1-cliques, but it takes about an hour to finish
+  - ⭐⭐ [Python](day-23-python/aoc.py) finding (maximum) cliques in a graph;
+  initially got a super slow (~ 1 h) solution for part 2, then switched to the
+  [Bron-Kerbosch
+  algorithm](https://en.wikipedia.org/wiki/Bron%E2%80%93Kerbosch_algorithm),
+  which is really fast for the given graph
