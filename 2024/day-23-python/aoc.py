@@ -13,29 +13,21 @@ def parse(filename):
 
 
 def solve(E, V):
-    p1 = len(find_3_cliques(E, V))
+    three_cliques, max_cliques = [], []
+    bron_kerbosch(set(), set(V), set(), E, three_cliques, max_cliques)
 
-    max_cliques = []
-    bron_kerbosch(set(), set(V), set(), E, max_cliques)
-    longest_clique = max(max_cliques, key=len)
-    p2 = ",".join(sorted(longest_clique))
+    p1 = sum(any(node.startswith("t") for node in c) for c in three_cliques)
+    p2 = ",".join(sorted(max(max_cliques, key=len)))
 
     return p1, p2
 
 
-def find_3_cliques(E, V):
-    cliques = set()
-    for a, b in E:
-        for c in V:
-            if (b, c) in E and (c, a) in E:
-                if a[0] == "t" or b[0] == "t" or c[0] == "t":
-                    cliques.add(tuple(sorted([a, b, c])))
-    return cliques
-
-
-def bron_kerbosch(R, P, X, E, max_cliques):
+def bron_kerbosch(R, P, X, E, three_cliques, max_cliques):
     def neighbors(E, v):
         return set(b for a, b in E if a == v) | set(a for a, b in E if b == v)
+
+    if len(R) == 3:
+        three_cliques.append(R)
 
     if not P and not X:
         max_cliques.append(R)
@@ -43,7 +35,7 @@ def bron_kerbosch(R, P, X, E, max_cliques):
 
     for v in P.copy():
         N = neighbors(E, v)
-        bron_kerbosch(R | {v}, P & N, X & N, E, max_cliques)
+        bron_kerbosch(R | {v}, P & N, X & N, E, three_cliques, max_cliques)
         P.remove(v)
         X.add(v)
 
