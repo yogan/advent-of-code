@@ -1,7 +1,7 @@
-# [Advent of Code 2024](https://adventofcode.com/2024) (45/50 ✨)
+# [Advent of Code 2024](https://adventofcode.com/2024) (47/50 ✨)
 
 **Languages: 9** *(1 × Awk, 1 × Bash, 1 × C#, 1 × Dart, 1 × Elixir, 1 × Fortran,
-1 × Gleam, 22 × Python, 1 × Vim)*
+1 × Gleam, 24 × Python, 1 × Vim)*
 
 ## [Day 01: Historian Hysteria](https://adventofcode.com/2024/day/1) 📜
   - ⭐⭐ [**A**wk](day-01-awk/aoc.awk)
@@ -109,3 +109,9 @@
   [Bron-Kerbosch
   algorithm](https://en.wikipedia.org/wiki/Bron%E2%80%93Kerbosch_algorithm),
   which is really fast for the given graph
+
+## [Day 24: Crossed Wires](https://adventofcode.com/2024/day/24) 🔀
+  - ⭐ [Python](day-24-python/aoc.py) part 1 only
+
+## [Day 25: Code Chronicle](https://adventofcode.com/2024/day/25) 🔑
+  - ⭐ [Python](day-25-python/aoc.py)
