@@ -94,16 +94,13 @@ RUN curl -fsSL https://github.com/gleam-lang/gleam/releases/download/v1.0.0/glea
 # tarball has a usr/ directory, so we strip that and extract to /usr
 RUN curl -fsSL https://download.swift.org/swift-5.9.2-release/ubuntu2204/swift-5.9.2-RELEASE/swift-5.9.2-RELEASE-ubuntu22.04.tar.gz | tar -xzf - -C /usr --strip-components=2
 
-# PowerShell universal package
-# https://learn.microsoft.com/en-us/powershell/scripting/install/install-ubuntu?view=powershell-7.4#installation-via-direct-download
-# Using this temp fix until the powershell package can deal with libicu74, the only version of
-# libicu available in Ubuntu 24.04. See: https://github.com/PowerShell/PowerShell/issues/21385
-RUN curl -fsSL https://launchpad.net/ubuntu/+archive/primary/+files/libicu72_72.1-3ubuntu3_amd64.deb --output libicu72.deb && \
-    dpkg -i libicu72.deb && \
-    rm libicu72.deb
-RUN curl -fsSL https://github.com/PowerShell/PowerShell/releases/download/v7.4.3/powershell_7.4.3-1.deb_amd64.deb --output powershell.deb && \
-    dpkg -i powershell.deb && \
-    rm powershell.deb && \
+# PowerShell
+# https://learn.microsoft.com/en-us/powershell/scripting/install/install-ubuntu?view=powershell-7.4
+RUN curl -fsSL https://packages.microsoft.com/config/ubuntu/24.04/packages-microsoft-prod.deb --output packages-microsoft-prod.deb && \
+    dpkg -i packages-microsoft-prod.deb && \
+    rm packages-microsoft-prod.deb && \
+    apt-get update && \
+    apt-get install -y powershell && \
     pwsh -c "Install-Module -Name Pester -Force -SkipPublisherCheck -Scope AllUsers"
 
 # Haskell via GHCup - https://www.haskell.org/ghcup
