@@ -11,13 +11,13 @@ DIRECTIONAL = {
     # A
     ("A", "A"): [""],
     ("A", "^"): ["<"],
-    ("A", "<"): ["<v<", "v<<"],
+    ("A", "<"): ["v<<"],  # leaving out "<v<", because < twice will always be better
     ("A", "v"): ["<v", "v<"],
     ("A", ">"): ["v"],
     # <
     ("<", "<"): [""],
     ("<", "^"): [">^"],
-    ("<", "A"): [">^>", ">>^"],
+    ("<", "A"): [">>^"],  # leaving out ">^>" because > twice will always be better
     ("<", "v"): [">"],
     ("<", ">"): [">>"],
     # v
