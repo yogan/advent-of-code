@@ -1,37 +1,49 @@
 import sys
 import unittest
+from functools import cache
 
+# This movement table will always give an optimal movement sequence for the next
+# deeper dpad to make a single move on the current dpad.
+# When there were multiple possible ways, those heuristics are applied:
+# - Multiple same keys in a row are ideal, as those will only be additional A
+#   presses on the next dpad: v<< or <<v are better than <v<.
+# - Going to < in the bottom right is costly, as it is the farthest away from A,
+#   to which we have to return every time.
+# - More general, going away from A is costly, and we should press buttons in
+#   order from worst to best. This already gives this order: <  v  (^ or >)  A
+# - The order between ^ and >: ^ first is better. This was found out by trial
+#   and error; I don't have a good explanation for this.
 DIRECTIONAL = {
     # ^
-    ("^", "^"): [""],
-    ("^", "A"): [">"],
-    ("^", "<"): ["v<"],
-    ("^", "v"): ["v"],
-    ("^", ">"): ["v>", ">v"],
+    ("^", "^"): "",
+    ("^", "A"): ">",
+    ("^", "<"): "v<",
+    ("^", "v"): "v",
+    ("^", ">"): "v>",  # better than >v
     # A
-    ("A", "A"): [""],
-    ("A", "^"): ["<"],
-    ("A", "<"): ["v<<"],  # leaving out "<v<", because < twice will always be better
-    ("A", "v"): ["<v", "v<"],
-    ("A", ">"): ["v"],
+    ("A", "A"): "",
+    ("A", "^"): "<",
+    ("A", "<"): "v<<",  # better than "<v<"
+    ("A", "v"): "<v",
+    ("A", ">"): "v",
     # <
-    ("<", "<"): [""],
-    ("<", "^"): [">^"],
-    ("<", "A"): [">>^"],  # leaving out ">^>" because > twice will always be better
-    ("<", "v"): [">"],
-    ("<", ">"): [">>"],
+    ("<", "<"): "",
+    ("<", "^"): ">^",
+    ("<", "A"): ">>^",  # better than ">^>"
+    ("<", "v"): ">",
+    ("<", ">"): ">>",
     # v
-    ("v", "v"): [""],
-    ("v", "^"): ["^"],
-    ("v", "A"): ["^>", ">^"],
-    ("v", "<"): ["<"],
-    ("v", ">"): [">"],
+    ("v", "v"): "",
+    ("v", "^"): "^",
+    ("v", "A"): "^>",  # better than >^
+    ("v", "<"): "<",
+    ("v", ">"): ">",
     # >
-    (">", ">"): [""],
-    (">", "^"): ["^<", "<^"],
-    (">", "A"): ["^"],
-    (">", "<"): ["<<"],
-    (">", "v"): ["<"],
+    (">", ">"): "",
+    (">", "^"): "<^",  # better than ^<
+    (">", "A"): "^",
+    (">", "<"): "<<",
+    (">", "v"): "<",
 }
 
 NUM_PAD = {}
@@ -51,27 +63,30 @@ NUM_MOVES = {
 }
 
 
-def part1(codes):
+def calc(codes, levels):
     initialize_num_pad()
 
     factors = [int(code[:-1]) for code in codes]
-    lengths = [key_length(code) for code in codes]
+    lengths = [key_length(code, levels) for code in codes]
     complexities = [l * a for l, a in zip(lengths, factors)]
 
     return sum(complexities)
 
 
-def key_length(code):
-    numpad_seq = numpad_sequences(code)
+def key_length(code, levels):
+    return min(encode(ns, levels) for ns in numpad_sequences(code))
 
-    dpad1_seq = [seq for numpad in numpad_seq for seq in dpad_sequences(numpad)]
 
-    min_len = min(len(seq) for seq in dpad1_seq)
-    dpad1_seq = [seq for seq in dpad1_seq if len(seq) == min_len]
+@cache
+def encode(seq, level):
+    if seq == "":
+        return 0
 
-    dpad2_seq = [seq for dpad1 in dpad1_seq for seq in dpad_sequences(dpad1)]
+    if level == 0:
+        return len(seq)
 
-    return min(len(seq) for seq in dpad2_seq)
+    front, rest = seq.split("A", 1)
+    return encode(dpad_sequence(front + "A"), level - 1) + encode(rest, level)
 
 
 def numpad_sequences(code):
@@ -83,13 +98,13 @@ def numpad_sequences(code):
     return seqs
 
 
-def dpad_sequences(moves):
+def dpad_sequence(moves):
     cur = "A"
-    seqs = [""]
+    seq = ""
     for key in moves:
-        seqs = [f"{s}{m}A" for s in seqs for m in DIRECTIONAL[(cur, key)]]
+        seq += DIRECTIONAL[(cur, key)] + "A"
         cur = key
-    return seqs
+    return seq
 
 
 def initialize_num_pad():
@@ -99,6 +114,19 @@ def initialize_num_pad():
                 NUM_PAD[(src, tgt)] = [""]
             else:
                 NUM_PAD[(src, tgt)] = shortest_num_pad_paths(src, tgt)
+
+    for np in NUM_PAD:
+        NUM_PAD[np] = prune_moves(NUM_PAD[np])
+
+
+def prune_moves(moves):
+    rated_moves = [(m, changes(m)) for m in moves]
+    min_changes = min(changes for _, changes in rated_moves)
+    return [move for move, changes in rated_moves if changes == min_changes]
+
+
+def changes(move):
+    return sum(1 for i in range(len(move) - 1) if move[i] != move[i + 1])
 
 
 def shortest_num_pad_paths(src, tgt):
@@ -140,7 +168,14 @@ def shortest_num_pad_paths(src, tgt):
 
 
 class Tests(unittest.TestCase):
-    pass
+    def test_encode(self):
+        numpad_seq = "<A^A>^^AvvvA"
+        self.assertEqual(encode(numpad_seq, 0), len(numpad_seq))
+        self.assertEqual(encode(numpad_seq, 1), len("v<<A>>^A<A>AvA<^AA>A<vAAA>^A"))
+        self.assertEqual(
+            encode(numpad_seq, 2),
+            len("<vA<AA>>^AvAA<^A>A<v<A>>^AvA^A<vA>^A<v<A>^A>AAvA^A<v<A>A>^AAAvA<^A>A"),
+        )
 
 
 if __name__ == "__main__":
@@ -167,8 +202,5 @@ if __name__ == "__main__":
             print("✅")
 
     codes = [line.strip() for line in open(filename).readlines()]
-    p1 = part1(codes)
-    p2 = None
-
-    check(1, p1, 126384 if is_sample else 163086)
-    check(2, p2)
+    check(1, calc(codes, 2), 126384 if is_sample else 163086)
+    check(2, calc(codes, 25), 154115708116294 if is_sample else 198466286401228)

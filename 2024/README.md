@@ -1,4 +1,4 @@
-# [Advent of Code 2024](https://adventofcode.com/2024) (48/50 ✨)
+# [Advent of Code 2024](https://adventofcode.com/2024) (50/50 ✨)
 
 **Languages: 9** *(1 × Awk, 1 × Bash, 1 × C#, 1 × Dart, 1 × Elixir, 1 × Fortran,
 1 × Gleam, 24 × Python, 1 × Vim)*
@@ -97,7 +97,7 @@
     and also solves part 2 easily.
 
 ## [Day 21: Keypad Conundrum](https://adventofcode.com/2024/day/21) 🔢
-  - ⭐ [Python](day-21-python/aoc.py) part 1 only, this is madness
+  - ⭐⭐ [Python](day-21-python/aoc.py) dpad inception == pure horror
 
 ## [Day 22: Monkey Market](https://adventofcode.com/2024/day/22) 🍌
   - ⭐⭐ [Python](day-22-python/aoc.py) quite relaxing and nice after the day 21
@@ -115,4 +115,4 @@
     solution, but it works (run time ~ 30 sec)
 
 ## [Day 25: Code Chronicle](https://adventofcode.com/2024/day/25) 🔑
-  - ⭐ [Python](day-25-python/aoc.py)
+  - ⭐⭐ [Python](day-25-python/aoc.py)
