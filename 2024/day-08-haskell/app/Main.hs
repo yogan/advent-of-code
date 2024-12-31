@@ -7,6 +7,6 @@ main :: IO ()
 main = do
   fileName <- head <$> getArgs
   input <- lines <$> readFile fileName
-  let antennas = findAntennas input
   let dims = dimensions input
-  print (part1 antennas dims)
+  let antennas = findAntennas input
+  print (part1 dims antennas)
