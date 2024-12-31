@@ -11,15 +11,13 @@ type Pos = (Int, Int)
 type AntennaPositions = Map.Map Char (Set.Set Pos)
 
 part1 :: AntennaPositions -> Dimensions -> Int
-part1 as (rows, cols) = Set.size $ Set.unions $ do
-  (_, ps) <- Map.toList as
-  pure $ allResonances (Set.toList ps) (rows, cols)
+part1 as dims =
+  Set.size $
+    Set.unions
+      [allResonances (Set.toList ps) dims | (_, ps) <- Map.toList as]
 
 allResonances :: [Pos] -> Dimensions -> Set.Set Pos
-allResonances ps dims = Set.unions $ do
-  p <- ps
-  let others = filter (/= p) ps
-  pure $ resonances p others dims
+allResonances ps dims = Set.unions [resonances p (filter (/= p) ps) dims | p <- ps]
 
 resonances :: Pos -> [Pos] -> Dimensions -> Set.Set Pos
 resonances (r, c) others (rows, cols) = Set.fromList $ do
