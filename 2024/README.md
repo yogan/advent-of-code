@@ -1,7 +1,7 @@
 # [Advent of Code 2024](https://adventofcode.com/2024) (50/50 ✨)
 
-**Languages: 9** *(1 × Awk, 1 × Bash, 1 × C#, 1 × Dart, 1 × Elixir, 1 × Fortran,
-1 × Gleam, 24 × Python, 1 × Vim)*
+**Languages: 10** *(1 × Awk, 1 × Bash, 1 × C#, 1 × Dart, 1 × Elixir, 1 × Fortran,
+1 × Gleam, 1 × Haskell, 24 × Python, 1 × Vim)*
 
 ## [Day 01: Historian Hysteria](https://adventofcode.com/2024/day/1) 📜
   - ⭐⭐ [**A**wk](day-01-awk/aoc.awk)
@@ -40,6 +40,8 @@
     and brute force (run time is ~1 second, so it's fine)
 
 ## [Day 08: Resonant Collinearity](https://adventofcode.com/2024/day/8) 📡
+  - ⭐⭐ [**H**askell](day-08-haskell/src/Lib.hs)
+    ([tests](day-08-haskell/test/Spec.hs), [main](day-08-haskell/app/Main.hs))
   - ⭐⭐ [Python](day-08-python/aoc.py)
 
 ## [Day 09: Disk Fragmenter](https://adventofcode.com/2024/day/9) 💾

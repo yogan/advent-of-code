@@ -10,3 +10,4 @@ main = do
   let dims = dimensions input
   let antennas = findAntennas input
   print (part1 dims antennas)
+  print (part2 dims antennas)
