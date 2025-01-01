@@ -16,7 +16,9 @@ RUN apt-get update && apt-get install -y \
     # Swift deps, see: https://www.swift.org/install/linux/#installation-via-tarball
     binutils git gnupg2 libc6-dev libcurl4-openssl-dev libedit2 libgcc-9-dev \
     libpython3.8 libsqlite3-0 libstdc++-9-dev libxml2-dev libz3-dev pkg-config \
-    tzdata zlib1g-dev unzip && \
+    tzdata zlib1g-dev unzip \
+    # Idris build dependency
+    chezscheme && \
     # Remove fonts to save space (~ 260 MB).
     # This will also remove ghostscript, libgs10, and some libjs-* and r-cran-* packages,
     # but this is actually fine, as we don't need them either.
@@ -117,7 +119,7 @@ RUN ghcup -v install ghc   --isolate /usr/local     --force ${GHC}   && \
 # Remove docs (~ 600 MB), not needed in container
     rm -rf /usr/local/share/doc/ghc-9.4.8
 
-# .NET 7 and 8
+# .NET
 # https://devblogs.microsoft.com/dotnet/whats-new-for-dotnet-in-ubuntu-2404/
 RUN add-apt-repository ppa:dotnet/backports && \
     # .NET 7 (required for Exercism stuff, coming from ppa:dotnet/backports)
@@ -161,5 +163,12 @@ RUN curl -fsSL https://dl-ssl.google.com/linux/linux_signing_key.pub \
     | tee /etc/apt/sources.list.d/dart_stable.list && \
     apt-get update && \
     apt-get install -y dart
+
+# Idris2 via Pack
+# https://github.com/idris-lang/Idris2/blob/main/INSTALL.md
+# https://github.com/stefan-hoeck/idris2-pack
+ENV PACK_DIR="/usr/local/share/pack"
+ENV PATH="${PACK_DIR}/bin:${PATH}"
+RUN bash -c "echo '' | bash <(curl -fsSL https://raw.githubusercontent.com/stefan-hoeck/idris2-pack/main/install.bash)"
 
 # vim: tw=0
