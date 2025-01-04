@@ -1,0 +1,8 @@
+package aoc-tests
+
+brief = "Advent of Code in Idris 2 (Tests)"
+authors = "Frank Blendinger"
+
+modules = AoC, Tests
+main = Tests
+executable = aoc-tests
