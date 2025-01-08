@@ -1,31 +1,39 @@
 FROM ubuntu:24.04
 
-RUN apt-get update && apt-get install -y \
+# See https://docs.docker.com/build/building/best-practices/#apt-get
+# TL;DR:
+# - always combine RUN apt-get update with apt-get install in the same RUN statement
+# - add rm -rf /var/lib/apt/lists/* to the end (next apt-get update will re-fetch anyway)
+RUN apt-get update && apt-get install -y --no-install-recommends \
     # base/util packages
     bc curl ca-certificates gnupg unzip locales build-essential cmake libcurl3-gnutls \
     # this brings add-apt-repository, needed later:
     software-properties-common \
     # various languages directly from apt
-    vim fish bats leiningen r-base r-cran-testthat ruby3.2 polyml golang-go gawk guile-3.0 \
-    crystal elixir erlang-base erlang-dev erlang-eunit rebar3 nim openjdk-8-jdk swi-prolog \
+    vim fish bats leiningen r-base r-cran-testthat ruby3.2 polyml golang-go gawk \
+    guile-3.0 crystal elixir erlang-base erlang-dev erlang-eunit rebar3 nim \
+    openjdk-8-jdk-headless swi-prolog-nox tcl gfortran \
     # Python
     python3 python3-pip python3-pytest python3-pytest-subtests python3-pytest-pylint \
     pypy3 pypy3-venv pypy3-dev \
+    # Build deps for Pillow (PIL fork), required by matplotlib
+    # see: https://pillow.readthedocs.io/en/latest/installation/building-from-source.html#building-from-source
+    libtiff5-dev libjpeg8-dev libopenjp2-7-dev zlib1g-dev libfreetype6-dev liblcms2-dev \
+    libwebp-dev tcl8.6-dev tk8.6-dev python3-tk libharfbuzz-dev libfribidi-dev libxcb1-dev \
     # Lua and busted as testing framework
     lua5.4 lua-busted \
     # Swift deps, see: https://www.swift.org/install/linux/#installation-via-tarball
     binutils git gnupg2 libc6-dev libcurl4-openssl-dev libedit2 libgcc-9-dev \
     libpython3.8 libsqlite3-0 libstdc++-9-dev libxml2-dev libz3-dev pkg-config \
-    tzdata zlib1g-dev unzip \
-    # Idris build dependency
-    chezscheme && \
-    # Remove fonts to save space (~ 260 MB).
-    # This will also remove ghostscript, libgs10, and some libjs-* and r-cran-* packages,
-    # but this is actually fine, as we don't need them either.
-    apt-get remove -y fonts-dejavu-core fonts-dejavu-extra fonts-dejavu-mono \
-    fonts-droid-fallback fonts-font-awesome fonts-glyphicons-halflings \
-    fonts-lato fonts-liberation fonts-liberation-sans-narrow fonts-mathjax \
-    fonts-noto-mono fonts-urw-base35
+    tzdata zlib1g-dev \
+    # Crystal deps
+    libssl-dev \
+    # Haskell (GHC) deps
+    libncurses-dev \
+    # Idris deps; GMP is needed for Pack, see
+    # https://github.com/stefan-hoeck/idris2-pack/blob/main/INSTALL.md#1-preparations
+    chezscheme libgmp3-dev && \
+    rm -rf /var/lib/apt/lists/*
 
 # Bun - https://bun.sh/
 RUN curl -fsSL https://bun.sh/install | bash
@@ -36,7 +44,8 @@ RUN mkdir -p /etc/apt/keyrings && \
     curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg && \
     echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_21.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list && \
     apt-get update && \
-    apt-get install -y nodejs
+    apt-get install -y nodejs && \
+    rm -rf /var/lib/apt/lists/*
 
 # DDP - https://doku.ddp.im/Einstieg/Installation/
 RUN cd /usr/local/share/ && \
@@ -103,6 +112,7 @@ RUN curl -fsSL https://packages.microsoft.com/config/ubuntu/24.04/packages-micro
     rm packages-microsoft-prod.deb && \
     apt-get update && \
     apt-get install -y powershell && \
+    rm -rf /var/lib/apt/lists/* && \
     pwsh -c "Install-Module -Name Pester -Force -SkipPublisherCheck -Scope AllUsers"
 
 # Haskell via GHCup - https://www.haskell.org/ghcup
@@ -116,20 +126,25 @@ ARG STACK=recommended
 RUN ghcup -v install ghc   --isolate /usr/local     --force ${GHC}   && \
     ghcup -v install cabal --isolate /usr/local/bin --force ${CABAL} && \
     ghcup -v install stack --isolate /usr/local/bin --force ${STACK} && \
-# Remove docs (~ 600 MB), not needed in container
+    # Remove docs (~ 600 MB), not needed in container
     rm -rf /usr/local/share/doc/ghc-9.4.8
 
 # .NET
 # https://devblogs.microsoft.com/dotnet/whats-new-for-dotnet-in-ubuntu-2404/
 RUN add-apt-repository ppa:dotnet/backports && \
+    apt-get update && \
     # .NET 7 (required for Exercism stuff, coming from ppa:dotnet/backports)
     # .NET 8 (straight from the default Ubuntu repos)
     # .NET 9 (latest shit, from ppa:dotnet/backports)
-    apt-get install -y dotnet-sdk-7.0 dotnet-sdk-8.0 dotnet-sdk-9.0
+    apt-get install -y --no-install-recommends \
+    dotnet-sdk-7.0 dotnet-sdk-8.0 dotnet-sdk-9.0 && \
+    rm -rf /var/lib/apt/lists/*
 
 # Java - we need a JDK19 for Exercism stuff. Ubuntu 24.04 does not have a package anymore,
-# but the old .deb from Oracle seems to do it, as long as we provide the right libc.
-RUN apt-get install -y libc6-i386 libc6-x32 && \
+# but the old .deb from Oracle seems to do it, as long as we provide the right libc, etc.
+RUN apt-get update && \
+    apt-get install -y libc6-i386 libc6-x32 libasound2t64 && \
+    rm -rf /var/lib/apt/lists/* && \
     curl -fsSL https://download.oracle.com/java/19/archive/jdk-19.0.2_linux-x64_bin.deb --output jdk19.deb && \
     dpkg -i jdk19.deb && \
     rm jdk19.deb && \
@@ -162,7 +177,8 @@ RUN curl -fsSL https://dl-ssl.google.com/linux/linux_signing_key.pub \
     echo 'deb [signed-by=/usr/share/keyrings/dart.gpg arch=amd64] https://storage.googleapis.com/download.dartlang.org/linux/debian stable main' \
     | tee /etc/apt/sources.list.d/dart_stable.list && \
     apt-get update && \
-    apt-get install -y dart
+    apt-get install -y dart && \
+    rm -rf /var/lib/apt/lists/*
 
 # Idris2 via Pack
 # https://github.com/idris-lang/Idris2/blob/main/INSTALL.md
