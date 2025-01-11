@@ -1,0 +1,8 @@
+package aoc
+
+brief = "Advent of Code in Idris 2"
+authors = "Frank Blendinger"
+
+modules = AoC, Main
+main = Main
+executable = aoc
