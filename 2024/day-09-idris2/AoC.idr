@@ -21,28 +21,26 @@ toBlocks ds = gen ds 0 True
     gen (d :: ds) fid True  = replicate d (cast fid) ++ gen ds (fid + 1) False
     gen (d :: ds) fid False = replicate d free       ++ gen ds fid       True
 
-replaceFirstFreeWith : Int -> List Int -> List Int
-replaceFirstFreeWith _   []        = []
-replaceFirstFreeWith fid (d :: ds) =
-    if isFree d then
-      fid :: ds else
-        d :: replaceFirstFreeWith fid ds
-
--- This is wildly inefficient due to reversing the list twice, but I have no
--- clue about Idris. :-/
-export
-defragStep : List Int -> List Int
-defragStep ds =
-  case reverse ds of
-    (fid :: rds) => replaceFirstFreeWith fid (reverse rds)
-    _            => []
-
 export
 defragBlocks : List Int -> List Int
 defragBlocks ds =
-  case find isFree ds of
-    Just _  => defragBlocks (defragStep ds)
-    Nothing => ds
+  let
+    replaceFirstFreeWith : Int -> List Int -> List Int
+    replaceFirstFreeWith _   []        = []
+    replaceFirstFreeWith fid (d :: ds) =
+        if isFree d then
+          fid :: ds else
+            d :: replaceFirstFreeWith fid ds
+
+    move : List Int -> List Int -> List Int
+    move []        ds = ds
+    move (b :: bs) ds = move bs (replaceFirstFreeWith b ds)
+
+    blocks    := filter (not . isFree) ds
+    toMove    := take (length $ findIndices isFree ds) $ reverse blocks
+    remaining := take (minus (length ds) (length toMove)) ds
+  in
+    move toMove remaining
 
 checksum : List Int -> Int
 checksum ds = checkRec 0 0 ds

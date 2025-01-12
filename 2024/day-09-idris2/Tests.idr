@@ -37,28 +37,6 @@ testToBlocks = do
     (toBlocks $ parse "2333133121414131402")
     (bl "00...111...2...333.44.5555.6666.777.888899")
 
-testDefragStep : IO ()
-testDefragStep = do
-  test "defragStep: small sample step 1"
-    (defragStep (bl "0..111....22222"))
-                (bl "02.111....2222")
-
-  test "defragStep: small sample step 2"
-    (defragStep (bl "02.111....2222"))
-                (bl "022111....222")
-
-  test "defragStep: small sample last step"
-    (defragStep (bl "02211122..2"))
-                (bl "022111222.")
-
-  test "defragStep: larger sample trailing block"
-    (defragStep (bl "0099811188.2...333.44.5555.6666.777.8"))
-                (bl "009981118882...333.44.5555.6666.777.")
-
-  test "defragStep: larger sample trailing space"
-    (defragStep (bl "009981118882...333.44.5555.6666.777."))
-                (bl "009981118882...333.44.5555.6666.777")
-
 testDefragBlocks : IO ()
 testDefragBlocks = do
   test "defragBlocks: small sample"
@@ -77,6 +55,5 @@ main : IO ()
 main = do
   testParse
   testToBlocks
-  testDefragStep
   testDefragBlocks
   testPart1
