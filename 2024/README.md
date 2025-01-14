@@ -1,7 +1,7 @@
 # [Advent of Code 2024](https://adventofcode.com/2024) (50/50 ✨)
 
-**Languages: 10 ½** *(1 × Awk, 1 × Bash, 1 × C#, 1 × Dart, 1 × Elixir, 1 × Fortran,
-1 × Gleam, 1 × Haskell, ½ × Idris, 24 × Python, 1 × Vim)*
+**Languages: 11** *(1 × Awk, 1 × Bash, 1 × C#, 1 × Dart, 1 × Elixir, 1 × Fortran,
+1 × Gleam, 1 × Haskell, 1 × Idris, 24 × Python, 1 × Vim)*
 
 ## [Day 01: Historian Hysteria](https://adventofcode.com/2024/day/1) 📜
   - ⭐⭐ [**A**wk](day-01-awk/aoc.awk)
@@ -46,7 +46,7 @@
 
 ## [Day 09: Disk Fragmenter](https://adventofcode.com/2024/day/9) 💾
   - ⭐⭐ [**I**dris 2](day-09-idris2/AoC.idr)
-    ([tests](day-09-idris2/Tests.idr), [main](day-09-idris2/Main.idr); part 1 only)
+    ([tests](day-09-idris2/Tests.idr), [main](day-09-idris2/Main.idr))
   - ⭐⭐ [Python](day-09-python/aoc.py) quite primitive solution with an array
     and index pointers; run time ~7 seconds
 

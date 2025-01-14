@@ -18,3 +18,4 @@ main = do
   | (Left err) => failWith ("Could not read \"" ++ file ++ "\": " ++ show err)
   let diskMap = parse content
   putStrLn $ show $ part1 diskMap
+  putStrLn $ show $ part2 diskMap
