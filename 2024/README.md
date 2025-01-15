@@ -22,13 +22,13 @@ Julia, 24 × Python, Vim)*
 
 ## [Day 05: Print Queue](https://adventofcode.com/2024/day/5) 🖨️
   - ⭐⭐ [**E**lixir](day-05-elixir/lib/aoc.ex) 
-    ([tests](day-05-elixir/test/aoc_test.exs),
-    [main](day-05-elixir/lib/main.ex))
+    ([main](day-05-elixir/lib/main.ex)),
+    [tests](day-05-elixir/test/aoc_test.exs))
   - ⭐⭐ [Python](day-05-python/aoc.py)
 
 ## [Day 06: Guard Gallivant](https://adventofcode.com/2024/day/6) 🛡️
   - ⭐⭐ [**F**ortran](day-06-fortran/aoc.f90)
-    ([tests](day-06-fortran/tests.f90), [main](day-06-fortran/main.f90);
+    ([main](day-06-fortran/main.f90), [tests](day-06-fortran/tests.f90);
     reminder to myself: never use Fortran again or I'll go insane)
   - ⭐⭐ [Python](day-06-python/aoc.py)
 
@@ -41,18 +41,18 @@ Julia, 24 × Python, Vim)*
 
 ## [Day 08: Resonant Collinearity](https://adventofcode.com/2024/day/8) 📡
   - ⭐⭐ [**H**askell](day-08-haskell/src/Lib.hs)
-    ([tests](day-08-haskell/test/Spec.hs), [main](day-08-haskell/app/Main.hs))
+    ([main](day-08-haskell/app/Main.hs), [tests](day-08-haskell/test/Spec.hs))
   - ⭐⭐ [Python](day-08-python/aoc.py)
 
 ## [Day 09: Disk Fragmenter](https://adventofcode.com/2024/day/9) 💾
   - ⭐⭐ [**I**dris 2](day-09-idris2/AoC.idr)
-    ([tests](day-09-idris2/Tests.idr), [main](day-09-idris2/Main.idr))
+    ([main](day-09-idris2/Main.idr), [tests](day-09-idris2/Tests.idr))
   - ⭐⭐ [Python](day-09-python/aoc.py) quite primitive solution with an array
     and index pointers; run time ~7 seconds
 
 ## [Day 10: Hoof It](https://adventofcode.com/2024/day/10) 🌋
   - ⭐⭐ [**J**ulia](day-10-julia/src/AoC.jl)
-    ([tests](day-10-julia/test/runtests.jl), [main](day-10-julia/src/main.jl))
+    ([main](day-10-julia/src/main.jl), [tests](day-10-julia/test/runtests.jl))
   - ⭐⭐ [Python](day-10-python/aoc.py)
 
 ## [Day 11: Plutonian Pebbles](https://adventofcode.com/2024/day/11) 🪨
