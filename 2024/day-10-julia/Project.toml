@@ -1,0 +1,4 @@
+name = "AoC"
+uuid = "d5ceebd6-f068-4120-8796-c2f38d641188"
+authors = ["Frank Blendinger <fb@zogan.de>"]
+version = "0.1.0"
