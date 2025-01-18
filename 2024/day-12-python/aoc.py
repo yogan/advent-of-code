@@ -52,10 +52,8 @@ def flood_fill(lines, r, c, rows, cols, seen):
 
 def perimeter(region, lines, r, c, rows, cols):
     char = lines[r][c]
-    seen = set()
     sides = set()
     for r, c in region:
-        seen.add((r, c))
         for rr, cc, side in [
             (r - 1, c, ("T", r, c)),
             (r + 1, c, ("B", r + 1, c)),
