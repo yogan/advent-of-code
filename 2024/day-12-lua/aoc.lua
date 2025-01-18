@@ -51,58 +51,43 @@ local function perimeter(region, garden, r, c, rows, cols)
 		end
 	end
 
-	return { sides, length }
+	return { length, sides }
 end
 
-local function key(d, r, c)
-	return d .. "," .. r .. "," .. c
+local function walk(tuple, dr, dc, sides, seen)
+	local function key(d, r, c)
+		return d .. "," .. r .. "," .. c
+	end
+
+	local d = tuple[1]
+	local r = tuple[2]
+	local c = tuple[3]
+	local cc = c + dc
+	local rr = r + dr
+	local k = key(d, rr, cc)
+
+	while sides[k] and not seen[k] do
+		seen[k] = true
+		cc = cc + dc
+		rr = rr + dr
+		k = key(d, rr, cc)
+	end
 end
 
 local function count_sides(sides)
-	local res = 0
 	local seen = {}
+	local res = 0
 
 	for k, tuple in pairs(sides) do
 		if not seen[k] then
-			res = res + 1
 			seen[k] = true
-
-			local d = tuple[1]
-			local r = tuple[2]
-			local c = tuple[3]
-
-			if d == "T" or d == "B" then
-				local cc = c - 1
-				k = key(d, r, cc)
-				while sides[k] and not seen[k] do
-					seen[k] = true
-					cc = cc - 1
-					k = key(d, r, cc)
-				end
-
-				cc = c + 1
-				k = key(d, r, cc)
-				while sides[k] and not seen[k] do
-					seen[k] = true
-					cc = cc + 1
-					k = key(d, r, cc)
-				end
+			res = res + 1
+			if tuple[1] == "T" or tuple[1] == "B" then
+				walk(tuple, 0, -1, sides, seen)
+				walk(tuple, 0, 1, sides, seen)
 			else
-				local rr = r - 1
-				k = key(d, rr, c)
-				while sides[k] and not seen[k] do
-					seen[k] = true
-					rr = rr - 1
-					k = key(d, rr, c)
-				end
-
-				rr = r + 1
-				k = key(d, rr, c)
-				while sides[k] and not seen[k] do
-					seen[k] = true
-					rr = rr + 1
-					k = key(d, rr, c)
-				end
+				walk(tuple, -1, 0, sides, seen)
+				walk(tuple, 1, 0, sides, seen)
 			end
 		end
 	end
@@ -120,10 +105,8 @@ function M.regions(garden)
 		for c = 1, cols do
 			if not (seen[r] and seen[r][c]) then
 				local region = flood_fill(garden, r, c, rows, cols, seen)
-				local res = perimeter(region, garden, r, c, rows, cols)
-				local sides = res[1]
-				local perim = res[2]
-				table.insert(regions, { #region, perim, count_sides(sides) })
+				local per = perimeter(region, garden, r, c, rows, cols)
+				table.insert(regions, { #region, per[1], count_sides(per[2]) })
 			end
 		end
 	end
