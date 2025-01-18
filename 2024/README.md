@@ -1,7 +1,7 @@
 # [Advent of Code 2024](https://adventofcode.com/2024) (50/50 ✨)
 
-**Languages: 13** *(Awk, Bash, C#, Dart, Elixir, Fortran, Gleam, Haskell, Idris,
-Julia, Kotlin, 24 × Python, Vim)*
+**Languages: 14** *(Awk, Bash, C#, Dart, Elixir, Fortran, Gleam, Haskell, Idris,
+Julia, Kotlin, Lua, 24 × Python, Vim)*
 
 ## [Day 01: Historian Hysteria](https://adventofcode.com/2024/day/1) 📜
   - ⭐⭐ [**A**wk](day-01-awk/aoc.awk)
@@ -22,7 +22,7 @@ Julia, Kotlin, 24 × Python, Vim)*
 
 ## [Day 05: Print Queue](https://adventofcode.com/2024/day/5) 🖨️
   - ⭐⭐ [**E**lixir](day-05-elixir/lib/aoc.ex) 
-    ([main](day-05-elixir/lib/main.ex)),
+    ([main](day-05-elixir/lib/main.ex),
     [tests](day-05-elixir/test/aoc_test.exs))
   - ⭐⭐ [Python](day-05-python/aoc.py)
 
@@ -61,6 +61,8 @@ Julia, Kotlin, 24 × Python, Vim)*
   - ⭐⭐ [Python](day-11-python/aoc.py)
 
 ## [Day 12: Garden Groups](https://adventofcode.com/2024/day/12) 🪴
+  - ⭐⭐ [**L**ua](day-12-lua/aoc.lua)
+    ([tests](day-12-lua/aoc_spec.lua), [main](day-12-lua/main.lua))
   - ⭐⭐ [Python](day-12-python/aoc.py) pretty tough part 2
 
 ## [Day 13: Claw Contraption](https://adventofcode.com/2024/day/13) 🏗️
