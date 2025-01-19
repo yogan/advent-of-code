@@ -1,6 +1,10 @@
 local M = {}
 
-local function flood_fill(garden, r, c, rows, cols, seen)
+local function in_bounds(garden, r, c)
+	return r > 0 and c > 0 and r <= #garden and c <= #garden[1]
+end
+
+local function flood_fill(garden, r, c, seen)
 	local char = garden[r]:sub(c, c)
 	local region = {}
 	local border = { { r, c } }
@@ -10,7 +14,11 @@ local function flood_fill(garden, r, c, rows, cols, seen)
 		r = rc[1]
 		c = rc[2]
 
-		if not (r < 1 or r > rows or c < 1 or c > cols or (seen[r] and seen[r][c]) or garden[r]:sub(c, c) ~= char) then
+		if
+			in_bounds(garden, r, c) --
+			and not (seen[r] and seen[r][c])
+			and garden[r]:sub(c, c) == char
+		then
 			seen[r] = seen[r] or {}
 			seen[r][c] = true
 			table.insert(region, { r, c })
@@ -24,7 +32,7 @@ local function flood_fill(garden, r, c, rows, cols, seen)
 	return region
 end
 
-local function perimeter(region, garden, r, c, rows, cols)
+local function perimeter(region, garden, r, c)
 	local char = garden[r]:sub(c, c)
 	local sides = {}
 	local length = 0
@@ -43,7 +51,10 @@ local function perimeter(region, garden, r, c, rows, cols)
 			local rr = rrccside[2]
 			local cc = rrccside[3]
 
-			if rr < 1 or rr > rows or cc < 1 or cc > cols or garden[rr]:sub(cc, cc) ~= char then
+			if
+				not in_bounds(garden, rr, cc) --
+				or garden[rr]:sub(cc, cc) ~= char
+			then
 				local key = side .. "," .. r .. "," .. c
 				sides[key] = { side, r, c }
 				length = length + 1
@@ -84,10 +95,10 @@ local function count_sides(sides)
 			res = res + 1
 			if tuple[1] == "T" or tuple[1] == "B" then
 				walk(tuple, 0, -1, sides, seen)
-				walk(tuple, 0, 1, sides, seen)
+				walk(tuple, 0, 01, sides, seen)
 			else
 				walk(tuple, -1, 0, sides, seen)
-				walk(tuple, 1, 0, sides, seen)
+				walk(tuple, 01, 0, sides, seen)
 			end
 		end
 	end
@@ -96,16 +107,14 @@ local function count_sides(sides)
 end
 
 function M.regions(garden)
-	local rows = #garden
-	local cols = #garden[1]
 	local seen = {}
 	local regions = {}
 
-	for r = 1, rows do
-		for c = 1, cols do
+	for r = 1, #garden do
+		for c = 1, #garden[1] do
 			if not (seen[r] and seen[r][c]) then
-				local region = flood_fill(garden, r, c, rows, cols, seen)
-				local per = perimeter(region, garden, r, c, rows, cols)
+				local region = flood_fill(garden, r, c, seen)
+				local per = perimeter(region, garden, r, c)
 				table.insert(regions, { #region, per[1], count_sides(per[2]) })
 			end
 		end
@@ -114,20 +123,14 @@ function M.regions(garden)
 	return regions
 end
 
-function M.part1(regions)
-	local sum = 0
+function M.parts(regions)
+	local p1 = 0
+	local p2 = 0
 	for _, region in ipairs(regions) do
-		sum = sum + region[1] * region[2]
+		p1 = p1 + region[1] * region[2]
+		p2 = p2 + region[1] * region[3]
 	end
-	return sum
-end
-
-function M.part2(regions)
-	local sum = 0
-	for _, region in ipairs(regions) do
-		sum = sum + region[1] * region[3]
-	end
-	return sum
+	return { p1, p2 }
 end
 
 return M

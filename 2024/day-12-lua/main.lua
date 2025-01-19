@@ -14,6 +14,7 @@ local function read_lines(filename)
 end
 
 local regions = aoc.regions(read_lines(arg[1]))
+local parts = aoc.parts(regions)
 
-print(aoc.part1(regions))
-print(aoc.part2(regions))
+print(parts[1])
+print(parts[2])
