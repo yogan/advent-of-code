@@ -29,20 +29,17 @@ def find_regions(lines):
     return regions
 
 
+def in_bounds(r, c, rows, cols):
+    return 0 <= r < rows and 0 <= c < cols
+
+
 def flood_fill(lines, r, c, rows, cols, seen):
     char = lines[r][c]
     region = set()
     border = deque([(r, c)])
     while border:
         r, c = border.popleft()
-        if (
-            r < 0
-            or r >= rows
-            or c < 0
-            or c >= cols
-            or (r, c) in seen
-            or lines[r][c] != char
-        ):
+        if not in_bounds(r, c, rows, cols) or (r, c) in seen or lines[r][c] != char:
             continue
         seen.add((r, c))
         region.add((r, c))
@@ -60,44 +57,35 @@ def perimeter(region, lines, r, c, rows, cols):
             (r, c - 1, ("L", r, c)),
             (r, c + 1, ("R", r, c + 1)),
         ]:
-            if rr < 0 or rr >= rows or cc < 0 or cc >= cols or lines[rr][cc] != char:
+            if not in_bounds(rr, cc, rows, cols) or lines[rr][cc] != char:
                 sides.add(side)
     return sides
 
 
 def count_sides(sides):
-    res = 0
+    def walk(dir, r, c, dr, dc):
+        rr, cc = r + dr, c + dc
+        while (dir, rr, cc) in sides and (dir, rr, cc) not in seen:
+            seen.add((dir, rr, cc))
+            rr += dr
+            cc += dc
+
     seen = set()
+    res = 0
 
     for dir, r, c in sides:
         if (dir, r, c) in seen:
             continue
 
-        res += 1
         seen.add((dir, r, c))
+        res += 1
 
-        if dir == "T" or dir == "B":
-            # add all directly left
-            cc = c - 1
-            while (dir, r, cc) in sides and (dir, r, cc) not in seen:
-                seen.add((dir, r, cc))
-                cc -= 1
-            # add all directly right
-            cc = c + 1
-            while (dir, r, cc) in sides and (dir, r, cc) not in seen:
-                seen.add((dir, r, cc))
-                cc += 1
+        if dir in "TB":
+            walk(dir, r, c, 0, -1)
+            walk(dir, r, c, 0, +1)
         else:
-            # add all directly above
-            rr = r - 1
-            while (dir, rr, c) in sides and (dir, rr, c) not in seen:
-                seen.add((dir, rr, c))
-                rr -= 1
-            # add all directly below
-            rr = r + 1
-            while (dir, rr, c) in sides and (dir, rr, c) not in seen:
-                seen.add((dir, rr, c))
-                rr += 1
+            walk(dir, r, c, -1, 0)
+            walk(dir, r, c, +1, 0)
 
     return res
 
@@ -268,8 +256,6 @@ if __name__ == "__main__":
             print("✅")
 
     regions = find_regions(parse(filename))
-    p1 = part1(regions)
-    p2 = part2(regions)
 
-    check(1, p1, 1930 if is_sample else 1361494)
-    check(2, p2, 1206 if is_sample else 830516)
+    check(1, part1(regions), 1930 if is_sample else 1361494)
+    check(2, part2(regions), 1206 if is_sample else 830516)
