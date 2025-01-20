@@ -13,7 +13,10 @@ on:
 
 jobs:
   linkspector:
-    runs-on: ubuntu-latest
+    # runs-on: ubuntu-latest
+    # ↑ fails with "No usable sandbox!", see:
+    # https://github.com/puppeteer/puppeteer/issues/12818
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
