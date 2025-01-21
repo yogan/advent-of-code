@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     # various languages directly from apt
     vim fish bats leiningen r-base r-cran-testthat ruby3.2 polyml golang-go gawk \
     guile-3.0 crystal elixir erlang-base erlang-dev erlang-eunit rebar3 nim \
-    openjdk-8-jdk-headless swi-prolog-nox tcl gfortran octave \
+    openjdk-8-jdk-headless swi-prolog-nox tcl gfortran octave octave-symbolic \
     # Python
     python3 python3-pip python3-pytest python3-pytest-subtests python3-pytest-pylint \
     pypy3 pypy3-venv pypy3-dev \
