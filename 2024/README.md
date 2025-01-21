@@ -1,7 +1,7 @@
 # [Advent of Code 2024](https://adventofcode.com/2024) (50/50 ✨)
 
-**Languages: 14** *(Awk, Bash, C#, Dart, Elixir, Fortran, Gleam, Haskell, Idris,
-Julia, Kotlin, Lua, 24 × Python, Vim)*
+**Languages: 15** *(Awk, Bash, C#, Dart, Elixir, Fortran, Gleam, Haskell, Idris,
+Julia, Kotlin, Lua, MATLAB, 24 × Python, Vim)*
 
 ## [Day 01: Historian Hysteria](https://adventofcode.com/2024/day/1) 📜
   - ⭐⭐ [**A**wk](day-01-awk/aoc.awk)
@@ -66,6 +66,11 @@ Julia, Kotlin, Lua, 24 × Python, Vim)*
   - ⭐⭐ [Python](day-12-python/aoc.py) pretty tough part 2
 
 ## [Day 13: Claw Contraption](https://adventofcode.com/2024/day/13) 🏗️
+  - ⭐⭐ [**M**ATLAB](day-13-matlab/aoc.m) a bit slow, as computations are done
+    with the [Octave Symbolic package](https://octave.sourceforge.io/symbolic/)
+    (the part 2 result exceeds the limits of a unsigned 64-bit integer, which is
+    the largest integer type in Octave; I couldn't find a package that only
+    provides arbitrary precision integers)
   - ⭐⭐ [Python](day-13-python/aoc.py) zomg math
 
 ## [Day 14: Restroom Redoubt](https://adventofcode.com/2024/day/14) 🚽
