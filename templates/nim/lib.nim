@@ -6,8 +6,8 @@ type
     w: int
     h: int
 
-proc parseInput*(filename: string): seq[Box] =
-  result = readFile(filename)
+proc parseInput*(data: string): seq[Box] =
+  result = data
     .splitLines()
     .filterIt(it != "")
     .mapIt(it.split("x"))
