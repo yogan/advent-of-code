@@ -81,10 +81,11 @@ Julia, Kotlin, Lua, MATLAB, 24 × Python, Vim)*
     line of robots. This was super slow (~ 40 sec). I then switched to a
     different approach, which works almost instantly: still iterating over a
     large range of seconds, I just check for the maximum number of _unique_
-    robot positions. It's a bit lucky that this works, but the step with nice
-    pictures in it was probably the base of the puzzle input and had all the
+    robot positions. It's a bit lucky that this works, but the second with the
+    hidden picture was probably the base of the puzzle input and had all the
     robots in unique positions, while during simulation, there is always a high
-    chance that at least a few robots will be in the same position.
+    chance that at least a few robots will overlap.  
+    Part 2 solution can be seen when running the script with the `--visualize`.
 
 ## [Day 15: Warehouse Woes](https://adventofcode.com/2024/day/15) 📦
   - ⭐⭐ [Python](day-15-python/aoc.py)

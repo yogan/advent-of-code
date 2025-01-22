@@ -38,8 +38,7 @@ def count_quadrants(positions, max_x, max_y):
     return (top_left, top_right, bottom_left, bottom_right)
 
 
-def to_printable_lines(positions, max_x, max_y):
-    lines = []
+def print_grid(positions, max_x, max_y):
     for y in range(max_y):
         line = ""
         for x in range(max_x):
@@ -47,8 +46,7 @@ def to_printable_lines(positions, max_x, max_y):
                 line += "█"
             else:
                 line += " "
-        lines.append(line)
-    return lines
+        print(line)
 
 
 def part1(robots, max_x, max_y):
@@ -57,15 +55,18 @@ def part1(robots, max_x, max_y):
     return tl * tr * bl * br
 
 
-def part2(robots, max_x, max_y):
+def part2(robots, max_x, max_y, visualize):
     max_unique_positions = 0
     easter_egg_second = None
 
     for second in range(1, max_x * max_y):
-        unique_positions = set(simulate(robots, second, max_x, max_y))
+        positions = simulate(robots, second, max_x, max_y)
+        unique_positions = set(positions)
         if len(unique_positions) > max_unique_positions:
             max_unique_positions = len(unique_positions)
             easter_egg_second = second
+            if visualize:
+                print_grid(positions, max_x, max_y)
 
     return easter_egg_second
 
@@ -117,6 +118,7 @@ if __name__ == "__main__":
     filename = args[0] if args else filename
     is_sample = filename.startswith("sample")
     run_tests = "-t" in flags or "--test" in flags
+    visualize = "-v" in flags or "--visualize" in flags
 
     if run_tests:
         unittest.main(exit=True)
@@ -135,7 +137,7 @@ if __name__ == "__main__":
     max_x = 11 if is_sample else 101
     max_y = +7 if is_sample else 103
     p1 = part1(robots, max_x, max_y)
-    p2 = "n/a" if is_sample else part2(robots, max_x, max_y)
+    p2 = "n/a" if is_sample else part2(robots, max_x, max_y, visualize)
 
     check(1, p1, 12 if is_sample else 222208000)
     check(2, p2, "n/a" if is_sample else 7623)
