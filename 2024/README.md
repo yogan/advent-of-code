@@ -74,10 +74,17 @@ Julia, Kotlin, Lua, MATLAB, 24 × Python, Vim)*
   - ⭐⭐ [Python](day-13-python/aoc.py) zomg math
 
 ## [Day 14: Restroom Redoubt](https://adventofcode.com/2024/day/14) 🚽
-  - ⭐⭐ [Python](day-14-python/aoc.py) part 1 is simple modulo arithmetic, part
-    2 is wild - finding the Christmas tree was not easy, I ended up with a quite
-    slow (~ 40 sec) solution that checks for the existence of a long horizontal
-    line of robots, which indicates something visually interesting
+  - ⭐⭐ [Python](day-14-python/aoc.py) Part 1 is simple modulo arithmetic, part
+    2 was crazy; actually a cool puzzle to find something visually interesting
+    programmatically. My initial solution was to stringify the grid after
+    simulating each second and then check for the existence of a long horizontal
+    line of robots. This was super slow (~ 40 sec). I then switched to a
+    different approach, which works almost instantly: still iterating over a
+    large range of seconds, I just check for the maximum number of _unique_
+    robot positions. It's a bit lucky that this works, but the step with nice
+    pictures in it was probably the base of the puzzle input and had all the
+    robots in unique positions, while during simulation, there is always a high
+    chance that at least a few robots will be in the same position.
 
 ## [Day 15: Warehouse Woes](https://adventofcode.com/2024/day/15) 📦
   - ⭐⭐ [Python](day-15-python/aoc.py)

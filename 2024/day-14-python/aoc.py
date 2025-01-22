@@ -1,4 +1,3 @@
-import os
 import sys
 import unittest
 
@@ -9,12 +8,7 @@ def parse(filename):
         p, v = line.strip().split()
         px, py = p[2:].split(",")
         vx, vy = v[2:].split(",")
-        robots.append(
-            {
-                "p": (int(px), int(py)),
-                "v": (int(vx), int(vy)),
-            }
-        )
+        robots.append({"p": (int(px), int(py)), "v": (int(vx), int(vy))})
     return robots
 
 
@@ -64,21 +58,16 @@ def part1(robots, max_x, max_y):
 
 
 def part2(robots, max_x, max_y):
-    # Brute-forcing from 1 seconds takes about 40 seconds of run time.
-    # Let's cheat in CI and start slightly before the answer to keep pipelines
-    # fast.
-    seconds = 7500 if "GITHUB_ACTIONS" in os.environ else 1
-    while True:
-        positions = simulate(robots, seconds, max_x, max_y)
-        lines = to_printable_lines(positions, max_x, max_y)
-        pattern = "█" * 16
-        has_horizontal_line = any(pattern in line for line in lines)
-        if has_horizontal_line:
-            # Comment in to see the Christmas tree:
-            # for line in lines:
-            #     print(line)
-            return seconds
-        seconds += 1
+    max_unique_positions = 0
+    easter_egg_second = None
+
+    for second in range(1, max_x * max_y):
+        unique_positions = set(simulate(robots, second, max_x, max_y))
+        if len(unique_positions) > max_unique_positions:
+            max_unique_positions = len(unique_positions)
+            easter_egg_second = second
+
+    return easter_egg_second
 
 
 class Tests(unittest.TestCase):
