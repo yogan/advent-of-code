@@ -1,77 +1,78 @@
 # [Advent of Code 2024](https://adventofcode.com/2024) (50/50 ✨)
 
-**Languages: 16** *(Awk, Bash, C#, Dart, Elixir, Fortran, Gleam, Haskell, Idris,
-Julia, Kotlin, Lua, MATLAB, Nim, 24 × Python, Vim)*
+**Languages: 16** *(**A**wk, **B**ash, **C**#, **D**art, **E**lixir,
+**F**ortran, **G**leam, **H**askell, **I**dris, **J**ulia, **K**otlin, **L**ua,
+**M**ATLAB, **N**im, 24 × Python, Vim)*
 
 ## [Day 01: Historian Hysteria](https://adventofcode.com/2024/day/1) 📜
-  - ⭐⭐ [**A**wk](day-01-awk/aoc.awk)
+  - ⭐⭐ [Awk](day-01-awk/aoc.awk)
   - ⭐⭐ [Vim](../vim/2024/day-01/aoc.vim)
 
 ## [Day 02: Red-Nosed Reports](https://adventofcode.com/2024/day/2) 🔴
-  - ⭐⭐ [**B**ash](day-02-bash/aoc.bash)
   - ⭐⭐ [Python](day-02-python/aoc.py)
+  - ⭐⭐ [Bash](day-02-bash/aoc.bash)
 
 ## [Day 03: Mull It Over](https://adventofcode.com/2024/day/3) ✖️
-  - ⭐⭐ [**C**#](day-03-csharp/AoC.cs) ([tests](day-03-csharp/AoCTests.cs))
   - ⭐⭐ [Python](day-03-python/aoc.py)
+  - ⭐⭐ [C#](day-03-csharp/AoC.cs) ([tests](day-03-csharp/AoCTests.cs))
 
 ## [Day 04: Ceres Search](https://adventofcode.com/2024/day/4) 🔠
-  - ⭐⭐ [**D**art](day-04-dart/lib/aoc.dart) 
-    ([tests](day-04-dart/test/aoc_test.dart))
   - ⭐⭐ [Python](day-04-python/aoc.py)
+  - ⭐⭐ [Dart](day-04-dart/lib/aoc.dart) 
+    ([tests](day-04-dart/test/aoc_test.dart))
 
 ## [Day 05: Print Queue](https://adventofcode.com/2024/day/5) 🖨️
-  - ⭐⭐ [**E**lixir](day-05-elixir/lib/aoc.ex) 
+  - ⭐⭐ [Python](day-05-python/aoc.py)
+  - ⭐⭐ [Elixir](day-05-elixir/lib/aoc.ex) 
     ([main](day-05-elixir/lib/main.ex),
     [tests](day-05-elixir/test/aoc_test.exs))
-  - ⭐⭐ [Python](day-05-python/aoc.py)
 
 ## [Day 06: Guard Gallivant](https://adventofcode.com/2024/day/6) 🛡️
-  - ⭐⭐ [**F**ortran](day-06-fortran/aoc.f90)
+  - ⭐⭐ [Python](day-06-python/aoc.py)
+  - ⭐⭐ [Fortran](day-06-fortran/aoc.f90)
     ([main](day-06-fortran/main.f90), [tests](day-06-fortran/tests.f90);
     reminder to myself: never use Fortran again or I'll go insane)
-  - ⭐⭐ [Python](day-06-python/aoc.py)
 
 ## [Day 07: Bridge Repair](https://adventofcode.com/2024/day/7) 🌉
-  - ⭐⭐ [**G**leam](day-07-gleam/src/aoc.gleam)
-    ([tests](day-07-gleam/test/aoc_test.gleam))
   - ⭐⭐ [Python](day-07-python/aoc.py) using
     [`itertools.product`](https://docs.python.org/3/library/itertools.html#itertools.product)
     and brute force (run time is ~1 second, so it's fine)
+  - ⭐⭐ [Gleam](day-07-gleam/src/aoc.gleam)
+    ([tests](day-07-gleam/test/aoc_test.gleam))
 
 ## [Day 08: Resonant Collinearity](https://adventofcode.com/2024/day/8) 📡
-  - ⭐⭐ [**H**askell](day-08-haskell/src/Lib.hs)
-    ([main](day-08-haskell/app/Main.hs), [tests](day-08-haskell/test/Spec.hs))
   - ⭐⭐ [Python](day-08-python/aoc.py)
+  - ⭐⭐ [Haskell](day-08-haskell/src/Lib.hs)
+    ([main](day-08-haskell/app/Main.hs), [tests](day-08-haskell/test/Spec.hs))
 
 ## [Day 09: Disk Fragmenter](https://adventofcode.com/2024/day/9) 💾
-  - ⭐⭐ [**I**dris 2](day-09-idris2/AoC.idr)
-    ([main](day-09-idris2/Main.idr), [tests](day-09-idris2/Tests.idr))
   - ⭐⭐ [Python](day-09-python/aoc.py) quite primitive solution with an array
     and index pointers; run time ~7 seconds
+  - ⭐⭐ [Idris 2](day-09-idris2/AoC.idr)
+    ([main](day-09-idris2/Main.idr), [tests](day-09-idris2/Tests.idr))
 
 ## [Day 10: Hoof It](https://adventofcode.com/2024/day/10) 🌋
-  - ⭐⭐ [**J**ulia](day-10-julia/src/AoC.jl)
-    ([main](day-10-julia/src/main.jl), [tests](day-10-julia/test/runtests.jl))
   - ⭐⭐ [Python](day-10-python/aoc.py)
+  - ⭐⭐ [Julia](day-10-julia/src/AoC.jl)
+    ([main](day-10-julia/src/main.jl), [tests](day-10-julia/test/runtests.jl))
 
 ## [Day 11: Plutonian Pebbles](https://adventofcode.com/2024/day/11) 🪨
-  - ⭐⭐ [**K**otlin](day-11-kotlin/app/src/main/kotlin/aoc/App.kt)
-    ([tests](day-11-kotlin/app/src/test/kotlin/aoc/AppTest.kt))
   - ⭐⭐ [Python](day-11-python/aoc.py)
+  - ⭐⭐ [Kotlin](day-11-kotlin/app/src/main/kotlin/aoc/App.kt)
+    ([tests](day-11-kotlin/app/src/test/kotlin/aoc/AppTest.kt))
 
 ## [Day 12: Garden Groups](https://adventofcode.com/2024/day/12) 🪴
-  - ⭐⭐ [**L**ua](day-12-lua/aoc.lua)
-    ([main](day-12-lua/main.lua), [tests](day-12-lua/aoc_spec.lua))
   - ⭐⭐ [Python](day-12-python/aoc.py) pretty tough part 2
+  - ⭐⭐ [Lua](day-12-lua/aoc.lua)
+    ([main](day-12-lua/main.lua), [tests](day-12-lua/aoc_spec.lua))
 
 ## [Day 13: Claw Contraption](https://adventofcode.com/2024/day/13) 🏗️
-  - ⭐⭐ [**M**ATLAB](day-13-matlab/aoc.m) a bit slow, as computations are done
+  - ⭐⭐ [Python](day-13-python/aoc.py) zomg math
+  - ⭐⭐ [MATLAB](day-13-matlab/aoc.m) a bit slow, as computations are done
     with the [Octave Symbolic package](https://octave.sourceforge.io/symbolic/)
     (the part 2 result exceeds the limits of a unsigned 64-bit integer, which is
     the largest integer type in Octave; I couldn't find a package that only
     provides arbitrary precision integers)
-  - ⭐⭐ [Python](day-13-python/aoc.py) zomg math
 
 ## [Day 14: Restroom Redoubt](https://adventofcode.com/2024/day/14) 🚽
   - ⭐⭐ [Python](day-14-python/aoc.py) Part 1 is simple modulo arithmetic, part
@@ -86,7 +87,7 @@ Julia, Kotlin, Lua, MATLAB, Nim, 24 × Python, Vim)*
     robots in unique positions, while during simulation, there is always a high
     chance that at least a few robots will overlap.  
     Part 2 solution can be seen when running the script with the `--visualize`.
-  - ⭐⭐ [**N**im](day-14-nim/lib.nim)
+  - ⭐⭐ [Nim](day-14-nim/lib.nim)
     ([main](day-14-nim/main.nim), [tests](day-14-nim/tests.nim)) 
     - 1:1 rewrite of the Python solution (without visualization)
     - cool how Nim is even more compact than Python here
