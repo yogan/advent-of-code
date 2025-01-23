@@ -1,7 +1,7 @@
 # [Advent of Code 2024](https://adventofcode.com/2024) (50/50 ✨)
 
-**Languages: 15** *(Awk, Bash, C#, Dart, Elixir, Fortran, Gleam, Haskell, Idris,
-Julia, Kotlin, Lua, MATLAB, 24 × Python, Vim)*
+**Languages: 16** *(Awk, Bash, C#, Dart, Elixir, Fortran, Gleam, Haskell, Idris,
+Julia, Kotlin, Lua, MATLAB, Nim, 24 × Python, Vim)*
 
 ## [Day 01: Historian Hysteria](https://adventofcode.com/2024/day/1) 📜
   - ⭐⭐ [**A**wk](day-01-awk/aoc.awk)
@@ -62,7 +62,7 @@ Julia, Kotlin, Lua, MATLAB, 24 × Python, Vim)*
 
 ## [Day 12: Garden Groups](https://adventofcode.com/2024/day/12) 🪴
   - ⭐⭐ [**L**ua](day-12-lua/aoc.lua)
-    ([tests](day-12-lua/aoc_spec.lua), [main](day-12-lua/main.lua))
+    ([main](day-12-lua/main.lua), [tests](day-12-lua/aoc_spec.lua))
   - ⭐⭐ [Python](day-12-python/aoc.py) pretty tough part 2
 
 ## [Day 13: Claw Contraption](https://adventofcode.com/2024/day/13) 🏗️
@@ -86,6 +86,13 @@ Julia, Kotlin, Lua, MATLAB, 24 × Python, Vim)*
     robots in unique positions, while during simulation, there is always a high
     chance that at least a few robots will overlap.  
     Part 2 solution can be seen when running the script with the `--visualize`.
+  - ⭐⭐ [**N**im](day-14-nim/lib.nim)
+    ([main](day-14-nim/main.nim), [tests](day-14-nim/tests.nim)) 
+    - 1:1 rewrite of the Python solution (without visualization)
+    - cool how Nim is even more compact than Python here
+    - the `result` variable is really convenient
+    - built a custom `%` infix operator, as Nim's `mod` does not behave like
+      Python's `%` for negative numbers
 
 ## [Day 15: Warehouse Woes](https://adventofcode.com/2024/day/15) 📦
   - ⭐⭐ [Python](day-15-python/aoc.py)
