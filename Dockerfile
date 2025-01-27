@@ -187,4 +187,22 @@ ENV PACK_DIR="/usr/local/share/pack"
 ENV PATH="${PACK_DIR}/bin:${PATH}"
 RUN bash -c "echo '' | bash <(curl -fsSL https://raw.githubusercontent.com/stefan-hoeck/idris2-pack/main/install.bash)"
 
+# OCaml via opam
+# https://ocaml.org/docs/installing-ocaml#install-opam
+RUN apt-get update && apt-get install -y --no-install-recommends opam && \
+    rm -rf /var/lib/apt/lists/* && \
+    opam init --auto-setup --disable-sandboxing --yes && \
+    opam install --yes dune ocaml ounit2
+
+# This is basically the output of `opam env`. Ideally, this should be done by
+# a `eval $(opam env)` command from either .profile or .bashrc, but for
+# whatever reason, this only works when running the Docker image locally, but
+# not on GitHub Actions. So we just put everything right here. It's not pretty,
+# but it works.
+ENV OPAM_SWITCH_PREFIX="/root/.opam/default"
+ENV OCAMLTOP_INCLUDE_PATH="/root/.opam/default/lib/toplevel"
+ENV CAML_LD_LIBRARY_PATH="/root/.opam/default/lib/stublibs:/root/.opam/default/lib/ocaml/stublibs:/root/.opam/default/lib/ocaml"
+ENV OCAML_TOPLEVEL_PATH="/root/.opam/default/lib/toplevel"
+ENV PATH="/root/.opam/default/bin:${PATH}"
+
 # vim: tw=0

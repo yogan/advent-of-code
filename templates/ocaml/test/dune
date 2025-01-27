@@ -1,0 +1,4 @@
+(test
+ (name test_aoc)
+ (locks m)
+ (libraries ounit2 aoc))

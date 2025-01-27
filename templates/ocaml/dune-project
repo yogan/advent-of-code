@@ -1,0 +1,14 @@
+(lang dune 3.17)
+(name aoc)
+(generate_opam_files true)
+(source (github yogan/advent-of-code))
+(authors "Frank Blendinger <fb@zogan.de>")
+(maintainers "Frank Blendinger <fb@zogan.de>")
+(package
+ (name aoc)
+ (synopsis "Advent of Code")
+ (description "Template for Advent of Code puzzles in OCaml")
+ (depends ocaml)
+ (tags ("aoc" "advent-of-code")))
+
+; See the complete stanza docs at https://dune.readthedocs.io/en/stable/reference/dune-project/index.html
