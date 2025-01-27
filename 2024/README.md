@@ -69,7 +69,8 @@
 ## [Day 13: Claw Contraption](https://adventofcode.com/2024/day/13) 🏗️
   - ⭐⭐ [Python](day-13-python/aoc.py) zomg math
   - ⭐⭐ [MATLAB](day-13-matlab/aoc.m) a bit slow, as computations are done
-    with the [Octave Symbolic package](https://octave.sourceforge.io/symbolic/)
+    with the
+    [Octave Symbolic package](https://gnu-octave.github.io/packages/symbolic)
     (the part 2 result exceeds the limits of a unsigned 64-bit integer, which is
     the largest integer type in Octave; I couldn't find a package that only
     provides arbitrary precision integers)
