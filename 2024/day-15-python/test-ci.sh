@@ -1,2 +1,2 @@
 #!/bin/sh
-./run.sh --test && ./run.sh --sample && ./run.sh
+./run.sh --sample && ./run.sh

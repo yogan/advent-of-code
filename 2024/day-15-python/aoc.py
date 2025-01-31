@@ -121,10 +121,6 @@ def simulate(robot, boxes, walls, moves, wide=False):
         if can_move:
             robot = new_robot
 
-        # print("Move:", move)
-        # show(robot, boxes, walls)
-        # print()
-
 
 def boxes_in_range(boxes, r, left, right):
     result = []
@@ -150,9 +146,6 @@ def gps(box, wide=False):
 
 
 def run(robot, boxes, walls, moves, wide=False):
-    # print("Initial state:")
-    # show(robot, boxes, walls)
-    # print()
     simulate(robot, boxes, walls, moves, wide)
     return sum(gps(box, wide) for box in boxes)
 
