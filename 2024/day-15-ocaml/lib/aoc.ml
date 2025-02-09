@@ -1,10 +1,9 @@
 type pos = int * int
 type wide_pos = int * int * int
 
+let ( >> ) f g x = g (f x)
 let ( ++ ) (a, b) (c, d) = (a + c, b + d)
 let ( +++ ) (r, cl, cr) (dr, dc) = (r + dr, cl + dc, cr + dc)
-let gps (r, c) = (100 * r) + c
-let gps_wide (r, cl, _) = gps (r, cl)
 
 module PosSet = Set.Make (struct
   type t = pos
@@ -218,12 +217,17 @@ let simulate_wide { robot; wide_boxes; walls; moves } =
   in
   simulate_wide' robot wide_boxes (String.to_seq moves |> List.of_seq)
 
-let part1 input = simulate input |> Seq.map gps |> Seq.fold_left ( + ) 0
-
-let part2 { robot; boxes; walls; moves } =
-  let r, c = robot in
-  let robot = (r, c * 2) in
+let widen_input { robot; boxes; walls; moves } =
+  let robot = (fst robot, snd robot * 2) in
   let wide_boxes = widen_boxes boxes in
   let walls = widen_walls walls in
-  simulate_wide { robot; wide_boxes; walls; moves }
-  |> Seq.map gps_wide |> Seq.fold_left ( + ) 0
+  { robot; wide_boxes; walls; moves }
+
+let gps (r, c) = (100 * r) + c
+let gps_wide (r, cl, _) = gps (r, cl)
+
+let part_n input_fn simulate_fn gps_fn =
+  input_fn >> simulate_fn >> Seq.map gps_fn >> Seq.fold_left ( + ) 0
+
+let part1 = part_n Fun.id simulate gps
+let part2 = part_n widen_input simulate_wide gps_wide
