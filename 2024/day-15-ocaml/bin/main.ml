@@ -16,4 +16,5 @@ let run_and_print fn input = fn input |> string_of_int |> print_endline
 
 let () =
   let input = read_file Sys.argv.(1) |> parse_lines in
-  run_and_print part1 input
+  run_and_print part1 input;
+  run_and_print part2 input

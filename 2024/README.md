@@ -2,7 +2,7 @@
 
 **Languages: 16** *(**A**wk, **B**ash, **C**#, **D**art, **E**lixir,
 **F**ortran, **G**leam, **H**askell, **I**dris, **J**ulia, **K**otlin, **L**ua,
-**M**ATLAB, **N**im, 24 × Python, Vim)*
+**M**ATLAB, **N**im, **O**Caml, 24 × Python, Vim)*
 
 ## [Day 01: Historian Hysteria](https://adventofcode.com/2024/day/1) 📜
   - ⭐⭐ [Awk](day-01-awk/aoc.awk)
@@ -98,6 +98,14 @@
 
 ## [Day 15: Warehouse Woes](https://adventofcode.com/2024/day/15) 📦
   - ⭐⭐ [Python](day-15-python/aoc.py)
+  - ⭐⭐ [OCaml](day-15-ocaml/lib/aoc.ml)
+    ([main](day-15-ocaml/bin/main.ml), [tests](day-15-ocaml/test/test_aoc.ml))
+    - Not the easiest language to get started in, and the puzzle was kind of
+      tedious anyway. But after some getting used to, you can begin to
+      understand the elegance of ML. It was a bit annoying that I had to define
+      both a set for normal and for wide positions, due to the very strict type
+      system. The unit tests also required to define a bunch of printers to see
+      any diff output for e.g. lists and sets.
 
 ## [Day 16: Reindeer Maze](https://adventofcode.com/2024/day/16) 🦌
   - ⭐⭐ [Python](day-16-python/aoc.py) Dijkstra with priority queue (part 1),
