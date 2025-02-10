@@ -1,9 +1,9 @@
-type pos = int * int
-type wide_pos = int * int * int
-
 let ( >> ) f g x = g (f x)
 let ( ++ ) (a, b) (c, d) = (a + c, b + d)
 let ( +++ ) (r, cl, cr) (dr, dc) = (r + dr, cl + dc, cr + dc)
+
+type pos = int * int
+type wide_pos = int * int * int
 
 module PosSet = Set.Make (struct
   type t = pos
@@ -168,7 +168,7 @@ let simulate { robot; boxes; walls; moves } =
   let rec simulate' robot boxes moves =
     if debug_part_1 then print_grid robot boxes walls;
     match moves with
-    | [] -> boxes |> PosSet.to_seq
+    | [] -> boxes
     | move :: moves_rest ->
         if debug_part_1 then Printf.printf "\nMove: %c\n" move;
         let moved_robot = robot ++ move_to_delta move in
@@ -191,27 +191,26 @@ let simulate { robot; boxes; walls; moves } =
 let debug_part_2 = false
 
 let simulate_wide { robot; wide_boxes; walls; moves } =
-  let rec simulate_wide' robot wide_boxes moves =
-    if debug_part_2 then print_grid robot (unwiden_boxes wide_boxes) walls;
+  let rec simulate_wide' robot boxes moves =
+    if debug_part_2 then print_grid robot (unwiden_boxes boxes) walls;
     match moves with
-    | [] -> wide_boxes |> WidePosSet.to_seq
+    | [] -> boxes
     | move :: moves_rest ->
         if debug_part_2 then Printf.printf "\nMove: %c\n" move;
         let moved_robot = robot ++ move_to_delta move in
         if PosSet.mem moved_robot walls then
-          simulate_wide' robot wide_boxes moves_rest
+          simulate_wide' robot boxes moves_rest
         else
-          let boxes_to_move = find_boxes_wide wide_boxes robot move in
-          if boxes_to_move = [] then
-            simulate_wide' moved_robot wide_boxes moves_rest
+          let boxes_to_move = find_boxes_wide boxes robot move in
+          if boxes_to_move = [] then simulate_wide' moved_robot boxes moves_rest
           else
             let moved_boxes = move_boxes_wide move boxes_to_move in
             if collides walls (WidePosSet.of_list moved_boxes) then
-              simulate_wide' robot wide_boxes moves_rest
+              simulate_wide' robot boxes moves_rest
             else
               let moved_boxes = move_boxes_wide move boxes_to_move in
               let new_boxes =
-                WidePosMod.update moved_boxes boxes_to_move wide_boxes
+                WidePosMod.update moved_boxes boxes_to_move boxes
               in
               simulate_wide' moved_robot new_boxes moves_rest
   in
@@ -226,8 +225,9 @@ let widen_input { robot; boxes; walls; moves } =
 let gps (r, c) = (100 * r) + c
 let gps_wide (r, cl, _) = gps (r, cl)
 
-let part_n input_fn simulate_fn gps_fn =
-  input_fn >> simulate_fn >> Seq.map gps_fn >> Seq.fold_left ( + ) 0
+let part_n input_fn simulate_fn to_seq_fn gps_fn =
+  input_fn >> simulate_fn >> to_seq_fn >> Seq.map gps_fn
+  >> Seq.fold_left ( + ) 0
 
-let part1 = part_n Fun.id simulate gps
-let part2 = part_n widen_input simulate_wide gps_wide
+let part1 = part_n Fun.id simulate PosSet.to_seq gps
+let part2 = part_n widen_input simulate_wide WidePosSet.to_seq gps_wide
