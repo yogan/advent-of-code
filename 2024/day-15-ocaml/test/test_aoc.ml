@@ -15,7 +15,6 @@ let print_list_of_string = print_list print_string
 let print_tuple_of_list_of_string = print_tuple print_list_of_string
 let print_pos (r, c) = Printf.sprintf "(r=%d, c=%d)" r c
 let print_wide_pos (r, cl, cr) = Printf.sprintf "(r=%d, cl=%d, cr=%d)" r cl cr
-let print_list_of_pos = print_list print_pos
 let print_list_of_wide_pos = print_list print_wide_pos
 let print_set_of_pos = print_posset print_pos
 let print_set_of_wide_pos = print_wideposset print_wide_pos
@@ -58,7 +57,9 @@ let test_parse_lines _ =
   let { robot; walls; boxes; moves } = parse_lines sample_input in
   assert_equal (3, 5) robot ~printer:print_pos;
   assert_equal 25 (walls |> PosSet.to_seq |> Seq.length) ~printer:string_of_int;
-  assert_equal_posset ([ (3, 3); (3, 4); (4, 3) ] |> PosSet.of_list) boxes;
+  assert_equal_wideposset
+    ([ (3, 3, 3); (3, 4, 4); (4, 3, 3) ] |> WidePosSet.of_list)
+    boxes;
   assert_equal "<vv<<^^<<^^" moves ~printer:print_string
 
 let test_widen_walls _ =
@@ -69,14 +70,14 @@ let test_widen_walls _ =
 let test_widen_boxes _ =
   assert_equal_wideposset
     ([ (0, 0, 1); (0, 2, 3); (1, 2, 3) ] |> WidePosSet.of_list)
-    (widen_boxes ([ (0, 0); (0, 1); (1, 1) ] |> PosSet.of_list))
+    (widen_boxes ([ (0, 0, 0); (0, 1, 1); (1, 1, 1) ] |> WidePosSet.of_list))
 
 let test_find_boxes _ =
-  let assert_eq r e = assert_equal e r ~printer:print_list_of_pos in
+  let assert_eq r e = assert_equal e r ~printer:print_list_of_wide_pos in
   let pos = (1, 1) in
-  let boxes = [ (1, 2); (1, 3); (2, 1) ] |> PosSet.of_list in
-  assert_eq (find_boxes boxes pos '>') [ (1, 2); (1, 3) ];
-  assert_eq (find_boxes boxes pos 'v') [ (2, 1) ];
+  let boxes = [ (1, 2, 2); (1, 3, 3); (2, 1, 1) ] |> WidePosSet.of_list in
+  assert_eq (find_boxes boxes pos '>') [ (1, 2, 2); (1, 3, 3) ];
+  assert_eq (find_boxes boxes pos 'v') [ (2, 1, 1) ];
   assert_eq (find_boxes boxes pos '<') [];
   assert_eq (find_boxes boxes pos '^') []
 
@@ -166,20 +167,12 @@ let test_find_boxes_wide_vertical_bug _ =
     [ (4, 12, 13); (5, 13, 14); (6, 14, 15); (7, 14, 15) ]
 
 let test_move_boxes _ =
-  let assert_eq r e = assert_equal e r ~printer:print_list_of_pos in
-  let boxes = [ (1, 2); (1, 3); (7, 8) ] in
-  assert_eq (move_boxes '<' boxes) [ (1, 1); (1, 2); (7, 7) ];
-  assert_eq (move_boxes '>' boxes) [ (1, 3); (1, 4); (7, 9) ];
-  assert_eq (move_boxes '^' boxes) [ (0, 2); (0, 3); (6, 8) ];
-  assert_eq (move_boxes 'v' boxes) [ (2, 2); (2, 3); (8, 8) ]
-
-let test_move_boxes_wide _ =
   let assert_eq r e = assert_equal e r ~printer:print_list_of_wide_pos in
   let boxes = [ (1, 2, 3); (1, 4, 5); (8, 7, 8) ] in
-  assert_eq (move_boxes_wide '<' boxes) [ (1, 1, 2); (1, 3, 4); (8, 6, 7) ];
-  assert_eq (move_boxes_wide '>' boxes) [ (1, 3, 4); (1, 5, 6); (8, 8, 9) ];
-  assert_eq (move_boxes_wide '^' boxes) [ (0, 2, 3); (0, 4, 5); (7, 7, 8) ];
-  assert_eq (move_boxes_wide 'v' boxes) [ (2, 2, 3); (2, 4, 5); (9, 7, 8) ]
+  assert_eq (move_boxes '<' boxes) [ (1, 1, 2); (1, 3, 4); (8, 6, 7) ];
+  assert_eq (move_boxes '>' boxes) [ (1, 3, 4); (1, 5, 6); (8, 8, 9) ];
+  assert_eq (move_boxes '^' boxes) [ (0, 2, 3); (0, 4, 5); (7, 7, 8) ];
+  assert_eq (move_boxes 'v' boxes) [ (2, 2, 3); (2, 4, 5); (9, 7, 8) ]
 
 let test_update_box_set _ =
   let assert_eq r e = assert_equal_posset (e |> PosSet.of_list) r in
@@ -221,7 +214,6 @@ let suite =
          "test_find_boxes_wide_vertical_bug"
          >:: test_find_boxes_wide_vertical_bug;
          "test_move_boxes" >:: test_move_boxes;
-         "test_move_boxes_wide" >:: test_move_boxes_wide;
          "test_update_box_set" >:: test_update_box_set;
          "test_update_wide_box_set" >:: test_update_wide_box_set;
          "test_collides" >:: test_collides;
