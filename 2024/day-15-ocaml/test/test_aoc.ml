@@ -10,7 +10,9 @@ let print_posset fn lst =
 let print_wideposset fn lst =
   "{" ^ String.concat "; " (WidePosSet.to_list lst |> List.map fn) ^ "}"
 
-let print_string x = "\"" ^ x ^ "\""
+let print_char c = Printf.sprintf "'%c'" c
+let print_string s = Printf.sprintf "\"%s\"" s
+let print_list_of_char = print_list print_char
 let print_list_of_string = print_list print_string
 let print_tuple_of_list_of_string = print_tuple print_list_of_string
 let print_pos (r, c) = Printf.sprintf "(r=%d, c=%d)" r c
@@ -60,7 +62,9 @@ let test_parse_lines _ =
   assert_equal_wideposset
     ([ (3, 3, 3); (3, 4, 4); (4, 3, 3) ] |> WidePosSet.of_list)
     boxes;
-  assert_equal "<vv<<^^<<^^" moves ~printer:print_string
+  assert_equal
+    [ '<'; 'v'; 'v'; '<'; '<'; '^'; '^'; '<'; '<'; '^'; '^' ]
+    moves ~printer:print_list_of_char
 
 let test_widen_walls _ =
   assert_equal_posset
@@ -81,9 +85,9 @@ let test_find_boxes _ =
   assert_eq (find_boxes boxes pos '<') [];
   assert_eq (find_boxes boxes pos '^') []
 
-let test_find_boxes_wide_horizontal _ =
+let test_find_boxes_horizontal _ =
   let assert_eq r e = assert_equal e r ~printer:print_list_of_wide_pos in
-  let find = find_boxes_wide_horizontal in
+  let find = find_boxes_horizontal in
   let boxes =
     [ (1, 2, 3); (1, 4, 5); (1, 7, 8); (2, 1, 2) ] |> WidePosSet.of_list
   in
@@ -92,11 +96,11 @@ let test_find_boxes_wide_horizontal _ =
   assert_eq (find boxes (1, 6) '<') [ (1, 4, 5); (1, 2, 3) ];
   assert_eq (find boxes (1, 6) '>') [ (1, 7, 8) ]
 
-let test_find_boxes_wide_vertical _ =
+let test_find_boxes_vertical _ =
   let assert_eq r e =
     assert_equal_wideposset (e |> WidePosSet.of_list) (r |> WidePosSet.of_list)
   in
-  let find = find_boxes_wide_vertical in
+  let find = find_boxes_vertical in
   (*   1234567
    * 1 .[]..{}
    * 2 ..[]...
@@ -131,11 +135,11 @@ let test_find_boxes_wide_vertical _ =
    Should only find ▣ boxes to move down.
    However, both ▣ and ■ boxes were found.
 *)
-let test_find_boxes_wide_vertical_bug _ =
+let test_find_boxes_vertical_bug _ =
   let assert_eq r e =
     assert_equal_wideposset (e |> WidePosSet.of_list) (r |> WidePosSet.of_list)
   in
-  let find = find_boxes_wide_vertical in
+  let find = find_boxes_vertical in
   let r, c, move = (3, 13, 'v') in
   let boxes =
     [
@@ -209,10 +213,9 @@ let suite =
          "test_widen_walls" >:: test_widen_walls;
          "test_widen_boxes" >:: test_widen_boxes;
          "test_find_boxes" >:: test_find_boxes;
-         "test_find_boxes_wide_horizontal" >:: test_find_boxes_wide_horizontal;
-         "test_find_boxes_wide_vertical" >:: test_find_boxes_wide_vertical;
-         "test_find_boxes_wide_vertical_bug"
-         >:: test_find_boxes_wide_vertical_bug;
+         "test_find_boxes_horizontal" >:: test_find_boxes_horizontal;
+         "test_find_boxes_vertical" >:: test_find_boxes_vertical;
+         "test_find_boxes_vertical_bug" >:: test_find_boxes_vertical_bug;
          "test_move_boxes" >:: test_move_boxes;
          "test_update_box_set" >:: test_update_box_set;
          "test_update_wide_box_set" >:: test_update_wide_box_set;

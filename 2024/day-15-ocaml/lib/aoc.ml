@@ -31,7 +31,7 @@ type input = {
   robot : pos;
   boxes : WidePosSet.t;
   walls : PosSet.t;
-  moves : string;
+  moves : char list;
 }
 
 let rec split_list elem = function
@@ -47,10 +47,11 @@ let find_chars rows char =
     match rows with
     | [] -> res
     | row :: rows_rest ->
-        let ws = String.to_seqi row |> Seq.filter (fun (_, c) -> c = char) in
-        let ws = Seq.map (fun (c, _) -> (r, c)) ws in
-        let ws = PosSet.of_seq ws in
-        find_chars' rows_rest char (r + 1) (PosSet.union res ws)
+        String.to_seqi row
+        |> Seq.filter (fun (_, c) -> c = char)
+        |> Seq.map (fun (c, _) -> (r, c))
+        |> PosSet.of_seq |> PosSet.union res
+        |> find_chars' rows_rest char (r + 1)
   in
   find_chars' rows char 0 PosSet.empty
 
@@ -63,7 +64,8 @@ let parse_lines lines =
   in
   let walls = find_chars grid '#' in
   let robot = find_chars grid '@' |> PosSet.choose_opt |> Option.get in
-  { robot; boxes; walls; moves = String.concat "" moves }
+  let moves = moves |> String.concat "" |> String.to_seq |> List.of_seq in
+  { robot; boxes; walls; moves }
 
 let widen_walls ps =
   Seq.fold_left
@@ -84,6 +86,7 @@ let unwiden_boxes ps =
     WidePosSet.(to_seq ps)
 
 let print_grid robot boxes walls =
+  let boxes = unwiden_boxes boxes in
   let max_r, max_c =
     PosSet.fold
       (fun (r, c) (max_r, max_c) -> (max r max_r, max c max_c))
@@ -124,50 +127,46 @@ let rec find_boxes boxes pos move =
   | false -> []
   | true -> box :: find_boxes boxes (r, c) move
 
-let rec find_boxes_wide_horizontal boxes (r, c) move =
+let rec find_boxes_horizontal boxes (r, c) move =
   let _, dc = move_to_delta move in
   let cl, cr = (c + dc, c + (2 * dc)) in
   let cl, cr = (min cl cr, max cl cr) in
   let c_edge = if dc < 0 then cl else cr in
   match WidePosSet.mem (r, cl, cr) boxes with
   | false -> []
-  | true -> (r, cl, cr) :: find_boxes_wide_horizontal boxes (r, c_edge) move
+  | true -> (r, cl, cr) :: find_boxes_horizontal boxes (r, c_edge) move
 
-let rec find_boxes_wide_vertical boxes r left right move =
+let rec find_boxes_vertical boxes row left right move =
   let dr, _ = move_to_delta move in
-  let boxes_in_row =
+  match
     WidePosSet.filter
-      (fun (r', cl, cr) -> r' = r + dr && left - 1 <= cl && cr <= right + 1)
+      (fun (r', cl, cr) -> r' = row + dr && left - 1 <= cl && cr <= right + 1)
       boxes
     |> WidePosSet.to_list
-  in
-  match boxes_in_row with
+  with
   | [] -> []
-  | _ ->
-      let cs =
-        List.concat (List.map (fun (_, cl, cr) -> [ cl; cr ]) boxes_in_row)
-      in
-      let left = List.fold_left min (List.hd cs) (List.tl cs) in
-      let right = List.fold_left max (List.hd cs) (List.tl cs) in
-      boxes_in_row @ find_boxes_wide_vertical boxes (r + dr) left right move
+  | in_row ->
+      let cs = List.concat (List.map (fun (_, cl, cr) -> [ cl; cr ]) in_row) in
+      let l = List.fold_left min max_int cs in
+      let r = List.fold_left max min_int cs in
+      in_row @ find_boxes_vertical boxes (row + dr) l r move
 
 let find_boxes_wide boxes pos move =
-  if move = '<' || move = '>' then find_boxes_wide_horizontal boxes pos move
-  else find_boxes_wide_vertical boxes (fst pos) (snd pos) (snd pos) move
+  if move = '<' || move = '>' then find_boxes_horizontal boxes pos move
+  else find_boxes_vertical boxes (fst pos) (snd pos) (snd pos) move
 
 let move_boxes move =
   List.map (fun (r, cl, cr) -> (r, cl, cr) +++ move_to_delta move)
 
-let collides walls boxes =
-  WidePosSet.exists
-    (fun (r, cl, cr) -> PosSet.mem (r, cl) walls || PosSet.mem (r, cr) walls)
-    boxes
+let collides walls =
+  WidePosSet.exists (fun (r, cl, cr) ->
+      PosSet.mem (r, cl) walls || PosSet.mem (r, cr) walls)
 
 let debug = false
 
 let simulate find_boxes_fn { robot; boxes; walls; moves } =
   let rec sim robot boxes moves =
-    if debug then print_grid robot (unwiden_boxes boxes) walls;
+    if debug then print_grid robot boxes walls;
     match moves with
     | [] -> boxes
     | move :: moves_rest -> (
@@ -182,13 +181,12 @@ let simulate find_boxes_fn { robot; boxes; walls; moves } =
               if collides walls (WidePosSet.of_list moved_boxes) then
                 sim robot boxes moves_rest
               else
-                let moved_boxes = move_boxes move boxes_to_move in
                 let new_boxes =
                   WidePosMod.update moved_boxes boxes_to_move boxes
                 in
                 sim moved_robot new_boxes moves_rest)
   in
-  sim robot boxes (String.to_seq moves |> List.of_seq)
+  sim robot boxes moves
 
 let widen_input { robot; boxes; walls; moves } =
   let robot = (fst robot, snd robot * 2) in
