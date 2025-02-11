@@ -170,23 +170,23 @@ let simulate find_boxes_fn { robot; boxes; walls; moves } =
     if debug then print_grid robot (unwiden_boxes boxes) walls;
     match moves with
     | [] -> boxes
-    | move :: moves_rest ->
+    | move :: moves_rest -> (
         if debug then Printf.printf "\nMove: %c\n" move;
         let moved_robot = robot ++ move_to_delta move in
         if PosSet.mem moved_robot walls then sim robot boxes moves_rest
         else
-          let boxes_to_move = find_boxes_fn boxes robot move in
-          if boxes_to_move = [] then sim moved_robot boxes moves_rest
-          else
-            let moved_boxes = move_boxes move boxes_to_move in
-            if collides walls (WidePosSet.of_list moved_boxes) then
-              sim robot boxes moves_rest
-            else
+          match find_boxes_fn boxes robot move with
+          | [] -> sim moved_robot boxes moves_rest
+          | boxes_to_move ->
               let moved_boxes = move_boxes move boxes_to_move in
-              let new_boxes =
-                WidePosMod.update moved_boxes boxes_to_move boxes
-              in
-              sim moved_robot new_boxes moves_rest
+              if collides walls (WidePosSet.of_list moved_boxes) then
+                sim robot boxes moves_rest
+              else
+                let moved_boxes = move_boxes move boxes_to_move in
+                let new_boxes =
+                  WidePosMod.update moved_boxes boxes_to_move boxes
+                in
+                sim moved_robot new_boxes moves_rest)
   in
   sim robot boxes (String.to_seq moves |> List.of_seq)
 
