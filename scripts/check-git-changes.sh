@@ -7,6 +7,7 @@ changes_docker=$(echo "$names" | grep -c "^Dockerfile")
 changes_scripts=$(echo "$names" | grep -c "^scripts")
 changes_templates=$(echo "$names" | grep -c "^templates")
 changes_vim=$(echo "$names" | grep -c "^vim")
+changes_i18n=$(echo "$names" | grep -c "^i18n")
 changes_2015=$(echo "$names" | grep -c "^2015")
 changes_2016=$(echo "$names" | grep -c "^2016")
 changes_2017=$(echo "$names" | grep -c "^2017")
@@ -22,6 +23,7 @@ any_changes=$((changes_ci + \
     changes_scripts + \
     changes_templates + \
     changes_vim + \
+    changes_i18n + \
     changes_2015 + \
     changes_2016 + \
     changes_2017 + \
@@ -35,6 +37,7 @@ echo "changes-docker=$changes_docker" | tee -a "$GITHUB_OUTPUT"
 echo "changes-scripts=$changes_scripts" | tee -a "$GITHUB_OUTPUT"
 echo "changes-templates=$changes_templates" | tee -a "$GITHUB_OUTPUT"
 echo "changes-vim=$changes_vim" | tee -a "$GITHUB_OUTPUT"
+echo "changes-i18n=$changes_i18n" | tee -a "$GITHUB_OUTPUT"
 echo "changes-2015=$changes_2015" | tee -a "$GITHUB_OUTPUT"
 echo "changes-2016=$changes_2016" | tee -a "$GITHUB_OUTPUT"
 echo "changes-2017=$changes_2017" | tee -a "$GITHUB_OUTPUT"

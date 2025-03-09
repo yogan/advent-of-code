@@ -27,6 +27,7 @@ jobs:
       changes-ci: ${{ steps.git-diff-check.outputs.changes-ci }}
       changes-scripts: ${{ steps.git-diff-check.outputs.changes-scripts }}
       changes-vim: ${{ steps.git-diff-check.outputs.changes-vim }}
+      changes-i18n: ${{ steps.git-diff-check.outputs.changes-i18n }}
 
     steps:
       - name: Checkout code
@@ -110,4 +111,10 @@ jobs:
         if: ${{ github.event.schedule || needs.check-changes.outputs.changes-vim != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
         run: |
           ./scripts/test-vim.sh
+          ./scripts/cleanup.sh
+
+      - name: Test i18n puzzles solutions
+        if: ${{ github.event.schedule || needs.check-changes.outputs.changes-i18n != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
+        run: |
+          ./scripts/test-days.sh 'i18n-puzzles/2025'
           ./scripts/cleanup.sh
