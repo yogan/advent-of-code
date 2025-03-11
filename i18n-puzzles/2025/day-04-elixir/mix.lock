@@ -1,0 +1,4 @@
+%{
+  "datix": {:hex, :datix, "0.3.2", "fac7ef37c3de1f535f8f2cce511e2948e72005781661c77e26fb421191724e7f", [:mix], [], "hexpm", "0ed482f82e07c8094a2ee89a00c25ceb18909213730c2d4cb3c21b07f72d0539"},
+  "tz": {:hex, :tz, "0.28.1", "717f5ffddfd1e475e2a233e221dc0b4b76c35c4b3650b060c8e3ba29dd6632e9", [:mix], [{:castore, "~> 0.1 or ~> 1.0", [hex: :castore, repo: "hexpm", optional: true]}, {:mint, "~> 1.6", [hex: :mint, repo: "hexpm", optional: true]}], "hexpm", "bfdca1aa1902643c6c43b77c1fb0cb3d744fd2f09a8a98405468afdee0848c8a"},
+}
