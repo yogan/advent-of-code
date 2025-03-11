@@ -205,4 +205,8 @@ ENV CAML_LD_LIBRARY_PATH="/root/.opam/default/lib/stublibs:/root/.opam/default/l
 ENV OCAML_TOPLEVEL_PATH="/root/.opam/default/lib/toplevel"
 ENV PATH="/root/.opam/default/bin:${PATH}"
 
+# Install Hex for Elixir (so that `mix deps.get` will not prompt)
+ENV MIX_HOME=/opt/mix
+RUN mix local.hex --force
+
 # vim: tw=0
