@@ -1,8 +1,8 @@
 import argv
-import gleam/dict.{type Dict}
+import gleam/dict
 import gleam/io
 import gleam/list
-import gleam/set.{type Set}
+import gleam/result
 import gleam/string
 import simplifile
 import tempo
@@ -13,14 +13,11 @@ pub fn main() {
     [filename] -> {
       case simplifile.read(from: filename) {
         Ok(content) -> {
-          let diary =
-            content
-            |> string.trim
-            |> string.split("\n")
-            |> list.map(parse)
-
-          solve(diary, find_prefs(diary), set.new())
-          |> set.to_list
+          content
+          |> string.trim
+          |> string.split("\n")
+          |> list.map(parse)
+          |> fn(diary) { solve(diary, find_prefs(diary), []) }
           |> list.sort(by: string.compare)
           |> string.join(" ")
           |> io.println
@@ -32,66 +29,49 @@ pub fn main() {
   }
 }
 
-pub fn parse(line: String) -> #(String, List(String)) {
+pub fn parse(line) {
   let assert [date, names] = string.split(line, on: ": ")
   #(date, string.split(names, on: ", "))
 }
 
-pub fn find_prefs(
-  lines: List(#(String, List(String))),
-) -> Dict(String, List(String)) {
-  let prefs =
-    lines
-    |> list.flat_map(fn(pair) { pair.1 })
-    |> list.map(fn(name) {
-      #(name, ["DD-MM-YY", "MM-DD-YY", "YY-DD-MM", "YY-MM-DD"])
-    })
-    |> dict.from_list
-
-  list.fold(over: lines, from: prefs, with: fn(prefs, pair) {
-    let #(date, names) = pair
-    list.fold(over: names, from: prefs, with: fn(prefs, name) {
-      update_prefs(date, name, prefs)
-    })
-  })
-}
-
-fn update_prefs(
-  date: String,
-  name: String,
-  prefs: Dict(String, List(String)),
-) -> Dict(String, List(String)) {
-  let assert Ok(cur_prefs) = dict.get(prefs, name)
-  dict.insert(
-    prefs,
-    name,
-    list.filter(cur_prefs, fn(pref) { can_be(date, pref) }),
+pub fn find_prefs(lines: List(#(String, List(String)))) {
+  list.fold(
+    over: lines,
+    from: lines
+      |> list.flat_map(fn(pair) { pair.1 })
+      |> list.map(fn(name) {
+        #(name, ["DD-MM-YY", "MM-DD-YY", "YY-DD-MM", "YY-MM-DD"])
+      })
+      |> dict.from_list,
+    with: fn(prefs, pair) {
+      let #(date, names) = pair
+      list.fold(over: names, from: prefs, with: fn(prefs, name) {
+        update_prefs(date, name, prefs)
+      })
+    },
   )
 }
 
-pub fn can_be(date_str: String, format: String) -> Bool {
-  case date.parse(date_str, tempo.CustomDate(format)) {
-    Ok(_) -> True
-    Error(_) -> False
-  }
+fn update_prefs(date, name, prefs) {
+  let assert Ok(cur_prefs) = dict.get(prefs, name)
+  dict.insert(prefs, name, list.filter(cur_prefs, can_be(date, _)))
 }
 
-fn solve(
-  diary: List(#(String, List(String))),
-  prefs: Dict(String, List(String)),
-  res: Set(String),
-) -> Set(String) {
+pub fn can_be(date_str, format) {
+  date.parse(date_str, tempo.CustomDate(format)) |> result.is_ok
+}
+
+fn solve(diary, prefs, res) {
   case diary {
     [] -> res
     [pair, ..rest] -> {
-      let #(date, names) = pair
-      let writers = find_writers(date, names, prefs) |> set.from_list
-      solve(rest, prefs, set.union(res, writers))
+      solve(rest, prefs, list.append(res, find_writers(pair, prefs)))
     }
   }
 }
 
-fn find_writers(date, names, prefs) {
+fn find_writers(pair, prefs) {
+  let #(date, names) = pair
   case date {
     "09-11-01" -> filter_names(names, prefs, "MM-DD-YY")
     "11-09-01" -> filter_names(names, prefs, "DD-MM-YY")
