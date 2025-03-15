@@ -1,0 +1,11 @@
+name = "i18n"
+version = "1.0.0"
+
+[dependencies]
+argv = "~> 1.0"
+gleam_stdlib = "~> 0.34 or ~> 1.0"
+simplifile = "~> 2.0"
+gtempo = ">= 7.0.2 and < 8.0.0"
+
+[dev-dependencies]
+gleeunit = "~> 1.0"
