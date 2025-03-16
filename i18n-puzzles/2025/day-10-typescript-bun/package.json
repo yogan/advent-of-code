@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "itertools-ts": "^2.2.0"
+  },
+  "devDependencies": {
+    "bun-types": "^1.2.5"
+  },
+  "prettier": {
+    "printWidth": 90,
+    "trailingComma": "es5",
+    "tabWidth": 4,
+    "semi": false,
+    "singleQuote": true
+  }
+}
