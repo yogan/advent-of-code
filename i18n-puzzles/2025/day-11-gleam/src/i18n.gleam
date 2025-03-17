@@ -1,4 +1,5 @@
 import argv
+import gleam/bool
 import gleam/int
 import gleam/io
 import gleam/list
@@ -29,11 +30,10 @@ pub fn main() {
 pub fn rotations(s: String) -> Int {
   case
     list.range(from: 1, to: 23)
-    |> list.map(fn(n) { #(rotate(s, n) |> has_odysseus, n) })
-    |> list.find(fn(pair) { pair.0 == True })
+    |> list.drop_while(fn(n) { rotate(s, n) |> has_odysseus |> bool.negate })
   {
-    Ok(#(_, n)) -> n
-    _ -> 0
+    [] -> 0
+    [n, ..] -> n
   }
 }
 
