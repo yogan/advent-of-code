@@ -15,7 +15,7 @@ pub fn main() {
           content
           |> string.trim
           |> string.split("\n")
-          |> list.map(rotations)
+          |> list.map(find_matching_rotation)
           |> list.fold(0, fn(acc, x) { acc + x })
           |> int.to_string
           |> io.println
@@ -27,23 +27,23 @@ pub fn main() {
   }
 }
 
-pub fn rotations(s: String) -> Int {
+pub fn find_matching_rotation(str: String) -> Int {
   case
     list.range(from: 1, to: 23)
-    |> list.drop_while(fn(n) { rotate(s, n) |> has_odysseus |> bool.negate })
+    |> list.drop_while(fn(n) { rotate(str, n) |> has_odysseus |> bool.negate })
   {
     [] -> 0
     [n, ..] -> n
   }
 }
 
-fn has_odysseus(s) {
-  let assert Ok(re) = regexp.from_string("Οδυσσε(υς|ως|ι|α|υ)")
-  s |> regexp.check(with: re)
+fn has_odysseus(str) {
+  let assert Ok(odysseus_variants) = regexp.from_string("Οδυσσε(υς|ως|ι|α|υ)")
+  str |> regexp.check(with: odysseus_variants)
 }
 
-pub fn rotate(s, n) {
-  s
+pub fn rotate(str, n) {
+  str
   |> normalize_sigmas
   |> string.to_graphemes
   |> list.map(fn(c) { rot_char(c, n) })
@@ -51,13 +51,13 @@ pub fn rotate(s, n) {
   |> replace_trailing_sigmas
 }
 
-fn normalize_sigmas(s) {
-  s |> string.replace(each: "ς", with: "σ")
+fn normalize_sigmas(str) {
+  str |> string.replace(each: "ς", with: "σ")
 }
 
-fn replace_trailing_sigmas(s) {
-  let assert Ok(re) = regexp.from_string("σ\\b")
-  regexp.replace(each: re, in: s, with: "ς")
+fn replace_trailing_sigmas(str) {
+  let assert Ok(trailing_small_sigma) = regexp.from_string("σ\\b")
+  regexp.replace(each: trailing_small_sigma, in: str, with: "ς")
 }
 
 fn rot_char(c, n) {

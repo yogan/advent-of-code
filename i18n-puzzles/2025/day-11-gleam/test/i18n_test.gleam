@@ -6,17 +6,17 @@ pub fn main() {
   gleeunit.main()
 }
 
-pub fn rotations_test() {
+pub fn find_matching_rotation_test() {
   "σζμ γ' ωοωλδθαξλδμξρ οπξρδυζ οξκτλζσθρ Ξγτρρδτρ."
-  |> i18n.rotations
+  |> i18n.find_matching_rotation
   |> should.equal(1)
 
   "αφτ κ' λαλψφτ ωπφχλρφτ δξησηρζαλψφτ φελο, Φκβωωλβ."
-  |> i18n.rotations
+  |> i18n.find_matching_rotation
   |> should.equal(18)
 
   "γ βρφαγζ ωνψν ωγφ πγχρρφ δρδαθωραγζ ρφανφ."
-  |> i18n.rotations
+  |> i18n.find_matching_rotation
   |> should.equal(0)
 }
 
