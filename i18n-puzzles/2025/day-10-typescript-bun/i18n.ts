@@ -22,24 +22,27 @@ export async function main(filename: string) {
     return validCount
 }
 
-const cache = new Map<string, string[]>()
-
 export async function isValid(
     authDb: Map<string, string>,
     user: string,
     pw: string
 ): Promise<boolean> {
-    if (cache.has(user)) return cache.get(user)!.includes(pw)
-
     const hash = authDb.get(user)!
-    const pwVariants = getVariants(pw)
-    for (const variant of pwVariants) {
-        if (await Bun.password.verify(variant, hash, 'bcrypt')) {
-            cache.set(user, pwVariants)
-            return true
-        }
+    for (const variant of getVariants(pw)) {
+        if (await cachedVerify(user, variant, hash)) return true
     }
     return false
+}
+
+const vCache = new Map<string, boolean>()
+
+async function cachedVerify(user: string, pw: string, hash: string) {
+    const key = `${user}:${pw}`
+    if (vCache.has(key)) return vCache.get(key)
+
+    const valid = await Bun.password.verify(pw, hash, 'bcrypt')
+    vCache.set(key, valid)
+    return valid
 }
 
 function getVariants(pw: string): string[] {
