@@ -1,5 +1,5 @@
 import { expect, test } from 'bun:test'
-import { normalizeLastName, sort } from './i18n'
+import { stripInfixes, sort } from './i18n'
 
 const sample = [
     ['Ñíguez Peña', 'María de los Ángeles', '0151605'],
@@ -65,9 +65,9 @@ test('Dutch sorting', () => {
         ['Åberg', 'Rosa-Maria', '0110966'],
         ['Æbelø', 'Aurora', '0113267'],
         ['Ämtler', 'Lorena', '0112717'],
-        ['van den Heyden', 'Harm', '0168131'],
-        ['van Leeuw', 'Floor', '0144158'],
-        ['van Leeuwen', 'Joke', '0172199'],
+        ['Heyden', 'Harm', '0168131'],
+        ['Leeuw', 'Floor', '0144158'],
+        ['Leeuwen', 'Joke', '0172199'],
         ['Navarrete Ortiz', 'Dolores', '0119411'],
         ['Ñíguez Peña', 'María de los Ángeles', '0151605'],
         ['Olofsson', 'Mikael', '0103652'],
@@ -80,8 +80,8 @@ test('Dutch sorting', () => {
 })
 
 test('Normalize last name', () => {
-    expect(normalizeLastName('van den Heyden')).toBe('Heyden')
-    expect(normalizeLastName('van Leeuwen')).toBe('Leeuwen')
-    expect(normalizeLastName('Vandersteen')).toBe('Vandersteen')
-    expect(normalizeLastName('Ñíguez Peña')).toBe('Ñíguez Peña')
+    expect(stripInfixes('van den Heyden')).toBe('Heyden')
+    expect(stripInfixes('van Leeuwen')).toBe('Leeuwen')
+    expect(stripInfixes('Vandersteen')).toBe('Vandersteen')
+    expect(stripInfixes('Ñíguez Peña')).toBe('Ñíguez Peña')
 })
