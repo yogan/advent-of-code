@@ -8,4 +8,5 @@ node_modules/
 **/input.txt
 2020-rust/inputs/
 2021-python/inputs/**/input*
+!codyssi/**/input.txt
 !templates/**/input.txt
