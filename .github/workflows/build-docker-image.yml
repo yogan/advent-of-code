@@ -2,11 +2,7 @@ name: Build Docker Image
 
 on:
   push:
-    branches:
-      - main
   pull_request:
-    branches:
-      - main
   schedule:
     # run every night at 2:02 UTC (tests are scheduled at 2:42, so they are
     # guaranteed to have a freshly built Docker image)
