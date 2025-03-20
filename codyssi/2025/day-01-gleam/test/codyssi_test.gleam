@@ -28,16 +28,20 @@ pub fn parse_test() {
   )
 }
 
+const start = 8
+
+const offsets = [1, 5, 5, 7, 6, 5, 4, 3, 1]
+
+const corrections = ["-", "+", "+", "-", "+", "+", "-", "+", "+"]
+
 pub fn part1_test() {
-  let start = 8
-  let offsets = [1, 5, 5, 7, 6, 5, 4, 3, 1]
-  let corrections = ["-", "+", "+", "-", "+", "+", "-", "+", "+"]
   codyssi.part1(start, offsets, corrections) |> should.equal(21)
 }
 
 pub fn part2_test() {
-  let start = 8
-  let offsets = [1, 5, 5, 7, 6, 5, 4, 3, 1]
-  let corrections = ["-", "+", "+", "-", "+", "+", "-", "+", "+"]
   codyssi.part2(start, offsets, corrections) |> should.equal(23)
+}
+
+pub fn part3_test() {
+  codyssi.part3(start, offsets, corrections) |> should.equal(189)
 }

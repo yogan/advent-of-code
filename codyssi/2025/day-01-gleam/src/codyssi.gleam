@@ -12,8 +12,14 @@ pub fn main() {
       case simplifile.read(from: filename) {
         Ok(content) -> {
           let assert #([start, ..corrections], offsets) = parse(content)
-          part1(start, corrections, offsets) |> int.to_string |> io.println
-          part2(start, corrections, offsets) |> int.to_string |> io.println
+          [
+            part1(start, corrections, offsets),
+            part2(start, corrections, offsets),
+            part3(start, corrections, offsets),
+          ]
+          |> list.map(int.to_string)
+          |> string.join("\n")
+          |> io.println
         }
         Error(_) -> io.println("Error reading " <> filename)
       }
@@ -28,6 +34,22 @@ pub fn part1(start, corrections, offsets) {
 
 pub fn part2(start, corrections, offsets) {
   solve(start, corrections, offsets |> list.reverse)
+}
+
+pub fn part3(start, corrections, offsets) {
+  let assert [start, ..corrections] = compact_numbers([start, ..corrections])
+  solve(start, corrections, offsets |> list.reverse)
+}
+
+fn compact_numbers(numbers) {
+  numbers
+  |> list.sized_chunk(2)
+  |> list.map(fn(pair) {
+    case pair {
+      [a, b] -> 10 * a + b
+      _ -> panic
+    }
+  })
 }
 
 fn solve(start, corrections, offsets) {
