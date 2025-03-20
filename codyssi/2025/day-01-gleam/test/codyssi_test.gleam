@@ -29,5 +29,15 @@ pub fn parse_test() {
 }
 
 pub fn part1_test() {
-  sample |> codyssi.part1 |> should.equal(21)
+  let start = 8
+  let offsets = [1, 5, 5, 7, 6, 5, 4, 3, 1]
+  let corrections = ["-", "+", "+", "-", "+", "+", "-", "+", "+"]
+  codyssi.part1(start, offsets, corrections) |> should.equal(21)
+}
+
+pub fn part2_test() {
+  let start = 8
+  let offsets = [1, 5, 5, 7, 6, 5, 4, 3, 1]
+  let corrections = ["-", "+", "+", "-", "+", "+", "-", "+", "+"]
+  codyssi.part2(start, offsets, corrections) |> should.equal(23)
 }

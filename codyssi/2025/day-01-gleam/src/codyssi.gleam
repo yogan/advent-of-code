@@ -11,7 +11,9 @@ pub fn main() {
     [filename] -> {
       case simplifile.read(from: filename) {
         Ok(content) -> {
-          content |> part1 |> int.to_string |> io.println
+          let assert #([start, ..corrections], offsets) = parse(content)
+          part1(start, corrections, offsets) |> int.to_string |> io.println
+          part2(start, corrections, offsets) |> int.to_string |> io.println
         }
         Error(_) -> io.println("Error reading " <> filename)
       }
@@ -20,9 +22,15 @@ pub fn main() {
   }
 }
 
-pub fn part1(input) {
-  let assert #([start, ..corrections], offsets) = parse(input)
+pub fn part1(start, corrections, offsets) {
+  solve(start, corrections, offsets)
+}
 
+pub fn part2(start, corrections, offsets) {
+  solve(start, corrections, offsets |> list.reverse)
+}
+
+fn solve(start, corrections, offsets) {
   corrections
   |> list.zip(offsets)
   |> list.fold(start, fn(acc, pair) {
