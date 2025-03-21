@@ -32,20 +32,22 @@ pub fn parse_test() {
   )
 }
 
+const qualities = [
+  5219, 8933, 3271, 7128, 9596, 9407, 7005, 1607, 4084, 4525, 5496,
+]
+
 pub fn median_test() {
-  [5219, 8933, 3271, 7128, 9596, 9407, 7005, 1607, 4084, 4525, 5496]
-  |> codyssi.median
-  |> should.equal(5496)
+  qualities |> codyssi.median |> should.equal(5496)
 }
 
 pub fn part1_test() {
-  [5219, 8933, 3271, 7128, 9596, 9407, 7005, 1607, 4084, 4525, 5496]
-  |> codyssi.part1(495, 55, 3)
-  |> should.equal(9_130_674_516_975)
+  qualities |> codyssi.part1(495, 55, 3) |> should.equal(9_130_674_516_975)
 }
 
 pub fn part2_test() {
-  [5219, 8933, 3271, 7128, 9596, 9407, 7005, 1607, 4084, 4525, 5496]
-  |> codyssi.part2(495, 55, 3)
-  |> should.equal(1_000_986_169_836_015)
+  qualities |> codyssi.part2(495, 55, 3) |> should.equal(1_000_986_169_836_015)
+}
+
+pub fn part3_test() {
+  qualities |> codyssi.part3(495, 55, 3) |> should.equal(5496)
 }

@@ -14,7 +14,11 @@ pub fn main() {
       case simplifile.read(from: filename) {
         Ok(content) -> {
           let #(add, mult, pow, qualities) = parse(content)
-          [part1(qualities, add, mult, pow), part2(qualities, add, mult, pow)]
+          [
+            part1(qualities, add, mult, pow),
+            part2(qualities, add, mult, pow),
+            part3(qualities, add, mult, pow),
+          ]
           |> list.map(int.to_string)
           |> string.join("\n")
           |> io.println
@@ -27,7 +31,7 @@ pub fn main() {
 }
 
 pub fn part1(qualities, add, mult, pow) {
-  median(qualities) |> price(add, mult, pow)
+  qualities |> median |> price(add, mult, pow)
 }
 
 pub fn part2(qualities, add, mult, pow) {
@@ -35,6 +39,18 @@ pub fn part2(qualities, add, mult, pow) {
   |> list.filter(fn(q) { q % 2 == 0 })
   |> list.fold(0, int.add)
   |> price(add, mult, pow)
+}
+
+pub fn part3(qualities, add, mult, pow) {
+  let assert Ok(best) =
+    qualities
+    |> list.map(fn(q) { #(q, price(q, add, mult, pow)) })
+    |> list.filter(fn(qp) { qp.1 <= 15_000_000_000_000 })
+    |> list.map(fn(qp) { qp.0 })
+    |> list.sort(int.compare)
+    |> list.last
+
+  best
 }
 
 fn price(m, add, mult, pow) {
