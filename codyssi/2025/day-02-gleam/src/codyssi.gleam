@@ -5,7 +5,6 @@ import gleam/io
 import gleam/list
 import gleam/regexp
 import gleam/result
-import gleam/string
 import simplifile
 
 pub fn main() {
@@ -42,9 +41,7 @@ pub fn part2(qualities, add, mult, pow) {
 pub fn part3(qualities, add, mult, pow) {
   let assert Ok(best) =
     qualities
-    |> list.map(fn(q) { #(q, price(q, add, mult, pow)) })
-    |> list.filter(fn(qp) { qp.1 <= 15_000_000_000_000 })
-    |> list.map(fn(qp) { qp.0 })
+    |> list.filter(fn(q) { price(q, add, mult, pow) <= 15_000_000_000_000 })
     |> list.sort(int.compare)
     |> list.last
 
