@@ -14,8 +14,7 @@ pub fn main() {
       case simplifile.read(from: filename) {
         Ok(content) -> {
           let #(add, mult, pow, qualities) = parse(content)
-          let median_quality = median(qualities)
-          [part1(median_quality, add, mult, pow)]
+          [part1(qualities, add, mult, pow), part2(qualities, add, mult, pow)]
           |> list.map(int.to_string)
           |> string.join("\n")
           |> io.println
@@ -27,7 +26,18 @@ pub fn main() {
   }
 }
 
-pub fn part1(m, add, mult, pow) {
+pub fn part1(qualities, add, mult, pow) {
+  median(qualities) |> price(add, mult, pow)
+}
+
+pub fn part2(qualities, add, mult, pow) {
+  qualities
+  |> list.filter(fn(q) { q % 2 == 0 })
+  |> list.fold(0, int.add)
+  |> price(add, mult, pow)
+}
+
+fn price(m, add, mult, pow) {
   let assert Ok(m) = int.power(m, pow |> int.to_float)
   float.truncate(m) * mult + add
 }
