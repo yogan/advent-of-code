@@ -14,14 +14,12 @@ pub fn main() {
       case simplifile.read(from: filename) {
         Ok(content) -> {
           let #(add, mult, pow, qualities) = parse(content)
-          [
-            part1(qualities, add, mult, pow),
-            part2(qualities, add, mult, pow),
-            part3(qualities, add, mult, pow),
-          ]
-          |> list.map(int.to_string)
-          |> string.join("\n")
-          |> io.println
+          let do = fn(f) {
+            f(qualities, add, mult, pow) |> int.to_string |> io.println
+          }
+          do(part1)
+          do(part2)
+          do(part3)
         }
         Error(_) -> io.println("Error reading " <> filename)
       }
