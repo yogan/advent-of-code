@@ -25,41 +25,27 @@ pub fn main() {
 }
 
 pub fn part1(nums) {
-  nums
-  |> list.sized_chunk(into: 2)
-  |> list.map(fn(pair) {
-    let assert [from, to] = pair
-    1 + to - from
-  })
-  |> list.fold(0, int.add)
+  nums |> list.sized_chunk(into: 2) |> list.map(size) |> sum
 }
 
 pub fn part2(nums) {
-  nums
-  |> list.sized_chunk(into: 4)
-  |> list.map(pile_size)
-  |> list.fold(0, int.add)
+  nums |> list.sized_chunk(into: 4) |> list.map(pile_size) |> sum
 }
 
 pub fn part3(nums) {
-  let assert Ok(max) =
-    nums
-    |> list.sized_chunk(4)
-    |> list.window(2)
-    |> list.map(fn(pair) {
-      let assert [l, r] = pair
-      combine_pairs(l, r)
-    })
-    |> list.map(merge_ranges)
-    |> list.flatten
-    |> list.map(fn(pair) {
-      let assert [l, r] = pair
-      1 + r - l
-    })
-    |> list.sort(int.compare)
-    |> list.last
+  nums
+  |> list.sized_chunk(into: 4)
+  |> list.window(2)
+  |> list.map(combine_pairs)
+  |> list.map(merge_ranges)
+  |> list.flatten
+  |> list.map(size)
+  |> max
+}
 
-  max
+fn size(pair) {
+  let assert [from, to] = pair
+  1 + to - from
 }
 
 pub fn pile_size(piles) {
@@ -92,37 +78,35 @@ pub fn combine(piles) {
   }
 }
 
-pub fn combine_pairs(a, b) {
+pub fn combine_pairs(pair) {
+  let assert [a, b] = pair
   case combine(a), combine(b) {
-    [a1], [b1] -> [list.append(a1, b1) |> combine]
-    [a1], [b1, b2] -> [
-      list.append(a1, b1) |> combine,
-      list.append(a1, b2) |> combine,
-    ]
-    [a1, a2], [b1] -> [
-      list.append(a1, b1) |> combine,
-      list.append(a2, b1) |> combine,
-    ]
+    [a1], [b1] -> [list.append(a1, b1)]
+    [a1], [b1, b2] -> [list.append(a1, b1), list.append(a1, b2)]
+    [a1, a2], [b1] -> [list.append(a1, b1), list.append(a2, b1)]
     [a1, a2], [b1, b2] -> [
-      list.append(a1, b1) |> combine,
-      list.append(a1, b2) |> combine,
-      list.append(a2, b1) |> combine,
-      list.append(a2, b2) |> combine,
+      list.append(a1, b1),
+      list.append(a1, b2),
+      list.append(a2, b1),
+      list.append(a2, b2),
     ]
     _, _ -> panic as "invalid piles"
   }
+  |> list.map(combine)
   |> list.flatten
 }
 
 pub fn merge_ranges(pairs) {
   pairs
-  |> list.sort(fn(a, b) {
-    let assert [l1, _] = a
-    let assert [l2, _] = b
-    int.compare(l1, l2)
-  })
+  |> list.sort(compare_left)
   |> merge_rec([])
   |> list.reverse
+}
+
+fn compare_left(a, b) {
+  let assert [l1, _] = a
+  let assert [l2, _] = b
+  int.compare(l1, l2)
 }
 
 fn merge_rec(remaining, res) {
@@ -132,17 +116,15 @@ fn merge_rec(remaining, res) {
       let assert [[l, _], ..] = pairs
       let #(ls, rest) =
         pairs |> list.split_while(fn(p) { p |> list.first == Ok(l) })
-
-      let r = find_max_r(ls)
-      let #(mergeable, rest) = find_mergable(r, rest, [])
-      let r = find_max_r([[l, r], ..mergeable])
-
+      let r = max_r(ls)
+      let #(mergeable, rest) = find_mergeable(r, rest, [])
+      let r = max_r([[l, r], ..mergeable])
       merge_rec(rest, [[l, r], ..res])
     }
   }
 }
 
-fn find_mergable(r, pairs, res) {
+fn find_mergeable(r, pairs, res) {
   case pairs {
     [] -> #(res, pairs)
     _ -> {
@@ -156,21 +138,25 @@ fn find_mergable(r, pairs, res) {
       case mergeable {
         [] -> #(mergeable, rest)
         _ -> {
-          find_mergable(
-            find_max_r(mergeable),
-            rest,
-            res |> list.append(mergeable),
-          )
+          find_mergeable(max_r(mergeable), rest, res |> list.append(mergeable))
         }
       }
     }
   }
 }
 
-fn find_max_r(pairs) {
+fn sum(nums) {
+  nums |> list.fold(0, int.add)
+}
+
+fn max(nums) {
+  let assert Ok(max) = nums |> list.sort(int.compare) |> list.last
+  max
+}
+
+fn max_r(pairs) {
   let assert Ok(rs) = pairs |> list.map(list.last) |> result.all
-  let assert Ok(r_max) = rs |> list.sort(int.compare) |> list.last
-  r_max
+  rs |> max
 }
 
 pub fn parse(input: String) -> List(Int) {

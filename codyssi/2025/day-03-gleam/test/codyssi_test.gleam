@@ -80,25 +80,25 @@ pub fn combine_test() {
 }
 
 pub fn combine_pairs_test() {
-  codyssi.combine_pairs([8, 9, 9, 10], [7, 8, 8, 10])
+  codyssi.combine_pairs([[8, 9, 9, 10], [7, 8, 8, 10]])
   |> should.equal([[7, 10]])
 
-  codyssi.combine_pairs([7, 8, 8, 10], [9, 10, 5, 10])
+  codyssi.combine_pairs([[7, 8, 8, 10], [9, 10, 5, 10]])
   |> should.equal([[5, 10]])
 
-  codyssi.combine_pairs([9, 10, 5, 10], [3, 10, 9, 10])
+  codyssi.combine_pairs([[9, 10, 5, 10], [3, 10, 9, 10]])
   |> should.equal([[3, 10]])
 
-  codyssi.combine_pairs([3, 10, 9, 10], [4, 8, 7, 9])
+  codyssi.combine_pairs([[3, 10, 9, 10], [4, 8, 7, 9]])
   |> should.equal([[3, 10]])
 
-  codyssi.combine_pairs([4, 8, 7, 9], [9, 10, 2, 7])
+  codyssi.combine_pairs([[4, 8, 7, 9], [9, 10, 2, 7]])
   |> should.equal([[4, 10], [2, 9]])
 
-  codyssi.combine_pairs([9, 10, 2, 7], [4, 8, 7, 9])
+  codyssi.combine_pairs([[9, 10, 2, 7], [4, 8, 7, 9]])
   |> should.equal([[4, 10], [2, 9]])
 
-  codyssi.combine_pairs([9, 10, 2, 7], [1, 2, 4, 7])
+  codyssi.combine_pairs([[9, 10, 2, 7], [1, 2, 4, 7]])
   // combines [[9, 10], [2, 7]] with [[1, 2], [4, 7]]
   |> should.equal([[9, 10], [1, 2], [9, 10], [4, 7], [1, 7], [2, 7]])
 }
