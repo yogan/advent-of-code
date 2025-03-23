@@ -14,6 +14,7 @@ pub fn main() {
           let do = fn(f) { nums |> f |> int.to_string |> io.println }
           do(part1)
           do(part2)
+          do(part3)
         }
         Error(_) -> io.println("Error reading " <> filename)
       }
@@ -32,6 +33,14 @@ pub fn part1(lines) {
 pub fn part2(lines) {
   lines
   |> list.map(lossy_compress)
+  |> list.map(string.to_graphemes)
+  |> list.map(fn(chars) { chars |> list.map(memory) |> sum })
+  |> sum
+}
+
+pub fn part3(lines) {
+  lines
+  |> list.map(rle_compress)
   |> list.map(string.to_graphemes)
   |> list.map(fn(chars) { chars |> list.map(memory) |> sum })
   |> sum
@@ -58,6 +67,25 @@ pub fn lossy_compress(line) {
   let r = line |> string.slice(length: keep, at_index: -keep)
 
   l <> removed <> r
+}
+
+pub fn rle_compress(line) {
+  line
+  |> string.to_graphemes
+  |> rle_rec([])
+  |> list.reverse
+  |> string.join("")
+}
+
+fn rle_rec(chars, acc) {
+  case chars {
+    [] -> acc
+    [char, ..rest] -> {
+      let #(l, r) = rest |> list.split_while(fn(c) { c == char })
+      let len = l |> list.length |> int.add(1) |> int.to_string
+      rle_rec(r, [len <> char, ..acc])
+    }
+  }
 }
 
 pub fn parse(input) {
