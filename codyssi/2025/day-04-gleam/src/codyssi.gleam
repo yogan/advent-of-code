@@ -24,23 +24,20 @@ pub fn main() {
 }
 
 pub fn part1(lines) {
-  lines
-  |> list.map(string.to_graphemes)
-  |> list.map(fn(chars) { chars |> list.map(memory) |> sum })
-  |> sum
+  solve(lines, fn(x) { x })
 }
 
 pub fn part2(lines) {
-  lines
-  |> list.map(lossy_compress)
-  |> list.map(string.to_graphemes)
-  |> list.map(fn(chars) { chars |> list.map(memory) |> sum })
-  |> sum
+  solve(lines, lossy_compress)
 }
 
 pub fn part3(lines) {
+  solve(lines, rle_compress)
+}
+
+fn solve(lines, f) {
   lines
-  |> list.map(rle_compress)
+  |> list.map(f)
   |> list.map(string.to_graphemes)
   |> list.map(fn(chars) { chars |> list.map(memory) |> sum })
   |> sum
