@@ -15,3 +15,7 @@
 ## [04 Aeolian Transmissions!](https://www.codyssi.com/view_problem_8)
   - [Gleam](2025/day-04-gleam/src/codyssi.gleam)
     ([tests](2025/day-04-gleam/test/codyssi_test.gleam))
+
+## [05 Patron Islands!](https://www.codyssi.com/view_problem_9)
+  - [Gleam](2025/day-05-gleam/src/codyssi.gleam)
+    ([tests](2025/day-05-gleam/test/codyssi_test.gleam))
