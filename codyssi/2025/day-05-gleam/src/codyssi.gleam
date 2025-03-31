@@ -2,6 +2,7 @@ import argv
 import gleam/int
 import gleam/io
 import gleam/list
+import gleam/order
 import gleam/string
 import simplifile
 
@@ -13,6 +14,7 @@ pub fn main() {
           let coordinates = parse(content)
           let do = fn(f) { coordinates |> f |> int.to_string |> io.println }
           do(part1)
+          do(part2)
         }
         Error(_) -> io.println("Error reading " <> filename)
       }
@@ -31,6 +33,37 @@ pub fn part1(coordinates) {
   let assert Ok(furthest) = list.last(distances)
 
   furthest - closest
+}
+
+pub fn part2(coordinates) {
+  let comp = fn(a, b) {
+    let #(a_dist, #(ax, ay)) = a
+    let #(b_dist, #(bx, by)) = b
+
+    case int.compare(a_dist, b_dist) {
+      order.Eq ->
+        case int.compare(ax, bx) {
+          order.Eq -> int.compare(ay, by)
+          ord -> ord
+        }
+      ord -> ord
+    }
+  }
+
+  let assert Ok(#(_, closest)) =
+    coordinates
+    |> list.map(fn(coord) { #(manhatten_distance(#(0, 0), coord), coord) })
+    |> list.sort(by: comp)
+    |> list.first
+
+  let assert Ok(#(res, _)) =
+    coordinates
+    |> list.filter(fn(coord) { coord != closest })
+    |> list.map(fn(coord) { #(manhatten_distance(closest, coord), coord) })
+    |> list.sort(by: comp)
+    |> list.first
+
+  res
 }
 
 pub fn manhatten_distance(a, b) {
