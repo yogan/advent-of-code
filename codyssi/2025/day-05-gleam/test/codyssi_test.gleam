@@ -23,6 +23,10 @@ pub fn part2_test() {
   sample |> codyssi.parse |> codyssi.part2 |> should.equal(114)
 }
 
+pub fn part3_test() {
+  sample |> codyssi.parse |> codyssi.part3 |> should.equal(1384)
+}
+
 pub fn manhatten_distance_test() {
   codyssi.manhatten_distance(#(5, 2), #(3, 7)) |> should.equal(7)
 }
