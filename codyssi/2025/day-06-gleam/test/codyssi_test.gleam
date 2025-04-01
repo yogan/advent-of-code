@@ -17,3 +17,7 @@ pub fn part1_test() {
 pub fn part2_test() {
   sample |> codyssi.parse |> codyssi.part2 |> should.equal(1742)
 }
+
+pub fn part3_test() {
+  sample |> codyssi.parse |> codyssi.part3 |> should.equal(2708)
+}
