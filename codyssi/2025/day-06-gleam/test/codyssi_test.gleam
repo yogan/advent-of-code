@@ -13,3 +13,7 @@ Bj?e*#&yRVdemc#?
 pub fn part1_test() {
   sample |> codyssi.parse |> codyssi.part1 |> should.equal(59)
 }
+
+pub fn part2_test() {
+  sample |> codyssi.parse |> codyssi.part2 |> should.equal(1742)
+}
