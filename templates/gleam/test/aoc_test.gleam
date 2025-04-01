@@ -6,7 +6,7 @@ pub fn main() {
   gleeunit.main()
 }
 
-pub fn part1_returns_the_sum_of_the_boxes_volumes_test() {
+pub fn part1_test() {
   [#(1, 2, 3), #(1, 1, 1)]
   |> aoc.part1
   |> should.equal(6 + 1)
