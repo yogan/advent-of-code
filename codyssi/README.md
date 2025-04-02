@@ -23,3 +23,7 @@
 ## [06 Lotus Scramble](https://www.codyssi.com/view_problem_10)
   - [Gleam](2025/day-06-gleam/src/codyssi.gleam)
     ([tests](2025/day-06-gleam/test/codyssi_test.gleam))
+
+## [07 Siren Disruption](https://www.codyssi.com/view_problem_11)
+  - [Gleam](2025/day-07-gleam/src/codyssi.gleam)
+    ([tests](2025/day-07-gleam/test/codyssi_test.gleam))
