@@ -26,69 +26,23 @@ pub fn main() {
 }
 
 pub fn part1(input) {
-  let #(freqs, swaps, test_index) = input
-
-  let assert Ok(res) =
-    swaps
-    |> list.fold(freqs, fn(freqs, swap) {
-      let #(x, y) = swap
-      let assert Ok(x_freq) = freqs |> dict.get(x)
-      let assert Ok(y_freq) = freqs |> dict.get(y)
-      freqs |> dict.insert(x, y_freq) |> dict.insert(y, x_freq)
-    })
-    |> dict.get(test_index)
-
-  res
+  let #(freqs, swaps, index) = input
+  swaps |> list.fold(freqs, swap) |> get(index)
 }
 
 pub fn part2(input) {
-  let #(freqs, swaps, test_index) = input
-
-  let assert Ok(res) =
-    swaps
-    |> to_tripples
-    |> list.fold(freqs, fn(freqs, swap) {
-      let #(x, y, z) = swap
-      let assert Ok(x_freq) = freqs |> dict.get(x)
-      let assert Ok(y_freq) = freqs |> dict.get(y)
-      let assert Ok(z_freq) = freqs |> dict.get(z)
-      freqs
-      |> dict.insert(x, z_freq)
-      |> dict.insert(y, x_freq)
-      |> dict.insert(z, y_freq)
-    })
-    |> dict.get(test_index)
-
-  res
+  let #(freqs, swaps, index) = input
+  swaps |> to_tripples |> list.fold(freqs, triple_swap) |> get(index)
 }
 
 pub fn part3(input) {
-  let #(freqs, swaps, test_index) = input
-
-  let assert Ok(res) =
-    swaps
-    |> list.fold(freqs, fn(freqs, swap) {
-      let #(x, y) = swap
-      let len = block_length(freqs |> dict.size, swap)
-      swap_with_offset(freqs, x, y, 0, len)
-    })
-    |> dict.get(test_index)
-
-  res
+  let #(freqs, swaps, index) = input
+  swaps |> list.fold(freqs, block_swap) |> get(index)
 }
 
-fn swap_with_offset(freqs, x, y, offset, max_offset) {
-  case offset >= max_offset {
-    True -> freqs
-    False -> {
-      let xx = x + offset
-      let yy = y + offset
-      let assert Ok(x_freq) = freqs |> dict.get(xx)
-      let assert Ok(y_freq) = freqs |> dict.get(yy)
-      let freqs = freqs |> dict.insert(xx, y_freq) |> dict.insert(yy, x_freq)
-      swap_with_offset(freqs, x, y, offset + 1, max_offset)
-    }
-  }
+fn get(freqs, index) {
+  let assert Ok(res) = freqs |> dict.get(index)
+  res
 }
 
 pub fn to_tripples(pairs) {
@@ -103,8 +57,42 @@ pub fn to_tripples(pairs) {
   })
 }
 
-pub fn block_length(len, swap) {
-  let #(x, y) = swap
+fn block_swap(freqs, indices) {
+  let #(x, y) = indices
+  let len = block_length(freqs |> dict.size, indices)
+  swap_with_offset(freqs, x, y, 0, len)
+}
+
+fn swap_with_offset(freqs, x, y, offset, max_offset) {
+  case offset >= max_offset {
+    True -> freqs
+    False -> {
+      swap(freqs, #(x + offset, y + offset))
+      |> swap_with_offset(x, y, offset + 1, max_offset)
+    }
+  }
+}
+
+fn swap(freqs, indices) {
+  let #(x, y) = indices
+  let assert Ok(x_freq) = freqs |> dict.get(x)
+  let assert Ok(y_freq) = freqs |> dict.get(y)
+  freqs |> dict.insert(x, y_freq) |> dict.insert(y, x_freq)
+}
+
+fn triple_swap(freqs, indices) {
+  let #(x, y, z) = indices
+  let assert Ok(x_freq) = freqs |> dict.get(x)
+  let assert Ok(y_freq) = freqs |> dict.get(y)
+  let assert Ok(z_freq) = freqs |> dict.get(z)
+  freqs
+  |> dict.insert(x, z_freq)
+  |> dict.insert(y, x_freq)
+  |> dict.insert(z, y_freq)
+}
+
+pub fn block_length(len, indices) {
+  let #(x, y) = indices
   let l = int.min(x, y)
   let r = int.max(x, y)
 
