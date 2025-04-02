@@ -16,6 +16,7 @@ pub fn main() {
           let do = fn(f) { input |> f |> int.to_string |> io.println }
           do(part1)
           do(part2)
+          do(part3)
         }
         Error(_) -> io.println("Error reading " <> filename)
       }
@@ -61,6 +62,35 @@ pub fn part2(input) {
   res
 }
 
+pub fn part3(input) {
+  let #(freqs, swaps, test_index) = input
+
+  let assert Ok(res) =
+    swaps
+    |> list.fold(freqs, fn(freqs, swap) {
+      let #(x, y) = swap
+      let len = block_length(freqs |> dict.size, swap)
+      swap_with_offset(freqs, x, y, 0, len)
+    })
+    |> dict.get(test_index)
+
+  res
+}
+
+fn swap_with_offset(freqs, x, y, offset, max_offset) {
+  case offset >= max_offset {
+    True -> freqs
+    False -> {
+      let xx = x + offset
+      let yy = y + offset
+      let assert Ok(x_freq) = freqs |> dict.get(xx)
+      let assert Ok(y_freq) = freqs |> dict.get(yy)
+      let freqs = freqs |> dict.insert(xx, y_freq) |> dict.insert(yy, x_freq)
+      swap_with_offset(freqs, x, y, offset + 1, max_offset)
+    }
+  }
+}
+
 pub fn to_tripples(pairs) {
   let assert Ok(head) = pairs |> list.first
 
@@ -71,6 +101,14 @@ pub fn to_tripples(pairs) {
     let #(#(x, y), #(z, _)) = pair
     #(x, y, z)
   })
+}
+
+pub fn block_length(len, swap) {
+  let #(x, y) = swap
+  let l = int.min(x, y)
+  let r = int.max(x, y)
+
+  int.min(r - l, len - r + 1)
 }
 
 pub fn parse(input) {

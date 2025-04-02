@@ -15,10 +15,33 @@ pub fn part2_test() {
   sample |> codyssi.parse |> codyssi.part2 |> should.equal(796)
 }
 
+pub fn part3_test() {
+  sample |> codyssi.parse |> codyssi.part3 |> should.equal(827)
+}
+
 pub fn tripples_test() {
   [#(4, 8), #(5, 8), #(10, 1)]
   |> codyssi.to_tripples
   |> should.equal([#(4, 8, 5), #(5, 8, 10), #(10, 1, 4)])
+}
+
+pub fn block_length_test() {
+  let len = 10
+
+  len |> codyssi.block_length(#(1, 5)) |> should.equal(4)
+  len |> codyssi.block_length(#(5, 1)) |> should.equal(4)
+
+  len |> codyssi.block_length(#(1, 6)) |> should.equal(5)
+  len |> codyssi.block_length(#(6, 1)) |> should.equal(5)
+
+  len |> codyssi.block_length(#(1, 9)) |> should.equal(2)
+  len |> codyssi.block_length(#(9, 1)) |> should.equal(2)
+
+  len |> codyssi.block_length(#(1, 10)) |> should.equal(1)
+  len |> codyssi.block_length(#(10, 1)) |> should.equal(1)
+
+  len |> codyssi.block_length(#(4, 8)) |> should.equal(3)
+  len |> codyssi.block_length(#(8, 4)) |> should.equal(3)
 }
 
 pub fn parse_test() {
