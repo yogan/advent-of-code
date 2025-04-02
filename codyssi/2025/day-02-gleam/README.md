@@ -1,4 +1,4 @@
-# Codyssi "Compass Calibration!" in Gleam
+# Codyssi in Gleam
 
 ## Scripts
 
