@@ -15,6 +15,7 @@ pub fn main() {
           let do = fn(f) { lines |> f |> int.to_string |> io.println }
           do(part1)
           do(part2)
+          do(part3)
         }
         Error(_) -> io.println("Error reading " <> filename)
       }
@@ -30,7 +31,11 @@ pub fn part1(lines) {
 }
 
 pub fn part2(lines) {
-  lines |> list.map(max_reduce) |> list.map(list.length) |> sum
+  lines |> list.map(max_reduce(reduce, _)) |> list.map(list.length) |> sum
+}
+
+pub fn part3(lines) {
+  lines |> list.map(max_reduce(reduce2, _)) |> list.map(list.length) |> sum
 }
 
 fn is_alphabetical(c) {
@@ -43,11 +48,11 @@ fn is_numerical(c) {
   regex.check(with: re, content: c)
 }
 
-pub fn max_reduce(line) {
-  let reduced = reduce(line)
+pub fn max_reduce(reduce_fn, line) {
+  let reduced = reduce_fn(line)
   case reduced == line {
     True -> reduced
-    False -> max_reduce(reduced)
+    False -> max_reduce(reduce_fn, reduced)
   }
 }
 
@@ -58,6 +63,24 @@ pub fn reduce(line) {
         True, False -> reduce(rest)
         False, True -> reduce(rest)
         _, _ -> [a, ..reduce([b, ..rest])]
+      }
+    }
+    _ -> line
+  }
+}
+
+pub fn reduce2(line) {
+  case line {
+    [a, b, ..rest] -> {
+      case
+        is_numerical(a),
+        is_numerical(b),
+        is_alphabetical(a),
+        is_alphabetical(b)
+      {
+        True, _, _, True -> reduce2(rest)
+        _, True, True, _ -> reduce2(rest)
+        _, _, _, _ -> [a, ..reduce2([b, ..rest])]
       }
     }
     _ -> line

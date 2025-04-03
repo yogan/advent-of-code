@@ -19,16 +19,30 @@ pub fn part2_test() {
   sample |> codyssi.parse |> codyssi.part2 |> should.equal(18)
 }
 
+pub fn part3_test() {
+  sample |> codyssi.parse |> codyssi.part3 |> should.equal(26)
+}
+
 pub fn reduce_test() {
   test_string(codyssi.reduce, "321ab", "32b")
   test_string(codyssi.reduce, "32b", "3")
+  test_string(codyssi.reduce, "z-4", "z")
 }
 
 pub fn max_reduce_test() {
-  test_string(codyssi.max_reduce, "baa3", "ba")
-  test_string(codyssi.max_reduce, "321ab", "3")
-  test_string(codyssi.max_reduce, "a7b", "b")
-  test_string(codyssi.max_reduce, "z-4", "z")
+  let reduce = codyssi.max_reduce(codyssi.reduce, _)
+  test_string(reduce, "baa3", "ba")
+  test_string(reduce, "321ab", "3")
+  test_string(reduce, "a7b", "b")
+  test_string(reduce, "z-4", "z")
+}
+
+pub fn reduce2_test() {
+  test_string(codyssi.reduce2, "321ab", "32b")
+  test_string(codyssi.reduce2, "32b", "3")
+  test_string(codyssi.reduce2, "a7b", "b")
+  test_string(codyssi.reduce2, "z-4", "z-4")
+  test_string(codyssi.reduce2, "a3-b6", "-")
 }
 
 fn test_string(f, in, expected) {
