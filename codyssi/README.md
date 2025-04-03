@@ -27,3 +27,7 @@
 ## [07 Siren Disruption](https://www.codyssi.com/view_problem_11)
   - [Gleam](2025/day-07-gleam/src/codyssi.gleam)
     ([tests](2025/day-07-gleam/test/codyssi_test.gleam))
+
+## [08 Risky Shortcut](https://www.codyssi.com/view_problem_12)
+  - [Gleam](2025/day-08-gleam/src/codyssi.gleam)
+    ([tests](2025/day-08-gleam/test/codyssi_test.gleam))
