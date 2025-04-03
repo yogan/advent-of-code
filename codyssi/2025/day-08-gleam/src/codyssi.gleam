@@ -11,9 +11,10 @@ pub fn main() {
     [filename] -> {
       case simplifile.read(from: filename) {
         Ok(content) -> {
-          let chars = parse(content)
-          let do = fn(f) { chars |> f |> int.to_string |> io.println }
+          let lines = parse(content)
+          let do = fn(f) { lines |> f |> int.to_string |> io.println }
           do(part1)
+          do(part2)
         }
         Error(_) -> io.println("Error reading " <> filename)
       }
@@ -22,8 +23,14 @@ pub fn main() {
   }
 }
 
-pub fn part1(chars) {
-  chars |> list.filter(is_alphabetical) |> list.length
+pub fn part1(lines) {
+  lines
+  |> list.map(fn(line) { line |> list.filter(is_alphabetical) |> list.length })
+  |> sum
+}
+
+pub fn part2(lines) {
+  lines |> list.map(max_reduce) |> list.map(list.length) |> sum
 }
 
 fn is_alphabetical(c) {
@@ -31,6 +38,36 @@ fn is_alphabetical(c) {
   regex.check(with: re, content: c)
 }
 
+fn is_numerical(c) {
+  let assert Ok(re) = regex.from_string("[0-9]")
+  regex.check(with: re, content: c)
+}
+
+pub fn max_reduce(line) {
+  let reduced = reduce(line)
+  case reduced == line {
+    True -> reduced
+    False -> max_reduce(reduced)
+  }
+}
+
+pub fn reduce(line) {
+  case line {
+    [a, b, ..rest] -> {
+      case is_numerical(a), is_numerical(b) {
+        True, False -> reduce(rest)
+        False, True -> reduce(rest)
+        _, _ -> [a, ..reduce([b, ..rest])]
+      }
+    }
+    _ -> line
+  }
+}
+
+fn sum(lst) {
+  lst |> list.fold(0, int.add)
+}
+
 pub fn parse(input) {
-  input |> string.replace("\n", "") |> string.to_graphemes
+  input |> string.trim() |> string.split("\n") |> list.map(string.to_graphemes)
 }

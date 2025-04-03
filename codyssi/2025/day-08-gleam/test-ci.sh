@@ -4,14 +4,14 @@ if ! ./test.sh; then
     exit 4
 fi
 
-expected1=1371
-expected2=36855
-expected3=53406
+expected1=4740
+expected2=756
+# expected3=
 
 output=$(./run.sh | grep -v "Compil\|Running")
-result1=$(echo "$output" | tail -3 | head -1)
-result2=$(echo "$output" | tail -2 | head -1)
-result3=$(echo "$output" | tail -1)
+result1=$(echo "$output" | tail -2 | head -1)
+result2=$(echo "$output" | tail -1 | head -1)
+# result3=$(echo "$output" | tail -1)
 
 if [ "$result1" != "$expected1" ]; then
     echo "Expected: »$expected1«"
@@ -25,8 +25,8 @@ if [ "$result2" != "$expected2" ]; then
     exit 2
 fi
 
-if [ "$result3" != "$expected3" ]; then
-    echo "Expected: »$expected3«"
-    echo "Received: »$result3«"
-    exit 3
-fi
+# if [ "$result3" != "$expected3" ]; then
+#     echo "Expected: »$expected3«"
+#     echo "Received: »$result3«"
+#     exit 3
+# fi
