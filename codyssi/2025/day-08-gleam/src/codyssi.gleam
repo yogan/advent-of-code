@@ -26,27 +26,28 @@ pub fn main() {
 }
 
 pub fn part1(lines) {
-  lines
-  |> list.map(fn(line) { line |> list.filter(is_alphabetical) |> list.length })
-  |> sum
+  map_and_count(lines, list.filter(_, is_letter))
 }
 
 pub fn part2(lines) {
-  lines |> list.map(max_reduce(reduce, _)) |> list.map(list.length) |> sum
+  reduce_and_count(lines, part2_cond)
 }
 
 pub fn part3(lines) {
-  lines |> list.map(max_reduce(reduce2, _)) |> list.map(list.length) |> sum
+  reduce_and_count(lines, part3_cond)
 }
 
-fn is_alphabetical(c) {
-  let assert Ok(re) = regex.from_string("[a-zA-Z]")
-  regex.check(with: re, content: c)
+fn reduce_and_count(lines, cond) {
+  map_and_count(lines, max_reduce(reduce(cond, _), _))
 }
 
-fn is_numerical(c) {
-  let assert Ok(re) = regex.from_string("[0-9]")
-  regex.check(with: re, content: c)
+fn map_and_count(lines, mapper) {
+  lines |> list.map(mapper) |> list.map(list.length) |> sum
+}
+
+fn matches(line, re_str) {
+  let assert Ok(re) = regex.from_string(re_str)
+  regex.check(with: re, content: line)
 }
 
 pub fn max_reduce(reduce_fn, line) {
@@ -57,31 +58,32 @@ pub fn max_reduce(reduce_fn, line) {
   }
 }
 
-pub fn reduce(line) {
+pub fn reduce(cond, line) {
   case line {
     [a, b, ..rest] -> {
-      case bool.exclusive_or(is_numerical(a), is_numerical(b)) {
-        True -> reduce(rest)
-        False -> [a, ..reduce([b, ..rest])]
+      case cond(a, b) {
+        True -> reduce(cond, rest)
+        False -> [a, ..reduce(cond, [b, ..rest])]
       }
     }
     _ -> line
   }
 }
 
-pub fn reduce2(line) {
-  case line {
-    [a, b, ..rest] -> {
-      case
-        { is_numerical(a) && is_alphabetical(b) }
-        || { is_alphabetical(a) && is_numerical(b) }
-      {
-        True -> reduce2(rest)
-        False -> [a, ..reduce2([b, ..rest])]
-      }
-    }
-    _ -> line
-  }
+pub fn part2_cond(a, b) {
+  bool.exclusive_or(is_digit(a), is_digit(b))
+}
+
+pub fn part3_cond(a, b) {
+  { is_digit(a) && is_letter(b) } || { is_letter(a) && is_digit(b) }
+}
+
+fn is_letter(c) {
+  c |> matches("[a-zA-Z]")
+}
+
+fn is_digit(c) {
+  c |> matches("[0-9]")
 }
 
 fn sum(lst) {
