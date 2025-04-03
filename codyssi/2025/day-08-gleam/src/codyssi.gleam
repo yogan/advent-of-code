@@ -1,4 +1,5 @@
 import argv
+import gleam/bool
 import gleam/int
 import gleam/io
 import gleam/list
@@ -59,10 +60,9 @@ pub fn max_reduce(reduce_fn, line) {
 pub fn reduce(line) {
   case line {
     [a, b, ..rest] -> {
-      case is_numerical(a), is_numerical(b) {
-        True, False -> reduce(rest)
-        False, True -> reduce(rest)
-        _, _ -> [a, ..reduce([b, ..rest])]
+      case bool.exclusive_or(is_numerical(a), is_numerical(b)) {
+        True -> reduce(rest)
+        False -> [a, ..reduce([b, ..rest])]
       }
     }
     _ -> line
@@ -73,14 +73,11 @@ pub fn reduce2(line) {
   case line {
     [a, b, ..rest] -> {
       case
-        is_numerical(a),
-        is_numerical(b),
-        is_alphabetical(a),
-        is_alphabetical(b)
+        { is_numerical(a) && is_alphabetical(b) }
+        || { is_alphabetical(a) && is_numerical(b) }
       {
-        True, _, _, True -> reduce2(rest)
-        _, True, True, _ -> reduce2(rest)
-        _, _, _, _ -> [a, ..reduce2([b, ..rest])]
+        True -> reduce2(rest)
+        False -> [a, ..reduce2([b, ..rest])]
       }
     }
     _ -> line
