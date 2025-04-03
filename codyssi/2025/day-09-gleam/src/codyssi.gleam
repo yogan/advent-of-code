@@ -15,6 +15,7 @@ pub fn main() {
           let input = parse(content)
           let do = fn(f) { input |> f |> int.to_string |> io.println }
           do(part1)
+          do(part2)
         }
         Error(_) -> io.println("Error reading " <> filename)
       }
@@ -24,8 +25,16 @@ pub fn main() {
 }
 
 pub fn part1(input) {
+  input |> sum_top3(process(_, capped: False))
+}
+
+pub fn part2(input) {
+  input |> sum_top3(process(_, capped: True))
+}
+
+fn sum_top3(input, proc_fn) {
   input
-  |> process
+  |> proc_fn
   |> dict.values
   |> list.sort(int.compare)
   |> list.reverse
@@ -33,12 +42,21 @@ pub fn part1(input) {
   |> list.fold(0, int.add)
 }
 
-pub fn process(input) {
+pub fn process(input, capped capped) {
   let #(accounts, transactions) = input
 
   transactions
   |> list.fold(accounts, fn(acc, transaction) {
     let #(from, to, amount) = transaction
+
+    let amount = case capped {
+      True -> {
+        let assert Ok(from_balance) = dict.get(acc, from)
+        int.min(amount, from_balance)
+      }
+      False -> amount
+    }
+
     acc
     |> dict.update(from, fn(balance) {
       let assert Some(balance) = balance

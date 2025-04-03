@@ -11,10 +11,14 @@ pub fn part1_test() {
   sample |> codyssi.parse |> codyssi.part1 |> should.equal(2870)
 }
 
-pub fn process_test() {
+pub fn part2_test() {
+  sample |> codyssi.parse |> codyssi.part2 |> should.equal(2542)
+}
+
+pub fn process_uncapped_test() {
   sample
   |> codyssi.parse
-  |> codyssi.process
+  |> codyssi.process(capped: False)
   |> should.equal(
     dict.from_list([
       #("Alpha", 199),
@@ -23,6 +27,22 @@ pub fn process_test() {
       #("Delta", 745),
       #("Echo", 148),
       #("Foxtrot", 1626),
+    ]),
+  )
+}
+
+pub fn process_capped_test() {
+  sample
+  |> codyssi.parse
+  |> codyssi.process(capped: True)
+  |> should.equal(
+    dict.from_list([
+      #("Alpha", 230),
+      #("Bravo", 499),
+      #("Charlie", 0),
+      #("Delta", 86),
+      #("Echo", 455),
+      #("Foxtrot", 1588),
     ]),
   )
 }
