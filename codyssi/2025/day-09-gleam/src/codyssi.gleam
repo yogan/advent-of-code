@@ -16,6 +16,7 @@ pub fn main() {
           let do = fn(f) { input |> f |> int.to_string |> io.println }
           do(part1)
           do(part2)
+          do(part3)
         }
         Error(_) -> io.println("Error reading " <> filename)
       }
@@ -30,6 +31,10 @@ pub fn part1(input) {
 
 pub fn part2(input) {
   input |> sum_top3(process(_, capped: True))
+}
+
+pub fn part3(input) {
+  input |> sum_top3(process_with_debts)
 }
 
 fn sum_top3(input, proc_fn) {
@@ -67,6 +72,73 @@ pub fn process(input, capped capped) {
       balance + amount
     })
   })
+}
+
+fn process_with_debts(input) {
+  let #(accounts, transactions) = input
+
+  let accounts_with_debts =
+    accounts |> dict.map_values(fn(_, balance) { #(balance, []) })
+
+  transactions
+  |> list.fold(accounts_with_debts, process_transaction_with_debts)
+  |> dict.map_values(fn(_, pair) { pair.0 })
+}
+
+pub fn process_transaction_with_debts(accounts, transaction) {
+  let #(from, to, amount) = transaction
+  let assert Ok(#(from_balance, _)) = dict.get(accounts, from)
+  let payment = int.min(from_balance, amount)
+  let debt = amount - payment
+
+  accounts
+  |> dict.update(from, fn(pair) {
+    let assert Some(#(balance, debts)) = pair
+    let debts = case debt {
+      0 -> debts
+      _ -> list.append(debts, [#(to, debt)])
+    }
+    #(balance - payment, debts)
+  })
+  |> repay_debts(to, payment)
+}
+
+fn repay_debts(accounts, debitor, income) {
+  case income <= 0 {
+    True -> accounts
+    False -> {
+      let assert Ok(#(balance, debts)) = dict.get(accounts, debitor)
+      case debts {
+        // no debts, just book the income
+        [] -> accounts |> dict.insert(debitor, #(balance + income, []))
+
+        [#(creditor, amount), ..remaining_debts] -> {
+          case income >= amount {
+            // repay the full amount, remove debt
+            True -> {
+              accounts
+              |> dict.insert(debitor, #(balance, remaining_debts))
+              |> repay_debts(creditor, amount)
+              |> repay_debts(debitor, income - amount)
+            }
+
+            // repay part of the debt, keep it (reduced)
+            False -> {
+              let partial_amount = int.min(income, amount)
+              let reduced_debt = #(creditor, amount - partial_amount)
+              accounts
+              |> dict.insert(
+                debitor,
+                #(balance, [reduced_debt, ..remaining_debts]),
+              )
+              |> repay_debts(creditor, partial_amount)
+              |> repay_debts(debitor, income - partial_amount)
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 pub fn parse(input) {

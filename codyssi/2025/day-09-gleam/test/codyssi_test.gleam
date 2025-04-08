@@ -15,6 +15,10 @@ pub fn part2_test() {
   sample |> codyssi.parse |> codyssi.part2 |> should.equal(2542)
 }
 
+pub fn part3_test() {
+  sample |> codyssi.parse |> codyssi.part3 |> should.equal(2511)
+}
+
 pub fn process_uncapped_test() {
   sample
   |> codyssi.parse
@@ -43,6 +47,94 @@ pub fn process_capped_test() {
       #("Delta", 86),
       #("Echo", 455),
       #("Foxtrot", 1588),
+    ]),
+  )
+}
+
+pub fn process_transaction_with_debts_test() {
+  let accounts_with_debts =
+    dict.from_list([
+      #("Alpha", #(131, [])),
+      #("Bravo", #(804, [])),
+      #("Charlie", #(348, [])),
+      #("Delta", #(187, [])),
+      #("Echo", #(649, [])),
+      #("Foxtrot", #(739, [])),
+    ])
+
+  accounts_with_debts
+  |> codyssi.process_transaction_with_debts(#("Echo", "Foxtrot", 328))
+  |> should.equal(
+    dict.from_list([
+      #("Alpha", #(131, [])),
+      #("Bravo", #(804, [])),
+      #("Charlie", #(348, [])),
+      #("Delta", #(187, [])),
+      #("Echo", #(649 - 328, [])),
+      #("Foxtrot", #(739 + 328, [])),
+    ]),
+  )
+
+  accounts_with_debts
+  |> codyssi.process_transaction_with_debts(#("Echo", "Foxtrot", 650))
+  |> should.equal(
+    dict.from_list([
+      #("Alpha", #(131, [])),
+      #("Bravo", #(804, [])),
+      #("Charlie", #(348, [])),
+      #("Delta", #(187, [])),
+      #("Echo", #(0, [#("Foxtrot", 1)])),
+      #("Foxtrot", #(739 + 649, [])),
+    ]),
+  )
+
+  accounts_with_debts
+  |> codyssi.process_transaction_with_debts(#("Echo", "Foxtrot", 650))
+  |> codyssi.process_transaction_with_debts(#("Alpha", "Echo", 31))
+  |> should.equal(
+    dict.from_list([
+      #("Alpha", #(131 - 31, [])),
+      #("Bravo", #(804, [])),
+      #("Charlie", #(348, [])),
+      #("Delta", #(187, [])),
+      #("Echo", #(31 - 1, [])),
+      #("Foxtrot", #(739 + 649 + 1, [])),
+    ]),
+  )
+
+  dict.from_list([
+    #("Alpha", #(131, [])),
+    #("Bravo", #(804, [])),
+    #("Charlie", #(348, [])),
+    #("Delta", #(187, [])),
+    #("Echo", #(0, [#("Foxtrot", 1), #("Bravo", 500)])),
+    #("Foxtrot", #(739 + 649, [])),
+  ])
+  |> codyssi.process_transaction_with_debts(#("Alpha", "Echo", 31))
+  |> should.equal(
+    dict.from_list([
+      #("Alpha", #(131 - 31, [])),
+      #("Bravo", #(804 + 30, [])),
+      #("Charlie", #(348, [])),
+      #("Delta", #(187, [])),
+      #("Echo", #(0, [#("Bravo", 470)])),
+      #("Foxtrot", #(739 + 649 + 1, [])),
+    ]),
+  )
+}
+
+pub fn process_transaction_with_debts_mutual_test() {
+  dict.from_list([
+    #("Alpha", #(100, [#("Bravo", 20)])),
+    #("Bravo", #(200, [#("Alpha", 10)])),
+    #("Charlie", #(300, [])),
+  ])
+  |> codyssi.process_transaction_with_debts(#("Charlie", "Alpha", 50))
+  |> should.equal(
+    dict.from_list([
+      #("Alpha", #(140, [])),
+      #("Bravo", #(210, [])),
+      #("Charlie", #(250, [])),
     ]),
   )
 }
