@@ -2,7 +2,7 @@ import argv
 import gleam/int
 import gleam/io
 import gleam/list
-import gleam/regex
+import gleam/regexp
 import gleam/string
 import simplifile
 
@@ -66,13 +66,13 @@ fn shift(x) {
 }
 
 fn decode(c) {
-  let assert Ok(lowercase) = regex.from_string("[a-z]")
-  let assert Ok(uppercase) = regex.from_string("[A-Z]")
+  let assert Ok(lowercase) = regexp.from_string("[a-z]")
+  let assert Ok(uppercase) = regexp.from_string("[A-Z]")
 
-  case regex.check(content: c, with: lowercase) {
+  case regexp.check(content: c, with: lowercase) {
     True -> Uncorrupted(to_ascii(c) - to_ascii("a") + 1)
     False -> {
-      case regex.check(content: c, with: uppercase) {
+      case regexp.check(content: c, with: uppercase) {
         True -> Uncorrupted(to_ascii(c) - to_ascii("A") + 27)
         False -> Corrupted(c)
       }

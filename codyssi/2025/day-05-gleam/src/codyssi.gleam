@@ -95,8 +95,8 @@ pub fn parse(input) {
   |> list.map(fn(line) {
     let assert [Ok(x), Ok(y)] =
       line
-      |> string.drop_left(1)
-      |> string.drop_right(1)
+      |> string.drop_start(1)
+      |> string.drop_end(1)
       |> string.split(", ")
       |> list.map(int.parse)
     #(x, y)

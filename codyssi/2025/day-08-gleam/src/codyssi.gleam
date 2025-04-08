@@ -3,7 +3,7 @@ import gleam/bool
 import gleam/int
 import gleam/io
 import gleam/list
-import gleam/regex
+import gleam/regexp
 import gleam/string
 import simplifile
 
@@ -46,8 +46,8 @@ fn map_and_count(lines, mapper) {
 }
 
 fn matches(line, re_str) {
-  let assert Ok(re) = regex.from_string(re_str)
-  regex.check(with: re, content: line)
+  let assert Ok(re) = regexp.from_string(re_str)
+  regexp.check(with: re, content: line)
 }
 
 pub fn max_reduce(reduce_fn, line) {

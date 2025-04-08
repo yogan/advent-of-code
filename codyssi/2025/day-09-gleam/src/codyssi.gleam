@@ -63,11 +63,11 @@ pub fn process(input, capped capped) {
     }
 
     acc
-    |> dict.update(from, fn(balance) {
+    |> dict.upsert(from, fn(balance) {
       let assert Some(balance) = balance
       balance - amount
     })
-    |> dict.update(to, fn(balance) {
+    |> dict.upsert(to, fn(balance) {
       let assert Some(balance) = balance
       balance + amount
     })
@@ -92,7 +92,7 @@ pub fn process_transaction_with_debts(accounts, transaction) {
   let debt = amount - payment
 
   accounts
-  |> dict.update(from, fn(pair) {
+  |> dict.upsert(from, fn(pair) {
     let assert Some(#(balance, debts)) = pair
     let debts = case debt {
       0 -> debts
