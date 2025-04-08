@@ -31,3 +31,7 @@
 ## [08 Risky Shortcut](https://www.codyssi.com/view_problem_12)
   - [Gleam](2025/day-08-gleam/src/codyssi.gleam)
     ([tests](2025/day-08-gleam/test/codyssi_test.gleam))
+
+## [09 Windy Bargain](https://www.codyssi.com/view_problem_13)
+  - [Gleam](2025/day-09-gleam/src/codyssi.gleam)
+    ([tests](2025/day-09-gleam/test/codyssi_test.gleam))
