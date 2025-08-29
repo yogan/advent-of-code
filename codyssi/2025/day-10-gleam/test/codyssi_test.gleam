@@ -1,4 +1,5 @@
 import codyssi
+import gleam/dict
 import gleeunit
 import gleeunit/should
 
@@ -8,6 +9,28 @@ pub fn main() {
 
 pub fn part1_test() {
   sample |> codyssi.parse |> codyssi.part1 |> should.equal(73)
+}
+
+pub fn part2_test() {
+  sample |> codyssi.parse |> codyssi.part2 |> should.equal(94)
+}
+
+pub fn to_coords_test() {
+  [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+  |> codyssi.to_coords
+  |> should.equal(
+    dict.from_list([
+      #(#(1, 1), 1),
+      #(#(1, 2), 2),
+      #(#(1, 3), 3),
+      #(#(2, 1), 4),
+      #(#(2, 2), 5),
+      #(#(2, 3), 6),
+      #(#(3, 1), 7),
+      #(#(3, 2), 8),
+      #(#(3, 3), 9),
+    ]),
+  )
 }
 
 pub fn parse_test() {
