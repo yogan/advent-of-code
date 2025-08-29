@@ -98,7 +98,7 @@ RUN gem install minitest
 # We need erlang-eunit for unit tests, and also erlang-dev, otherwise eunit.hrl is missing
 # Gleam itself is a single static binary, so we just download it and put it in the PATH.
 # Exercism tests require rebar3, which is installed via apt as well.
-RUN curl -fsSL https://github.com/gleam-lang/gleam/releases/download/v1.9.0/gleam-v1.9.0-x86_64-unknown-linux-musl.tar.gz | tar -xzf - -C /usr/local/bin
+RUN curl -fsSL https://github.com/gleam-lang/gleam/releases/download/v1.12.0/gleam-v1.12.0-x86_64-unknown-linux-musl.tar.gz | tar -xzf - -C /usr/local/bin
 
 # Swift
 # https://www.swift.org/install/linux/#installation-via-tarball
