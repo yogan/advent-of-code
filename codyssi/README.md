@@ -35,3 +35,7 @@
 ## [09 Windy Bargain](https://www.codyssi.com/view_problem_13)
   - [Gleam](2025/day-09-gleam/src/codyssi.gleam)
     ([tests](2025/day-09-gleam/test/codyssi_test.gleam))
+
+## [10 Windy Bargain](https://www.codyssi.com/view_problem_14)
+  - [Gleam](2025/day-10-gleam/src/codyssi.gleam)
+    ([tests](2025/day-10-gleam/test/codyssi_test.gleam))
