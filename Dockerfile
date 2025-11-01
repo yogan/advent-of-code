@@ -6,7 +6,7 @@ FROM ubuntu:24.04
 # - add rm -rf /var/lib/apt/lists/* to the end (next apt-get update will re-fetch anyway)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     # base/util packages
-    bc curl ca-certificates gnupg unzip locales build-essential cmake libcurl3-gnutls \
+    bc curl ca-certificates gnupg unzip locales build-essential cmake libcurl3-gnutls jq \
     # this brings add-apt-repository, needed later:
     software-properties-common \
     # various languages directly from apt
