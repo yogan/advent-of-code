@@ -183,8 +183,10 @@ RUN curl -fsSL https://dl-ssl.google.com/linux/linux_signing_key.pub \
 # Idris2 via Pack
 # https://github.com/idris-lang/Idris2/blob/main/INSTALL.md
 # https://github.com/stefan-hoeck/idris2-pack
-ENV PACK_DIR="/usr/local/share/pack"
-ENV PATH="${PACK_DIR}/bin:${PATH}"
+ENV PACK_BIN_DIR="/usr/local/bin"
+ENV PACK_USER_DIR="/usr/local/share/pack"
+ENV PACK_STATE_DIR="/usr/local/state/pack"
+ENV PACK_CACHE_DIR="/usr/local/cache/pack"
 RUN bash -c "echo '' | bash <(curl -fsSL https://raw.githubusercontent.com/stefan-hoeck/idris2-pack/main/install.bash)"
 
 # OCaml via opam
