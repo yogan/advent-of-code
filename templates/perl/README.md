@@ -1,5 +1,7 @@
 # Advent of Code in Perl
 
+`Test2` needs to be installed, e.g. via `sudo cpan Test2::V0`.
+
 ## Scripts
 
 ```sh
