@@ -1,11 +1,10 @@
-# Advent of Code in Python
+# Everybody Codes 2025 in Python
 
 ## Usage
 
 ```sh
-./run.sh               # run with input.txt as input
-./run.sh FILENAME      # run with FILENAME as input
-./run.sh [-s|--sample] # run with sample.txt as input
+./run.sh               # run with real inputs
+./run.sh [-s|--sample] # run with samples
 ./run.sh [-t|--test]   # run unit tests
 ```
 

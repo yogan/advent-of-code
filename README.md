@@ -12,11 +12,15 @@
 
 ## Other Coding Puzzles
 
-### [Codyssi](https://www.codyssi.com) (2025)
+### [Everybody Codes](https://everybody.codes)
+
+- [Everybody Codes Solutions](everybody-codes/README.md) (Python)
+
+### [Codyssi](https://www.codyssi.com)
 
 - [Codyssi Solutions](codyssi/README.md) (Gleam)
 
-### [Internationalization Puzzles](https://i18n-puzzles.com) (2025)
+### [Internationalization Puzzles](https://i18n-puzzles.com)
 
 - [i18n Solutions](i18n-puzzles/README.md) (Gleam, Elixir, TypeScript)
 
