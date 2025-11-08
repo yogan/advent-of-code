@@ -1,0 +1,3 @@
+Aelithwyris,Felnralis,Braeluth,Dalhal,Xileldrin,Krynnfelix,Marmirath,Aermirix,Eadlyr,Fyndzris
+
+L4,R8,L5,R8,L2,R1,L2,R2,L1,R1,L6

@@ -1,0 +1,3 @@
+Zraalimar,Aerjoris,Phyrthyris,Fyrcalyx,Thazaelor,Paldlar,Ilmarquin,Axalxaril,Rahpyr,Braeroth,Lirnix,Thymbryn,Tyrlith,Krythkael,Glaurgryph,Drethlith,Ilmaraxis,Narzral,Ildcion,Vaelgonn
+
+L16,R14,L6,R17,L14,R5,L5,R18,L12,R14,L5,R14,L5,R14,L5,R13,L5,R18,L5,R15,L7,R7,L14,R10,L7,R16,L5,R15,L15

@@ -2,7 +2,7 @@ import sys
 import unittest
 
 
-def parse():
+def parse(filename):
     names, moves = open(filename).read().strip().split("\n\n")
     return names.split(","), [(m[0], int(m[1])) for m in moves.split(",")]
 
@@ -17,6 +17,16 @@ def part1(names, moves):
     return names[pos]
 
 
+def part2(names, moves):
+    pos, l = 0, len(names)
+    for move, steps in moves:
+        if move == "L":
+            pos = (pos - steps) % l
+        else:
+            pos = (pos + steps) % l
+    return names[pos]
+
+
 class Tests(unittest.TestCase):
     def test_part1(self):
         self.assertEqual(part1(["A", "B"], []), "A")
@@ -25,15 +35,21 @@ class Tests(unittest.TestCase):
         self.assertEqual(part1(["A", "B"], [("R", 2)]), "B")
         self.assertEqual(part1(["A", "B"], [("R", 1), ("L", 1)]), "A")
 
+    def test_part2(self):
+        self.assertEqual(part2(["A", "B"], []), "A")
+        self.assertEqual(part2(["A", "B"], [("L", 1)]), "B")
+        self.assertEqual(part2(["A", "B"], [("L", 2)]), "A")
+        self.assertEqual(part2(["A", "B"], [("R", 1)]), "B")
+        self.assertEqual(part2(["A", "B"], [("R", 2)]), "A")
+        self.assertEqual(part2(["A", "B", "C"], [("R", 1), ("L", 2)]), "C")
+
 
 if __name__ == "__main__":
     flags = set(arg for arg in sys.argv[1:] if arg.startswith("-"))
     args = [arg for arg in sys.argv[1:] if not arg.startswith("-")]
     sys.argv = sys.argv[:1]  # strip args, unittest.main() doesn't like them
 
-    filename = "sample.txt" if "-s" in flags or "--sample" in flags else "input.txt"
-    filename = args[0] if args else filename
-    is_sample = filename.startswith("sample")
+    is_sample = "-s" in flags or "--sample" in flags
     run_tests = "-t" in flags or "--test" in flags
 
     if run_tests:
@@ -49,7 +65,12 @@ if __name__ == "__main__":
                 exit(1)
             print("✅")
 
-    names, moves = parse()
-    p1 = part1(names, moves)
-
-    check(1, p1, "Fyrryn" if is_sample else "Braeluth")
+    if is_sample:
+        names, moves = parse("sample.txt")
+        check(1, part1(names, moves), "Fyrryn")
+        check(2, part2(names, moves), "Elarzris")
+    else:
+        names1, moves1 = parse("input1.txt")
+        names2, moves2 = parse("input2.txt")
+        check(1, part1(names1, moves1), "Braeluth")
+        check(2, part2(names2, moves2), "Thazaelor")
