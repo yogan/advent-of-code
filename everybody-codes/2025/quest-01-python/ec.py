@@ -4,36 +4,28 @@ import unittest
 
 def parse(filename):
     names, moves = open(filename).read().strip().split("\n\n")
-    return names.split(","), [(m[0], int(m[1])) for m in moves.split(",")]
+    return names.split(","), [
+        (1 if m[0] == "R" else -1, int(m[1])) for m in moves.split(",")
+    ]
 
 
 def part1(names, moves):
     pos = 0
-    for move, steps in moves:
-        if move == "L":
-            pos = max(0, pos - steps)
-        else:
-            pos = min(len(names) - 1, pos + steps)
+    for dir, steps in moves:
+        pos = max(0, min(len(names) - 1, pos + dir * steps))
     return names[pos]
 
 
 def part2(names, moves):
-    pos, l = 0, len(names)
-    for move, steps in moves:
-        if move == "L":
-            pos = (pos - steps) % l
-        else:
-            pos = (pos + steps) % l
+    pos = 0
+    for dir, steps in moves:
+        pos = (pos + dir * steps) % len(names)
     return names[pos]
 
 
 def part3(names, moves):
-    l = len(names)
-    for move, steps in moves:
-        if move == "L":
-            idx = -steps % l
-        else:
-            idx = steps % l
+    for dir, steps in moves:
+        idx = dir * steps % len(names)
         names[0], names[idx] = names[idx], names[0]
     return names[0]
 
@@ -41,22 +33,22 @@ def part3(names, moves):
 class Tests(unittest.TestCase):
     def test_part1(self):
         self.assertEqual(part1(["A", "B"], []), "A")
-        self.assertEqual(part1(["A", "B"], [("L", 1)]), "A")
-        self.assertEqual(part1(["A", "B"], [("R", 1)]), "B")
-        self.assertEqual(part1(["A", "B"], [("R", 2)]), "B")
-        self.assertEqual(part1(["A", "B"], [("R", 1), ("L", 1)]), "A")
+        self.assertEqual(part1(["A", "B"], [(-1, 1)]), "A")
+        self.assertEqual(part1(["A", "B"], [(+1, 1)]), "B")
+        self.assertEqual(part1(["A", "B"], [(+1, 2)]), "B")
+        self.assertEqual(part1(["A", "B"], [(+1, 1), (-1, 1)]), "A")
 
     def test_part2(self):
         self.assertEqual(part2(["A", "B"], []), "A")
-        self.assertEqual(part2(["A", "B"], [("L", 1)]), "B")
-        self.assertEqual(part2(["A", "B"], [("L", 2)]), "A")
-        self.assertEqual(part2(["A", "B"], [("R", 1)]), "B")
-        self.assertEqual(part2(["A", "B"], [("R", 2)]), "A")
-        self.assertEqual(part2(["A", "B", "C"], [("R", 1), ("L", 2)]), "C")
+        self.assertEqual(part2(["A", "B"], [(-1, 1)]), "B")
+        self.assertEqual(part2(["A", "B"], [(-1, 2)]), "A")
+        self.assertEqual(part2(["A", "B"], [(+1, 1)]), "B")
+        self.assertEqual(part2(["A", "B"], [(+1, 2)]), "A")
+        self.assertEqual(part2(["A", "B", "C"], [(+1, 1), (-1, 2)]), "C")
 
     def test_part3(self):
         names = ["Vyrdax", "Drakzyph", "Fyrryn", "Elarzris"]
-        moves = [("R", 3), ("L", 2), ("R", 3), ("L", 3)]
+        moves = [(1, 3), (-1, 2), (1, 3), (-1, 3)]
         self.assertEqual(part3(names.copy(), moves[:0]), "Vyrdax")
         self.assertEqual(part3(names.copy(), moves[:1]), "Elarzris")
         self.assertEqual(part3(names.copy(), moves[:2]), "Fyrryn")

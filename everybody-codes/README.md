@@ -4,4 +4,4 @@
 
 ### [Quest 1: Whispers in the Shell](https://everybody.codes/event/2025/quests/1)
 
-- [Python](2025/quest-01-python/aoc.py)
+- [Python](2025/quest-01-python/ec.py)
