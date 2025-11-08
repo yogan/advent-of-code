@@ -1,0 +1,3 @@
+Quenthyn,Vorncyth,Dalnix,Shaemhynd,Narrex,Agnargoril,Karthvyr,Ulsyx,Belrovan,Brivoryx,Ulmarvor,Skaraelor,Xillar,Zyntor,Xyrzorin,Rythannix,Brynendris,Xaraldra,Ulmarparth,Jorathris,Ryssmarn,Erassaral,Grimzeth,Eltparth,Thymkyris,Rynadir,Gavtyr,Ylarthel,Harnix,Iryndar
+
+L9,R29,L45,R30,L5,R14,L24,R7,L21,R29,L47,R5,L11,R7,L17,R7,L17,R32,L36,R29,L5,R49,L5,R14,L5,R27,L5,R28,L5,R25,L5,R27,L5,R44,L5,R47,L5,R26,L5,R40,L31,R8,L41,R37,L31,R48,L8,R36,L6,R42,L26,R17,L11,R40,L45,R12,L37,R44,L9

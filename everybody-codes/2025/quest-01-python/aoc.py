@@ -27,6 +27,17 @@ def part2(names, moves):
     return names[pos]
 
 
+def part3(names, moves):
+    l = len(names)
+    for move, steps in moves:
+        if move == "L":
+            idx = -steps % l
+        else:
+            idx = steps % l
+        names[0], names[idx] = names[idx], names[0]
+    return names[0]
+
+
 class Tests(unittest.TestCase):
     def test_part1(self):
         self.assertEqual(part1(["A", "B"], []), "A")
@@ -42,6 +53,15 @@ class Tests(unittest.TestCase):
         self.assertEqual(part2(["A", "B"], [("R", 1)]), "B")
         self.assertEqual(part2(["A", "B"], [("R", 2)]), "A")
         self.assertEqual(part2(["A", "B", "C"], [("R", 1), ("L", 2)]), "C")
+
+    def test_part3(self):
+        names = ["Vyrdax", "Drakzyph", "Fyrryn", "Elarzris"]
+        moves = [("R", 3), ("L", 2), ("R", 3), ("L", 3)]
+        self.assertEqual(part3(names.copy(), moves[:0]), "Vyrdax")
+        self.assertEqual(part3(names.copy(), moves[:1]), "Elarzris")
+        self.assertEqual(part3(names.copy(), moves[:2]), "Fyrryn")
+        self.assertEqual(part3(names.copy(), moves[:3]), "Vyrdax")
+        self.assertEqual(part3(names.copy(), moves[:4]), "Drakzyph")
 
 
 if __name__ == "__main__":
@@ -66,11 +86,10 @@ if __name__ == "__main__":
             print("✅")
 
     if is_sample:
-        names, moves = parse("sample.txt")
-        check(1, part1(names, moves), "Fyrryn")
-        check(2, part2(names, moves), "Elarzris")
+        check(1, part1(*parse("sample1.txt")), "Fyrryn")
+        check(2, part2(*parse("sample2.txt")), "Elarzris")
+        check(3, part3(*parse("sample3.txt")), "Drakzyph")
     else:
-        names1, moves1 = parse("input1.txt")
-        names2, moves2 = parse("input2.txt")
-        check(1, part1(names1, moves1), "Braeluth")
-        check(2, part2(names2, moves2), "Thazaelor")
+        check(1, part1(*parse("input1.txt")), "Braeluth")
+        check(2, part2(*parse("input2.txt")), "Thazaelor")
+        check(3, part3(*parse("input3.txt")), "Quenthyn")
