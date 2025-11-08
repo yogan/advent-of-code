@@ -25,6 +25,7 @@ jobs:
       changes-vim: ${{ steps.git-diff-check.outputs.changes-vim }}
       changes-codyssi: ${{ steps.git-diff-check.outputs.changes-codyssi }}
       changes-i18n: ${{ steps.git-diff-check.outputs.changes-i18n }}
+      changes-everybody-codes: ${{ steps.git-diff-check.outputs.changes-everybody-codes }}
 
     steps:
       - name: Checkout code
@@ -121,4 +122,10 @@ jobs:
         if: ${{ github.event.schedule || needs.check-changes.outputs.changes-i18n != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
         run: |
           ./scripts/test-days.sh 'i18n-puzzles/2025'
+          ./scripts/cleanup.sh
+
+      - name: Test Everybody Codes solutions
+        if: ${{ github.event.schedule || needs.check-changes.outputs.changes-everybody-codes != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
+        run: |
+          ./scripts/test-days.sh 'everybody-codes/2025'
           ./scripts/cleanup.sh

@@ -9,6 +9,7 @@ changes_templates=$(echo "$names" | grep -c "^templates")
 changes_vim=$(echo "$names" | grep -c "^vim")
 changes_codyssi=$(echo "$names" | grep -c "^codyssi")
 changes_i18n=$(echo "$names" | grep -c "^i18n")
+changes_everybody_codes=$(echo "$names" | grep -c "^everybody-codes")
 changes_2015=$(echo "$names" | grep -c "^2015")
 changes_2016=$(echo "$names" | grep -c "^2016")
 changes_2017=$(echo "$names" | grep -c "^2017")
@@ -26,6 +27,7 @@ any_changes=$((changes_ci + \
     changes_vim + \
     changes_codyssi + \
     changes_i18n + \
+    changes_everybody_codes + \
     changes_2015 + \
     changes_2016 + \
     changes_2017 + \
@@ -41,6 +43,7 @@ echo "changes-templates=$changes_templates" | tee -a "$GITHUB_OUTPUT"
 echo "changes-vim=$changes_vim" | tee -a "$GITHUB_OUTPUT"
 echo "changes-codyssi=$changes_codyssi" | tee -a "$GITHUB_OUTPUT"
 echo "changes-i18n=$changes_i18n" | tee -a "$GITHUB_OUTPUT"
+echo "changes-everybody-codes=$changes_everybody_codes" | tee -a "$GITHUB_OUTPUT"
 echo "changes-2015=$changes_2015" | tee -a "$GITHUB_OUTPUT"
 echo "changes-2016=$changes_2016" | tee -a "$GITHUB_OUTPUT"
 echo "changes-2017=$changes_2017" | tee -a "$GITHUB_OUTPUT"

@@ -27,7 +27,7 @@ execute_command() {
     rm -f "$log_file"
 }
 
-mapfile -t day_dirs < <(find -L . -mindepth 1 -maxdepth 1 -type d -iname 'day*' -printf '%f\n' | sort)
+mapfile -t day_dirs < <(find -L . -mindepth 1 -maxdepth 1 -type d \( -iname 'day*' -o -iname 'quest*' \) -printf '%f\n' | sort)
 
 for day_dir in "${day_dirs[@]}"; do
     lang=$(<"$day_dir/.language")
@@ -40,7 +40,7 @@ for day_dir in "${day_dirs[@]}"; do
 
     cd "$day_dir" || exit 1
 
-    if [ ! -f "input.txt" ]; then
+    if [ ! -f "input.txt" ] && [ "${year:0:15}" != "everybody-codes" ]; then
         day=$(echo "$day_dir" | sed -E 's/day-([0-9]+)-?.*/\1/')
         # if $year starts with "i18n", use i18n-get.sh
         if [ "${year:0:4}" == "i18n" ]; then
