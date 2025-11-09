@@ -16,16 +16,38 @@ def part1(a):
     return r
 
 
-def count_engravings(a, step):
+def engravings(a, step):
     ax, ay = a
-    count, dim = 0, 1001
+    dim = 1001
+    y_coords = list(range(ay, ay + dim, step))
+    x_coords = list(range(ax, ax + dim, step))
+    grid = [[False for _ in range(len(x_coords))] for _ in range(len(y_coords))]
 
-    for y in range(ay, ay + dim, step):
-        for x in range(ax, ax + dim, step):
-            if engrave((x, y)):
-                count += 1
+    for y_idx, y in enumerate(y_coords):
+        for x_idx, x in enumerate(x_coords):
+            grid[y_idx][x_idx] = engrave((x, y))
 
-    return count
+    return grid
+
+
+def count(grid):
+    return sum(sum(row) for row in grid)
+
+
+def to_image(grid, filename):
+    from PIL import Image
+
+    height = len(grid)
+    width = len(grid[0]) if height > 0 else 0
+    img = Image.new("RGB", (width, height))
+
+    for y in range(height):
+        for x in range(width):
+            if grid[y][x]:
+                img.putpixel((x, y), (255, 255, 255))
+
+    img.save(filename)
+    print(f"Image saved to {filename}")
 
 
 def engrave(coord):
@@ -97,6 +119,7 @@ if __name__ == "__main__":
 
     is_sample = "-s" in flags or "--sample" in flags
     run_tests = "-t" in flags or "--test" in flags
+    visualize = "-v" in flags or "--visualize" in flags
 
     if run_tests:
         unittest.main(exit=True)
@@ -113,9 +136,15 @@ if __name__ == "__main__":
 
     if is_sample:
         check(1, to_str(part1(parse("sample1.txt"))), "[357,862]")
-        check(2, count_engravings(parse("sample2.txt"), 10), 4076)
-        check(3, count_engravings(parse("sample2.txt"), 1), 406954)
+        check(2, count(engravings(parse("sample2.txt"), 10)), 4076)
+        grid3 = engravings(parse("sample2.txt"), 1)
+        check(3, count(grid3), 406954)
+        if visualize:
+            to_image(grid3, "sample.png")
     else:
         check(1, to_str(part1(parse("input1.txt"))), "[483530,983550]")
-        check(2, count_engravings(parse("input2.txt"), 10), 632)
-        check(3, count_engravings(parse("input2.txt"), 1), 60697)
+        check(2, count(engravings(parse("input2.txt"), 10)), 632)
+        grid3 = engravings(parse("input2.txt"), 1)
+        check(3, count(grid3), 60697)
+        if visualize:
+            to_image(grid3, "input.png")

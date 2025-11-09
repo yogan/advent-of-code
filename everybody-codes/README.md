@@ -5,3 +5,8 @@
 ### [Quest 1: Whispers in the Shell](https://everybody.codes/event/2025/quests/1)
 
 - [Python](2025/quest-01-python/ec.py)
+
+### [Quest 2: From Complex to Clarity](https://everybody.codes/event/2025/quests/2)
+
+- [Python](2025/quest-02-python/ec.py) (including
+  [visualizations](2025/quest-02-python/README.md))
