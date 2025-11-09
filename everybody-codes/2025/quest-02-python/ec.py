@@ -124,36 +124,51 @@ class Tests(unittest.TestCase):
         self.assertGreater(engrave((35630, -64830)), 0)
 
 
+def main():
+    failures = 0
+
+    if is_sample:
+        failures += check(1, to_str(part1(parse("sample1.txt"))), "[357,862]")
+        failures += check(2, count(engravings(parse("sample2.txt"), 10)), 4076)
+        failures += check(3, count(engravings(parse("sample2.txt"), 1)), 406954)
+    else:
+        failures += check(1, to_str(part1(parse("input1.txt"))), "[483530,983550]")
+        failures += check(2, count(engravings(parse("input2.txt"), 10)), 632)
+        failures += check(3, count(engravings(parse("input2.txt"), 1)), 60697)
+
+    exit(failures)
+
+
+def check(part, actual, expected=None):
+    failure = 0
+
+    if expected is None:
+        symbol = "❔"
+        result = f"{actual}"
+    elif actual == expected:
+        symbol = "✅"
+        result = f"{actual}"
+    else:
+        symbol = "❌"
+        result = f"{actual} ≠ {expected}"
+        failure = 1
+
+    print(f"{symbol} Part {part}{' (sample)' if is_sample else ''}: {result}")
+    return failure
+
+
 if __name__ == "__main__":
-
-    def check(part, actual, expected=None):
-        print(f"Part {part}{' (sample)' if is_sample else ''}: {actual} ", end="")
-        if expected is None:
-            print("❔")
-        else:
-            if actual != expected:
-                print(f"≠ {expected} ❌")
-                exit(1)
-            print("✅")
-
     flags = set(arg for arg in sys.argv[1:] if arg.startswith("-"))
-    args = [arg for arg in sys.argv[1:] if not arg.startswith("-")]
-    sys.argv = sys.argv[:1]  # strip args, unittest.main() doesn't like them
 
     is_sample = "-s" in flags or "--sample" in flags
     run_tests = "-t" in flags or "--test" in flags
     visualize = "-v" in flags or "--visualize" in flags
 
     if run_tests:
+        sys.argv = sys.argv[:1]  # strip args, unittest.main() doesn't like them
         unittest.main(exit=True)
     elif visualize:
         to_image(engravings(parse("sample2.txt"), 1), "sample.png")
         to_image(engravings(parse("input2.txt"), 1), "input.png")
-    elif is_sample:
-        check(1, to_str(part1(parse("sample1.txt"))), "[357,862]")
-        check(2, count(engravings(parse("sample2.txt"), 10)), 4076)
-        check(3, count(engravings(parse("sample2.txt"), 1)), 406954)
     else:
-        check(1, to_str(part1(parse("input1.txt"))), "[483530,983550]")
-        check(2, count(engravings(parse("input2.txt"), 10)), 632)
-        check(3, count(engravings(parse("input2.txt"), 1)), 60697)
+        main()

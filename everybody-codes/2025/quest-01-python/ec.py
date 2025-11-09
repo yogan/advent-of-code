@@ -56,32 +56,47 @@ class Tests(unittest.TestCase):
         self.assertEqual(part3(names.copy(), moves[:4]), "Drakzyph")
 
 
+def main():
+    failures = 0
+
+    if is_sample:
+        failures += check(1, part1(*parse("sample1.txt")), "Fyrryn")
+        failures += check(2, part2(*parse("sample2.txt")), "Elarzris")
+        failures += check(3, part3(*parse("sample3.txt")), "Drakzyph")
+    else:
+        failures += check(1, part1(*parse("input1.txt")), "Braeluth")
+        failures += check(2, part2(*parse("input2.txt")), "Thazaelor")
+        failures += check(3, part3(*parse("input3.txt")), "Quenthyn")
+
+    exit(failures)
+
+
+def check(part, actual, expected=None):
+    failure = 0
+
+    if expected is None:
+        symbol = "❔"
+        result = f"{actual}"
+    elif actual == expected:
+        symbol = "✅"
+        result = f"{actual}"
+    else:
+        symbol = "❌"
+        result = f"{actual} ≠ {expected}"
+        failure = 1
+
+    print(f"{symbol} Part {part}{' (sample)' if is_sample else ''}: {result}")
+    return failure
+
+
 if __name__ == "__main__":
     flags = set(arg for arg in sys.argv[1:] if arg.startswith("-"))
-    args = [arg for arg in sys.argv[1:] if not arg.startswith("-")]
-    sys.argv = sys.argv[:1]  # strip args, unittest.main() doesn't like them
 
     is_sample = "-s" in flags or "--sample" in flags
     run_tests = "-t" in flags or "--test" in flags
 
     if run_tests:
+        sys.argv = sys.argv[:1]  # strip args, unittest.main() doesn't like them
         unittest.main(exit=True)
 
-    def check(part, actual, expected=None):
-        print(f"Part {part}{' (sample)' if is_sample else ''}: {actual} ", end="")
-        if expected is None:
-            print("❔")
-        else:
-            if actual != expected:
-                print(f"≠ {expected} ❌")
-                exit(1)
-            print("✅")
-
-    if is_sample:
-        check(1, part1(*parse("sample1.txt")), "Fyrryn")
-        check(2, part2(*parse("sample2.txt")), "Elarzris")
-        check(3, part3(*parse("sample3.txt")), "Drakzyph")
-    else:
-        check(1, part1(*parse("input1.txt")), "Braeluth")
-        check(2, part2(*parse("input2.txt")), "Thazaelor")
-        check(3, part3(*parse("input3.txt")), "Quenthyn")
+    main()
