@@ -23,7 +23,14 @@ def engravings(a, step):
     x_coords = list(range(ax, ax + dim, step))
     grid = [[0 for _ in range(len(x_coords))] for _ in range(len(y_coords))]
 
-    for y_idx, y in enumerate(y_coords):
+    if visualize:
+        from tqdm import tqdm
+
+        y_iter = tqdm(enumerate(y_coords), desc="Filling grid", total=len(y_coords))
+    else:
+        y_iter = enumerate(y_coords)
+
+    for y_idx, y in y_iter:
         for x_idx, x in enumerate(x_coords):
             grid[y_idx][x_idx] = engrave((x, y))
 
@@ -32,34 +39,6 @@ def engravings(a, step):
 
 def count(grid):
     return sum(1 for row in grid for val in row if val == 0)
-
-
-def to_image(grid, filename):
-    from math import pi, sin
-
-    from PIL import Image
-
-    height = len(grid)
-    width = len(grid[0])
-    img = Image.new("RGB", (width, height))
-
-    def color(iterations):
-        if iterations == 0:
-            return 0, 0, 0
-
-        t = iterations / 100.0
-        r = int(128 + 127 * sin(2 * pi * t))
-        g = int(128 + 127 * sin(2 * pi * t + 2 * pi / 3))
-        b = int(128 + 127 * sin(2 * pi * t + 4 * pi / 3))
-
-        return r, g, b
-
-    for y in range(height):
-        for x in range(width):
-            img.putpixel((x, y), color(grid[y][x]))
-
-    img.save(filename)
-    print(f"Image saved to {filename}")
 
 
 def engrave(coord):
@@ -98,6 +77,35 @@ def div(a, b):
 def to_str(a):
     ax, ay = a
     return f"[{ax},{ay}]"
+
+
+def to_image(grid, filename):
+    from math import pi, sin
+
+    from PIL import Image
+    from tqdm import tqdm
+
+    height = len(grid)
+    width = len(grid[0])
+    img = Image.new("RGB", (width, height))
+
+    def color(iterations):
+        if iterations == 0:
+            return 0, 0, 0
+
+        t = iterations / 100.0
+        r = int(128 + 127 * sin(2 * pi * t))
+        g = int(128 + 127 * sin(2 * pi * t + 2 * pi / 3))
+        b = int(128 + 127 * sin(2 * pi * t + 4 * pi / 3))
+
+        return r, g, b
+
+    for y in tqdm(range(height), desc="Creating image"):
+        for x in range(width):
+            img.putpixel((x, y), color(grid[y][x]))
+
+    img.save(filename)
+    print(f"Image saved to {filename}")
 
 
 class Tests(unittest.TestCase):
