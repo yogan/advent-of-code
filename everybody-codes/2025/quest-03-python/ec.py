@@ -14,6 +14,17 @@ def part2(xs):
     return sum(list(set(sorted(xs)))[:20])
 
 
+def part3(xs):
+    sets = 0
+
+    while xs:
+        sets += 1
+        for x in set(sorted(xs)):
+            xs.remove(x)
+
+    return sets
+
+
 class Tests(unittest.TestCase):
     def test_part1(self):
         self.assertEqual(part1([10, 5, 1, 10, 3, 8, 5, 2, 2]), 29)
@@ -25,9 +36,11 @@ def main():
     if is_sample:
         failures += check(1, part1(parse("sample1.txt")), 29)
         failures += check(2, part2(parse("sample2.txt")), 781)
+        failures += check(3, part3(parse("sample3.txt")), 3)
     else:
         failures += check(1, part1(parse("input1.txt")), 2652)
         failures += check(2, part2(parse("input2.txt")), 309)
+        failures += check(3, part3(parse("input3.txt")), 2936)
 
     exit(failures)
 
