@@ -21,7 +21,7 @@ def engravings(a, step):
     dim = 1001
     y_coords = list(range(ay, ay + dim, step))
     x_coords = list(range(ax, ax + dim, step))
-    grid = [[False for _ in range(len(x_coords))] for _ in range(len(y_coords))]
+    grid = [[0 for _ in range(len(x_coords))] for _ in range(len(y_coords))]
 
     for y_idx, y in enumerate(y_coords):
         for x_idx, x in enumerate(x_coords):
@@ -31,20 +31,32 @@ def engravings(a, step):
 
 
 def count(grid):
-    return sum(sum(row) for row in grid)
+    return sum(1 for row in grid for val in row if val == 0)
 
 
 def to_image(grid, filename):
+    from math import pi, sin
+
     from PIL import Image
 
     height = len(grid)
-    width = len(grid[0]) if height > 0 else 0
+    width = len(grid[0])
     img = Image.new("RGB", (width, height))
+
+    def color(iterations):
+        if iterations == 0:
+            return 0, 0, 0
+
+        t = iterations / 100.0
+        r = int(128 + 127 * sin(2 * pi * t))
+        g = int(128 + 127 * sin(2 * pi * t + 2 * pi / 3))
+        b = int(128 + 127 * sin(2 * pi * t + 4 * pi / 3))
+
+        return r, g, b
 
     for y in range(height):
         for x in range(width):
-            if grid[y][x]:
-                img.putpixel((x, y), (255, 255, 255))
+            img.putpixel((x, y), color(grid[y][x]))
 
     img.save(filename)
     print(f"Image saved to {filename}")
@@ -54,15 +66,15 @@ def engrave(coord):
     val = (0, 0)
     limit = 1_000_000
 
-    for _ in range(100):
+    for i in range(100):
         val = mult(val, val)
         val = div(val, (100_000, 100_000))
         val = add(val, coord)
         x, y = val
         if x > limit or x < -limit or y > limit or y < -limit:
-            return False
+            return i + 1
 
-    return True
+    return 0
 
 
 def add(a, b):
@@ -99,30 +111,20 @@ class Tests(unittest.TestCase):
         self.assertEqual(div((-10, -12), (2, 2)), (-5, -6))
 
     def test_engrave(self):
-        self.assertTrue(engrave((35630, -64880)))
-        self.assertTrue(engrave((35630, -64870)))
-        self.assertTrue(engrave((35640, -64860)))
-        self.assertTrue(engrave((36230, -64270)))
-        self.assertTrue(engrave((36250, -64270)))
+        self.assertEqual(engrave((35630, -64880)), 0)
+        self.assertEqual(engrave((35630, -64870)), 0)
+        self.assertEqual(engrave((35640, -64860)), 0)
+        self.assertEqual(engrave((36230, -64270)), 0)
+        self.assertEqual(engrave((36250, -64270)), 0)
 
-        self.assertFalse(engrave((35460, -64910)))
-        self.assertFalse(engrave((35470, -64910)))
-        self.assertFalse(engrave((35480, -64910)))
-        self.assertFalse(engrave((35680, -64850)))
-        self.assertFalse(engrave((35630, -64830)))
+        self.assertGreater(engrave((35460, -64910)), 0)
+        self.assertGreater(engrave((35470, -64910)), 0)
+        self.assertGreater(engrave((35480, -64910)), 0)
+        self.assertGreater(engrave((35680, -64850)), 0)
+        self.assertGreater(engrave((35630, -64830)), 0)
 
 
 if __name__ == "__main__":
-    flags = set(arg for arg in sys.argv[1:] if arg.startswith("-"))
-    args = [arg for arg in sys.argv[1:] if not arg.startswith("-")]
-    sys.argv = sys.argv[:1]  # strip args, unittest.main() doesn't like them
-
-    is_sample = "-s" in flags or "--sample" in flags
-    run_tests = "-t" in flags or "--test" in flags
-    visualize = "-v" in flags or "--visualize" in flags
-
-    if run_tests:
-        unittest.main(exit=True)
 
     def check(part, actual, expected=None):
         print(f"Part {part}{' (sample)' if is_sample else ''}: {actual} ", end="")
@@ -134,17 +136,24 @@ if __name__ == "__main__":
                 exit(1)
             print("✅")
 
-    if is_sample:
+    flags = set(arg for arg in sys.argv[1:] if arg.startswith("-"))
+    args = [arg for arg in sys.argv[1:] if not arg.startswith("-")]
+    sys.argv = sys.argv[:1]  # strip args, unittest.main() doesn't like them
+
+    is_sample = "-s" in flags or "--sample" in flags
+    run_tests = "-t" in flags or "--test" in flags
+    visualize = "-v" in flags or "--visualize" in flags
+
+    if run_tests:
+        unittest.main(exit=True)
+    elif visualize:
+        to_image(engravings(parse("sample2.txt"), 1), "sample.png")
+        to_image(engravings(parse("input2.txt"), 1), "input.png")
+    elif is_sample:
         check(1, to_str(part1(parse("sample1.txt"))), "[357,862]")
         check(2, count(engravings(parse("sample2.txt"), 10)), 4076)
-        grid3 = engravings(parse("sample2.txt"), 1)
-        check(3, count(grid3), 406954)
-        if visualize:
-            to_image(grid3, "sample.png")
+        check(3, count(engravings(parse("sample2.txt"), 1)), 406954)
     else:
         check(1, to_str(part1(parse("input1.txt"))), "[483530,983550]")
         check(2, count(engravings(parse("input2.txt"), 10)), 632)
-        grid3 = engravings(parse("input2.txt"), 1)
-        check(3, count(grid3), 60697)
-        if visualize:
-            to_image(grid3, "input.png")
+        check(3, count(engravings(parse("input2.txt"), 1)), 60697)
