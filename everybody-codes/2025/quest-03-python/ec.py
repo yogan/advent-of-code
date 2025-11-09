@@ -10,6 +10,10 @@ def part1(xs):
     return sum(set(sorted(xs)))
 
 
+def part2(xs):
+    return sum(list(set(sorted(xs)))[:20])
+
+
 class Tests(unittest.TestCase):
     def test_part1(self):
         self.assertEqual(part1([10, 5, 1, 10, 3, 8, 5, 2, 2]), 29)
@@ -20,8 +24,10 @@ def main():
 
     if is_sample:
         failures += check(1, part1(parse("sample1.txt")), 29)
+        failures += check(2, part2(parse("sample2.txt")), 781)
     else:
         failures += check(1, part1(parse("input1.txt")), 2652)
+        failures += check(2, part2(parse("input2.txt")), 309)
 
     exit(failures)
 
