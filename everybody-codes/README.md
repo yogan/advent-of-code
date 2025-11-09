@@ -10,3 +10,7 @@
 
 - [Python](2025/quest-02-python/ec.py) (including
   [visualizations](2025/quest-02-python/README.md))
+
+### [Quest 3: The Deepest Fit](https://everybody.codes/event/2025/quests/3)
+
+- [Python](2025/quest-03-python/ec.py)
