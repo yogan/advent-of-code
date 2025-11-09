@@ -16,9 +16,9 @@ def part1(a):
     return r
 
 
-def part2(a):
+def count_engravings(a, step):
     ax, ay = a
-    count, step, dim = 0, 10, 1001
+    count, dim = 0, 1001
 
     for y in range(ay, ay + dim, step):
         for x in range(ax, ax + dim, step):
@@ -113,7 +113,9 @@ if __name__ == "__main__":
 
     if is_sample:
         check(1, to_str(part1(parse("sample1.txt"))), "[357,862]")
-        check(2, part2(parse("sample2.txt")), 4076)
+        check(2, count_engravings(parse("sample2.txt"), 10), 4076)
+        check(3, count_engravings(parse("sample2.txt"), 1), 406954)
     else:
         check(1, to_str(part1(parse("input1.txt"))), "[483530,983550]")
-        check(2, part2(parse("input2.txt")), 632)
+        check(2, count_engravings(parse("input2.txt"), 10), 632)
+        check(3, count_engravings(parse("input2.txt"), 1), 60697)
