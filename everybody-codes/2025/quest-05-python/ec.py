@@ -35,9 +35,13 @@ class Fishbone:
 
 
 def parse(filename):
-    id, nums = open(filename).read().strip().split(":")
-    nums = list(map(int, nums.split(",")))
-    return id, nums
+    swords = []
+
+    for line in open(filename).readlines():
+        id, nums = line.split(":")
+        swords.append((int(id), list(map(int, nums.split(",")))))
+
+    return swords
 
 
 def part1(nums):
@@ -47,20 +51,41 @@ def part1(nums):
     return bone.spine()
 
 
+def part2(swords_with_index):
+    qualities = [part1(pair[1]) for pair in swords_with_index]
+    return max(qualities) - min(qualities)
+
+
 class Tests(unittest.TestCase):
     def test_part1(self):
         self.assertEqual(part1([5, 3, 7, 8, 9, 10, 4, 5, 7, 8, 8]), 581078)
+
+    def test_part2(self):
+        input = [
+            (+1, [2, 4, 1, 1, 8, 2, 7, 9, 8, 6]),
+            (+2, [7, 9, 9, 3, 8, 3, 8, 8, 6, 8]),
+            (+3, [4, 7, 6, 9, 1, 8, 3, 7, 2, 2]),
+            (+4, [6, 4, 2, 1, 7, 4, 5, 5, 5, 8]),
+            (+5, [2, 9, 3, 8, 3, 9, 5, 2, 1, 4]),
+            (+6, [2, 4, 9, 6, 7, 4, 1, 7, 6, 8]),
+            (+7, [2, 3, 7, 6, 2, 2, 4, 1, 4, 2]),
+            (+8, [5, 1, 5, 6, 8, 3, 1, 8, 3, 9]),
+            (+9, [5, 7, 7, 3, 7, 2, 3, 8, 6, 7]),
+            (10, [4, 1, 9, 3, 8, 5, 4, 3, 5, 5]),
+        ]
+        self.assertEqual(part2(input), 77053)
 
 
 def main():
     failures = 0
 
     if is_sample:
-        _, nums = parse("sample1.txt")
-        failures += check(1, part1(nums), 581078)
+        failures += check(1, part1(parse("sample1.txt")[0][1]), 581078)
+        failures += check(2, part2(parse("sample2.txt")), 77053)
+
     else:
-        _, nums = parse("input1.txt")
-        failures += check(1, part1(nums), 3753658754)
+        failures += check(1, part1(parse("input1.txt")[0][1]), 3753658754)
+        failures += check(2, part2(parse("input2.txt")), 8111665969736)
 
     exit(failures)
 
