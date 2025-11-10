@@ -151,7 +151,7 @@ def check(part, actual, expected=None):
     failure = 0
 
     if expected is None:
-        symbol = "❔"
+        symbol = "🤔"
         result = f"{actual}"
     elif actual == expected:
         symbol = "✅"
