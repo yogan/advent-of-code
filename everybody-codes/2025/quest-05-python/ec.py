@@ -29,23 +29,23 @@ class Fishbone:
         return int(res)
 
     def quality_levels(self):
-        res = [self.quality()]
+        levels = []
         cur = self
         while cur is not None:
-            res.append(
-                int(
-                    (f"{cur.left}" if cur.left else "")
-                    + f"{cur.value}"
-                    + (f"{cur.right}" if cur.right else "")
-                )
-            )
+            levels.append(cur.level())
             cur = cur.next
-        res.append(self.id)
-        return res
+        return [self.quality()] + levels + [self.id]
+
+    def level(self):
+        return int(
+            (f"{self.left}" if self.left else "")
+            + f"{self.value}"
+            + (f"{self.right}" if self.right else "")
+        )
 
     def __lt__(self, other):
         # This works because Python lets us compare arrays in just the way we
-        # need it ([3,2,1] > [3,1,2]).
+        # need it ([3, 1, 2] < [3, 2, 1]).
         return self.quality_levels() < other.quality_levels()
 
     def __repr__(self):
@@ -57,11 +57,9 @@ class Fishbone:
 
 def parse(filename):
     swords = []
-
     for line in open(filename).readlines():
         id, nums = line.split(":")
         swords.append((int(id), list(map(int, nums.split(",")))))
-
     return swords
 
 
@@ -82,10 +80,10 @@ def part2(swords):
 
 
 def part3(swords):
-    qualities = [(pair[0], create(*pair).quality_levels()) for pair in swords]
+    fishbones = [create(*pair) for pair in swords]
     checksum = 0
-    for i, q in enumerate(sorted(qualities, key=lambda x: x[1], reverse=True), 1):
-        checksum += i * q[0]
+    for i, fishbone in enumerate(sorted(fishbones, reverse=True), 1):
+        checksum += i * fishbone.id
     return checksum
 
 
@@ -134,7 +132,6 @@ def main():
         failures += check(1, part1(parse("sample1.txt")[0][1]), 581_078)
         failures += check(2, part2(parse("sample2.txt")), 77_053)
         failures += check(3, part3(parse("sample3.txt")), 260)
-
     else:
         failures += check(1, part1(parse("input1.txt")[0][1]), 3_753_658_754)
         failures += check(2, part2(parse("input2.txt")), 8_111_665_969_736)
