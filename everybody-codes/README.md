@@ -14,3 +14,7 @@
 ### [Quest 3: The Deepest Fit](https://everybody.codes/event/2025/quests/3)
 
 - [Python](2025/quest-03-python/ec.py)
+
+### [Quest 4: Teeth of the Wind](https://everybody.codes/event/2025/quests/4)
+
+- [Python](2025/quest-04-python/ec.py)
