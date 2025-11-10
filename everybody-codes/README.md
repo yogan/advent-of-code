@@ -18,3 +18,9 @@
 ### [Quest 4: Teeth of the Wind](https://everybody.codes/event/2025/quests/4)
 
 - [Python](2025/quest-04-python/ec.py)
+
+### [Quest 5: Fishbone Order](https://everybody.codes/event/2025/quests/5)
+
+- [Python](2025/quest-05-python/ec.py)
+- first somewhat tricky problem, at least ordering for part 3 was non-trivial
+- nice that Python compares arrays like this: `[1, 3, 2] > [1, 2, 3]`
