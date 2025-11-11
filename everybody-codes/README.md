@@ -24,3 +24,8 @@
 - [Python](2025/quest-05-python/ec.py)
 - first somewhat tricky problem, at least ordering for part 3 was non-trivial
 - nice that Python compares arrays like this: `[1, 3, 2] > [1, 2, 3]`
+
+### [Quest 6: Mentorship Matrix](https://everybody.codes/event/2025/quests/6)
+
+- [Python](2025/quest-06-python/ec.py)
+- dumb & slow part 3…
