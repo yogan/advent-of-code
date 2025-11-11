@@ -7,12 +7,24 @@ def parse(filename):
 
 
 def part1(letters):
-    letters = [c for c in letters if c == "a" or c == "A"]
+    return count_pairs(letters, "a")
+
+
+def part2(letters):
+    return (
+        count_pairs(letters, "a")
+        + count_pairs(letters, "b")
+        + count_pairs(letters, "c")
+    )
+
+
+def count_pairs(letters, char):
+    letters = [c for c in letters if c.lower() == char]
     pairs = 0
 
     for i, c in enumerate(letters):
-        if c == "a":
-            pairs += len([c for c in letters[:i] if c == "A"])
+        if c == char:
+            pairs += len([c for c in letters[:i] if c == char.upper()])
 
     return pairs
 
@@ -21,14 +33,19 @@ class Tests(unittest.TestCase):
     def test_part1(self):
         self.assertEqual(part1(list("ABabACacBCbca")), 5)
 
+    def test_part2(self):
+        self.assertEqual(part2(list("ABabACacBCbca")), 11)
+
 
 def main():
     failures = 0
 
     if is_sample:
         failures += check(1, part1(parse("sample1.txt")), 5)
+        failures += check(2, part2(parse("sample2.txt")), 11)
     else:
         failures += check(1, part1(parse("input1.txt")), 151)
+        failures += check(2, part2(parse("input2.txt")), 3747)
 
     exit(failures)
 
