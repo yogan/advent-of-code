@@ -8,8 +8,7 @@
 
 ### [Quest 2: From Complex to Clarity](https://everybody.codes/event/2025/quests/2)
 
-- [Python](2025/quest-02-python/ec.py) (including
-  [visualizations](2025/quest-02-python/README.md))
+- [Python](2025/quest-02-python/ec.py) (including [visualizations](2025/quest-02-python/README.md))
 
 ### [Quest 3: The Deepest Fit](https://everybody.codes/event/2025/quests/3)
 
@@ -28,4 +27,8 @@
 ### [Quest 6: Mentorship Matrix](https://everybody.codes/event/2025/quests/6)
 
 - [Python](2025/quest-06-python/ec.py)
-- dumb & slow part 3…
+- initial version was brute-force for part 3, which took ~ 1 min. (iterating
+  over a `1_000 * 10_000` long array is no fun)
+- final version considers the repeating middle parts and is fast
+- tricky that the splitting up works for the real long input, but not for the
+  sample
