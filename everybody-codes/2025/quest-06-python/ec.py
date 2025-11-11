@@ -7,33 +7,45 @@ def parse(filename):
 
 
 def part1(letters):
-    return count_pairs(letters, "a")
+    return pairs(letters, "a")
 
 
 def part2(letters):
-    return (
-        count_pairs(letters, "a")
-        + count_pairs(letters, "b")
-        + count_pairs(letters, "c")
-    )
+    return pairs(letters, "a") + pairs(letters, "b") + pairs(letters, "c")
 
 
-def part3(letters):
-    return count_pairs_repeating(letters, 1_000, 1_000)
-
-
-def count_pairs(letters, char):
-    letters = [c for c in letters if c.lower() == char]
+def pairs(letters, char):
     pairs = 0
-
     for i, c in enumerate(letters):
         if c == char:
-            pairs += len([c for c in letters[:i] if c == char.upper()])
-
+            pairs += letters[:i].count(char.upper())
     return pairs
 
 
-def count(letters, start, end, dist, length):
+def part3(letters):
+    return pairs_repeating(letters, 1_000, 1_000)
+
+
+def pairs_repeating(letters, r, dist):
+    l = len(letters)
+    length = l * r
+
+    # Actually only required for the samples, where the division below breaks.
+    if dist >= l:
+        return count(letters, dist, length, 0, length)
+
+    # Be fast by dividing the repeated letters into start/middle/end parts.
+    # The pairings found in the middle parts can be multiplied, as they repeat.
+    # fmt: off
+    start  = count(letters, dist, length,           0,     l)
+    middle = count(letters, dist, length,           l, 2 * l) if r > 2 else 0
+    end    = count(letters, dist, length, (r - 1) * l, r * l) if r > 1 else 0
+    # fmt: on
+
+    return start + middle * (r - 2) + end
+
+
+def count(letters, dist, length, start, end):
     l = len(letters)
     count = 0
 
@@ -43,24 +55,8 @@ def count(letters, start, end, dist, length):
             for j in range(max(0, i - dist), min(i + dist + 1, length)):
                 if letters[j % l] == c.upper():
                     count += 1
+
     return count
-
-
-def count_pairs_repeating(letters, reps, dist):
-    l = len(letters)
-    length = l * reps
-
-    # Actually only required for the samples, where the division below breaks.
-    if dist >= l:
-        return count(letters, 0, length, dist, length)
-
-    # Be fast by dividing the repeated letters into start/middle/end parts.
-    # The pairings found in the middle parts can be multiplied, as they repeat.
-    start = count(letters, 0, l, dist, length)
-    middle = count(letters, l, 2 * l, dist, length) if reps > 2 else 0
-    end = count(letters, (reps - 1) * l, reps * l, dist, length) if reps > 1 else 0
-
-    return start + middle * (reps - 2) + end
 
 
 class Tests(unittest.TestCase):
@@ -72,9 +68,9 @@ class Tests(unittest.TestCase):
 
     def test_count_pairs_repeating(self):
         letters = list("AABCBABCABCabcabcABCCBAACBCa")
-        self.assertEqual(count_pairs_repeating(letters, 1, 10), 34)
-        self.assertEqual(count_pairs_repeating(letters, 2, 10), 72)
-        self.assertEqual(count_pairs_repeating(letters, 1_000, 1_000), 3_442_321)
+        self.assertEqual(pairs_repeating(letters, 1, 10), 34)
+        self.assertEqual(pairs_repeating(letters, 2, 10), 72)
+        self.assertEqual(pairs_repeating(letters, 1_000, 1_000), 3_442_321)
 
 
 def main():
