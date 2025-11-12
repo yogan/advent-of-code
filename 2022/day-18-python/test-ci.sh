@@ -1,0 +1,26 @@
+#!/bin/bash
+
+cd "$(dirname "$0")" || exit 1
+
+[ -f "venv/bin/activate" ] && . venv/bin/activate
+
+output=$(python3 day18.py input.txt 2>/dev/null)
+
+part1=$(echo "$output" | grep "Part 1:" | sed 's/Part 1: //' | tr -d ' ')
+part2=$(echo "$output" | grep "Part 2:" | sed 's/Part 2: //' | tr -d ' ')
+
+echo "Part 1: $part1"
+echo "Part 2: $part2"
+
+expected_part1="4244"
+expected_part2="2460"
+
+if [[ "$part1" == "$expected_part1" && "$part2" == "$expected_part2" ]]; then
+    echo "✓ All tests passed"
+    exit 0
+else
+    echo "✗ Test failed"
+    echo "Expected: Part 1: $expected_part1, Part 2: $expected_part2"
+    echo "Got: Part 1: $part1, Part 2: $part2"
+    exit 1
+fi

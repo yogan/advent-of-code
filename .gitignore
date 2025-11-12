@@ -1,4 +1,5 @@
 *.sw?
+*.class
 .clj-kondo/
 .lsp/
 .vscode/perl-lang/

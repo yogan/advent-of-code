@@ -6,9 +6,9 @@ else
 fi
 
 if command -v pypy3 >/dev/null 2>&1; then
-    pypy3 day*.py "$input"
+    pypy3 day*.py "$input" "$*"
 else
     # echo to stderr
     echo "pypy3 not found, using python3 instead" >&2
-    python3 day*.py "$input"
+    python3 day*.py "$input" "$*"
 fi

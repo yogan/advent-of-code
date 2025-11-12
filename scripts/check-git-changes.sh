@@ -15,6 +15,7 @@ changes_2016=$(echo "$names" | grep -c "^2016")
 changes_2017=$(echo "$names" | grep -c "^2017")
 changes_2020=$(echo "$names" | grep -c "^2020")
 changes_2021=$(echo "$names" | grep -c "^2021")
+changes_2022=$(echo "$names" | grep -c "^2022")
 changes_2023=$(echo "$names" | grep -c "^2023")
 changes_2024=$(echo "$names" | grep -c "^2024")
 
@@ -33,6 +34,7 @@ any_changes=$((changes_ci + \
     changes_2017 + \
     changes_2020 + \
     changes_2021 + \
+    changes_2022 + \
     changes_2023 + \
     changes_2024))
 
@@ -49,6 +51,7 @@ echo "changes-2016=$changes_2016" | tee -a "$GITHUB_OUTPUT"
 echo "changes-2017=$changes_2017" | tee -a "$GITHUB_OUTPUT"
 echo "changes-2020=$changes_2020" | tee -a "$GITHUB_OUTPUT"
 echo "changes-2021=$changes_2021" | tee -a "$GITHUB_OUTPUT"
+echo "changes-2022=$changes_2022" | tee -a "$GITHUB_OUTPUT"
 echo "changes-2023=$changes_2023" | tee -a "$GITHUB_OUTPUT"
 echo "changes-2024=$changes_2024" | tee -a "$GITHUB_OUTPUT"
 echo "any-changes=$any_changes" | tee -a "$GITHUB_OUTPUT"

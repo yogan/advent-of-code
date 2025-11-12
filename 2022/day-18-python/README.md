@@ -2,10 +2,11 @@
 
 ## Visualizations
 
-The [code](day18.py) has a `draw_voxels` function that can be used to
-visualize the input data. It uses the
-[3D voxel / volumetric plot](https://matplotlib.org/stable/gallery/mplot3d/voxels.html)
-feature of [matplotlib](https://matplotlib.org/).
+The [code](day18.py) has a `draw_voxels` function that can be used to visualize the input
+data. It uses the [3D voxel / volumetric plot](https://matplotlib.org/stable/gallery/mplot3d/voxels.html) feature of [matplotlib](https://matplotlib.org/).
+
+Add `-v` or `--visualize` to either `./sample.sh` or `./run.sh` to generate the
+plots.
 
 ### Plots of the sample data
 

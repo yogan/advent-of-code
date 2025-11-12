@@ -1,56 +1,64 @@
 import sys
 import unittest
-from tqdm import tqdm
-import numpy as np
-import matplotlib.pyplot as plt
+
 import matplotlib
-matplotlib.use('TkAgg')
+import matplotlib.pyplot as plt
+import numpy as np
+from tqdm import tqdm
+
+matplotlib.use("TkAgg")
+
 
 def draw_voxels(cube_groups, size=8):
     assert len(cube_groups) <= 2, "Can only draw up to two groups"
 
-    voxel_groups = [np.zeros((size, size, size), dtype=bool)
-                    for _ in range(len(cube_groups))]
+    voxel_groups = [
+        np.zeros((size, size, size), dtype=bool) for _ in range(len(cube_groups))
+    ]
 
     for i, cubes in enumerate(cube_groups):
         for cx, cy, cz in cubes:
             voxel_groups[i][cx, cy, cz] = True
 
-    ax = plt.figure().add_subplot(projection='3d')
+    ax = plt.figure().add_subplot(projection="3d")
 
-    facecolors = ['#FFD65D66', '#7A88CCDD']
-    edgecolors = ['#BFAB6E', '#7D84A6']
+    facecolors = ["#FFD65D66", "#7A88CCDD"]
+    edgecolors = ["#BFAB6E", "#7D84A6"]
     for i, voxels in enumerate(voxel_groups):
-        ax.voxels(voxels, facecolors=facecolors[i], edgecolor=edgecolors[i])
+        ax.voxels(voxels, facecolors=facecolors[i], edgecolor=edgecolors[i])  # type: ignore
 
     plt.show()
 
-if len(sys.argv) != 2:
+
+if len(sys.argv) < 2:
     print("Missing input file.")
     sys.exit(1)
-filename  = sys.argv[1]
+filename = sys.argv[1]
 is_sample = filename != "input.txt"
+visualize = "-v" in sys.argv or "--visualize" in sys.argv
+
 
 def parse(filename=filename):
     with open(filename) as f:
         lines = [line.strip() for line in f.readlines()]
         return [tuple(map(int, l.split(","))) for l in lines]
 
+
 def update_ranges(ranges, coord, depth):
     if coord not in ranges:
         ranges[coord] = {(depth, depth)}
         return
 
-    pillar = list(ranges[coord]) # working on a list copy, so that we can use indices
+    pillar = list(ranges[coord])  # working on a list copy, so that we can use indices
 
-    i_after  = [(i, (l, r)) for i, (l, r) in enumerate(pillar) if l - 1 == depth]
+    i_after = [(i, (l, r)) for i, (l, r) in enumerate(pillar) if l - 1 == depth]
     i_before = [(i, (l, r)) for i, (l, r) in enumerate(pillar) if r + 1 == depth]
     assert len(i_before) <= 1 and len(i_after) <= 1, (i_before, i_after)
 
     if len(i_before) == 1 and len(i_after) == 1:
         # Special case: depth is exactly between two existing ranges.
         # Join them into a single range.
-        ai, after  = i_after[0]
+        ai, after = i_after[0]
         bi, before = i_before[0]
         # remove elements with indices ai and bi from pillar
         pillar = [pillar[i] for i in range(len(pillar)) if i != ai and i != bi]
@@ -76,6 +84,7 @@ def update_ranges(ranges, coord, depth):
     # No adjacent ranges found, add a new range from depth to depth.
     ranges[coord].add((depth, depth))
 
+
 def calc_ranges(cubes):
     xy_ranges = {}
     xz_ranges = {}
@@ -88,6 +97,7 @@ def calc_ranges(cubes):
         update_ranges(yz_ranges, (y, z), x)
 
     return (xy_ranges, xz_ranges, yz_ranges)
+
 
 def count_sides(ranges):
     sides = 0
@@ -102,10 +112,12 @@ def count_sides(ranges):
 
     return sides
 
+
 def sort_pillar(pillar):
     plist = list(pillar)
     plist.sort(key=lambda x: x[0])
     return plist
+
 
 def dimensions(cubes):
     x_min = min(cubes, key=lambda c: c[0])[0]
@@ -115,6 +127,7 @@ def dimensions(cubes):
     z_min = min(cubes, key=lambda c: c[2])[2]
     z_max = max(cubes, key=lambda c: c[2])[2]
     return (x_min, x_max, y_min, y_max, z_min, z_max)
+
 
 def find_air_candidates(ranges):
     xy_ranges, xz_ranges, yz_ranges = ranges
@@ -127,8 +140,8 @@ def find_air_candidates(ranges):
             continue
         pillar = sort_pillar(pillar)
         for i in range(len(pillar) - 1):
-            r1_end   = pillar[i]  [1]
-            r2_start = pillar[i+1][0]
+            r1_end = pillar[i][1]
+            r2_start = pillar[i + 1][0]
             candidates |= {(x, y, z) for z in range(r1_end + 1, r2_start)}
 
     for (x, z), pillar in xz_ranges.items():
@@ -136,8 +149,8 @@ def find_air_candidates(ranges):
             continue
         pillar = sort_pillar(pillar)
         for i in range(len(pillar) - 1):
-            r1_end   = pillar[i]  [1]
-            r2_start = pillar[i+1][0]
+            r1_end = pillar[i][1]
+            r2_start = pillar[i + 1][0]
             candidates |= {(x, y, z) for y in range(r1_end + 1, r2_start)}
 
     for (y, z), pillar in yz_ranges.items():
@@ -145,28 +158,36 @@ def find_air_candidates(ranges):
             continue
         pillar = sort_pillar(pillar)
         for i in range(len(pillar) - 1):
-            r1_end   = pillar[i]  [1]
-            r2_start = pillar[i+1][0]
+            r1_end = pillar[i][1]
+            r2_start = pillar[i + 1][0]
             candidates |= {(x, y, z) for x in range(r1_end + 1, r2_start)}
 
     return candidates
 
-def grows_to_edge(cube, cubes, air_cubes):
 
+def grows_to_edge(cube, cubes, air_cubes):
     def get_neighbors(cube):
         x, y, z = cube
         return {
-            (x-1, y, z), (x+1, y, z),
-            (x, y-1, z), (x, y+1, z),
-            (x, y, z-1), (x, y, z+1),
+            (x - 1, y, z),
+            (x + 1, y, z),
+            (x, y - 1, z),
+            (x, y + 1, z),
+            (x, y, z - 1),
+            (x, y, z + 1),
         }
 
     def on_edge(cube, dim):
         x, y, z = cube
         x_min, x_max, y_min, y_max, z_min, z_max = dim
-        return x == x_min or x == x_max or \
-               y == y_min or y == y_max or \
-               z == z_min or z == z_max
+        return (
+            x == x_min
+            or x == x_max
+            or y == y_min
+            or y == y_max
+            or z == z_min
+            or z == z_max
+        )
 
     if cube in air_cubes:
         # already found in some other run, no need to check again
@@ -175,8 +196,9 @@ def grows_to_edge(cube, cubes, air_cubes):
     x, y, z = cube
     dim = dimensions(cubes)
     x_min, x_max, y_min, y_max, z_min, z_max = dim
-    assert x_min <= x <= x_max and y_min <= y <= y_max and z_min <= z <= z_max, \
-           f"initial cube {cube} already outside of dimensions {dim}"
+    assert (
+        x_min <= x <= x_max and y_min <= y <= y_max and z_min <= z <= z_max
+    ), f"initial cube {cube} already outside of dimensions {dim}"
 
     border = {cube}
     visited = set(cubes).union(air_cubes, border)
@@ -197,6 +219,7 @@ def grows_to_edge(cube, cubes, air_cubes):
 
     return False
 
+
 def find_air_cubes(cubes, ranges):
     if len(cubes) == 0:
         return set()
@@ -213,27 +236,30 @@ def find_air_cubes(cubes, ranges):
             air_cubes.add(c)
     return air_cubes
 
+
 def part1():
-    cubes  = parse()
+    cubes = parse()
     ranges = calc_ranges(cubes)
 
     return count_sides(ranges)
 
+
 def part2():
-    cubes      = parse()
+    cubes = parse()
 
-    ranges     = calc_ranges(cubes)
-    sides      = count_sides(ranges)
+    ranges = calc_ranges(cubes)
+    sides = count_sides(ranges)
 
-    air_cubes  = find_air_cubes(cubes, ranges)
+    air_cubes = find_air_cubes(cubes, ranges)
     air_ranges = calc_ranges(air_cubes)
-    air_sides  = count_sides(air_ranges)
+    air_sides = count_sides(air_ranges)
 
     # input_air_pockets.png
     # if not is_sample:
     #     draw_voxels([list(air_cubes)], 30)
 
     return sides - air_sides
+
 
 class TestDay18(unittest.TestCase):
     global draw_voxels
@@ -295,49 +321,49 @@ class TestDay18(unittest.TestCase):
         cubes = [(2, 2, 2), (1, 2, 2)]
         ranges = calc_ranges(cubes)
         sides = count_sides(ranges)
-        self.assertEqual(2+2 + 1+1 + 2+2, sides)
+        self.assertEqual(2 + 2 + 1 + 1 + 2 + 2, sides)
 
         # 3x1x1 cube
         # sides: 3 from top/bottom, 1 from front/back, 3 from left/right
         cubes.append((3, 2, 2))
         ranges = calc_ranges(cubes)
         sides = count_sides(ranges)
-        self.assertEqual(3+3 + 1+1 + 3+3, sides)
+        self.assertEqual(3 + 3 + 1 + 1 + 3 + 3, sides)
 
         # T tetris shape
         # sides: 4 from top/bottom, 2 from front/back, 3 from left/right
         cubes.append((2, 1, 2))
         ranges = calc_ranges(cubes)
         sides = count_sides(ranges)
-        self.assertEqual(4+4 + 2+2 + 3+3, sides)
+        self.assertEqual(4 + 4 + 2 + 2 + 3 + 3, sides)
 
         # + in a plane
         # sides: 5 from top/bottom, 3 from front/back, 3 from left/right
         cubes.append((2, 3, 2))
         ranges = calc_ranges(cubes)
         sides = count_sides(ranges)
-        self.assertEqual(5+5 + 3+3 + 3+3, sides)
+        self.assertEqual(5 + 5 + 3 + 3 + 3 + 3, sides)
 
         # + with one cube below the center
         # sides: 5 from top/bottom, 4 from front/back, 4 from left/right
         cubes.append((2, 2, 1))
         ranges = calc_ranges(cubes)
         sides = count_sides(ranges)
-        self.assertEqual(5+5 + 4+4 + 4+4, sides)
+        self.assertEqual(5 + 5 + 4 + 4 + 4 + 4, sides)
 
         # + with one cube each below and above the center
         # sides: 5 from top/bottom, 5 from front/back, 5 from left/right
         cubes.append((2, 2, 3))
         ranges = calc_ranges(cubes)
         sides = count_sides(ranges)
-        self.assertEqual(5+5 + 5+5 + 5+5, sides)
+        self.assertEqual(5 + 5 + 5 + 5 + 5 + 5, sides)
 
         # one more onto the top cube
         # sides: 5 from top/bottom, 6 from front/back, 6 from left/right
         cubes.append((2, 2, 4))
         ranges = calc_ranges(cubes)
         sides = count_sides(ranges)
-        self.assertEqual(5+5 + 6+6 + 6+6, sides)
+        self.assertEqual(5 + 5 + 6 + 6 + 6 + 6, sides)
 
         # now add one cube "floating" above the top (gap of 1)
         # sides:
@@ -346,7 +372,7 @@ class TestDay18(unittest.TestCase):
         cubes.append((2, 2, 6))
         ranges = calc_ranges(cubes)
         sides = count_sides(ranges)
-        self.assertEqual(6+6 + 7+7 + 7+7, sides)
+        self.assertEqual(6 + 6 + 7 + 7 + 7 + 7, sides)
 
     def test_calc_ranges_plus_shape(self):
         # + shape lying in the z = 2 plane
@@ -373,10 +399,18 @@ class TestDay18(unittest.TestCase):
         self.assertEqual({(1, 3)}, yz_ranges[(2, 2)])
         self.assertEqual({(2, 2)}, yz_ranges[(3, 2)])
 
-    def test_calc_ranges_plus_shape(self):
+    def test_calc_ranges_plus_shapes(self):
         # + shape with one cube below and two cubes on top of the center
-        cubes = [(2, 2, 2), (1, 2, 2), (3, 2, 2), (2, 1, 2), (2, 3, 2),
-                 (2, 2, 1), (2, 2, 3), (2, 2, 4)]
+        cubes = [
+            (2, 2, 2),
+            (1, 2, 2),
+            (3, 2, 2),
+            (2, 1, 2),
+            (2, 3, 2),
+            (2, 2, 1),
+            (2, 2, 3),
+            (2, 2, 4),
+        ]
         xy_ranges, xz_ranges, yz_ranges = calc_ranges(cubes)
 
         # + from above
@@ -417,24 +451,41 @@ class TestDay18(unittest.TestCase):
         self.assertEqual(set(), find_air_candidates(calc_ranges([])))
 
         cubes = [(2, 2, 1), (2, 2, 3), (2, 2, 6)]
-        self.assertEqual({(2, 2, 2), (2, 2, 4), (2, 2, 5)},
-            find_air_candidates(calc_ranges(cubes)))
+        self.assertEqual(
+            {(2, 2, 2), (2, 2, 4), (2, 2, 5)}, find_air_candidates(calc_ranges(cubes))
+        )
 
         sample_cubes = parse("sample.txt")
-        droplet_with_open_air_hole   = sample_cubes[:-1]
+        droplet_with_open_air_hole = sample_cubes[:-1]
         droplet_with_closed_air_hole = sample_cubes
 
-        self.assertEqual({
-            (1, 2, 3), (2, 1, 3), (3, 2, 3),
-            (1, 2, 4), (2, 1, 4), (3, 2, 4),
-            (2, 2, 5)},
-            find_air_candidates(calc_ranges(droplet_with_open_air_hole)))
+        self.assertEqual(
+            {
+                (1, 2, 3),
+                (2, 1, 3),
+                (3, 2, 3),
+                (1, 2, 4),
+                (2, 1, 4),
+                (3, 2, 4),
+                (2, 2, 5),
+            },
+            find_air_candidates(calc_ranges(droplet_with_open_air_hole)),
+        )
 
-        self.assertEqual({
-            (1, 2, 3), (2, 1, 3), (2, 3, 3), (3, 2, 3),
-            (1, 2, 4), (2, 1, 4), (2, 3, 4), (3, 2, 4),
-            (2, 2, 5)},
-            find_air_candidates(calc_ranges(droplet_with_closed_air_hole)))
+        self.assertEqual(
+            {
+                (1, 2, 3),
+                (2, 1, 3),
+                (2, 3, 3),
+                (3, 2, 3),
+                (1, 2, 4),
+                (2, 1, 4),
+                (2, 3, 4),
+                (3, 2, 4),
+                (2, 2, 5),
+            },
+            find_air_candidates(calc_ranges(droplet_with_closed_air_hole)),
+        )
 
     def test_find_air_cubes_empty(self):
         cubes = []
@@ -449,10 +500,22 @@ class TestDay18(unittest.TestCase):
     def test_find_air_cubes_long_tube_one_end_open(self):
         cubes = [
             (2, 2, 0),
-            (1, 2, 1), (3, 2, 1), (2, 1, 1), (2, 3, 1),
-            (1, 2, 2), (3, 2, 2), (2, 1, 2), (2, 3, 2),
-            (1, 2, 3), (3, 2, 3), (2, 1, 3), (2, 3, 3),
-            (1, 2, 4), (3, 2, 4), (2, 1, 4), (2, 3, 4),
+            (1, 2, 1),
+            (3, 2, 1),
+            (2, 1, 1),
+            (2, 3, 1),
+            (1, 2, 2),
+            (3, 2, 2),
+            (2, 1, 2),
+            (2, 3, 2),
+            (1, 2, 3),
+            (3, 2, 3),
+            (2, 1, 3),
+            (2, 3, 3),
+            (1, 2, 4),
+            (3, 2, 4),
+            (2, 1, 4),
+            (2, 3, 4),
         ]
         ranges = calc_ranges(cubes)
         self.assertEqual(set(), find_air_cubes(cubes, ranges))
@@ -460,15 +523,25 @@ class TestDay18(unittest.TestCase):
     def test_find_air_cubes_long_tube_closed(self):
         cubes = [
             (4, 4, 0),
-            (3, 4, 1), (5, 4, 1), (4, 3, 1), (4, 5, 1),
-            (3, 4, 2), (5, 4, 2), (4, 3, 2), (4, 5, 2),
-            (3, 4, 3), (5, 4, 3), (4, 3, 3), (4, 5, 3),
-            (3, 4, 4), (5, 4, 4), (4, 3, 4), (4, 5, 4),
-            (4, 4, 5)
+            (3, 4, 1),
+            (5, 4, 1),
+            (4, 3, 1),
+            (4, 5, 1),
+            (3, 4, 2),
+            (5, 4, 2),
+            (4, 3, 2),
+            (4, 5, 2),
+            (3, 4, 3),
+            (5, 4, 3),
+            (4, 3, 3),
+            (4, 5, 3),
+            (3, 4, 4),
+            (5, 4, 4),
+            (4, 3, 4),
+            (4, 5, 4),
+            (4, 4, 5),
         ]
-        expected_air_cubes = {
-            (4, 4, 1), (4, 4, 2), (4, 4, 3), (4, 4, 4)
-        }
+        expected_air_cubes = {(4, 4, 1), (4, 4, 2), (4, 4, 3), (4, 4, 4)}
         # air_pocket_long_tube.png
         # if is_sample:
         #     draw_voxels([cubes, expected_air_cubes])
@@ -492,7 +565,8 @@ class TestDay18(unittest.TestCase):
         if is_sample:
             self.assertEqual(58 if is_sample else 2460, part2())
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main(argv=sys.argv[:1], exit=False)
     print()
 
@@ -502,18 +576,10 @@ if __name__ == '__main__':
     res2 = part2()
     print(f"Part 2: {res2}", "(sample)" if is_sample else "")
 
-# region plots
 
-# sample_partial.png
-# if is_sample:
-#     draw_voxels([parse()[:9], [(2, 2, 5)]])
-
-# sample_air_pocket.png
-# if is_sample:
-#     draw_voxels([parse(), [(2, 2, 5)]])
-
-# input.png
-# if not is_sample:
-#     draw_voxels([parse()], 30)
-
-# endregion plots
+if visualize:
+    if is_sample:
+        draw_voxels([parse()[:9], [(2, 2, 5)]])  # sample_partial.png
+        draw_voxels([parse(), [(2, 2, 5)]])  # sample_air_pocket.png
+    else:
+        draw_voxels([parse()], 30)  # input.png
