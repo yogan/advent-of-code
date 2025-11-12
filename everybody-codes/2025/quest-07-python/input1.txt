@@ -1,0 +1,16 @@
+Quirhynd,Malmirath,Quirmirath,Nyhynd,Malorath,Quirorath,Nymirath,Malhynd,Nyorath
+
+N > y
+y > m,n,b
+l > h,o,m
+u > b
+h > y
+m > i
+i > r
+Q > u
+a > t,b
+n > d
+M > a
+r > a,h,o,m
+o > r
+t > h

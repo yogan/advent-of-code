@@ -1,0 +1,12 @@
+Oronris,Urakris,Oroneth,Uraketh
+
+r > a,i,o
+i > p,w
+n > e,r
+o > n,m
+k > f,r
+a > k
+U > r
+e > t
+O > r
+t > h
