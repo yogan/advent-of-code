@@ -32,3 +32,8 @@
 - final version considers the repeating middle parts and is fast
 - tricky that the splitting up works for the real long input, but not for the
   sample
+
+### [Quest 7: Namegraph](https://everybody.codes/event/2025/quests/7)
+
+- [Python](2025/quest-07-python/ec.py)
+- recursive solution for part 3, fast enough without any caching
