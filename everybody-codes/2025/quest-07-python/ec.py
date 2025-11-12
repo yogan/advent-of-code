@@ -17,10 +17,16 @@ def part1(names, rules):
             return name
 
 
+def part2(names, rules):
+    total = 0
+    for i, name in enumerate(names, 1):
+        if valid(name, rules):
+            total += i
+    return total
+
+
 def valid(name, rules):
     for i in range(len(name) - 1):
-        # if name[i] not in rules:
-        #     return False
         if name[i + 1] not in rules[name[i]]:
             return False
     return True
@@ -49,8 +55,10 @@ def main():
 
     if is_sample:
         failures += check(1, part1(*parse("sample1.txt")), "Oroneth")
+        failures += check(2, part2(*parse("sample2.txt")), 23)
     else:
         failures += check(1, part1(*parse("input1.txt")), "Nymirath")
+        failures += check(2, part2(*parse("input2.txt")), 3289)
 
     exit(failures)
 

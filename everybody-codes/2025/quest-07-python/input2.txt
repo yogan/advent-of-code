@@ -1,0 +1,29 @@
+Sylurath,Nyssnyn,Syljor,Zaradarin,Zarzrak,Syladarin,Zaraelor,Zarurath,Zargaz,Cynvaraelor,Fyrurath,Malithsar,Sylnyn,Malithaelor,Gorathzrak,Skarjor,Nyssjor,Nyssxith,Fyrjor,Fyrnyn,Skaradarin,Zarjor,Malithnyn,Cynvargaz,Malithurath,Fyraelor,Maralzrak,Maralsar,Cynvarjor,Nyssgaz,Gorathxith,Nyssadarin,Skarzrak,Cynvarnyn,Fyrsar,Cynvarsar,Gorathaelor,Sylsar,Skaraelor,Zaradarin,Skargaz,Nyssaelor,Nyssmarn,Fyrzrak,Gorathjor,Malithzrak,Maralurath,Zarmarn,Gorathnyn,Fyrgaz,Gorathsar,Gorathgaz,Gorathmarn,Sylaelor,Sylzrak,Skarnyn,Gorathadarin,Fyrmarn,Zargaz,Skarsar,Nyssurath,Zaraelor,Malithadarin,Malithjor,Cynvarurath,Cynvarmarn,Skarurath,Maraladarin,Zarzrak,Zarnyn,Maralmarn,Sylmarn,Maralnyn,Cynvarxith,Maralgaz,Sylxith,Skarmarn,Nysszrak,Maraljor,Zarxith,Malithmarn,Gorathurath,Malithgaz,Sylgaz,Zarsar,Fyradarin,Skarxith,Malithxith,Maralxith,Cynvaradarin,Nysssar,Maralaelor,Cynvarzrak,Zarurath,Zarmarn,Zarsar,Zarnyn,Zarjor,Fyrxith,Zarxith
+
+a > r,e,v,l,t,k,z,d
+n > y,v
+h > s,u,n,j,x,m,z,g,a
+v > a
+j > o
+G > o
+i > t,n
+s > a,s,u,n,j,x,m,z,g
+x > i
+Z > a
+C > y
+k > v
+u > r
+r > a,n,i,s,u,j,x,m,z,g
+N > y
+o > r,v
+S > k,y
+m > a
+y > n,v
+g > a
+l > o,s,u,n,j,x,m,z,g,a,i
+d > a
+M > a
+e > l
+t > h
+F > y
+z > r
