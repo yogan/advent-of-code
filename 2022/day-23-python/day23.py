@@ -1,4 +1,5 @@
-import unittest, sys
+import sys
+import unittest
 from collections import defaultdict
 from tqdm import trange
 
@@ -6,7 +7,6 @@ if len(sys.argv) != 2:
     print("Missing input file.")
     sys.exit(1)
 filename  = sys.argv[1]
-sys.argv  = sys.argv[:1] # strip args, they scare the unittest module
 is_sample = filename != "input.txt"
 
 def parse(filename=filename):
@@ -267,7 +267,7 @@ class TestDay23(unittest.TestCase):
 
 if __name__ == '__main__':
     if is_sample:
-        unittest.main(exit=False)
+        unittest.main(argv=sys.argv[:1], exit=False)
         print("─" * 70)
 
     res1 = part1()

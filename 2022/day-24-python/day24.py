@@ -1,4 +1,5 @@
-import unittest, sys
+import sys
+import unittest
 from math import gcd
 from collections import deque
 
@@ -6,7 +7,6 @@ if len(sys.argv) != 2:
     print("Missing input file.")
     sys.exit(1)
 filename  = sys.argv[1]
-sys.argv  = sys.argv[:1] # strip args, they scare the unittest module
 is_input  = filename == "input.txt"
 is_sample = not is_input
 
@@ -239,7 +239,7 @@ class TestDay24(unittest.TestCase):
 
 if __name__ == '__main__':
     if is_input:
-        unittest.main(exit=False)
+        unittest.main(argv=sys.argv[:1], exit=False)
         print("─" * 70)
 
     valley = parse()

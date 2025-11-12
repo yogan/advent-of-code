@@ -4,7 +4,6 @@ if len(sys.argv) != 2:
     print("Missing input file.")
     sys.exit(1)
 filename  = sys.argv[1]
-sys.argv  = sys.argv[:1] # strip args, they scare the unittest module
 is_sample = filename == "sample.txt"
 
 def parse():
@@ -147,7 +146,7 @@ def print_and_assert(part, expected, actual):
     assert actual == expected, f"Part {part} was {actual}, expected {expected}"
 
 if __name__ == '__main__':
-    unittest.main(exit=False)
+    unittest.main(argv=sys.argv[:1], exit=False)
     print()
 
     map = parse()

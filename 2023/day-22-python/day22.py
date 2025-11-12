@@ -17,7 +17,6 @@ if len(sys.argv) != 2:
     print("Missing input file.")
     exit(1)
 filename  = sys.argv[1]
-sys.argv  = sys.argv[:1] # strip args, they confuse the unittest module
 is_sample = filename.startswith("sample")
 
 def to_coords(left, right):
@@ -220,7 +219,7 @@ def check(part, actual, expected=None):
         print("✅")
 
 if __name__ == '__main__':
-    unittest.main(exit=False)
+    unittest.main(argv=sys.argv[:1], exit=False)
     print()
 
     bricks = parse()

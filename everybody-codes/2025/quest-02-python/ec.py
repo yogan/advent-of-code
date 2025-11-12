@@ -173,8 +173,7 @@ if __name__ == "__main__":
     visualize = "-v" in flags or "--visualize" in flags
 
     if run_tests:
-        sys.argv = sys.argv[:1]  # strip args, unittest.main() doesn't like them
-        unittest.main(exit=True)
+        unittest.main(argv=sys.argv[:1])
     elif visualize:
         to_image(engravings(parse("sample2.txt"), 1), "sample.png")
         to_image(engravings(parse("input2.txt"), 1), "input.png")

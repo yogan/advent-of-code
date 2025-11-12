@@ -1,10 +1,10 @@
-import unittest, sys, re
+import sys
+import unittest, re
 
 if len(sys.argv) != 2:
     print("Missing input file.")
     sys.exit(1)
 filename  = sys.argv[1]
-sys.argv  = sys.argv[:1] # strip args, they scare the unittest module
 is_input  = filename == "input.txt"
 is_sample = filename == "sample.txt"
 is_extra  = filename == "sample_extra.txt"
@@ -184,7 +184,7 @@ class TestDay22(unittest.TestCase):
 
 if __name__ == '__main__':
     if is_input or is_sample:
-        unittest.main(exit=False)
+        unittest.main(argv=sys.argv[:1], exit=False)
         print()
 
     res1 = part1()

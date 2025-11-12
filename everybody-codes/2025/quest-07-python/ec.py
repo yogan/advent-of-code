@@ -212,7 +212,6 @@ if __name__ == "__main__":
     run_tests = "-t" in flags or "--test" in flags
 
     if run_tests:
-        sys.argv = sys.argv[:1]  # strip args, unittest.main() doesn't like them
-        unittest.main(exit=True)
+        unittest.main(argv=sys.argv[:1])
 
     main()

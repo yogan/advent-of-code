@@ -10,7 +10,6 @@ filename  = sys.argv[1]
 if len(sys.argv) > 2:
     base, ext = filename.rsplit(".", 1)
     filename = base + sys.argv[2] + "." + ext
-sys.argv  = sys.argv[:1] # strip args, they confuse the unittest module
 is_sample = filename.startswith("sample")
 
 class Type(Enum):
@@ -322,7 +321,7 @@ def check(part, actual, expected=None):
 
 if __name__ == '__main__':
     if is_sample:
-        unittest.main(exit=False)
+        unittest.main(argv=sys.argv[:1], exit=False)
         print()
 
     expected_part1 = {

@@ -1,3 +1,4 @@
+import sys
 from collections import Counter, defaultdict
 import unittest
 from input import read_and_solve
@@ -231,5 +232,5 @@ class TestDay14(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main(exit=False)
+    unittest.main(argv=sys.argv[:1], exit=False)
     read_and_solve(__file__, part1, part2)

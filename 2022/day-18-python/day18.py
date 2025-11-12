@@ -1,4 +1,5 @@
-import unittest, sys
+import sys
+import unittest
 from tqdm import tqdm
 import numpy as np
 import matplotlib.pyplot as plt
@@ -28,7 +29,6 @@ if len(sys.argv) != 2:
     print("Missing input file.")
     sys.exit(1)
 filename  = sys.argv[1]
-sys.argv  = sys.argv[:1] # strip args, they scare the unittest module
 is_sample = filename != "input.txt"
 
 def parse(filename=filename):
@@ -493,7 +493,7 @@ class TestDay18(unittest.TestCase):
             self.assertEqual(58 if is_sample else 2460, part2())
 
 if __name__ == '__main__':
-    unittest.main(exit=False)
+    unittest.main(argv=sys.argv[:1], exit=False)
     print()
 
     res1 = part1()

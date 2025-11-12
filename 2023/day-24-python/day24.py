@@ -5,7 +5,6 @@ if len(sys.argv) != 2:
     print("Missing input file.")
     exit(1)
 filename  = sys.argv[1]
-sys.argv  = sys.argv[:1] # strip args, they confuse the unittest module
 is_sample = filename == "sample.txt"
 
 class Hailstone:
@@ -218,7 +217,7 @@ def check(part, actual, expected=None):
 
 if __name__ == '__main__':
     if is_sample:
-        unittest.main(exit=False)
+        unittest.main(argv=sys.argv[:1], exit=False)
         print()
 
     hailstones = parse()

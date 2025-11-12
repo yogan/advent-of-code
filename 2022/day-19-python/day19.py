@@ -1,4 +1,5 @@
-import unittest, sys
+import sys
+import unittest
 from tqdm import tqdm
 from enum import Enum
 
@@ -6,7 +7,6 @@ if len(sys.argv) != 2:
     print("Missing input file.")
     sys.exit(1)
 filename  = sys.argv[1]
-sys.argv  = sys.argv[:1] # strip args, they scare the unittest module
 is_sample = filename != "input.txt"
 
 verbose = False
@@ -378,7 +378,7 @@ pre_calc_quality_levels = {
 }
 
 if __name__ == '__main__':
-    unittest.main(exit=False)
+    unittest.main(argv=sys.argv[:1], exit=False)
     print()
 
     if not verbose:

@@ -1,3 +1,4 @@
+import sys
 from collections import deque
 import unittest
 from input import read_and_solve
@@ -217,6 +218,6 @@ def split_input_file():
 
 
 if __name__ == '__main__':
-    unittest.main(exit=False)
+    unittest.main(argv=sys.argv[:1], exit=False)
     split_input_file()
     # read_and_solve(__file__, part1, part2)

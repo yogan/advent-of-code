@@ -1,8 +1,8 @@
-import unittest, sys
+import sys
+import unittest
 from tqdm import tqdm
 
 file = sys.argv[1] if len(sys.argv) > 1 else "day15.in"
-sys.argv = sys.argv[:1] # strip args, they scare the unittest module
 is_sample = file != "day15.in"
 
 def parse():
@@ -316,7 +316,7 @@ class TestDay15(unittest.TestCase):
     # no unit test for part 2, but asserts in main below
 
 if __name__ == '__main__':
-    unittest.main(exit=False)
+    unittest.main(argv=sys.argv[:1], exit=False)
     print()
 
     res1 = part1()

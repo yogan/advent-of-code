@@ -4,7 +4,6 @@ if len(sys.argv) != 2:
     print("Missing input file.")
     sys.exit(1)
 filename  = sys.argv[1]
-sys.argv  = sys.argv[:1] # strip args, they scare the unittest module
 is_sample = filename.startswith('sample')
 # https://old.reddit.com/r/adventofcode/comments/18firip/2023_day_10_an_alternate_input_to_visualize/
 is_reddit = filename.startswith('reddit')

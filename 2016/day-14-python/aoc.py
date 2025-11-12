@@ -61,7 +61,6 @@ class Tests(unittest.TestCase):
 if __name__ == "__main__":
     flags = set(arg for arg in sys.argv[1:] if arg.startswith("-"))
     args = [arg for arg in sys.argv[1:] if not arg.startswith("-")]
-    sys.argv = sys.argv[:1]  # strip args, unittest.main() doesn't like them
 
     filename = "sample.txt" if "-s" in flags or "--sample" in flags else "input.txt"
     filename = args[0] if args else filename
@@ -79,7 +78,7 @@ if __name__ == "__main__":
             print("✅")
 
     if run_tests:
-        unittest.main(exit=True)
+        unittest.main(argv=sys.argv[:1])
 
     salt = open(filename).read().strip()
     part1 = find_index_64(salt)
