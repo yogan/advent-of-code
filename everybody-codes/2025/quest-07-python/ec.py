@@ -12,53 +12,42 @@ def parse(filename):
 
 
 def part1(names, rules):
-    for name in names:
-        if valid(name, rules):
-            return name
+    return next(name for name in names if valid(name, rules))
 
 
 def part2(names, rules):
-    total = 0
-    for i, name in enumerate(names, 1):
-        if valid(name, rules):
-            total += i
-    return total
+    return sum(i if valid(name, rules) else 0 for i, name in enumerate(names, 1))
 
 
 def part3(names, rules):
-    res = []
-    for name in names:
-        if valid(name, rules):
-            res += possible_suffixes(name, rules)
-    return len(set(res))  # set to remove duplicates
+    return len(
+        # set to remove remove duplicates
+        set(flatten([extensions(name, rules) for name in names if valid(name, rules)]))
+    )
 
 
 def valid(name, rules):
-    for i in range(len(name) - 1):
-        if name[i + 1] not in rules[name[i]]:
-            return False
-    return True
+    return all(name[i + 1] in rules[name[i]] for i in range(len(name) - 1))
 
 
-def possible_suffixes(name, rules):
-    min, max = 7 - len(name), 11 - len(name)
-    res = []
-    for length in range(min, max + 1):
-        res += combinations(name, rules, length)
-    return res
+def extensions(name, rules):
+    return flatten(
+        [combinations(name, rules, l) for l in range(7 - len(name), 12 - len(name))]
+    )
 
 
 def combinations(prefix, rules, length):
     letter = prefix[-1]
-    next_letters = rules.get(letter, [])
+    next = rules.get(letter, [])
 
     if length == 1:
-        return [prefix + next for next in next_letters]
+        return [prefix + n for n in next]
 
-    res = []
-    for next in next_letters:
-        res += combinations(prefix + next, rules, length - 1)
-    return res
+    return flatten([combinations(prefix + n, rules, length - 1) for n in next])
+
+
+def flatten(xss):
+    return [x for xs in xss for x in xs]
 
 
 class Tests(unittest.TestCase):
@@ -140,7 +129,7 @@ class Tests(unittest.TestCase):
             ],
         )
 
-    def test_possible_suffixes(self):
+    def test_extensions(self):
         rules = {
             "X": ["a", "o"],
             "a": ["r", "t"],
@@ -151,7 +140,7 @@ class Tests(unittest.TestCase):
             "y": ["p", "t"],
         }
         self.assertEqual(
-            possible_suffixes("Xaryt", rules),
+            extensions("Xaryt", rules),
             [
                 "Xarytha",
                 "Xarythe",

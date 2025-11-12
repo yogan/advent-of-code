@@ -27,7 +27,7 @@
 ### [Quest 6: Mentorship Matrix](https://everybody.codes/event/2025/quests/6)
 
 - [Python](2025/quest-06-python/ec.py)
-- initial version was brute-force for part 3, which took ~ 1 min. (iterating
+- initial version was brute-force for part 3, which took ~ 1 min (iterating
   over a `1_000 * 10_000` long array is no fun)
 - final version considers the repeating middle parts and is fast
 - tricky that the splitting up works for the real long input, but not for the
@@ -36,4 +36,7 @@
 ### [Quest 7: Namegraph](https://everybody.codes/event/2025/quests/7)
 
 - [Python](2025/quest-07-python/ec.py)
-- recursive solution for part 3, fast enough without any caching
+- recursive solution for part 3, fast enough without any caching (~ 2 sec)
+- all functions beside parsing and the recursive `combinations()` for part 3
+  could eventually be rewritten to one-liners (using list comprehensions,
+  `sum()`, `next()`, `all()`, etc.)
