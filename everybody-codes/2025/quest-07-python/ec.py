@@ -25,11 +25,40 @@ def part2(names, rules):
     return total
 
 
+def part3(names, rules):
+    res = []
+    for name in names:
+        if valid(name, rules):
+            res += possible_suffixes(name, rules)
+    return len(set(res))  # set to remove duplicates
+
+
 def valid(name, rules):
     for i in range(len(name) - 1):
         if name[i + 1] not in rules[name[i]]:
             return False
     return True
+
+
+def possible_suffixes(name, rules):
+    min, max = 7 - len(name), 11 - len(name)
+    res = []
+    for length in range(min, max + 1):
+        res += combinations(name, rules, length)
+    return res
+
+
+def combinations(prefix, rules, length):
+    letter = prefix[-1]
+    next_letters = rules.get(letter, [])
+
+    if length == 1:
+        return [prefix + next for next in next_letters]
+
+    res = []
+    for next in next_letters:
+        res += combinations(prefix + next, rules, length - 1)
+    return res
 
 
 class Tests(unittest.TestCase):
@@ -49,6 +78,109 @@ class Tests(unittest.TestCase):
         }
         self.assertEqual(part1(names, rules), "Oroneth")
 
+    def test_combinations(self):
+        name = "Xaryt"
+        rules = {
+            "X": ["a", "o"],
+            "a": ["r", "t"],
+            "r": ["y", "e", "a"],
+            "h": ["a", "e", "v"],
+            "t": ["h"],
+            "v": ["e"],
+            "y": ["p", "t"],
+        }
+        self.assertEqual(
+            combinations(name, rules, 2),
+            [
+                "Xarytha",
+                "Xarythe",
+                "Xarythv",
+            ],
+        )
+        self.assertEqual(
+            combinations(name, rules, 3),
+            [
+                "Xarythar",
+                "Xarythat",
+                "Xarythve",
+            ],
+        )
+        self.assertEqual(
+            combinations(name, rules, 4),
+            [
+                "Xarythary",
+                "Xarythare",
+                "Xarythara",
+                "Xarythath",
+            ],
+        )
+        self.assertEqual(
+            combinations(name, rules, 5),
+            [
+                "Xarytharyp",
+                "Xarytharyt",
+                "Xarytharar",
+                "Xarytharat",
+                "Xarythatha",
+                "Xarythathe",
+                "Xarythathv",
+            ],
+        )
+        self.assertEqual(
+            combinations(name, rules, 6),
+            [
+                "Xarytharyth",
+                "Xarytharary",
+                "Xarytharare",
+                "Xarytharara",
+                "Xarytharath",
+                "Xarythathar",
+                "Xarythathat",
+                "Xarythathve",
+            ],
+        )
+
+    def test_possible_suffixes(self):
+        rules = {
+            "X": ["a", "o"],
+            "a": ["r", "t"],
+            "r": ["y", "e", "a"],
+            "h": ["a", "e", "v"],
+            "t": ["h"],
+            "v": ["e"],
+            "y": ["p", "t"],
+        }
+        self.assertEqual(
+            possible_suffixes("Xaryt", rules),
+            [
+                "Xarytha",
+                "Xarythe",
+                "Xarythv",
+                "Xarythar",
+                "Xarythat",
+                "Xarythve",
+                "Xarythary",
+                "Xarythare",
+                "Xarythara",
+                "Xarythath",
+                "Xarytharyp",
+                "Xarytharyt",
+                "Xarytharar",
+                "Xarytharat",
+                "Xarythatha",
+                "Xarythathe",
+                "Xarythathv",
+                "Xarytharyth",
+                "Xarytharary",
+                "Xarytharare",
+                "Xarytharara",
+                "Xarytharath",
+                "Xarythathar",
+                "Xarythathat",
+                "Xarythathve",
+            ],
+        )
+
 
 def main():
     failures = 0
@@ -56,9 +188,12 @@ def main():
     if is_sample:
         failures += check(1, part1(*parse("sample1.txt")), "Oroneth")
         failures += check(2, part2(*parse("sample2.txt")), 23)
+        failures += check("3a", part3(*parse("sample3a.txt")), 25)
+        failures += check("3b", part3(*parse("sample3b.txt")), 1_154)
     else:
         failures += check(1, part1(*parse("input1.txt")), "Nymirath")
-        failures += check(2, part2(*parse("input2.txt")), 3289)
+        failures += check(2, part2(*parse("input2.txt")), 3_289)
+        failures += check(3, part3(*parse("input3.txt")), 3_170_031)
 
     exit(failures)
 

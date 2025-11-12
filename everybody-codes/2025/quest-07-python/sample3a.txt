@@ -1,0 +1,9 @@
+Xaryt
+
+X > a,o
+a > r,t
+r > y,e,a
+h > a,e,v
+t > h
+v > e
+y > p,t
