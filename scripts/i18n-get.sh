@@ -26,7 +26,7 @@ else
     exit 1
 fi
 
-day=$(echo "${day}" | sed 's/^0*//')
+day=${day#"${day%%[!0]*}"}
 
 if ! echo "${day}" | grep -qE '^([1-9]|1[0-9]|2[0-5])$'; then
     stderr "Invalid day: ${day} (must be 1-25)"
