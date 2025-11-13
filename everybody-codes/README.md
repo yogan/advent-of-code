@@ -40,3 +40,7 @@
 - all functions beside parsing and the recursive `combinations()` for part 3
   could eventually be rewritten to one-liners (using list comprehensions,
   `sum()`, `next()`, `all()`, etc.)
+
+### [Quest 8: The Art of Connection](https://everybody.codes/event/2025/quests/8)
+
+- [Python](2025/quest-08-python/ec.py)

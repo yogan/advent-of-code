@@ -28,6 +28,25 @@ def part2(xs):
     return total
 
 
+def part3(xs, nails):
+    best = 0
+    lines = list(zip(xs, xs[1:]))
+
+    for a in range(1, nails + 1):
+        for b in range(a + 1, nails + 1):
+            # print(f"a={a} b={b}")
+            # cur = sum([1 for c, d in lines if intersect(a, b, min(c, d), max(c, d))])
+            cur = 0
+            for c, d in list(lines):
+                c, d = min(c, d), max(c, d)
+                if a == c and b == d or intersect(a, b, c, d):
+                    cur += 1
+            if cur > best:
+                best = cur
+
+    return best
+
+
 def intersect(a, b, c, d):
     # when going around the circle, the points of both lines have to alternate
     return a < c < b < d or c < a < d < b
@@ -39,6 +58,9 @@ class Tests(unittest.TestCase):
 
     def test_part2(self):
         self.assertEqual(part2([1, 5, 2, 6, 8, 4, 1, 7, 3, 5, 7, 8, 2]), 21)
+
+    def test_part3(self):
+        self.assertEqual(part3([1, 5, 2, 6, 8, 4, 1, 7, 3, 6], 8), 7)
 
     def test_intersect(self):
         self.assertFalse(intersect(1, 2, 2, 3))
@@ -57,9 +79,11 @@ def main():
     if is_sample:
         failures += check(1, part1(parse("sample1.txt"), 8), 4)
         failures += check(2, part2(parse("sample2.txt")), 21)
+        failures += check(3, part3(parse("sample3.txt"), 8), 7)
     else:
         failures += check(1, part1(parse("input1.txt"), 32), 59)
         failures += check(2, part2(parse("input2.txt")), 2925233)
+        failures += check(3, part3(parse("input3.txt"), 256), 2791)
 
     exit(failures)
 
