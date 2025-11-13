@@ -29,6 +29,6 @@ run() {
 }
 
 run
-while inotifywait -qq -e close_write *.py ; do
+while inotifywait -qq -e close_write ./*.py ; do
     run
 done

@@ -1,6 +1,6 @@
 #!/bin/bash
 set -euo pipefail
-while inotifywait -qq -e close_write *.py ; do
+while inotifywait -qq -e close_write ./*.py ; do
     echo "  ┌─────────────────────────────────────────────────────────────────┐"
     echo "  │                           S A M P L E                           │"
     echo "  └─────────────────────────────────────────────────────────────────┘"

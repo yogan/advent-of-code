@@ -29,6 +29,6 @@ run() {
 }
 
 run
-while inotifywait -qq -e close_write *.hs ; do
+while inotifywait -qq -e close_write ./*.hs ; do
     run
 done
