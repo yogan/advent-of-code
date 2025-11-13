@@ -6,8 +6,9 @@ from tqdm import trange
 if len(sys.argv) != 2:
     print("Missing input file.")
     sys.exit(1)
-filename  = sys.argv[1]
+filename = sys.argv[1]
 is_sample = filename != "input.txt"
+
 
 def parse(filename=filename):
     with open(filename) as f:
@@ -18,6 +19,7 @@ def parse(filename=filename):
                     elves.add((x, y))
         return elves
 
+
 def dimensions(elves):
     min_x = min(x for x, y in elves)
     max_x = max(x for x, y in elves)
@@ -25,6 +27,7 @@ def dimensions(elves):
     max_y = max(y for x, y in elves)
 
     return (min_x, max_x, min_y, max_y)
+
 
 def print_field(elves):
     (min_x, max_x, min_y, max_y) = dimensions(elves)
@@ -34,66 +37,89 @@ def print_field(elves):
             print("#" if (x, y) in elves else ".", end="")
         print()
 
+
 deltas = (-1, 0, 1)
 
+
 def neighbors(x, y):
-    return {(x+dx, y+dy) for dx in deltas for dy in deltas if dx or dy}
+    return {(x + dx, y + dy) for dx in deltas for dy in deltas if dx or dy}
+
 
 def north_area(x, y):
-    return {(x-1, y+dy) for dy in deltas}
+    return {(x - 1, y + dy) for dy in deltas}
+
 
 def south_area(x, y):
-    return {(x+1, y+dy) for dy in deltas}
+    return {(x + 1, y + dy) for dy in deltas}
+
 
 def west_area(x, y):
-    return {(x+dx, y-1) for dx in deltas}
+    return {(x + dx, y - 1) for dx in deltas}
+
 
 def east_area(x, y):
-    return {(x+dx, y+1) for dx in deltas}
+    return {(x + dx, y + 1) for dx in deltas}
+
 
 def north(x, y):
-    return (x-1, y)
+    return (x - 1, y)
+
 
 def south(x, y):
-    return (x+1, y)
+    return (x + 1, y)
+
 
 def west(x, y):
-    return (x, y-1)
+    return (x, y - 1)
+
 
 def east(x, y):
-    return (x, y+1)
+    return (x, y + 1)
+
 
 class Dir:
     North = 0
     South = 1
-    West  = 2
-    East  = 3
+    West = 2
+    East = 3
+
 
 def directions(rnd):
     assert rnd > 0, "rounds are counted starting from 1"
-    match (rnd - 1) % 4:
-        case 0: return [Dir.North, Dir.South, Dir.West, Dir.East]
-        case 1: return [Dir.South, Dir.West, Dir.East, Dir.North]
-        case 2: return [Dir.West, Dir.East, Dir.North, Dir.South]
-        case 3: return [Dir.East, Dir.North, Dir.South, Dir.West]
+    case_num = (rnd - 1) % 4
+    if case_num == 0:
+        return [Dir.North, Dir.South, Dir.West, Dir.East]
+    elif case_num == 1:
+        return [Dir.South, Dir.West, Dir.East, Dir.North]
+    elif case_num == 2:
+        return [Dir.West, Dir.East, Dir.North, Dir.South]
+    elif case_num == 3:
+        return [Dir.East, Dir.North, Dir.South, Dir.West]
+
 
 def no_neighbors(elf, elves):
     x, y = elf
     free_neighbors = neighbors(x, y) - elves
     return len(free_neighbors) == 8
 
+
 def area_free(area, elves):
     free_area = area - elves
     return len(free_area) == 3
 
+
 def scan(elf, direction):
     x, y = elf
-    match direction:
-        case Dir.North: return (north_area(x, y), north(x, y))
-        case Dir.South: return (south_area(x, y), south(x, y))
-        case Dir.West:  return ( west_area(x, y),  west(x, y))
-        case Dir.East:  return ( east_area(x, y),  east(x, y))
+    if direction == Dir.North:
+        return (north_area(x, y), north(x, y))
+    elif direction == Dir.South:
+        return (south_area(x, y), south(x, y))
+    elif direction == Dir.West:
+        return (west_area(x, y), west(x, y))
+    elif direction == Dir.East:
+        return (east_area(x, y), east(x, y))
     assert False, f"invalid direction {direction}"
+
 
 def move_proposals(elves, rnd):
     dirs = directions(rnd)
@@ -115,9 +141,11 @@ def move_proposals(elves, rnd):
 
     return proposals
 
+
 def count_empty_tiles(elves):
     (min_x, max_x, min_y, max_y) = dimensions(elves)
     return (max_x - min_x + 1) * (max_y - min_y + 1) - len(elves)
+
 
 def part1():
     elves = parse()
@@ -130,8 +158,10 @@ def part1():
         for target in proposals.values():
             counts[target] += 1
 
-        elves = {current if counts[proposal] > 1 else proposal
-                 for current, proposal in proposals.items()}
+        elves = {
+            current if counts[proposal] > 1 else proposal
+            for current, proposal in proposals.items()
+        }
 
         # if is_sample:
         #     print(f"\n== End of Round {rnd} ==")
@@ -139,6 +169,7 @@ def part1():
         #     print()
 
     return count_empty_tiles(elves)
+
 
 def part2():
     elves = parse()
@@ -175,6 +206,7 @@ def part2():
 
     assert False, "no stable state found after {rounds} rounds"
 
+
 class TestDay23(unittest.TestCase):
     def test_parse(self):
         elves = parse()
@@ -185,9 +217,7 @@ class TestDay23(unittest.TestCase):
             self.assertNotIn(elf, elves)
 
     def test_neighbors(self):
-        expected = {(0, 0), (0, 1), (0, 2),
-                    (1, 0),         (1, 2),
-                    (2, 0), (2, 1), (2, 2)}
+        expected = {(0, 0), (0, 1), (0, 2), (1, 0), (1, 2), (2, 0), (2, 1), (2, 2)}
         self.assertEqual(expected, neighbors(1, 1))
 
     def test_north_area(self):
@@ -234,12 +264,12 @@ class TestDay23(unittest.TestCase):
         elves = {(1, 2), (1, 3), (1, 10), (2, 2), (4, 2), (4, 3)}
         rnd = 1
         expected = {
-            (1,  2): (0,  2), # north
-            (1,  3): (0,  3), # north
-            (1, 10): (1, 10), # stays
-            (2,  2): (3,  2), # south (clash)
-            (4,  2): (3,  2), # south (clash)
-            (4,  3): (3,  3), # north
+            (1, 2): (0, 2),  # north
+            (1, 3): (0, 3),  # north
+            (1, 10): (1, 10),  # stays
+            (2, 2): (3, 2),  # south (clash)
+            (4, 2): (3, 2),  # south (clash)
+            (4, 3): (3, 3),  # north
         }
         # self.assertEqual(expected, move_proposals(elves, rnd))
 
@@ -250,11 +280,11 @@ class TestDay23(unittest.TestCase):
         # 3 .#...
         #   .....
         elves = {(1, 3), (2, 2), (3, 1)}
-        rnd = 4 # prefer east
+        rnd = 4  # prefer east
         expected = {
-            (1, 3): (1, 4), # east
-            (2, 2): (2, 2), # stays (blocked)
-            (3, 1): (4, 1), # east blocked, north blocked, south free, so south
+            (1, 3): (1, 4),  # east
+            (2, 2): (2, 2),  # stays (blocked)
+            (3, 1): (4, 1),  # east blocked, north blocked, south free, so south
         }
         self.assertEqual(expected, move_proposals(elves, rnd))
 
@@ -265,7 +295,8 @@ class TestDay23(unittest.TestCase):
         if is_sample:
             self.assertEqual(20, part2())
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     if is_sample:
         unittest.main(argv=sys.argv[:1], exit=False)
         print("─" * 70)

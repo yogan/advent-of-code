@@ -1,16 +1,17 @@
 import sys
 import unittest
 
-import matplotlib
-import matplotlib.pyplot as plt
-import numpy as np
 from tqdm import tqdm
-
-matplotlib.use("TkAgg")
 
 
 def draw_voxels(cube_groups, size=8):
     assert len(cube_groups) <= 2, "Can only draw up to two groups"
+
+    import matplotlib
+    import matplotlib.pyplot as plt
+    import numpy as np
+
+    matplotlib.use("TkAgg")
 
     voxel_groups = [
         np.zeros((size, size, size), dtype=bool) for _ in range(len(cube_groups))
@@ -254,9 +255,8 @@ def part2():
     air_ranges = calc_ranges(air_cubes)
     air_sides = count_sides(air_ranges)
 
-    # input_air_pockets.png
-    # if not is_sample:
-    #     draw_voxels([list(air_cubes)], 30)
+    if visualize and not is_sample:
+        draw_voxels([list(air_cubes)], 30)  # input_air_pockets.png
 
     return sides - air_sides
 

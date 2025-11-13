@@ -2,8 +2,10 @@
 
 cd "$(dirname "$0")"
 
+[ -f "venv/bin/activate" ] && source venv/bin/activate
+
 # Note: This solution takes about 25 seconds to run
-output=$(timeout 120s python3 day19.py input.txt 2>/dev/null)
+output=$(python3 day19.py input.txt 2>/dev/null)
 
 if [ $? -eq 124 ]; then
     echo "✗ Solution timed out after 120 seconds"

@@ -1,5 +1,7 @@
-#!/bin/sh
+#!/bin/bash
 set -e
+
+[ -f "venv/bin/activate" ] && source venv/bin/activate
 
 # Run the solution and capture output
 output=$(python3 day14.py)

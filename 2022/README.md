@@ -66,7 +66,6 @@ Nim, Lua, C#, Python, Haskell, Vim)*
   [Python](day-22-python/day22.py) part 1 only
 - [Day 23](https://adventofcode.com/2022/day/23) ⭐⭐ in
   [Python](day-23-python/day23.py) actually quite nice and clean code
-  (pattern matching, list/set comprehensions)
 - [Day 24](https://adventofcode.com/2022/day/24) ⭐⭐ in
   [Python](day-24-python/day24.py) BFS (caching blizzard cycles == *huge* performance boost)
 - [Day 25](https://adventofcode.com/2022/day/25) ⭐✖️ in
