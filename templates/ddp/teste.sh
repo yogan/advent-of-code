@@ -1,4 +1,5 @@
-#!/bin/sh
+#!/bin/bash
+set -euo pipefail
 Ausgabe=$(./fuehre-aus.sh)
 
 erwartet1="Das Gesamtvolumen beträgt 14538"

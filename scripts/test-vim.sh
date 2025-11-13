@@ -1,4 +1,6 @@
 #!/bin/bash
+set -euo pipefail
+
 initial_dir=$(pwd)
 cd "$(dirname "${BASH_SOURCE[0]}")"/../vim || exit 1
 

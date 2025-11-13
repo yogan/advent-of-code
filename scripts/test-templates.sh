@@ -1,4 +1,6 @@
 #!/bin/bash
+set -euo pipefail
+
 exit_code=0
 cwd=$(pwd)
 

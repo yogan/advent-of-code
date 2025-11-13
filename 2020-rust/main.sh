@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # Advent of Code Rust Template
 # Source: https://repl.it/@Scoder12/aoc-rust-template
 

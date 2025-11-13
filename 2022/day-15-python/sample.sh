@@ -1,4 +1,5 @@
-#!/bin/sh
+#!/bin/bash
+set -euo pipefail
 if command -v pypy3 >/dev/null 2>&1; then
     pypy3 day15.py day15.sample
 else
