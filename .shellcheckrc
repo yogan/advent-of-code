@@ -1,0 +1,5 @@
+# Shell dialect - all our scripts use bash
+shell=bash
+
+# Enable optional checks for best practices
+enable=deprecate-which,quote-safe-variables,require-variable-braces
