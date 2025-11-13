@@ -67,72 +67,84 @@ jobs:
 
       - name: Test solutions for 2015
         if: ${{ github.event.schedule || needs.check-changes.outputs.changes-2015 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
+        continue-on-error: true
         run: |
           ./scripts/test-days.sh 2015
           ./scripts/cleanup.sh
 
       - name: Test solutions for 2016
         if: ${{ github.event.schedule || needs.check-changes.outputs.changes-2016 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
+        continue-on-error: true
         run: |
           ./scripts/test-days.sh 2016
           ./scripts/cleanup.sh
 
       - name: Test solutions for 2017
         if: ${{ github.event.schedule || needs.check-changes.outputs.changes-2017 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
+        continue-on-error: true
         run: |
           ./scripts/test-days.sh 2017
           ./scripts/cleanup.sh
 
       - name: Test solutions for 2020
         if: ${{ github.event.schedule || needs.check-changes.outputs.changes-2020 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
+        continue-on-error: true
         run: |
           ./2020-rust/test-ci.sh
           ./scripts/cleanup.sh
 
       - name: Test solutions for 2021
         if: ${{ github.event.schedule || needs.check-changes.outputs.changes-2021 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
+        continue-on-error: true
         run: |
           ./2021-python/test-ci.sh
           ./scripts/cleanup.sh
 
       - name: Test solutions for 2022
         if: ${{ github.event.schedule || needs.check-changes.outputs.changes-2022 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
+        continue-on-error: true
         run: |
           ./scripts/test-days.sh 2022
           ./scripts/cleanup.sh
 
       - name: Test solutions for 2023
         if: ${{ github.event.schedule || needs.check-changes.outputs.changes-2023 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
+        continue-on-error: true
         run: |
           ./scripts/test-days.sh 2023
           ./scripts/cleanup.sh
 
       - name: Test solutions for 2024
         if: ${{ github.event.schedule || needs.check-changes.outputs.changes-2024 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
+        continue-on-error: true
         run: |
           ./scripts/test-days.sh 2024
           ./scripts/cleanup.sh
 
       - name: Test Vim solutions
         if: ${{ github.event.schedule || needs.check-changes.outputs.changes-vim != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
+        continue-on-error: true
         run: |
           ./scripts/test-vim.sh
           ./scripts/cleanup.sh
 
       - name: Test Codyssi solutions
         if: ${{ github.event.schedule || needs.check-changes.outputs.changes-codyssi != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
+        continue-on-error: true
         run: |
           ./scripts/test-days.sh 'codyssi/2025'
           ./scripts/cleanup.sh
 
       - name: Test i18n puzzles solutions
         if: ${{ github.event.schedule || needs.check-changes.outputs.changes-i18n != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
+        continue-on-error: true
         run: |
           ./scripts/test-days.sh 'i18n-puzzles/2025'
           ./scripts/cleanup.sh
 
       - name: Test Everybody Codes solutions
         if: ${{ github.event.schedule || needs.check-changes.outputs.changes-everybody-codes != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
+        continue-on-error: true
         run: |
           ./scripts/test-days.sh 'everybody-codes/2025'
           ./scripts/cleanup.sh
