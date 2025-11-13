@@ -56,6 +56,9 @@ jobs:
       - name: Mark workspace as safe for git clean
         run: git config --global --add safe.directory $GITHUB_WORKSPACE
 
+      - name: Run shellcheck on all scripts
+        run: ./scripts/shellcheck.sh
+
       - name: Prepare Haskell environment
         run: ./scripts/haskell-prepare.sh
 
