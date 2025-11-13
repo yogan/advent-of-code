@@ -7,7 +7,7 @@ cd "$(dirname "$0")" || exit 1
 export LEIN_JVM_OPTS="-XX:TieredStopAtLevel=1"
 
 filename="input.txt"
-if [ "$1" != "" ]; then
+if [ "${1:-}" != "" ]; then
     filename=$1
 fi
 
