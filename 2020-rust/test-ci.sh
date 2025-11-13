@@ -7,10 +7,10 @@ cd "$(dirname "$0")" || exit 1
 
 days=$(find src | grep day | sort | sed 's/^.*\([0-9][0-9]\).*$/\1/')
 
-for day in $days; do
-    if [ ! -f "inputs/day$day.txt" ]; then
-        ../scripts/aoc-get.sh 2020 "$day"
-        mv input.txt inputs/day"$day".txt
+for day in ${days}; do
+    if [ ! -f "inputs/day${day}.txt" ]; then
+        ../scripts/aoc-get.sh 2020 "${day}"
+        mv input.txt inputs/day"${day}".txt
     fi
 done
 
@@ -18,6 +18,6 @@ done
 # Could be caused by network issues, see: https://stackoverflow.com/a/46864309
 rustup default stable
 
-for day in $days; do
-    ./main.sh "$day"
+for day in ${days}; do
+    ./main.sh "${day}"
 done

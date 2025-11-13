@@ -10,4 +10,4 @@ else
     input="sample$1.txt"
 fi
 
-pypy3 day*.py "$input"
+pypy3 day*.py "${input}"

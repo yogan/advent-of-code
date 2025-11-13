@@ -10,10 +10,10 @@ fi
 expected="Amelia Amoura Hugo Jack Jakob Junior Mateo"
 
 output=$(./run.sh | grep -v "Compil\|Running")
-result=$(echo "$output" | tail -2 | head -1)
+result=$(echo "${output}" | tail -2 | head -1)
 
-if [ "$result" != "$expected" ]; then
-    echo "Expected: »$expected«"
-    echo "Received: »$result«"
+if [ "${result}" != "${expected}" ]; then
+    echo "Expected: »${expected}«"
+    echo "Received: »${result}«"
     exit 1
 fi

@@ -8,4 +8,4 @@ else
     input="sample.txt"
 fi
 
-cargo run --release --quiet "$input"
+cargo run --release --quiet "${input}"

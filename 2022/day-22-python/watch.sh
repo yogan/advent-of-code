@@ -33,25 +33,25 @@ fi
 
 run() {
     clear
-    if [ $run_sample -eq 1 ]; then
+    if [ "${run_sample}" -eq 1 ]; then
         echo "  ┌─────────────────────────────────────────────────────────────────┐"
         echo "  │                           S A M P L E                           │"
         echo "  └─────────────────────────────────────────────────────────────────┘"
         python3 day*.py sample.txt
     fi
-    if [ $run_sample_extra -eq 1 ]; then
+    if [ "${run_sample_extra}" -eq 1 ]; then
         echo "  ┌─────────────────────────────────────────────────────────────────┐"
         echo "  │                   E X T R A   S A M P L E S                     │"
         echo "  └─────────────────────────────────────────────────────────────────┘"
         python3 day*.py sample_extra.txt
     fi
-    if [ $run_sample_trans -eq 1 ]; then
+    if [ "${run_sample_trans}" -eq 1 ]; then
         echo "  ┌─────────────────────────────────────────────────────────────────┐"
         echo "  │               T R A N S F O R M E D   S A M P L E               │"
         echo "  └─────────────────────────────────────────────────────────────────┘"
         python3 day*.py sample_transformed.txt
     fi
-    if [ $run_real -eq 1 ]; then
+    if [ "${run_real}" -eq 1 ]; then
         echo
         echo "  ┌─────────────────────────────────────────────────────────────────┐"
         echo "  │                       R E A L   I N P U T                       │"
