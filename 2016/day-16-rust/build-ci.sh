@@ -1,4 +1,7 @@
-#!/bin/sh
+#!/bin/bash
+set -euo pipefail
+cd "$(dirname "$0")" || exit 1
+
 RUSTUP_LOG="rustup_log.txt"
 BUILD_LOG="build_log.txt"
 

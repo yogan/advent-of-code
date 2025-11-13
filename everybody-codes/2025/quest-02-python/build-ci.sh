@@ -1,4 +1,7 @@
-#!/bin/sh
+#!/bin/bash
+set -euo pipefail
+cd "$(dirname "$0")" || exit 1
+
 
 # Save some time in CI: build/venv is only needed for visualization (PIL+tqdm)
 [ -n "$GITHUB_RUN_ID" ] && return
