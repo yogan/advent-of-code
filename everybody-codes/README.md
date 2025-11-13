@@ -44,3 +44,6 @@
 ### [Quest 8: The Art of Connection](https://everybody.codes/event/2025/quests/8)
 
 - [Python](2025/quest-08-python/ec.py)
+- nice geometric problem, easy once you found the intersection condition
+- ended up with nice concise solutions
+- run time for part 3 is mediocre (~ 2 sec), not sure how to optimize though

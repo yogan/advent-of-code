@@ -7,13 +7,7 @@ def parse(filename):
 
 
 def part1(xs, nails):
-    total = 0
-
-    for a, b in zip(xs, xs[1:]):
-        if abs(b - a) == nails // 2:
-            total += 1
-
-    return total
+    return sum(1 for a, b in zip(xs, xs[1:]) if abs(b - a) == nails // 2)
 
 
 def part2(xs):
@@ -22,7 +16,7 @@ def part2(xs):
 
     for a, b in zip(xs, xs[1:]):
         a, b = min(a, b), max(a, b)
-        total += sum([1 for c, d in lines if intersect(a, b, c, d)])
+        total += sum(1 for c, d in lines if intersect(a, b, c, d))
         lines.add((a, b))
 
     return total
@@ -30,26 +24,19 @@ def part2(xs):
 
 def part3(xs, nails):
     best = 0
-    lines = list(zip(xs, xs[1:]))
+    lines = [(min(a, b), max(a, b)) for a, b in zip(xs, xs[1:])]
 
     for a in range(1, nails + 1):
         for b in range(a + 1, nails + 1):
-            # print(f"a={a} b={b}")
-            # cur = sum([1 for c, d in lines if intersect(a, b, min(c, d), max(c, d))])
-            cur = 0
-            for c, d in list(lines):
-                c, d = min(c, d), max(c, d)
-                if a == c and b == d or intersect(a, b, c, d):
-                    cur += 1
-            if cur > best:
-                best = cur
+            best = max(best, sum(1 for c, d in lines if intersect(a, b, c, d)))
 
     return best
 
 
 def intersect(a, b, c, d):
-    # when going around the circle, the points of both lines have to alternate
-    return a < c < b < d or c < a < d < b
+    # When going around the circle, the points of both lines have to alternate.
+    # We also count perfectly equal lines as intersecting (required for part 3).
+    return a < c < b < d or c < a < d < b or a == c and b == d
 
 
 class Tests(unittest.TestCase):
