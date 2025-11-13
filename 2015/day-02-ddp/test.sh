@@ -1,4 +1,7 @@
-#!/bin/sh
+#!/bin/bash
+set -euo pipefail
+cd "$(dirname "$0")" || exit 1
+
 Ausgabe=$(./fuehre-aus.sh)
 
 Ergebnis1=$(echo "$Ausgabe" | head -1)
