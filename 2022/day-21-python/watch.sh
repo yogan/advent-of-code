@@ -9,7 +9,7 @@ elif [ "$1" = "--real" ]; then
     run_sample=0
 fi
 
-while inotifywait -qq -e close_write *.py ; do
+while inotifywait -qq -e close_write ./*.py ; do
     clear
     if [ "${run_sample}" -eq 1 ]; then
         echo "  ┌─────────────────────────────────────────────────────────────────┐"
