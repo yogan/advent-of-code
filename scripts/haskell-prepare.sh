@@ -1,4 +1,6 @@
-#!/bin/sh
+#!/bin/bash
+set -euo pipefail
+
 # When running in GitHub Actions, $HOME is /home/github, which is owned by
 # uid 1001 / gid 127. We are running as root though, and stack does not like
 # to create its ~/.stack directory in a directory owned by a different user.

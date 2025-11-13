@@ -1,4 +1,6 @@
 #!/bin/bash
+set -euo pipefail
+
 if [ -z "$1" ]; then
     echo "Usage: $0 <year>" >&2
     exit 1

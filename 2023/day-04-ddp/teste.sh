@@ -1,4 +1,5 @@
-#!/bin/sh
+#!/bin/bash
+set -euo pipefail
 Ausgabe=$(./fuehre-aus.sh)
 
 Ergebnis1=$(echo "$Ausgabe" | head -1)

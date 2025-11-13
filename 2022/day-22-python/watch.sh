@@ -1,4 +1,5 @@
-#!/bin/sh
+#!/bin/bash
+set -euo pipefail
 
 # defaults when no args:
 run_sample_trans=1

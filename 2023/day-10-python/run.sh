@@ -1,4 +1,7 @@
-#!/bin/sh
+#!/bin/bash
+set -euo pipefail
+cd "$(dirname "$0")" || exit 1
+
 if [ "$(basename "$0")" = "run.sh" ]; then
     input="input.txt"
 elif [ "$(basename "$0")" = "reddit.sh" ]; then

@@ -1,4 +1,6 @@
-#!/bin/sh
+#!/bin/bash
+set -euo pipefail
+
 echo
 echo "Free disk space before cleanup:"
 df -h | grep root | awk '{print $4}'
