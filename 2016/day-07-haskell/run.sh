@@ -8,4 +8,4 @@ else
     input="sample.txt"
 fi
 
-stack run "$input"
+stack run "${input}"

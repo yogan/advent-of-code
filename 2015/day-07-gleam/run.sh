@@ -8,4 +8,4 @@ else
     input="sample.txt"
 fi
 
-gleam run "$input"
+gleam run "${input}"

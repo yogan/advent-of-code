@@ -10,13 +10,13 @@ elif [ "$1" = "--real" ]; then
 fi
 
 while inotifywait -qq -e close_write *.py ; do
-    if [ $run_sample -eq 1 ]; then
+    if [ "${run_sample}" -eq 1 ]; then
         echo "  ┌─────────────────────────────────────────────────────────────────┐"
         echo "  │                           S A M P L E                           │"
         echo "  └─────────────────────────────────────────────────────────────────┘"
         ./sample.sh
     fi
-    if [ $run_real -eq 1 ]; then
+    if [ "${run_real}" -eq 1 ]; then
         echo
         echo "  ┌─────────────────────────────────────────────────────────────────┐"
         echo "  │                       R E A L   I N P U T                       │"

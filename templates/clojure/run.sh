@@ -11,4 +11,4 @@ if [ "${1:-}" != "" ]; then
     filename=$1
 fi
 
-lein run "$filename"
+lein run "${filename}"

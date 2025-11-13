@@ -27,4 +27,4 @@ else
     echo "Running latest day, which is ${num}."
 fi
 
-cargo run "$num"
+cargo run "${num}"

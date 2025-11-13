@@ -8,4 +8,4 @@ else
     input="sample.txt"
 fi
 
-node main.mjs "$input"
+node main.mjs "${input}"

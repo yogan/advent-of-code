@@ -9,7 +9,7 @@ fi
 
 if (cd build && cmake --build .); then
     # clear
-    ./build/aoc "$filename"
+    ./build/aoc "${filename}"
 else
     exit 1
 fi
