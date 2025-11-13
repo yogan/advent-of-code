@@ -1,4 +1,7 @@
-#!/bin/sh
+#!/bin/bash
+set -euo pipefail
+cd "$(dirname "$0")" || exit 1
+
 perl day04.pl day04.in | grep -v "^#\|^ok\|^\.\.\|^Seeded\|^1\.\."
 
 output=$(perl day04.pl day04.in | grep "^Part")

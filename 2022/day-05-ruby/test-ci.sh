@@ -1,4 +1,7 @@
-#!/bin/sh
+#!/bin/bash
+set -euo pipefail
+cd "$(dirname "$0")" || exit 1
+
 ruby day05.rb day05.in | grep -E "^Part [12]:"
 
 output=$(ruby day05.rb day05.in | grep "^Part")

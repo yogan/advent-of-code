@@ -1,4 +1,7 @@
-#!/bin/sh
+#!/bin/bash
+set -euo pipefail
+cd "$(dirname "$0")" || exit 1
+
 make clean && make
 
 output=$(./day06 day06.in | grep "^Part")

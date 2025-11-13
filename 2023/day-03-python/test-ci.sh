@@ -1,4 +1,7 @@
 #!/bin/bash
+set -euo pipefail
+cd "$(dirname "$0")" || exit 1
+
 output_sample=$(./sample.sh)
 result1_sample=$(echo "$output_sample" | head -1)
 result2_sample=$(echo "$output_sample" | tail -1)

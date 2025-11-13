@@ -1,8 +1,11 @@
 #!/bin/bash
+set -euo pipefail
+cd "$(dirname "$0")" || exit 1
+
 
 cd "$(dirname "$0")"
 
-[ -f "venv/bin/activate" ] && source venv/bin/activate
+[ -f "venv/bin/activate" ] && . venv/bin/activate
 
 # Note: This solution takes about 25 seconds to run
 output=$(python3 day19.py input.txt 2>/dev/null)

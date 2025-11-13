@@ -1,10 +1,11 @@
 #!/bin/bash
 set -euo pipefail
+cd "$(dirname "$0")" || exit 1
 
 # Clean previous builds
 rm -rf de/
 
-# Compile Java source
+# Compile Java .
 javac -d . src/main/java/de/zogan/aoc2022/Day07.java
 
 # Run the solution and check output

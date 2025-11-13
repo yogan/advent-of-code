@@ -1,4 +1,7 @@
-#!/bin/sh
+#!/bin/bash
+set -euo pipefail
+cd "$(dirname "$0")" || exit 1
+
 TEST_LOG="test_log.txt"
 SAMPLE_LOG="sample_log.txt"
 RUN_LOG="run_log.txt"
