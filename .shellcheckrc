@@ -3,3 +3,11 @@ shell=bash
 
 # Enable optional checks for best practices
 enable=deprecate-which,quote-safe-variables,require-variable-braces
+
+# Exclude checks that are not helpful
+#
+# - SC1091: not following sourced files - often false-positive for Python venv:
+#     . venv/bin/activate
+#   The activate script does not exist yet when shellcheck runs, but will get
+#   created later.
+disable=SC1091
