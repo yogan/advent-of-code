@@ -3,32 +3,88 @@ import unittest
 
 
 def parse(filename):
-    return [list(l[2:].strip()) for l in open(filename).readlines()]
+    return [list(l.strip().split(":")[1]) for l in open(filename).readlines()]
 
 
 def part1(sequences):
-    x = matches(sequences[0], sequences[2])
-    y = matches(sequences[1], sequences[2])
+    x = sum(matches(sequences[0], sequences[2]))
+    y = sum(matches(sequences[1], sequences[2]))
     return x * y
 
 
+def part2(sequences):
+    total = 0
+
+    for i in range(len(sequences)):
+        for j in range(i + 1, len(sequences)):
+            for ci, candidate in enumerate(sequences):
+                if ci in [i, j]:
+                    continue
+                m1 = matches(candidate, sequences[i])
+                m2 = matches(candidate, sequences[j])
+                if all(merge(m1, m2)):
+                    total += sum(m1) * sum(m2)
+
+    return total
+
+
 def matches(seq1, seq2):
-    return sum(1 if x == y else 0 for x, y in zip(seq1, seq2))
+    return [1 if x == y else 0 for x, y in zip(seq1, seq2)]
+
+
+def merge(seq1, seq2):
+    return [1 if x + y >= 1 else 0 for x, y in zip(seq1, seq2)]
 
 
 class Tests(unittest.TestCase):
+    def s2m(self, str):
+        return [1 if c == "+" else 0 for c in str]
+
     def test_part1(self):
         seq1 = list("CAAGCGCTAAGTTCGCTGGATGTGTGCCCGCG")
         seq2 = list("CTTGAATTGGGCCGTTTACCTGGTTTAACCAT")
         seq3 = list("CTAGCGCTGAGCTGGCTGCCTGGTTGACCGCG")
         self.assertEqual(part1([seq1, seq2, seq3]), 414)
 
+    def test_part2(self):
+        sequences = [
+            list("GCAGGCGAGTATGATACCCGGCTAGCCACCCC"),
+            list("TCTCGCGAGGATATTACTGGGCCAGACCCCCC"),
+            list("GGTGGAACATTCGAAAGTTGCATAGGGTGGTG"),
+            list("GCTCGCGAGTATATTACCGAACCAGCCCCTCA"),
+            list("GCAGCTTAGTATGACCGCCAAATCGCGACTCA"),
+            list("AGTGGAACCTTGGATAGTCTCATATAGCGGCA"),
+            list("GGCGTAATAATCGGATGCTGCAGAGGCTGCTG"),
+        ]
+        self.assertEqual(part2(sequences), 1245)
+
     def test_matches(self):
         seq1 = list("CAAGCGCTAAGTTCGCTGGATGTGTGCCCGCG")
         seq2 = list("CTTGAATTGGGCCGTTTACCTGGTTTAACCAT")
         seq3 = list("CTAGCGCTGAGCTGGCTGCCTGGTTGACCGCG")
-        self.assertEqual(matches(seq1, seq3), 23)
-        self.assertEqual(matches(seq2, seq3), 18)
+
+        self.assertEqual(
+            matches(seq1, seq3), self.s2m("+ ++++++ ++ + ++++  ++  ++ +++++")
+        )
+        self.assertEqual(
+            matches(seq2, seq3), self.s2m("++ +   ++ ++ +  + +++++++ + +   ")
+        )
+
+    def test_merge(self):
+        self.assertEqual(
+            merge(
+                self.s2m("+ ++++++ ++ + ++++  ++  ++ +++++"),
+                self.s2m("++ +   ++ ++ +  + +++++++ + +   "),
+            ),
+            self.s2m("++++++++++++++++++++++++++++++++"),
+        )
+        self.assertEqual(
+            merge(
+                self.s2m("  ++++++ ++ + ++++  ++  ++ +++ +"),
+                self.s2m(" + +   ++ ++ +  + +++++++ + +   "),
+            ),
+            self.s2m(" +++++++++++++++++++++++++++++ +"),
+        )
 
 
 def main():
@@ -36,8 +92,10 @@ def main():
 
     if is_sample:
         failures += check(1, part1(parse("sample1.txt")), 414)
+        failures += check(2, part2(parse("sample2.txt")), 1245)
     else:
         failures += check(1, part1(parse("input1.txt")), 6364)
+        failures += check(2, part2(parse("input2.txt")), 318598)
 
     exit(failures)
 
