@@ -1,6 +1,8 @@
 import sys
 import unittest
 
+from tqdm import tqdm
+
 
 def parse(filename):
     return [list(l.strip().split(":")[1]) for l in open(filename).readlines()]
@@ -21,6 +23,26 @@ def part2(sequences):
                 total += score(sequences[i], sequences[j], child)
 
     return total
+
+
+def part3(sequences):
+    families = []
+
+    for i in range(len(sequences)) if is_sample else tqdm(range(len(sequences))):
+        for j in range(i + 1, len(sequences)):
+            for ci, child in enumerate(sequences):
+                if ci in [i, j]:
+                    continue
+                m1 = matches(sequences[i], child)
+                m2 = matches(sequences[j], child)
+                if all(merge(m1, m2)):
+                    new = set([i + 1, j + 1, ci + 1])
+                    for connected in [f for f in families if f & new]:
+                        families.remove(connected)
+                        new |= connected
+                    families.append(new)
+
+    return sum(sorted(families, key=lambda f: len(f), reverse=True)[0])
 
 
 def score(a, b, c):
@@ -95,9 +117,12 @@ def main():
     if is_sample:
         failures += check(1, part1(parse("sample1.txt")), 414)
         failures += check(2, part2(parse("sample2.txt")), 1245)
+        failures += check("3a", part3(parse("sample3a.txt")), 12)
+        failures += check("3b", part3(parse("sample3b.txt")), 36)
     else:
         failures += check(1, part1(parse("input1.txt")), 6364)
         failures += check(2, part2(parse("input2.txt")), 318598)
+        failures += check(3, part3(parse("input3.txt")), 38604)
 
     exit(failures)
 
