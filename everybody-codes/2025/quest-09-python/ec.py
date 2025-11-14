@@ -7,9 +7,7 @@ def parse(filename):
 
 
 def part1(sequences):
-    x = sum(matches(sequences[0], sequences[2]))
-    y = sum(matches(sequences[1], sequences[2]))
-    return x * y
+    return score(*sequences)
 
 
 def part2(sequences):
@@ -17,15 +15,19 @@ def part2(sequences):
 
     for i in range(len(sequences)):
         for j in range(i + 1, len(sequences)):
-            for ci, candidate in enumerate(sequences):
+            for ci, child in enumerate(sequences):
                 if ci in [i, j]:
                     continue
-                m1 = matches(candidate, sequences[i])
-                m2 = matches(candidate, sequences[j])
-                if all(merge(m1, m2)):
-                    total += sum(m1) * sum(m2)
+                total += score(sequences[i], sequences[j], child)
 
     return total
+
+
+def score(a, b, c):
+    m1 = matches(a, c)
+    m2 = matches(b, c)
+
+    return sum(m1) * sum(m2) if all(merge(m1, m2)) else 0
 
 
 def matches(seq1, seq2):
