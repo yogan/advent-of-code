@@ -47,3 +47,14 @@
 - nice geometric problem, easy once you found the intersection condition
 - ended up with nice concise solutions
 - run time for part 3 is mediocre (~ 2 sec), not sure how to optimize though
+
+### [Quest 9: Encoded in the Scales](https://everybody.codes/event/2025/quests/9)
+
+- [Python](2025/quest-09-python/ec.py)
+- yay, genetics!
+- initial brute-force solution for part 3 was very slow (~ 5 min), as it was
+  iterating over lists of letters for the child/parents check
+- eventually ended up with bitmaps and bit operations
+- also remembering and skipping sequences for which parents are already found
+- those two optimizations speed up things immensely (down to ~ 4 sec)
+- solution is technically still _O(n³)_, though
