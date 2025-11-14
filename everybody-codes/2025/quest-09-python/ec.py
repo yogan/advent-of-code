@@ -1,11 +1,9 @@
 import sys
 import unittest
 
-from tqdm import tqdm
-
 
 def parse(filename):
-    return [list(l.strip().split(":")[1]) for l in open(filename).readlines()]
+    return [to_bitmap(l.strip().split(":")[1]) for l in open(filename).readlines()]
 
 
 def part1(sequences):
@@ -26,89 +24,71 @@ def part2(sequences):
 
 
 def part3(sequences):
+    children = set()
     families = []
 
-    for i in range(len(sequences)) if is_sample else tqdm(range(len(sequences))):
+    for i in range(len(sequences)):
         for j in range(i + 1, len(sequences)):
             for ci, child in enumerate(sequences):
-                if ci in [i, j]:
+                if ci in [i, j] or ci in children:
                     continue
-                m1 = matches(sequences[i], child)
-                m2 = matches(sequences[j], child)
-                if all(merge(m1, m2)):
-                    new = set([i + 1, j + 1, ci + 1])
-                    for connected in [f for f in families if f & new]:
-                        families.remove(connected)
-                        new |= connected
-                    families.append(new)
+                if score(sequences[i], sequences[j], child):
+                    children.add(ci)
+                    families.append(set([i + 1, j + 1, ci + 1]))
 
-    return sum(sorted(families, key=lambda f: len(f), reverse=True)[0])
+    combined = []
 
+    for fam in families:
+        for connected in [comb for comb in combined if comb & fam]:
+            combined.remove(connected)
+            fam |= connected
+        combined.append(fam)
 
-def score(a, b, c):
-    m1 = matches(a, c)
-    m2 = matches(b, c)
-
-    return sum(m1) * sum(m2) if all(merge(m1, m2)) else 0
+    return sum(sorted(combined, key=lambda f: -len(f))[0])
 
 
-def matches(seq1, seq2):
-    return [1 if x == y else 0 for x, y in zip(seq1, seq2)]
+def to_bitmap(seq):
+    map = {"A": 0b0001, "T": 0b0010, "G": 0b0100, "C": 0b1000}
+    num = 0
+    for c in seq:
+        num <<= 4
+        num |= map.get(c, 0)
+    return num
 
 
-def merge(seq1, seq2):
-    return [1 if x + y >= 1 else 0 for x, y in zip(seq1, seq2)]
+def score(p1, p2, c):
+    m1 = p1 & c
+    m2 = p2 & c
+
+    return m1.bit_count() * m2.bit_count() if m1 | m2 == c else 0
 
 
 class Tests(unittest.TestCase):
-    def s2m(self, str):
-        return [1 if c == "+" else 0 for c in str]
-
     def test_part1(self):
-        seq1 = list("CAAGCGCTAAGTTCGCTGGATGTGTGCCCGCG")
-        seq2 = list("CTTGAATTGGGCCGTTTACCTGGTTTAACCAT")
-        seq3 = list("CTAGCGCTGAGCTGGCTGCCTGGTTGACCGCG")
+        seq1 = to_bitmap(list("CAAGCGCTAAGTTCGCTGGATGTGTGCCCGCG"))
+        seq2 = to_bitmap(list("CTTGAATTGGGCCGTTTACCTGGTTTAACCAT"))
+        seq3 = to_bitmap(list("CTAGCGCTGAGCTGGCTGCCTGGTTGACCGCG"))
         self.assertEqual(part1([seq1, seq2, seq3]), 414)
 
     def test_part2(self):
         sequences = [
-            list("GCAGGCGAGTATGATACCCGGCTAGCCACCCC"),
-            list("TCTCGCGAGGATATTACTGGGCCAGACCCCCC"),
-            list("GGTGGAACATTCGAAAGTTGCATAGGGTGGTG"),
-            list("GCTCGCGAGTATATTACCGAACCAGCCCCTCA"),
-            list("GCAGCTTAGTATGACCGCCAAATCGCGACTCA"),
-            list("AGTGGAACCTTGGATAGTCTCATATAGCGGCA"),
-            list("GGCGTAATAATCGGATGCTGCAGAGGCTGCTG"),
+            to_bitmap(list("GCAGGCGAGTATGATACCCGGCTAGCCACCCC")),
+            to_bitmap(list("TCTCGCGAGGATATTACTGGGCCAGACCCCCC")),
+            to_bitmap(list("GGTGGAACATTCGAAAGTTGCATAGGGTGGTG")),
+            to_bitmap(list("GCTCGCGAGTATATTACCGAACCAGCCCCTCA")),
+            to_bitmap(list("GCAGCTTAGTATGACCGCCAAATCGCGACTCA")),
+            to_bitmap(list("AGTGGAACCTTGGATAGTCTCATATAGCGGCA")),
+            to_bitmap(list("GGCGTAATAATCGGATGCTGCAGAGGCTGCTG")),
         ]
         self.assertEqual(part2(sequences), 1245)
 
-    def test_matches(self):
-        seq1 = list("CAAGCGCTAAGTTCGCTGGATGTGTGCCCGCG")
-        seq2 = list("CTTGAATTGGGCCGTTTACCTGGTTTAACCAT")
-        seq3 = list("CTAGCGCTGAGCTGGCTGCCTGGTTGACCGCG")
-
-        self.assertEqual(
-            matches(seq1, seq3), self.s2m("+ ++++++ ++ + ++++  ++  ++ +++++")
-        )
-        self.assertEqual(
-            matches(seq2, seq3), self.s2m("++ +   ++ ++ +  + +++++++ + +   ")
-        )
-
-    def test_merge(self):
-        self.assertEqual(
-            merge(
-                self.s2m("+ ++++++ ++ + ++++  ++  ++ +++++"),
-                self.s2m("++ +   ++ ++ +  + +++++++ + +   "),
-            ),
-            self.s2m("++++++++++++++++++++++++++++++++"),
-        )
-        self.assertEqual(
-            merge(
-                self.s2m("  ++++++ ++ + ++++  ++  ++ +++ +"),
-                self.s2m(" + +   ++ ++ +  + +++++++ + +   "),
-            ),
-            self.s2m(" +++++++++++++++++++++++++++++ +"),
-        )
+    def test_score(self):
+        seq1 = to_bitmap(list("CAAGCGCTAAGTTCGCTGGATGTGTGCCCGCG"))
+        seq2 = to_bitmap(list("CTTGAATTGGGCCGTTTACCTGGTTTAACCAT"))
+        seq3 = to_bitmap(list("CTAGCGCTGAGCTGGCTGCCTGGTTGACCGCG"))
+        seq4 = to_bitmap(list("ATAGCGCTGAGCTGGCTGCCTGGTTGACCGCG"))
+        self.assertEqual(score(seq1, seq2, seq3), 414)
+        self.assertEqual(score(seq1, seq2, seq4), 0)
 
 
 def main():
