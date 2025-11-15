@@ -30,7 +30,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 2
 
@@ -45,22 +45,85 @@ jobs:
     needs: check-changes
     if: ${{ github.event.schedule || needs.check-changes.outputs.any-changes != '0' }}
 
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: 'Shellcheck'
+            target: 'shellcheck'
+            command: './scripts/shellcheck.sh'
+            condition: ${{ github.event.schedule || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
+
+          - name: '2015'
+            target: '2015'
+            command: './scripts/test-days.sh 2015'
+            condition: ${{ github.event.schedule || needs.check-changes.outputs.changes-2015 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
+
+          - name: '2016'
+            target: '2016'
+            command: './scripts/test-days.sh 2016'
+            condition: ${{ github.event.schedule || needs.check-changes.outputs.changes-2016 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
+
+          - name: '2017'
+            target: '2017'
+            command: './scripts/test-days.sh 2017'
+            condition: ${{ github.event.schedule || needs.check-changes.outputs.changes-2017 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
+
+          - name: '2020'
+            target: '2020'
+            command: './2020-rust/test-ci.sh'
+            condition: ${{ github.event.schedule || needs.check-changes.outputs.changes-2020 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
+
+          - name: '2021'
+            target: '2021'
+            command: './2021-python/test-ci.sh'
+            condition: ${{ github.event.schedule || needs.check-changes.outputs.changes-2021 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
+
+          - name: '2022'
+            target: '2022'
+            command: './scripts/test-days.sh 2022'
+            condition: ${{ github.event.schedule || needs.check-changes.outputs.changes-2022 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
+
+          - name: '2023'
+            target: '2023'
+            command: './scripts/test-days.sh 2023'
+            condition: ${{ github.event.schedule || needs.check-changes.outputs.changes-2023 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
+
+          - name: '2024'
+            target: '2024'
+            command: './scripts/test-days.sh 2024'
+            condition: ${{ github.event.schedule || needs.check-changes.outputs.changes-2024 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
+
+          - name: 'Vim'
+            target: 'vim'
+            command: './scripts/test-vim.sh'
+            condition: ${{ github.event.schedule || needs.check-changes.outputs.changes-vim != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
+
+          - name: 'Codyssi'
+            target: 'codyssi'
+            command: "./scripts/test-days.sh 'codyssi/2025'"
+            condition: ${{ github.event.schedule || needs.check-changes.outputs.changes-codyssi != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
+
+          - name: 'i18n puzzles'
+            target: 'i18n'
+            command: "./scripts/test-days.sh 'i18n-puzzles/2025'"
+            condition: ${{ github.event.schedule || needs.check-changes.outputs.changes-i18n != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
+
+          - name: 'Everybody Codes'
+            target: 'everybody-codes'
+            command: "./scripts/test-days.sh 'everybody-codes/2025'"
+            condition: ${{ github.event.schedule || needs.check-changes.outputs.changes-everybody-codes != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
+
     env:
       AOC_SESSION: ${{ secrets.AOC_SESSION }}
       I18N_SESSION: ${{ secrets.I18N_SESSION }}
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Mark workspace as safe for git clean
         run: git config --global --add safe.directory $GITHUB_WORKSPACE
-
-      - name: Run shellcheck on all scripts
-        run: ./scripts/shellcheck.sh
-
-      - name: Prepare Haskell environment
-        run: ./scripts/haskell-prepare.sh
 
       - name: Increase disk space by deleting unnecessary stuff
         run: |
@@ -68,86 +131,9 @@ jobs:
           rm -rf /__t/CodeQL /__t/Python /__t/PyPy /__t/node /__t/go /__t/Ruby
           df -h | grep root | awk '{print $4}'
 
-      - name: Test solutions for 2015
-        if: ${{ github.event.schedule || needs.check-changes.outputs.changes-2015 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
-        continue-on-error: true
-        run: |
-          ./scripts/test-days.sh 2015
-          ./scripts/cleanup.sh
+      - name: Prepare Haskell environment
+        run: ./scripts/haskell-prepare.sh
 
-      - name: Test solutions for 2016
-        if: ${{ github.event.schedule || needs.check-changes.outputs.changes-2016 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
-        continue-on-error: true
-        run: |
-          ./scripts/test-days.sh 2016
-          ./scripts/cleanup.sh
-
-      - name: Test solutions for 2017
-        if: ${{ github.event.schedule || needs.check-changes.outputs.changes-2017 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
-        continue-on-error: true
-        run: |
-          ./scripts/test-days.sh 2017
-          ./scripts/cleanup.sh
-
-      - name: Test solutions for 2020
-        if: ${{ github.event.schedule || needs.check-changes.outputs.changes-2020 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
-        continue-on-error: true
-        run: |
-          ./2020-rust/test-ci.sh
-          ./scripts/cleanup.sh
-
-      - name: Test solutions for 2021
-        if: ${{ github.event.schedule || needs.check-changes.outputs.changes-2021 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
-        continue-on-error: true
-        run: |
-          ./2021-python/test-ci.sh
-          ./scripts/cleanup.sh
-
-      - name: Test solutions for 2022
-        if: ${{ github.event.schedule || needs.check-changes.outputs.changes-2022 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
-        continue-on-error: true
-        run: |
-          ./scripts/test-days.sh 2022
-          ./scripts/cleanup.sh
-
-      - name: Test solutions for 2023
-        if: ${{ github.event.schedule || needs.check-changes.outputs.changes-2023 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
-        continue-on-error: true
-        run: |
-          ./scripts/test-days.sh 2023
-          ./scripts/cleanup.sh
-
-      - name: Test solutions for 2024
-        if: ${{ github.event.schedule || needs.check-changes.outputs.changes-2024 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
-        continue-on-error: true
-        run: |
-          ./scripts/test-days.sh 2024
-          ./scripts/cleanup.sh
-
-      - name: Test Vim solutions
-        if: ${{ github.event.schedule || needs.check-changes.outputs.changes-vim != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
-        continue-on-error: true
-        run: |
-          ./scripts/test-vim.sh
-          ./scripts/cleanup.sh
-
-      - name: Test Codyssi solutions
-        if: ${{ github.event.schedule || needs.check-changes.outputs.changes-codyssi != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
-        continue-on-error: true
-        run: |
-          ./scripts/test-days.sh 'codyssi/2025'
-          ./scripts/cleanup.sh
-
-      - name: Test i18n puzzles solutions
-        if: ${{ github.event.schedule || needs.check-changes.outputs.changes-i18n != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
-        continue-on-error: true
-        run: |
-          ./scripts/test-days.sh 'i18n-puzzles/2025'
-          ./scripts/cleanup.sh
-
-      - name: Test Everybody Codes solutions
-        if: ${{ github.event.schedule || needs.check-changes.outputs.changes-everybody-codes != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
-        continue-on-error: true
-        run: |
-          ./scripts/test-days.sh 'everybody-codes/2025'
-          ./scripts/cleanup.sh
+      - name: Run ${{ matrix.name }}
+        if: ${{ matrix.condition }}
+        run: ${{ matrix.command }}
