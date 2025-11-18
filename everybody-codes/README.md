@@ -58,3 +58,12 @@
 - also remembering and skipping sequences for which parents are already found
 - those two optimizations speed up things immensely (down to ~ 4 sec)
 - solution is technically still _O(n³)_, though
+
+### [Quest 10: Feast on the Board](https://everybody.codes/event/2025/quests/10)
+
+- [Python](2025/quest-10-python/ec.py)
+- this one was brutal, at least part 3
+- it was obvious that caching/DP was required, as you have to traverse a vast
+  state space with many paths leading to the same state
+- I still really struggled to implement it
+- final solution runs in about 15 sec, which is ok
