@@ -2,8 +2,6 @@
 
 ## Resources
 
-- [GNU Octave](https://octave.org)
-- [GNU Octave docs](https://docs.octave.org/latest/index.html#SEC_Contents)
 - [MATLAB @ Learn X in Y minutes](https://learnxinyminutes.com/matlab/)
 
 ## Scripts
