@@ -18,18 +18,20 @@ def part1(xs):
     return checksum(xs)
 
 
-def part2(xs):
-    rounds = 0
-    phase = 1
+def parts_2_and_3(xs):
+    round = 0
 
-    while True:
-        if phase == 1:
-            if not phase1(xs):
-                phase = 2
-        else:
-            if not phase2(xs):
-                return rounds - 1
-        rounds += 1
+    while phase1(xs):
+        round += 1
+
+    # In phase 2, all columns eventually end up with the mean value.
+    # The sum of all ducks will always be the same, and in a single round, one
+    # duck moves, which modifies the value of two columns. So, the total moves
+    # (rounds) is the sum of the differences of the column size and the mean
+    # value, halved (because of the "two columns change" fact).
+    m = mean(xs)
+    diffs = [abs(m - x) for x in xs]
+    return round + sum(diffs) // 2
 
 
 def phase1(xs):
@@ -55,6 +57,10 @@ def swap(xs, dir):
 
 def checksum(xs):
     return sum(i * num for i, num in enumerate(xs, 1))
+
+
+def mean(xs):
+    return int(sum(xs) / len(xs))
 
 
 class Tests(unittest.TestCase):
@@ -101,10 +107,11 @@ def main():
 
     if is_sample:
         failures += check(1, part1(parse("sample1.txt")), 109)
-        failures += check(2, part2(parse("sample2.txt")), 1579)
+        failures += check(2, parts_2_and_3(parse("sample2.txt")), 1579)
     else:
         failures += check(1, part1(parse("input1.txt")), 324)
-        failures += check(2, part2(parse("input2.txt")), 3908387)
+        failures += check(2, parts_2_and_3(parse("input2.txt")), 3908387)
+        failures += check(3, parts_2_and_3(parse("input3.txt")), 143533074041125)
 
     exit(failures)
 
