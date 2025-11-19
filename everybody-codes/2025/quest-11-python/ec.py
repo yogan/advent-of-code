@@ -18,6 +18,20 @@ def part1(xs):
     return checksum(xs)
 
 
+def part2(xs):
+    rounds = 0
+    phase = 1
+
+    while True:
+        if phase == 1:
+            if not phase1(xs):
+                phase = 2
+        else:
+            if not phase2(xs):
+                return rounds - 1
+        rounds += 1
+
+
 def phase1(xs):
     return swap(xs, 1)
 
@@ -87,8 +101,10 @@ def main():
 
     if is_sample:
         failures += check(1, part1(parse("sample1.txt")), 109)
+        failures += check(2, part2(parse("sample2.txt")), 1579)
     else:
         failures += check(1, part1(parse("input1.txt")), 324)
+        failures += check(2, part2(parse("input2.txt")), 3908387)
 
     exit(failures)
 
