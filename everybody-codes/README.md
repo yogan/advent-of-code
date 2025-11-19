@@ -67,3 +67,9 @@
   state space with many paths leading to the same state
 - I still really struggled to implement it
 - final solution runs in about 15 sec, which is ok
+
+### [Quest 11: The Scout Duck Protocol](https://everybody.codes/event/2025/quests/11)
+
+- [Python](2025/quest-11-python/ec.py)
+- fun one; for part 3, you have to make an observation about the number of
+  required moves (spoiler / explanation as a comment in the source file)
