@@ -10,14 +10,30 @@ def parse(filename):
 
 
 def part1(grid, rows, cols):
-    return flood_fill(grid, rows, cols, [(0, 0)])
+    return len(flood_fill(grid, rows, cols, [(0, 0)]))
 
 
 def part2(grid, rows, cols):
-    return flood_fill(grid, rows, cols, [(0, 0), (rows - 1, cols - 1)])
+    return len(flood_fill(grid, rows, cols, [(0, 0), (rows - 1, cols - 1)]))
 
 
-def flood_fill(grid, rows, cols, initial):
+def part3(grid, rows, cols):
+    total = set()
+    round = set()
+
+    for _ in range(3):
+        for r in range(rows):
+            for c in range(cols):
+                destroyed = flood_fill(grid, rows, cols, [(r, c)], total)
+                if len(destroyed) > len(round):
+                    round = destroyed
+        total |= round
+        round = set()
+
+    return len(total)
+
+
+def flood_fill(grid, rows, cols, initial, already_destroyed=set()):
     queue = initial
     destroyed = set(queue)
     seen = set()
@@ -31,7 +47,9 @@ def flood_fill(grid, rows, cols, initial):
         border = set(
             (r + dr, c + dc)
             for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]
-            if 0 <= r + dr < rows and 0 <= c + dc < cols
+            if 0 <= r + dr < rows
+            and 0 <= c + dc < cols
+            and (r + dr, c + dc) not in already_destroyed
         )
 
         for br, bc in border:
@@ -39,7 +57,7 @@ def flood_fill(grid, rows, cols, initial):
                 destroyed.add((br, bc))
                 queue.append((br, bc))
 
-    return len(destroyed)
+    return destroyed
 
 
 class Tests(unittest.TestCase):
@@ -52,9 +70,12 @@ def main():
     if is_sample:
         failures += check(1, part1(*parse("sample1.txt")), 16)
         failures += check(2, part2(*parse("sample2.txt")), 58)
+        failures += check("3a", part3(*parse("sample3a.txt")), 14)
+        failures += check("3b", part3(*parse("sample3b.txt")), 136)
     else:
         failures += check(1, part1(*parse("input1.txt")), 238)
         failures += check(2, part2(*parse("input2.txt")), 5786)
+        failures += check(3, part3(*parse("input3.txt")), 4012)
 
     exit(failures)
 
