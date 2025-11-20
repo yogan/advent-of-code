@@ -3,14 +3,22 @@ import unittest
 
 
 def parse(filename):
-    return [list(map(int, (line.strip()))) for line in open(filename).readlines()]
+    grid = [list(map(int, (line.strip()))) for line in open(filename).readlines()]
+    rows = len(grid)
+    cols = len(grid[0])
+    return grid, rows, cols
 
 
-def part1(grid):
-    ROWS = len(grid)
-    COLS = len(grid[0])
+def part1(grid, rows, cols):
+    return flood_fill(grid, rows, cols, [(0, 0)])
 
-    queue = [(0, 0)]
+
+def part2(grid, rows, cols):
+    return flood_fill(grid, rows, cols, [(0, 0), (rows - 1, cols - 1)])
+
+
+def flood_fill(grid, rows, cols, initial):
+    queue = initial
     destroyed = set(queue)
     seen = set()
 
@@ -23,13 +31,13 @@ def part1(grid):
         border = set(
             (r + dr, c + dc)
             for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]
-            if 0 <= r + dr < ROWS and 0 <= c + dc < COLS
+            if 0 <= r + dr < rows and 0 <= c + dc < cols
         )
 
-        for xr, xc in border:
-            if grid[r][c] >= grid[xr][xc]:
-                destroyed.add((xr, xc))
-                queue.append((xr, xc))
+        for br, bc in border:
+            if grid[r][c] >= grid[br][bc]:
+                destroyed.add((br, bc))
+                queue.append((br, bc))
 
     return len(destroyed)
 
@@ -42,9 +50,11 @@ def main():
     failures = 0
 
     if is_sample:
-        failures += check(1, part1(parse("sample1.txt")), 16)
+        failures += check(1, part1(*parse("sample1.txt")), 16)
+        failures += check(2, part2(*parse("sample2.txt")), 58)
     else:
-        failures += check(1, part1(parse("input1.txt")), 238)
+        failures += check(1, part1(*parse("input1.txt")), 238)
+        failures += check(2, part2(*parse("input2.txt")), 5786)
 
     exit(failures)
 
