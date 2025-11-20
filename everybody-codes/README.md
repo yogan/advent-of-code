@@ -73,3 +73,8 @@
 - [Python](2025/quest-11-python/ec.py)
 - fun one; for part 3, you have to make an observation about the number of
   required moves (spoiler / explanation as a comment in the source file)
+
+### [Quest 12: One Spark to Burn Them All](https://everybody.codes/event/2025/quests/12)
+
+- [Python](2025/quest-12-python/ec.py)
+- flood fill and some greedy brute force for part 3
