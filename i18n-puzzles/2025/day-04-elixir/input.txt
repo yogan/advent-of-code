@@ -1,0 +1,236 @@
+Departure: Europe/London                  Jan 12, 2020, 06:00
+Arrival:   Europe/Amsterdam               Jan 12, 2020, 11:00
+
+Departure: Europe/Amsterdam               Jan 13, 2020, 06:42
+Arrival:   Europe/Andorra                 Jan 13, 2020, 09:30
+
+Departure: Europe/Andorra                 Jan 14, 2020, 06:24
+Arrival:   Africa/Algiers                 Jan 14, 2020, 08:33
+
+Departure: Africa/Algiers                 Jan 15, 2020, 06:06
+Arrival:   Africa/Tunis                   Jan 15, 2020, 09:07
+
+Departure: Africa/Tunis                   Jan 16, 2020, 05:48
+Arrival:   Africa/Tripoli                 Jan 16, 2020, 10:11
+
+Departure: Africa/Tripoli                 Jan 17, 2020, 06:30
+Arrival:   Europe/Athens                  Jan 17, 2020, 08:22
+
+Departure: Europe/Athens                  Jan 18, 2020, 06:12
+Arrival:   Africa/Cairo                   Jan 18, 2020, 10:36
+
+Departure: Africa/Cairo                   Jan 19, 2020, 05:54
+Arrival:   Africa/Khartoum                Jan 19, 2020, 08:52
+
+Departure: Africa/Khartoum                Jan 20, 2020, 05:36
+Arrival:   Africa/Juba                    Jan 20, 2020, 10:04
+
+Departure: Africa/Juba                    Jan 21, 2020, 06:18
+Arrival:   Africa/Khartoum                Jan 21, 2020, 08:10
+
+Departure: Africa/Khartoum                Jan 22, 2020, 05:00
+Arrival:   Africa/Cairo                   Jan 22, 2020, 10:29
+
+Departure: Africa/Cairo                   Jan 23, 2020, 04:42
+Arrival:   Asia/Baghdad                   Jan 23, 2020, 10:43
+
+Departure: Asia/Baghdad                   Jan 24, 2020, 05:24
+Arrival:   Asia/Baku                      Jan 24, 2020, 09:56
+
+Departure: Asia/Baku                      Jan 25, 2020, 06:06
+Arrival:   Asia/Aqtau                     Jan 25, 2020, 10:20
+
+Departure: Asia/Aqtau                     Jan 26, 2020, 06:48
+Arrival:   Asia/Atyrau                    Jan 26, 2020, 09:08
+
+Departure: Asia/Atyrau                    Jan 27, 2020, 06:30
+Arrival:   Asia/Aqtobe                    Jan 27, 2020, 08:42
+
+Departure: Asia/Aqtobe                    Jan 28, 2020, 06:12
+Arrival:   Asia/Qostanay                  Jan 28, 2020, 11:02
+
+Departure: Asia/Qostanay                  Jan 29, 2020, 06:54
+Arrival:   Asia/Qyzylorda                 Jan 29, 2020, 08:09
+
+Departure: Asia/Qyzylorda                 Jan 30, 2020, 05:36
+Arrival:   Asia/Tashkent                  Jan 30, 2020, 08:42
+
+Departure: Asia/Tashkent                  Jan 31, 2020, 05:18
+Arrival:   Asia/Almaty                    Jan 31, 2020, 10:13
+
+Departure: Asia/Almaty                    Feb 01, 2020, 06:00
+Arrival:   Asia/Dhaka                     Feb 01, 2020, 12:10
+
+Departure: Asia/Dhaka                     Feb 02, 2020, 05:42
+Arrival:   Asia/Yangon                    Feb 02, 2020, 09:26
+
+Departure: Asia/Yangon                    Feb 03, 2020, 05:54
+Arrival:   Asia/Bangkok                   Feb 03, 2020, 08:23
+
+Departure: Asia/Bangkok                   Feb 04, 2020, 06:06
+Arrival:   Asia/Kuala_Lumpur              Feb 04, 2020, 12:11
+
+Departure: Asia/Kuala_Lumpur              Feb 05, 2020, 06:48
+Arrival:   Asia/Singapore                 Feb 05, 2020, 08:26
+
+Departure: Asia/Singapore                 Feb 06, 2020, 06:30
+Arrival:   Asia/Jakarta                   Feb 06, 2020, 10:16
+
+Departure: Asia/Jakarta                   Feb 07, 2020, 05:12
+Arrival:   Asia/Makassar                  Feb 07, 2020, 11:16
+
+Departure: Asia/Makassar                  Feb 08, 2020, 05:54
+Arrival:   Asia/Dili                      Feb 08, 2020, 08:51
+
+Departure: Asia/Dili                      Feb 09, 2020, 06:36
+Arrival:   Australia/Eucla                Feb 09, 2020, 10:54
+
+Departure: Australia/Eucla                Feb 10, 2020, 06:03
+Arrival:   Australia/Adelaide             Feb 10, 2020, 11:55
+
+Departure: Australia/Adelaide             Feb 11, 2020, 07:30
+Arrival:   Australia/Melbourne            Feb 11, 2020, 11:34
+
+Departure: Australia/Melbourne            Feb 12, 2020, 07:42
+Arrival:   Australia/Sydney               Feb 12, 2020, 11:35
+
+Departure: Australia/Sydney               Feb 13, 2020, 07:24
+Arrival:   Australia/Lord_Howe            Feb 13, 2020, 09:35
+
+Departure: Australia/Lord_Howe            Feb 14, 2020, 07:06
+Arrival:   Pacific/Norfolk                Feb 14, 2020, 11:56
+
+Departure: Pacific/Norfolk                Feb 15, 2020, 07:48
+Arrival:   Pacific/Auckland               Feb 15, 2020, 13:38
+
+Departure: Pacific/Auckland               Feb 16, 2020, 08:30
+Arrival:   Pacific/Fiji                   Feb 16, 2020, 10:53
+
+Departure: Pacific/Fiji                   Feb 17, 2020, 07:12
+Arrival:   Pacific/Wallis                 Feb 17, 2020, 11:50
+
+Departure: Pacific/Wallis                 Feb 18, 2020, 06:54
+Arrival:   Pacific/Apia                   Feb 18, 2020, 12:35
+
+Departure: Pacific/Apia                   Feb 19, 2020, 08:36
+Arrival:   Pacific/Niue                   Feb 18, 2020, 09:21
+
+Departure: Pacific/Niue                   Feb 19, 2020, 07:18
+Arrival:   Pacific/Rarotonga              Feb 19, 2020, 10:59
+
+Departure: Pacific/Rarotonga              Feb 20, 2020, 08:00
+Arrival:   Pacific/Tahiti                 Feb 20, 2020, 10:11
+
+Departure: Pacific/Tahiti                 Feb 21, 2020, 07:42
+Arrival:   Pacific/Gambier                Feb 21, 2020, 12:47
+
+Departure: Pacific/Gambier                Feb 22, 2020, 08:24
+Arrival:   Pacific/Easter                 Feb 22, 2020, 16:16
+
+Departure: Pacific/Easter                 Feb 23, 2020, 12:06
+Arrival:   America/Santiago               Feb 23, 2020, 20:59
+
+Departure: America/Santiago               Feb 24, 2020, 13:48
+Arrival:   America/Argentina/Catamarca    Feb 24, 2020, 15:18
+
+Departure: America/Argentina/Catamarca    Feb 25, 2020, 13:30
+Arrival:   America/Argentina/Jujuy        Feb 25, 2020, 15:27
+
+Departure: America/Argentina/Jujuy        Feb 26, 2020, 13:12
+Arrival:   America/Asuncion               Feb 26, 2020, 17:35
+
+Departure: America/Asuncion               Feb 27, 2020, 12:54
+Arrival:   America/Campo_Grande           Feb 27, 2020, 16:01
+
+Departure: America/Campo_Grande           Feb 28, 2020, 11:36
+Arrival:   America/Araguaina              Feb 28, 2020, 15:05
+
+Departure: America/Araguaina              Feb 29, 2020, 12:18
+Arrival:   America/Santarem               Feb 29, 2020, 15:33
+
+Departure: America/Santarem               Mar 01, 2020, 12:00
+Arrival:   America/Boa_Vista              Mar 01, 2020, 12:20
+
+Departure: America/Boa_Vista              Mar 02, 2020, 10:42
+Arrival:   America/Guyana                 Mar 02, 2020, 13:15
+
+Departure: America/Guyana                 Mar 03, 2020, 10:24
+Arrival:   America/Port_of_Spain          Mar 03, 2020, 14:20
+
+Departure: America/Port_of_Spain          Mar 04, 2020, 10:06
+Arrival:   America/Barbados               Mar 04, 2020, 11:23
+
+Departure: America/Barbados               Mar 05, 2020, 09:48
+Arrival:   America/Curacao                Mar 05, 2020, 14:15
+
+Departure: America/Curacao                Mar 06, 2020, 09:30
+Arrival:   America/Port-au-Prince         Mar 06, 2020, 12:33
+
+Departure: America/Port-au-Prince         Mar 07, 2020, 08:12
+Arrival:   America/Grand_Turk             Mar 07, 2020, 09:18
+
+Departure: America/Grand_Turk             Mar 08, 2020, 08:54
+Arrival:   Atlantic/Bermuda               Mar 08, 2020, 14:18
+
+Departure: Atlantic/Bermuda               Mar 09, 2020, 09:36
+Arrival:   America/Halifax                Mar 09, 2020, 13:19
+
+Departure: America/Halifax                Mar 10, 2020, 09:18
+Arrival:   America/Toronto                Mar 10, 2020, 11:20
+
+Departure: America/Toronto                Mar 11, 2020, 08:00
+Arrival:   America/Halifax                Mar 11, 2020, 12:45
+
+Departure: America/Halifax                Mar 12, 2020, 08:42
+Arrival:   America/Blanc-Sablon           Mar 12, 2020, 12:16
+
+Departure: America/Blanc-Sablon           Mar 13, 2020, 07:24
+Arrival:   Atlantic/Azores                Mar 13, 2020, 15:03
+
+Departure: Atlantic/Azores                Mar 14, 2020, 10:06
+Arrival:   Atlantic/Madeira               Mar 14, 2020, 15:06
+
+Departure: Atlantic/Madeira               Mar 15, 2020, 10:48
+Arrival:   Africa/Casablanca              Mar 15, 2020, 16:22
+
+Departure: Africa/Casablanca              Mar 16, 2020, 11:30
+Arrival:   Africa/Abidjan                 Mar 16, 2020, 15:16
+
+Departure: Africa/Abidjan                 Mar 17, 2020, 10:12
+Arrival:   Africa/Lagos                   Mar 17, 2020, 15:52
+
+Departure: Africa/Lagos                   Mar 18, 2020, 10:54
+Arrival:   Africa/Ndjamena                Mar 18, 2020, 14:17
+
+Departure: Africa/Ndjamena                Mar 19, 2020, 10:36
+Arrival:   Africa/Juba                    Mar 19, 2020, 18:31
+
+Departure: Africa/Juba                    Mar 20, 2020, 12:18
+Arrival:   Africa/Nairobi                 Mar 20, 2020, 15:23
+
+Departure: Africa/Nairobi                 Mar 21, 2020, 12:00
+Arrival:   Africa/Juba                    Mar 21, 2020, 16:42
+
+Departure: Africa/Juba                    Mar 22, 2020, 11:42
+Arrival:   Africa/Khartoum                Mar 22, 2020, 13:11
+
+Departure: Africa/Khartoum                Mar 23, 2020, 10:24
+Arrival:   Africa/Cairo                   Mar 23, 2020, 14:28
+
+Departure: Africa/Cairo                   Mar 24, 2020, 10:06
+Arrival:   Europe/Athens                  Mar 24, 2020, 14:50
+
+Departure: Europe/Athens                  Mar 25, 2020, 09:48
+Arrival:   Africa/Tripoli                 Mar 25, 2020, 12:18
+
+Departure: Africa/Tripoli                 Mar 26, 2020, 09:30
+Arrival:   Africa/Algiers                 Mar 26, 2020, 12:04
+
+Departure: Africa/Algiers                 Mar 27, 2020, 08:12
+Arrival:   Europe/Andorra                 Mar 27, 2020, 10:37
+
+Departure: Europe/Andorra                 Mar 28, 2020, 07:54
+Arrival:   Europe/Paris                   Mar 28, 2020, 09:46
+
+Departure: Europe/Paris                   Mar 29, 2020, 08:36
+Arrival:   Europe/London                  Mar 29, 2020, 08:45

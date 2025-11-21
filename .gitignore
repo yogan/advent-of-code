@@ -6,8 +6,12 @@
 venv/
 node_modules/
 
+# prevent committing personalized input files
 **/input.txt
 2020-rust/inputs/
 2021-python/inputs/**/input*
+
+# opt-in to commit input files where it is ok
 !codyssi/**/input.txt
+!i18n-puzzles/**/input.txt
 !templates/**/input.txt
