@@ -78,3 +78,12 @@
 
 - [Python](2025/quest-12-python/ec.py)
 - flood fill and some greedy brute force for part 3
+
+### [Quest 13: Unlocking the Mountain](https://everybody.codes/event/2025/quests/13)
+
+- [Python](2025/quest-13-python/ec.py)
+- fun problem, not too hard (requires modulo arithmetic and ranges)
+- could have solved it somewhat fast, but of course I overlooked that the ranges
+  that are added counterclockwise are also reversed (`[5-19]` becomes `[19-5]`)
+- sample did not have this issue, because you find the solution in a non-reverse
+  range
