@@ -4,28 +4,18 @@ from collections import deque
 
 
 def parse(filename):
-    return list(map(int, open(filename).readlines()))
+    def to_range(str):
+        return tuple(map(int, str.split("-") if "-" in str else (str, str)))
+
+    return [to_range(line.strip()) for line in open(filename).readlines()]
 
 
-def parse_ranges(filename):
-    return [
-        tuple(map(int, line.strip().split("-")))  #
-        for line in open(filename).readlines()
-    ]
-
-
-def part_1(xs):
-    wheel = fill(1, xs)
-    return wheel[2025 % len(wheel)]
-
-
-def part_2_and_3(xs, required):
-    wheel = fill((1, 1), xs)
-    required %= sum(abs(r - l) + 1 for l, r in wheel)
+def solve(ranges, required):
+    wheel = fill(ranges)
+    required %= sum(w[2] for w in wheel)
     turns = 0
 
-    for left, right in wheel:
-        size = abs(right - left) + 1
+    for left, right, size in wheel:
         dist = required - turns
 
         if dist < size:
@@ -34,45 +24,50 @@ def part_2_and_3(xs, required):
         turns += size
 
 
-def fill(initial, xs):
-    q = deque([initial])
+def fill(ranges):
+    def size(range):
+        return abs(range[0] - range[1]) + 1
+
+    wheel = deque([(1, 1, 1)])
     clockwise = True
     offset = 0
-    for x in xs:
+
+    for r in ranges:
+        left, right = r
+
         if clockwise:
-            q.append(x)
+            wheel.append((left, right, size(r)))
         else:
-            q.appendleft((x[1], x[0]) if isinstance(x, tuple) else x)
-            offset += 1
+            wheel.appendleft((right, left, size(r)))
+            offset -= 1
+
         clockwise = not clockwise
-    q.rotate(-offset)
-    return q
+
+    wheel.rotate(offset)
+    return wheel
 
 
 class Tests(unittest.TestCase):
     def test_fill(self):
         self.assertEqual(
-            fill(1, [72, 58, 47, 61, 67]),
-            deque([1, 72, 47, 67, 61, 58]),
-        )
-        self.assertEqual(
-            fill((1, 1), [(10, 15), (12, 13), (20, 21), (19, 23), (30, 37)]),
-            deque([(1, 1), (10, 15), (20, 21), (30, 37), (23, 19), (13, 12)]),
+            # fmt:off
+            fill( [        (10,15),  (12,13),  (20,21),  (19,23),  (30,37)  ]),
+            deque([(1,1,1),(10,15,6),(20,21,2),(30,37,8),(23,19,5),(13,12,2)])  # fmt:on
         )
 
 
 def main():
-    fails = 0
+    failures = 0
 
     if is_sample:
-        fails += check(1, part_1(parse("sample1.txt")), 67)
-        fails += check(2, part_2_and_3(parse_ranges("sample2.txt"), 20252025), 30)
+        failures += check(1, solve(parse("sample1.txt"), 2025), 67)
+        failures += check(2, solve(parse("sample2.txt"), 20252025), 30)
     else:
-        fails += check(1, part_1(parse("input1.txt")), 511)
-        fails += check(2, part_2_and_3(parse_ranges("input2.txt"), 20252025), 4702)
-        fails += check(3, part_2_and_3(parse_ranges("input3.txt"), 202520252025), 37289)
+        failures += check(1, solve(parse("input1.txt"), 2025), 511)
+        failures += check(2, solve(parse("input2.txt"), 20252025), 4702)
+        failures += check(3, solve(parse("input3.txt"), 202520252025), 37289)
 
-    exit(fails)
+    exit(failures)
 
 
 def check(part, actual, expected=None):
