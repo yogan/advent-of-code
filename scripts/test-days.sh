@@ -44,15 +44,7 @@ for day_dir in "${day_dirs[@]}"; do
 
     if [ ! -f "input.txt" ] && [ "${year:0:15}" != "everybody-codes" ]; then
         day=$(echo "${day_dir}" | sed -E 's/day-([0-9]+)-?.*/\1/')
-        # if ${year} starts with "i18n", use i18n-get.sh
-        if [ "${year:0:4}" == "i18n" ]; then
-            if ! "${script_dir}/i18n-get.sh" "${day}" 2>/dev/null; then
-                echo "FAILED (could not download i18n input)"
-                exit_code=1
-                cd "${year_dir}" || exit 1
-                continue
-            fi
-        elif ! "${script_dir}/aoc-get.sh" "${year}" "${day}" 2>/dev/null; then
+        if ! "${script_dir}/aoc-get.sh" "${year}" "${day}" 2>/dev/null; then
             echo "FAILED (could not download aoc input)"
             exit_code=1
             cd "${year_dir}" || exit 1

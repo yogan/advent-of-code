@@ -116,7 +116,6 @@ jobs:
 
     env:
       AOC_SESSION: ${{ secrets.AOC_SESSION }}
-      I18N_SESSION: ${{ secrets.I18N_SESSION }}
 
     steps:
       - name: Checkout code
