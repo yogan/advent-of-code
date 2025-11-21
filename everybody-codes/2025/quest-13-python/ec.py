@@ -3,35 +3,35 @@ import unittest
 from collections import deque
 
 
-def parse_part1(filename):
+def parse(filename):
     return list(map(int, open(filename).readlines()))
 
 
-def parse_part2(filename):
+def parse_ranges(filename):
     return [
         tuple(map(int, line.strip().split("-")))  #
         for line in open(filename).readlines()
     ]
 
 
-def part1(xs):
+def part_1(xs):
     wheel = fill(1, xs)
     return wheel[2025 % len(wheel)]
 
 
-def part2(xs):
+def part_2_and_3(xs, required):
     wheel = fill((1, 1), xs)
-    required = 20252025 % sum(abs(r - l) + 1 for l, r in wheel)
-    rotations = 0
+    required %= sum(abs(r - l) + 1 for l, r in wheel)
+    turns = 0
 
     for left, right in wheel:
-        dist = required - rotations
         size = abs(right - left) + 1
+        dist = required - turns
 
         if dist < size:
             return left + dist if left < right else left - dist
 
-        rotations += size
+        turns += size
 
 
 def fill(initial, xs):
@@ -50,9 +50,6 @@ def fill(initial, xs):
 
 
 class Tests(unittest.TestCase):
-    def test_part1(self):
-        self.assertEqual(part1([72, 58, 47, 61, 67]), 67)
-
     def test_fill(self):
         self.assertEqual(
             fill(1, [72, 58, 47, 61, 67]),
@@ -65,16 +62,17 @@ class Tests(unittest.TestCase):
 
 
 def main():
-    failures = 0
+    fails = 0
 
     if is_sample:
-        failures += check(1, part1(parse_part1("sample1.txt")), 67)
-        failures += check(2, part2(parse_part2("sample2.txt")), 30)
+        fails += check(1, part_1(parse("sample1.txt")), 67)
+        fails += check(2, part_2_and_3(parse_ranges("sample2.txt"), 20252025), 30)
     else:
-        failures += check(1, part1(parse_part1("input1.txt")), 511)
-        failures += check(2, part2(parse_part2("input2.txt")), 4702)
+        fails += check(1, part_1(parse("input1.txt")), 511)
+        fails += check(2, part_2_and_3(parse_ranges("input2.txt"), 20252025), 4702)
+        fails += check(3, part_2_and_3(parse_ranges("input3.txt"), 202520252025), 37289)
 
-    exit(failures)
+    exit(fails)
 
 
 def check(part, actual, expected=None):
