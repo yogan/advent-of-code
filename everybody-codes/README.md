@@ -87,3 +87,14 @@
   that are added counterclockwise are also reversed (`[5-19]` becomes `[19-5]`)
 - sample did not have this issue, because you find the solution in a non-reverse
   range
+
+### [Quest 14: The Game of Light](https://everybody.codes/event/2025/quests/14)
+
+- [Python](2025/quest-14-python/ec.py)
+- cellular automaton simulation
+- part 3 required a loop detection, which I actually got right on the first try
+- grid rows are converted to binary for fast comparisons
+- could still be optimized by using a single number for the whole grid, not
+  tuples of binary numbers, but this is fine
+- also no shortcuts making use of grid symmetry
+- run time is ~ 1.5 sec, so good enough
