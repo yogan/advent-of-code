@@ -3,11 +3,15 @@ import unittest
 
 
 def parse(filename):
-    return [parse_line(line.strip()) for line in open(filename).readlines()]
+    return to_grid(open(filename).readlines())
+
+
+def to_grid(lines):
+    return tuple(map(parse_line, lines))
 
 
 def parse_line(line):
-    return [c == "#" for c in line]
+    return tuple(c == "#" for c in line.strip())
 
 
 def parts_1_and_2(grid, rounds):
@@ -16,153 +20,141 @@ def parts_1_and_2(grid, rounds):
 
     for _ in range(rounds):
         grid = step(grid, rows, cols)
-        total += sum(grid[r][c] for c in range(cols) for r in range(rows))
+        total += count(grid, rows, cols)
 
     return total
 
 
 def part_3(pattern):
-    size = 34
-    grid = [[False] * size for _ in range(size)]
-    seen = dict()
-    matches = dict()
-    rounds = 1000000000
+    size, rounds = 34, 1_000_000_000
+    grid = tuple((False,) * size for _ in range(size))
+    seen, matches = dict(), dict()
 
     for round in range(rounds):
         if is_in_center(grid, pattern):
-            active = sum(grid[r][c] for c in range(size) for r in range(size))
-            matches[round] = active
+            matches[round] = count(grid, size, size)
 
-        hash = to_binary_tuple(grid)
-
-        if hash in seen:
-            loop_length = round - seen[hash]
+        if grid in seen:
+            loop_length = round - seen[grid]
             rep = rounds // loop_length
             rem = rounds % loop_length
             leftovers = sum(a for r, a in matches.items() if r < rem)
             return rep * sum(matches.values()) + leftovers
 
-        seen[hash] = round
+        seen[grid] = round
         grid = step(grid, size, size)
 
 
 def step(grid, rows, cols):
-    new = [[] for _ in range(rows)]
+    return tuple(
+        tuple(state(grid, r, c, rows, cols) for c in range(cols)) for r in range(rows)
+    )
 
-    for r in range(rows):
-        for c in range(cols):
-            neighbors = [
-                grid[r + dr][c + dc]
-                for dr, dc in [(-1, -1), (-1, 1), (1, -1), (1, 1)]
-                if 0 <= r + dr < rows and 0 <= c + dc < cols
-            ]
 
-            even = sum(neighbors) % 2 == 0
-            active = grid[r][c]
+def state(grid, r, c, rows, cols):
+    even = sum(neighbors(grid, r, c, rows, cols)) % 2 == 0
+    active = grid[r][c]
 
-            new[r].append(active and not even or not active and even)
+    return active and not even or not active and even
 
-    return new
+
+def neighbors(grid, r, c, rows, cols):
+    return [
+        grid[nr][nc]
+        for nr, nc in [(r - 1, c - 1), (r - 1, c + 1), (r + 1, c - 1), (r + 1, c + 1)]
+        if 0 <= nr < rows and 0 <= nc < cols
+    ]
 
 
 def is_in_center(grid, pattern):
-    grid_rows, grid_cols = len(grid), len(grid[0])
-    pattern_rows, pattern_cols = len(pattern), len(pattern[0])
+    grid_rows, pattern_rows = len(grid), len(pattern)
+    grid_cols, pattern_cols = len(grid[0]), len(pattern[0])
 
-    row_offset = grid_rows // 2 - pattern_rows // 2
-    col_offset = grid_cols // 2 - pattern_cols // 2
+    row_offset = (grid_rows - pattern_rows) // 2
+    col_offset = (grid_cols - pattern_cols) // 2
 
-    for r, row in enumerate(grid[row_offset : row_offset + pattern_rows]):
-        if pattern[r] != row[col_offset : col_offset + pattern_cols]:
-            return False
-
-    return True
-
-
-def to_binary_tuple(grid):
-    return tuple(to_binary(row) for row in grid)
+    return all(
+        pattern[r] == grid[row_offset + r][col_offset : col_offset + pattern_cols]
+        for r in range(pattern_rows)
+    )
 
 
-def to_binary(row):
-    return sum(bit << idx for idx, bit in enumerate(row[::-1]))
+def count(grid, rows, cols):
+    return sum(grid[r][c] for c in range(cols) for r in range(rows))
 
 
 class Tests(unittest.TestCase):
     def test_step(self):
-        self.assertEqual(
-            step(
-                [
-                    parse_line(".#.##."),
-                    parse_line("##..#."),
-                    parse_line("..##.#"),
-                    parse_line(".#.##."),
-                    parse_line(".###.."),
-                    parse_line("###.##"),
-                ],
-                6,
-                6,
-            ),
-            [
-                parse_line(".#.#.."),
-                parse_line("##.##."),
-                parse_line("#.#..."),
-                parse_line("....##"),
-                parse_line("#.####"),
-                parse_line("##..#."),
-            ],
-        )
+        grid = [
+            ".#.##.",
+            "##..#.",
+            "..##.#",
+            ".#.##.",
+            ".###..",
+            "###.##",
+        ]
+        expected = [
+            ".#.#..",
+            "##.##.",
+            "#.#...",
+            "....##",
+            "#.####",
+            "##..#.",
+        ]
+        self.assertEqual(step(to_grid(grid), 6, 6), to_grid(expected))
 
     def test_is_in_center(self):
         pattern = [
-            parse_line("#......#"),
-            parse_line("..#..#.."),
-            parse_line(".##..##."),
-            parse_line("...##..."),
-            parse_line("...##..."),
-            parse_line(".##..##."),
-            parse_line("..#..#.."),
-            parse_line("#......#"),
+            "#......#",
+            "..#..#..",
+            ".##..##.",
+            "...##...",
+            "...##...",
+            ".##..##.",
+            "..#..#..",
+            "#......#",
         ]
         grid = [
-            parse_line("#······#·#··#··####··#··#·#······#"),
-            parse_line("·####·#·#······#··#······#·#·####·"),
-            parse_line("·#·####·###··#·####·#··###·####·#·"),
-            parse_line("·##··#···##·##·####·##·##···#··##·"),
-            parse_line("·##····##··##·######·##··##····##·"),
-            parse_line("··##·##·#··##·#·##·#·##··#·##·##··"),
-            parse_line("·##··#·#···#·##····##·#···#·#··##·"),
-            parse_line("#···#·##··##··#····#··##··##·#···#"),
-            parse_line("·##·##··###·#········#·###··##·##·"),
-            parse_line("#·##····##·###·#··#·###·##····##·#"),
-            parse_line("··##···##···###····###···##···##··"),
-            parse_line("····####·#··#·#····#·#··#·####····"),
-            parse_line("#··###··######·####·######··###··#"),
-            parse_line("··##··#··##·##······##·##··#··##··"),
-            parse_line("····####··##···#··#···##··####····"),
-            parse_line("#####····#··#·##··##·#··#····#####"),
-            parse_line("#·####······#···##···#······####·#"),
-            parse_line("#·####······#···##···#······####·#"),
-            parse_line("#####····#··#·##··##·#··#····#####"),
-            parse_line("····####··##···#··#···##··####····"),
-            parse_line("··##··#··##·##······##·##··#··##··"),
-            parse_line("#··###··######·####·######··###··#"),
-            parse_line("····####·#··#·#····#·#··#·####····"),
-            parse_line("··##···##···###····###···##···##··"),
-            parse_line("#·##····##·###·#··#·###·##····##·#"),
-            parse_line("·##·##··###·#········#·###··##·##·"),
-            parse_line("#···#·##··##··#····#··##··##·#···#"),
-            parse_line("·##··#·#···#·##····##·#···#·#··##·"),
-            parse_line("··##·##·#··##·#·##·#·##··#·##·##··"),
-            parse_line("·##····##··##·######·##··##····##·"),
-            parse_line("·##··#···##·##·####·##·##···#··##·"),
-            parse_line("·#·####·###··#·####·#··###·####·#·"),
-            parse_line("·####·#·#······#··#······#·#·####·"),
-            parse_line("#······#·#··#··####··#··#·#······#"),
+            "#······#·#··#··####··#··#·#······#",
+            "·####·#·#······#··#······#·#·####·",
+            "·#·####·###··#·####·#··###·####·#·",
+            "·##··#···##·##·####·##·##···#··##·",
+            "·##····##··##·######·##··##····##·",
+            "··##·##·#··##·#·##·#·##··#·##·##··",
+            "·##··#·#···#·##····##·#···#·#··##·",
+            "#···#·##··##··#····#··##··##·#···#",
+            "·##·##··###·#········#·###··##·##·",
+            "#·##····##·###·#··#·###·##····##·#",
+            "··##···##···###····###···##···##··",
+            "····####·#··#·#····#·#··#·####····",
+            "#··###··######·####·######··###··#",
+            "··##··#··##·##······##·##··#··##··",
+            "····####··##···#··#···##··####····",
+            "#####····#··#·##··##·#··#····#####",
+            "#·####······#···##···#······####·#",
+            "#·####······#···##···#······####·#",
+            "#####····#··#·##··##·#··#····#####",
+            "····####··##···#··#···##··####····",
+            "··##··#··##·##······##·##··#··##··",
+            "#··###··######·####·######··###··#",
+            "····####·#··#·#····#·#··#·####····",
+            "··##···##···###····###···##···##··",
+            "#·##····##·###·#··#·###·##····##·#",
+            "·##·##··###·#········#·###··##·##·",
+            "#···#·##··##··#····#··##··##·#···#",
+            "·##··#·#···#·##····##·#···#·#··##·",
+            "··##·##·#··##·#·##·#·##··#·##·##··",
+            "·##····##··##·######·##··##····##·",
+            "·##··#···##·##·####·##·##···#··##·",
+            "·#·####·###··#·####·#··###·####·#·",
+            "·####·#·#······#··#······#·#·####·",
+            "#······#·#··#··####··#··#·#······#",
         ]
-        self.assertTrue(is_in_center(grid, pattern))
+        self.assertTrue(is_in_center(to_grid(grid), to_grid(pattern)))
 
-        grid[17][16] = not grid[17][16]
-        self.assertFalse(is_in_center(grid, pattern))
+        # change single cell in the center:
+        grid[17] = "#·####······#···#.···#······####·#"
+        self.assertFalse(is_in_center(to_grid(grid), to_grid(pattern)))
 
 
 def main():
