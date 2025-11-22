@@ -6,11 +6,11 @@ def parse(filename):
     return [list(line.strip()) for line in open(filename).readlines()]
 
 
-def part1(grid):
+def parts_1_and_2(grid, rounds):
     rows, cols = len(grid), len(grid[0])
     total = 0
 
-    for _ in range(10):
+    for _ in range(rounds):
         grid = step(grid, rows, cols)
         total += sum(grid[r][c] == "#" for c in range(cols) for r in range(rows))
 
@@ -67,9 +67,10 @@ def main():
     failures = 0
 
     if is_sample:
-        failures += check(1, part1(parse("sample1.txt")), 200)
+        failures += check(1, parts_1_and_2(parse("sample1.txt"), 10), 200)
     else:
-        failures += check(1, part1(parse("input1.txt")), 483)
+        failures += check(1, parts_1_and_2(parse("input1.txt"), 10), 483)
+        failures += check(2, parts_1_and_2(parse("input2.txt"), 2025), 1170986)
 
     exit(failures)
 
