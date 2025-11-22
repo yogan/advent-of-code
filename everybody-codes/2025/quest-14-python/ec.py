@@ -3,7 +3,11 @@ import unittest
 
 
 def parse(filename):
-    return [list(line.strip()) for line in open(filename).readlines()]
+    return [parse_line(line.strip()) for line in open(filename).readlines()]
+
+
+def parse_line(line):
+    return [c == "#" for c in line]
 
 
 def parts_1_and_2(grid, rounds):
@@ -12,27 +16,26 @@ def parts_1_and_2(grid, rounds):
 
     for _ in range(rounds):
         grid = step(grid, rows, cols)
-        total += sum(grid[r][c] == "#" for c in range(cols) for r in range(rows))
+        total += sum(grid[r][c] for c in range(cols) for r in range(rows))
 
     return total
 
 
 def step(grid, rows, cols):
-    new = [list("." * cols) for _ in range(rows)]
+    new = [[] for _ in range(rows)]
 
     for r in range(rows):
         for c in range(cols):
             neighbors = [
-                grid[r + dr][c + dc] == "#"
+                grid[r + dr][c + dc]
                 for dr, dc in [(-1, -1), (-1, 1), (1, -1), (1, 1)]
                 if 0 <= r + dr < rows and 0 <= c + dc < cols
             ]
 
             even = sum(neighbors) % 2 == 0
-            active = grid[r][c] == "#"
+            active = grid[r][c]
 
-            if active and not even or not active and even:
-                new[r][c] = "#"
+            new[r].append(active and not even or not active and even)
 
     return new
 
@@ -42,23 +45,23 @@ class Tests(unittest.TestCase):
         self.assertEqual(
             step(
                 [
-                    list(".#.##."),
-                    list("##..#."),
-                    list("..##.#"),
-                    list(".#.##."),
-                    list(".###.."),
-                    list("###.##"),
+                    parse_line(".#.##."),
+                    parse_line("##..#."),
+                    parse_line("..##.#"),
+                    parse_line(".#.##."),
+                    parse_line(".###.."),
+                    parse_line("###.##"),
                 ],
                 6,
                 6,
             ),
             [
-                list(".#.#.."),
-                list("##.##."),
-                list("#.#..."),
-                list("....##"),
-                list("#.####"),
-                list("##..#."),
+                parse_line(".#.#.."),
+                parse_line("##.##."),
+                parse_line("#.#..."),
+                parse_line("....##"),
+                parse_line("#.####"),
+                parse_line("##..#."),
             ],
         )
 
