@@ -1,6 +1,5 @@
 import sys
 import unittest
-from collections import deque
 
 NORTH, EAST, SOUTH, WEST = (1, 0), (0, 1), (-1, 0), (0, -1)
 
@@ -9,7 +8,7 @@ def parse(filename):
     return [(i[0], int(i[1:])) for i in open(filename).read().strip().split(",")]
 
 
-def part1(instructions):
+def flood_fill(instructions):
     walls, end = build_maze(instructions)
     steps = 0
     seen = set()
@@ -17,6 +16,7 @@ def part1(instructions):
 
     while True:
         if end in border:
+            # print_maze(walls, border, seen, steps, end)
             return steps
 
         seen |= border
@@ -28,8 +28,6 @@ def part1(instructions):
             for nr, nc in neighbors(r, c, walls)
             if (nr, nc) not in seen
         )
-
-        # print_maze(walls, next_border, seen, steps, end)
 
 
 def build_maze(instructions):
@@ -114,9 +112,10 @@ def main():
     failures = 0
 
     if is_sample:
-        failures += check(1, part1(parse("sample1.txt")), 16)
+        failures += check(1, flood_fill(parse("sample1.txt")), 16)
     else:
-        failures += check(1, part1(parse("input1.txt")), 101)
+        failures += check(1, flood_fill(parse("input1.txt")), 101)
+        failures += check(2, flood_fill(parse("input2.txt")), 4296)
 
     exit(failures)
 
