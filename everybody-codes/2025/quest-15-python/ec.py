@@ -30,7 +30,95 @@ def flood_fill(instructions):
         )
 
 
+def compress_maze(instructions):
+    """Extract coordinate compression data for efficient pathfinding."""
+
+    # Step 1: Extract all wall segments (as line segments, not individual points)
+    wall_segments = []
+    r, c = 0, 0
+    dr, dc = NORTH
+
+    for turn, dist in instructions:
+        dr, dc = direction((dr, dc), turn)
+        start_r, start_c = r, c
+        r += dr * dist
+        c += dc * dist
+        end_r, end_c = r, c
+
+        # Store wall segment
+        wall_segments.append(((start_r, start_c), (end_r, end_c)))
+
+    # Step 2: Extract critical coordinates (wall boundaries + gaps)
+    critical_x = set()
+    critical_y = set()
+
+    # Add start and end coordinates
+    critical_x.add(0)
+    critical_y.add(0)
+    critical_x.add(r)
+    critical_y.add(c)
+
+    # Add all wall segment endpoints and adjacent coordinates
+    for (start_r, start_c), (end_r, end_c) in wall_segments:
+        # Add wall endpoints
+        critical_x.update([start_c, end_c])
+        critical_y.update([start_r, end_r])
+
+        # Add coordinates adjacent to walls (to create gaps)
+        if start_c == end_c:  # Vertical wall
+            critical_x.update([start_c - 1, start_c + 1])
+        if start_r == end_r:  # Horizontal wall
+            critical_y.update([start_r - 1, start_r + 1])
+
+    # Step 3: Create sorted coordinate mappings
+    x_coords = sorted(critical_x)
+    y_coords = sorted(critical_y)
+
+    # Create mapping from real coords to compressed coords
+    x_to_compressed = {x: i for i, x in enumerate(x_coords)}
+    y_to_compressed = {y: i for i, y in enumerate(y_coords)}
+
+    # Step 4: Build compressed grid - mark wall cells
+    grid_width = len(x_coords)
+    grid_height = len(y_coords)
+    walls_compressed = set()
+
+    for (start_r, start_c), (end_r, end_c) in wall_segments:
+        # Mark all cells along this wall segment in compressed coordinates
+        comp_start_x = x_to_compressed[start_c]
+        comp_start_y = y_to_compressed[start_r]
+        comp_end_x = x_to_compressed[end_c]
+        comp_end_y = y_to_compressed[end_r]
+
+        # Fill in all cells along the line segment
+        if start_c == end_c:  # Vertical wall
+            min_y = min(comp_start_y, comp_end_y)
+            max_y = max(comp_start_y, comp_end_y)
+            for comp_y in range(min_y, max_y + 1):
+                walls_compressed.add((comp_y, comp_start_x))
+        elif start_r == end_r:  # Horizontal wall
+            min_x = min(comp_start_x, comp_end_x)
+            max_x = max(comp_start_x, comp_end_x)
+            for comp_x in range(min_x, max_x + 1):
+                walls_compressed.add((comp_start_y, comp_x))
+
+    return {
+        "x_coords": x_coords,
+        "y_coords": y_coords,
+        "walls_compressed": walls_compressed,
+        "x_to_compressed": x_to_compressed,
+        "y_to_compressed": y_to_compressed,
+        "grid_width": grid_width,
+        "grid_height": grid_height,
+        "start_pos": (0, 0),
+        "end_pos": (r, c),
+    }
+
+
 def part3(instructions):
+    maze = compress_maze(instructions)
+    print( f"Compressed grid: {maze['grid_width']}×{maze['grid_height']}")
+
     return 0
 
 
@@ -206,80 +294,24 @@ def generate_svg(instructions, filename="maze.svg"):
 def generate_compressed_svg(instructions, filename="compressed_maze.svg"):
     """Generate an SVG showing the coordinate-compressed maze as a grid."""
 
-    # Step 1: Extract all wall segments (as line segments, not individual points)
-    wall_segments = []
-    r, c = 0, 0
-    dr, dc = NORTH
+    # Get compression data
+    compression_data = compress_maze(instructions)
 
-    for turn, dist in instructions:
-        dr, dc = direction((dr, dc), turn)
-        start_r, start_c = r, c
-        r += dr * dist
-        c += dc * dist
-        end_r, end_c = r, c
-
-        # Store wall segment
-        wall_segments.append(((start_r, start_c), (end_r, end_c)))
-
-    # Step 2: Extract critical coordinates (wall boundaries + gaps)
-    critical_x = set()
-    critical_y = set()
-
-    # Add start and end coordinates
-    critical_x.add(0)
-    critical_y.add(0)
-    critical_x.add(r)
-    critical_y.add(c)
-
-    # Add all wall segment endpoints and adjacent coordinates
-    for (start_r, start_c), (end_r, end_c) in wall_segments:
-        # Add wall endpoints
-        critical_x.update([start_c, end_c])
-        critical_y.update([start_r, end_r])
-
-        # Add coordinates adjacent to walls (to create gaps)
-        if start_c == end_c:  # Vertical wall
-            critical_x.update([start_c - 1, start_c + 1])
-        if start_r == end_r:  # Horizontal wall
-            critical_y.update([start_r - 1, start_r + 1])
-
-    # Step 3: Create sorted coordinate mappings
-    x_coords = sorted(critical_x)
-    y_coords = sorted(critical_y)
+    x_coords = compression_data["x_coords"]
+    y_coords = compression_data["y_coords"]
+    walls_compressed = compression_data["walls_compressed"]
+    x_to_compressed = compression_data["x_to_compressed"]
+    y_to_compressed = compression_data["y_to_compressed"]
+    grid_width = compression_data["grid_width"]
+    grid_height = compression_data["grid_height"]
+    start_pos = compression_data["start_pos"]
+    end_pos = compression_data["end_pos"]
 
     print(
-        f"Compression: {len(x_coords)}×{len(y_coords)} grid (was ~{max(x_coords) - min(x_coords)}×{max(y_coords) - min(y_coords)})"
+        f"Compression: {grid_width}×{grid_height} grid (was ~{max(x_coords) - min(x_coords)}×{max(y_coords) - min(y_coords)})"
     )
 
-    # Create mapping from real coords to compressed coords
-    x_to_compressed = {x: i for i, x in enumerate(x_coords)}
-    y_to_compressed = {y: i for i, y in enumerate(y_coords)}
-
-    # Step 4: Build compressed grid - mark wall cells
-    grid_width = len(x_coords)
-    grid_height = len(y_coords)
-    walls_compressed = set()
-
-    for (start_r, start_c), (end_r, end_c) in wall_segments:
-        # Mark all cells along this wall segment in compressed coordinates
-        comp_start_x = x_to_compressed[start_c]
-        comp_start_y = y_to_compressed[start_r]
-        comp_end_x = x_to_compressed[end_c]
-        comp_end_y = y_to_compressed[end_r]
-
-        # Fill in all cells along the line segment
-        if start_c == end_c:  # Vertical wall
-            min_y = min(comp_start_y, comp_end_y)
-            max_y = max(comp_start_y, comp_end_y)
-            for comp_y in range(min_y, max_y + 1):
-                walls_compressed.add((comp_y, comp_start_x))
-        elif start_r == end_r:  # Horizontal wall
-            min_x = min(comp_start_x, comp_end_x)
-            max_x = max(comp_start_x, comp_end_x)
-            for comp_x in range(min_x, max_x + 1):
-                walls_compressed.add((comp_start_y, comp_x))
-
-    # Step 5: Generate SVG
+    # Generate SVG
     cell_size = max(
         2, min(20, 800 // max(grid_width, grid_height))
     )  # Auto-scale cell size
@@ -310,8 +342,8 @@ def generate_compressed_svg(instructions, filename="compressed_maze.svg"):
                 )
 
     # Mark start position
-    start_comp_x = x_to_compressed[0]
-    start_comp_y = y_to_compressed[0]
+    start_comp_x = x_to_compressed[start_pos[1]]  # start_pos is (r, c)
+    start_comp_y = y_to_compressed[start_pos[0]]
     start_x = start_comp_x * cell_size + margin + cell_size // 2
     start_y = (grid_height - 1 - start_comp_y) * cell_size + margin + cell_size // 2
     svg_lines.append(
@@ -319,8 +351,8 @@ def generate_compressed_svg(instructions, filename="compressed_maze.svg"):
     )
 
     # Mark end position
-    end_comp_x = x_to_compressed[r]
-    end_comp_y = y_to_compressed[c]
+    end_comp_x = x_to_compressed[end_pos[1]]  # end_pos is (r, c)
+    end_comp_y = y_to_compressed[end_pos[0]]
     end_x = end_comp_x * cell_size + margin + cell_size // 2
     end_y = (grid_height - 1 - end_comp_y) * cell_size + margin + cell_size // 2
     svg_lines.append(
@@ -334,6 +366,7 @@ def generate_compressed_svg(instructions, filename="compressed_maze.svg"):
         f.write("\n".join(svg_lines))
 
     print(f"Compressed SVG saved to {filename}")
+    return compression_data
 
 
 class Tests(unittest.TestCase):
