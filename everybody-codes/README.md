@@ -94,3 +94,14 @@
 - cellular automaton simulation
 - part 3 required a loop detection, which I actually got right on the first try
 - no big optimizations besides the loop, run time is ~ 1.5 sec, so good enough
+
+### [Quest 15: Definitely Not a Maze](https://everybody.codes/event/2025/quests/15)
+
+- [Python](2025/quest-15-python/ec.py)
+- another tough weekend problem (like quest 10)
+- parts 1 and 2 could be easily solved with flood fill (BFS) on a grid
+- part 3 had huge distances, so it's impossible to go in single steps
+- final solutions is a combination of coordinate compression and Dijkstra
+- had to add some visualization functions to understand what I had to do
+  (run with `--create-svgs` to create the images)
+- run time < 1 sec.
