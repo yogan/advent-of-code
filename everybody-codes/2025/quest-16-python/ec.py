@@ -1,3 +1,4 @@
+import math
 import sys
 import unittest
 
@@ -6,53 +7,37 @@ def parse(filename):
     return list(map(int, open(filename).read().strip().split(",")))
 
 
-def parse_line(line):
-    return list(map(int, line.split(",")))
-
-
 def part1(xs, size=90):
-    res = 0
-    for x in xs:
-        res += size // x
-    return res
+    return sum(size // x for x in xs)
 
 
 def part2(xs):
-    res = 1
-    for p in primes(xs):
-        res *= p
-    return res
+    return math.prod(factors(xs))
 
 
 def part3(xs, blocks=2025_2025_2025_000):
-    ps = primes(xs)
-    left, right = 1, blocks
-    result = -1
+    lo, hi, fs = 1, blocks, factors(xs)
 
-    while left <= right:
-        mid = (left + right) // 2
-        mid_res = part1(ps, size=mid)
-
-        if mid_res == blocks:
-            return mid
-        elif mid_res < blocks:
-            result = mid
-            left = mid + 1
+    while lo < hi:
+        mid = (lo + hi + 1) // 2
+        if part1(fs, size=mid) <= blocks:
+            lo = mid
         else:
-            right = mid - 1
+            hi = mid - 1
 
-    return result
+    return lo
 
 
-def primes(xs):
-    res = []
-    xss = xs.copy()
-    while any(xss):
-        p = next(i for i, x in enumerate(xss) if x > 0) + 1
-        res.append(p)
-        for i in range(p - 1, len(xss), p):
-            xss[i] -= 1
-    return res
+def factors(xs):
+    fs, xs = [], xs.copy()
+
+    while any(xs):
+        f = next(i for i, x in enumerate(xs) if x > 0) + 1
+        fs.append(f)
+        for i in range(f - 1, len(xs), f):
+            xs[i] -= 1
+
+    return fs
 
 
 class Tests(unittest.TestCase):
