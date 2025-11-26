@@ -105,3 +105,8 @@
 - had to add some visualization functions to understand what I had to do
   (run with `--create-svgs` to create the images)
 - run time < 1 sec.
+
+### [Quest 16: Harmonics of Stone](https://everybody.codes/event/2025/quests/16)
+
+- [Python](2025/quest-16-python/ec.py)
+- easy with binary search
