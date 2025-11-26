@@ -14,6 +14,16 @@ def part1(xs):
     return sum(arr)
 
 
+def part2(xs):
+    res = 1
+    while any(xs):
+        p = next(i for i, x in enumerate(xs) if x > 0) + 1
+        res *= p
+        for i in range(p - 1, len(xs), p):
+            xs[i] -= 1
+    return res
+
+
 class Tests(unittest.TestCase):
     def test_part1(self):
         self.assertEqual(part1([1, 2, 3, 5, 9]), 193)
@@ -24,8 +34,10 @@ def main():
 
     if is_sample:
         failures += check(1, part1(parse("sample1.txt")), 193)
+        failures += check(2, part2(parse("sample2.txt")), 270)
     else:
         failures += check(1, part1(parse("input1.txt")), 212)
+        failures += check(2, part2(parse("input2.txt")), 104872255488)
 
     exit(failures)
 
