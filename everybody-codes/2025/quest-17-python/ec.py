@@ -22,8 +22,33 @@ def part1(grid, volcano):
     )
 
 
+def part2(grid, volcano):
+    vr, vc = volcano
+    best, best_dist = 0, 0
+    seen = set()
+
+    for dist in range(1, vr + 1):
+        border = set(
+            (r, c)
+            for r in range(len(grid))
+            for c in range(len(grid[0]))
+            if in_circle(vr - r, vc - c, dist) and not (r, c) in seen
+        )
+        seen |= border
+        cur = sum(grid[r][c] for r, c in border)
+        if cur > best:
+            best = cur
+            best_dist = dist
+
+    return best * best_dist
+
+
 def in_circle(dx, dy, r):
     return dx * dx + dy * dy <= r * r
+
+
+def on_circle(dx, dy, r):
+    return dx * dx + dy * dy == r * r
 
 
 class Tests(unittest.TestCase):
@@ -35,8 +60,10 @@ def main():
 
     if is_sample:
         failures += check(1, part1(*parse("sample1.txt")), 1573)
+        failures += check(2, part2(*parse("sample2.txt")), 1090)
     else:
         failures += check(1, part1(*parse("input1.txt")), 1547)
+        failures += check(2, part2(*parse("input2.txt")), 66222)
 
     exit(failures)
 
