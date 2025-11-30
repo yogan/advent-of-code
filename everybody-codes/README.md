@@ -110,3 +110,17 @@
 
 - [Python](2025/quest-16-python/ec.py)
 - easy with binary search
+
+### [Quest 17: Deadline-Driven Development](https://everybody.codes/event/2025/quests/17)
+
+- [Python](2025/quest-17-python/ec.py)
+- cool problem, but I had to take two major hints to be able to solve part 3
+- hint 1: to create a path that is a loop, we introduce a kind of virtual
+  coordinate called a _winding number_; in our case for a path around the
+  volcano, a bool flag is sufficient; we flip it whenever we cross a _barrier_
+  (here we use a straight line from the volcano to the bottom of the grid)
+- hint 2: instead of trying to increase time durch the path search and aborting
+  when a path touches the growing volcano, modify the grid so that the volcano
+  squares can't be entered (using `None` here); then, create the shortest path
+  on that grid for a given radius and check if the required time is less then
+  the available time (before the volcano destroys the next circle of cells)
