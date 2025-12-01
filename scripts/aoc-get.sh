@@ -13,7 +13,7 @@ if [ -z "${AOC_SESSION}" ]; then
     exit 1
 fi
 
-if [ -n "$1" ] && [ -n "$2" ]; then
+if [ $# -ge 2 ] && [ -n "$1" ] && [ -n "$2" ]; then
     year=$1
     day=$2
 else
