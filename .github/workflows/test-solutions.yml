@@ -21,6 +21,7 @@ jobs:
       changes-2022: ${{ steps.git-diff-check.outputs.changes-2022 }}
       changes-2023: ${{ steps.git-diff-check.outputs.changes-2023 }}
       changes-2024: ${{ steps.git-diff-check.outputs.changes-2024 }}
+      changes-2025: ${{ steps.git-diff-check.outputs.changes-2025 }}
       changes-ci: ${{ steps.git-diff-check.outputs.changes-ci }}
       changes-scripts: ${{ steps.git-diff-check.outputs.changes-scripts }}
       changes-vim: ${{ steps.git-diff-check.outputs.changes-vim }}
@@ -93,6 +94,11 @@ jobs:
             target: '2024'
             command: './scripts/test-days.sh 2024'
             condition: ${{ github.event.schedule || needs.check-changes.outputs.changes-2024 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
+
+          - name: '2025'
+            target: '2025'
+            command: './scripts/test-days.sh 2025'
+            condition: ${{ github.event.schedule || needs.check-changes.outputs.changes-2025 != '0' || needs.check-changes.outputs.changes-ci != '0' || needs.check-changes.outputs.changes-scripts != '0' }}
 
           - name: 'Vim'
             target: 'vim'

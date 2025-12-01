@@ -18,6 +18,7 @@ changes_2021=$(echo "${names}" | grep -c "^2021")
 changes_2022=$(echo "${names}" | grep -c "^2022")
 changes_2023=$(echo "${names}" | grep -c "^2023")
 changes_2024=$(echo "${names}" | grep -c "^2024")
+changes_2025=$(echo "${names}" | grep -c "^2025")
 
 # Docker changes are intentionally not counted as "any changes"
 # Changes to the Dockerfile shall only trigger a rebuild of the Docker image.
@@ -36,7 +37,8 @@ any_changes=$((changes_ci + \
     changes_2021 + \
     changes_2022 + \
     changes_2023 + \
-    changes_2024))
+    changes_2024 + \
+    changes_2025))
 
 echo "changes-ci=${changes_ci}" | tee -a "${GITHUB_OUTPUT}"
 echo "changes-docker=${changes_docker}" | tee -a "${GITHUB_OUTPUT}"
@@ -54,4 +56,5 @@ echo "changes-2021=${changes_2021}" | tee -a "${GITHUB_OUTPUT}"
 echo "changes-2022=${changes_2022}" | tee -a "${GITHUB_OUTPUT}"
 echo "changes-2023=${changes_2023}" | tee -a "${GITHUB_OUTPUT}"
 echo "changes-2024=${changes_2024}" | tee -a "${GITHUB_OUTPUT}"
+echo "changes-2025=${changes_2025}" | tee -a "${GITHUB_OUTPUT}"
 echo "any-changes=${any_changes}" | tee -a "${GITHUB_OUTPUT}"
