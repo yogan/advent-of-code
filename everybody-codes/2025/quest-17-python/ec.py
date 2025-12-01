@@ -57,13 +57,13 @@ def part3(grid, volcano, start):
                 if in_circle(vr - r, vc - c, radius):
                     grid[r][c] = None
 
-        time = dijkstra_loop(grid, volcano, start)
-        time_available = 30 * (radius + 1)
-        if time and time < time_available:
+        time_limit = 30 * (radius + 1)
+        time = dijkstra_loop(grid, volcano, start, time_limit)
+        if time:
             return time * radius
 
 
-def dijkstra_loop(grid, volcano, start):
+def dijkstra_loop(grid, volcano, start, time_limit):
     rows, cols = len(grid), len(grid[0])
     sr, sc = start
     vr, vc = volcano
@@ -73,6 +73,9 @@ def dijkstra_loop(grid, volcano, start):
 
     while queue:
         time, r, c, crossed = heappop(queue)
+
+        if time >= time_limit:
+            return None
 
         if r == sr and c == sc and crossed:
             return time
