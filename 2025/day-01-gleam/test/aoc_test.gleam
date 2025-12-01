@@ -1,4 +1,4 @@
-import aoc.{Left, Right, parse_line, part1}
+import aoc.{Left, Right, parse_line, part1, part2}
 import gleeunit
 import gleeunit/should
 
@@ -21,6 +21,10 @@ const sample = [
 
 pub fn part1_test() {
   sample |> part1 |> should.equal(3)
+}
+
+pub fn part2_test() {
+  sample |> part2 |> should.equal(6)
 }
 
 pub fn parse_line_test() {
