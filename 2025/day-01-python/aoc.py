@@ -2,43 +2,37 @@ import sys
 
 
 def parse():
-    return [(line[0], int(line[1:])) for line in open(filename).readlines()]
+    return [
+        int(line.replace("L", "-").replace("R", ""))
+        for line in open(filename).readlines()
+    ]
 
 
 def part1(moves):
-    total = 0
-    dial = 50
-
-    for d, dist in moves:
-        if d == "R":
-            dial = (dial + dist) % 100
-        else:
-            dial = (dial - dist) % 100
-        if dial == 0:
-            total += 1
-
-    return total
+    return solve(moves, part=1)
 
 
 def part2(moves):
-    total = 0
-    dial = 50
+    return solve(moves, part=2)
 
-    for d, dist in moves:
-        total += dist // 100
-        dist %= 100
 
-        if d == "R":
-            dial = dial + dist
-            if dial >= 100:
-                total += 1
+def solve(moves, part):
+    total, dial = 0, 50
+
+    for move in moves:
+        if part == 1:
+            inc = int(dial == 0)
+            turn = move
         else:
-            prev = dial
-            dial = dial - dist
-            if prev != 0 and dial <= 0:
-                total += 1
+            if move > 0:
+                div, turn = divmod(move, 100)
+                inc = div + int(dial + turn >= 100)
+            else:
+                div, turn = divmod(move, -100)
+                inc = div + int(dial != 0 and dial + turn <= 0)
 
-        dial %= 100
+        dial = (dial + turn) % 100
+        total += inc
 
     return total
 
