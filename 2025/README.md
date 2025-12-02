@@ -6,3 +6,4 @@
 
 ## [Day 02: Gift Shop](https://adventofcode.com/2025/day/2) 🎁
   - ⭐⭐ [Python](day-02-python/aoc.py)
+  - ⭐⭐ [Rust](day-02-rust/src/main.rs)
