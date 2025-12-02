@@ -2,30 +2,20 @@ import sys
 import unittest
 
 
-def parse():
-    return [
-        tuple(map(int, id_range.split("-")))
-        for line in open(filename).readlines()
-        for id_range in line.strip().split(",")
-    ]
-
-
 def part1(ranges):
-    return sum_invalid_ids(ranges, part=1)
+    return sum_invalid_ids(ranges, repeated_once)
 
 
 def part2(ranges):
-    return sum_invalid_ids(ranges, part=2)
+    return sum_invalid_ids(ranges, repeated_seqs)
 
 
-def sum_invalid_ids(ranges, part):
+def sum_invalid_ids(ranges, is_invalid):
     total = 0
 
     for lo, hi in ranges:
         for id in range(lo, hi + 1):
-            if part == 1 and repeated_once(str(id)):
-                total += id
-            elif part == 2 and repeated_seqs(str(id)):
+            if is_invalid(str(id)):
                 total += id
 
     return total
@@ -45,6 +35,14 @@ def repeated_seqs(id):
             return True
 
     return False
+
+
+def parse():
+    return [
+        tuple(map(int, id_range.split("-")))
+        for line in open(filename).readlines()
+        for id_range in line.strip().split(",")
+    ]
 
 
 class Tests(unittest.TestCase):
