@@ -2,20 +2,20 @@ import sys
 import unittest
 
 
+def part1(boxes):
+    return sum([volume(box) for box in boxes])
+
+
+def volume(box):
+    l, w, h = box
+    return l * w * h
+
+
 def parse():
     return [
         [int(num) for num in line.strip().split("x")]
         for line in open(filename).readlines()
     ]
-
-
-def volume(dimensions):
-    l, w, h = dimensions
-    return l * w * h
-
-
-def part1(lines):
-    return sum([volume(x) for x in lines])
 
 
 class Tests(unittest.TestCase):
@@ -24,12 +24,8 @@ class Tests(unittest.TestCase):
 
 
 def main():
-    p1 = part1(parse())
-    p2 = None
-
     failures = 0
-    failures += check(1, p1, 9876 if is_sample else None)
-    failures += check(2, p2, None if is_sample else None)
+    failures += check(1, part1(parse()), 9876 if is_sample else None)
 
     exit(failures)
 
