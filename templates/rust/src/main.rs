@@ -1,108 +1,87 @@
-fn main() {
-    let filename = std::env::args().nth(1).expect("Filename required");
-    let is_sample = filename.to_owned().ends_with("sample.txt");
-    let err_msg = format!("Failed to read {}", filename);
-    let input = std::fs::read_to_string(filename).expect(&err_msg);
-
-    let dimensions = parse(&input);
-
-    assert_and_print(1, is_sample, 14545, 9876, part1(&dimensions));
-    assert_and_print(2, is_sample, 4978, 21756, part2(&dimensions));
-}
-
-fn assert_and_print(
-    part: usize,
-    is_sample: bool,
-    expected: usize,
-    expected_sample: usize,
-    actual: usize,
-) {
-    let suffix = if is_sample { " (sample)" } else { "" };
-    let expected = if is_sample { expected_sample } else { expected };
-    if expected == actual {
-        println!("Part {}: {}{}", part, actual, suffix);
-    } else {
-        panic!(
-            "Part {}: expected {}{}, got {}",
-            part, expected, suffix, actual
-        );
-    }
+fn part1(dimensions: &[(usize, usize, usize)]) -> usize {
+    dimensions.iter().map(|&(l, w, h)| l * w * h).sum()
 }
 
 fn parse(input: &str) -> Vec<(usize, usize, usize)> {
     input
         .lines()
         .map(|line| {
-            let mut parts = line.split('x');
-            let l = parts.next().unwrap().parse().unwrap();
-            let w = parts.next().unwrap().parse().unwrap();
-            let h = parts.next().unwrap().parse().unwrap();
+            let [l, w, h]: [usize; 3] = line
+                .split('x')
+                .map(|s| s.parse().unwrap())
+                .collect::<Vec<_>>()
+                .try_into()
+                .unwrap();
             (l, w, h)
         })
         .collect()
 }
 
-fn surface_area(l: usize, w: usize, h: usize) -> usize {
-    let lw = l * w;
-    let wh = w * h;
-    let hl = h * l;
-    2 * (lw + wh + hl)
-}
+fn main() {
+    let filename = std::env::args().nth(1).expect("Filename required");
+    let is_sample = filename.to_owned().ends_with("sample.txt");
+    let err_msg = format!("Failed to read {}", filename);
+    let input = std::fs::read_to_string(filename).expect(&err_msg);
 
-fn volume(l: usize, w: usize, h: usize) -> usize {
-    l * w * h
-}
+    let mut failures = 0;
+    let dimensions = parse(&input);
 
-fn part1(dimensions: &[(usize, usize, usize)]) -> usize {
-    dimensions.iter().map(|&(l, w, h)| volume(l, w, h)).sum()
-}
+    failures += check(1, is_sample, part1(&dimensions), None, Some(9876));
 
-fn part2(dimensions: &[(usize, usize, usize)]) -> usize {
-    dimensions
-        .iter()
-        .map(|&(l, w, h)| surface_area(l, w, h))
-        .sum()
+    if failures > 0 {
+        std::process::exit(failures);
+    }
+}
+fn check<T>(
+    part: usize,
+    is_sample: bool,
+    actual: T,
+    expected: Option<T>,
+    expected_sample: Option<T>,
+) -> i32
+where
+    T: std::fmt::Display + PartialEq,
+{
+    let target = if is_sample { expected_sample } else { expected };
+    let suffix = if is_sample { " (sample)" } else { "" };
+
+    match target {
+        None => {
+            println!("🤔 Part {}{}: {}", part, suffix, actual);
+            0
+        }
+        Some(e) if actual == e => {
+            println!("✅ Part {}{}: {}", part, suffix, actual);
+            0
+        }
+        Some(e) => {
+            println!("❌ Part {}{}: {} (expected {})", part, suffix, actual, e);
+            1
+        }
+    }
 }
 
 #[cfg(test)]
-mod test {
+mod tests {
     use super::*;
 
+    const SAMPLE_INPUT: &str = "1x2x3
+987x10x1";
+
+    const SAMPLE_DATA: &[(usize, usize, usize)] = &[(1, 2, 3), (987, 10, 1)];
+
     #[test]
-    pub fn parse_works_for_a_single_line() {
-        let input = "1x333x999999999";
-        let result = parse(input);
-
-        assert_eq!(result, vec![(1, 333, 999_999_999)]);
-    }
-
-    fn multi_line_input() -> &'static str {
-        "1x2x3
-10x20x30
-111x222x333"
+    fn parse_sample() {
+        assert_eq!(parse(SAMPLE_INPUT), SAMPLE_DATA);
     }
 
     #[test]
-    pub fn parse_works_for_multiple_lines() {
-        let input = multi_line_input();
-        let result = parse(input);
-
-        assert_eq!(result, vec![(1, 2, 3), (10, 20, 30), (111, 222, 333)]);
+    fn part1_sample() {
+        assert_eq!(part1(SAMPLE_DATA), 6 + 9870);
     }
 
     #[test]
-    pub fn part1_works() {
-        let dimensions = vec![(1, 2, 3), (1, 1, 1)];
-        let result = part1(&dimensions);
-
-        assert_eq!(result, 6 + 1);
-    }
-
-    #[test]
-    pub fn part2_works() {
-        let dimensions = vec![(1, 2, 3), (1, 1, 1)];
-        let result = part2(&dimensions);
-
-        assert_eq!(result, (2 + 2 + 3 + 3 + 6 + 6) + 6);
+    fn parse_works_for_single_line() {
+        assert_eq!(parse("1x333x999999999"), vec![(1, 333, 999_999_999)]);
     }
 }
