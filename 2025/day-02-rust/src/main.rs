@@ -1,3 +1,38 @@
+fn part1(ranges: &[(usize, usize)]) -> usize {
+    sum_invalid_ids(ranges, repeated_once)
+}
+
+fn part2(ranges: &[(usize, usize)]) -> usize {
+    sum_invalid_ids(ranges, repeated_seqs)
+}
+
+fn sum_invalid_ids(ranges: &[(usize, usize)], is_invalid: fn(usize) -> bool) -> usize {
+    ranges
+        .iter()
+        .flat_map(|&(start, end)| start..=end)
+        .filter(|&id| is_invalid(id))
+        .sum()
+}
+
+fn repeated_once(id: usize) -> bool {
+    let s = id.to_string();
+    let mid = s.len() / 2;
+    s[..mid] == s[mid..]
+}
+
+fn repeated_seqs(id: usize) -> bool {
+    let bytes = id.to_string().into_bytes();
+    let len = bytes.len();
+
+    for i in 1..=len / 2 {
+        if bytes.chunks(i).all(|c| c == &bytes[..i]) {
+            return true;
+        }
+    }
+
+    false
+}
+
 fn parse(input: &str) -> Vec<(usize, usize)> {
     input
         .trim_end()
@@ -7,49 +42,6 @@ fn parse(input: &str) -> Vec<(usize, usize)> {
             (start.parse().unwrap(), end.parse().unwrap())
         })
         .collect()
-}
-
-fn part1(ranges: &[(usize, usize)]) -> usize {
-    sum_invalid_ids(ranges, 1)
-}
-
-fn part2(ranges: &[(usize, usize)]) -> usize {
-    sum_invalid_ids(ranges, 2)
-}
-
-fn sum_invalid_ids(ranges: &[(usize, usize)], part: u8) -> usize {
-    let mut total = 0;
-
-    for &(start, end) in ranges {
-        for id in start..=end {
-            if part == 1 && repeated_once(id) || part == 2 && repeated_seqs(id) {
-                total += id;
-            }
-        }
-    }
-
-    total
-}
-
-fn repeated_once(id: usize) -> bool {
-    let s = id.to_string();
-    let (left, right) = s.split_at(s.len() / 2);
-
-    left == right
-}
-
-fn repeated_seqs(id: usize) -> bool {
-    let s = id.to_string();
-    let l = s.len();
-
-    for i in 1..=l / 2 {
-        let seq = &s[..i];
-        if s == seq.repeat(l / seq.len()) {
-            return true;
-        }
-    }
-
-    false
 }
 
 fn main() {
