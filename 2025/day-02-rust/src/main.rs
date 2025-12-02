@@ -13,12 +13,16 @@ fn part1(ranges: &[(usize, usize)]) -> usize {
     sum_invalid_ids(ranges, 1)
 }
 
+fn part2(ranges: &[(usize, usize)]) -> usize {
+    sum_invalid_ids(ranges, 2)
+}
+
 fn sum_invalid_ids(ranges: &[(usize, usize)], part: u8) -> usize {
     let mut total = 0;
 
     for &(start, end) in ranges {
         for id in start..=end {
-            if part == 1 && repeated_once(id) {
+            if part == 1 && repeated_once(id) || part == 2 && repeated_seqs(id) {
                 total += id;
             }
         }
@@ -34,14 +38,28 @@ fn repeated_once(id: usize) -> bool {
     left == right
 }
 
+fn repeated_seqs(id: usize) -> bool {
+    let s = id.to_string();
+    let l = s.len();
+
+    for i in 1..=l / 2 {
+        let seq = &s[..i];
+        if s == seq.repeat(l / seq.len()) {
+            return true;
+        }
+    }
+
+    false
+}
+
 fn main() {
     let filename = std::env::args().nth(1).expect("Filename required");
     let is_sample = filename.to_owned().ends_with("sample.txt");
     let err_msg = format!("Failed to read {}", filename);
     let input = std::fs::read_to_string(filename).expect(&err_msg);
 
-    let ranges = parse(&input);
     let mut failures = 0;
+    let ranges = parse(&input);
 
     failures += check(
         1,
@@ -49,6 +67,13 @@ fn main() {
         part1(&ranges),
         Some(41294979841),
         Some(1227775554),
+    );
+    failures += check(
+        2,
+        is_sample,
+        part2(&ranges),
+        Some(66500947346),
+        Some(4174379265),
     );
 
     if failures > 0 {
@@ -116,6 +141,11 @@ mod tests {
     }
 
     #[test]
+    fn part2_sample() {
+        assert_eq!(part2(SAMPLE), 4174379265);
+    }
+
+    #[test]
     fn test_repeated_once() {
         assert!(repeated_once(11));
         assert!(repeated_once(1010));
@@ -124,5 +154,18 @@ mod tests {
         assert!(!repeated_once(10));
         assert!(!repeated_once(101));
         assert!(!repeated_once(1188511858));
+    }
+
+    #[test]
+    fn test_repeated_seqs() {
+        assert!(repeated_seqs(11));
+        assert!(repeated_seqs(999));
+        assert!(repeated_seqs(1010));
+        assert!(repeated_seqs(1188511885));
+
+        assert!(!repeated_seqs(12));
+        assert!(!repeated_seqs(998));
+        assert!(!repeated_seqs(10101));
+        assert!(!repeated_seqs(118851188));
     }
 }
