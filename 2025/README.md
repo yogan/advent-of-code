@@ -9,4 +9,6 @@
   - ⭐⭐ [Rust](day-02-rust/src/main.rs)
 
 ## [Day 03: Lobby](https://adventofcode.com/2025/day/3) 🔋
-  - ⭐⭐ [Python](day-03-python/aoc.py) yay, recursion
+  - ⭐⭐ [Python](day-03-python/aoc.py)
+  - ⭐⭐ [Haskell](day-03-haskell/src/Lib.hs) ([main](day-03-haskell/app/Main.hs), [tests](day-03-haskell/test/Spec.hs))
+  - yay, recursion
