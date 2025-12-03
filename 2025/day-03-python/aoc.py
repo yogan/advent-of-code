@@ -2,35 +2,44 @@ import sys
 import unittest
 
 
-def part1(banks):
-    total = 0
-    for batteries in banks:
-        total += largest(batteries)
-    return total
+def joltage(banks, digits):
+    return sum(int(largest(batteries, digits)) for batteries in banks)
 
 
-def largest(batteries):
-    l = max(batteries[:-1])
-    i = batteries.index(l)
-    r = max(batteries[i + 1 :])
-    return int(f"{l}{r}")
+def largest(batteries, digits):
+    if digits == 1:
+        return max(batteries)
+
+    offset = 1 - digits
+    digit = max(batteries[:offset])
+    i = batteries.index(digit)
+
+    return digit + largest(batteries[i + 1 :], digits - 1)
 
 
 def parse():
-    return [list(map(int, line.strip())) for line in open(filename).readlines()]
+    return [line.strip() for line in open(filename).readlines()]
 
 
 class Tests(unittest.TestCase):
     def test_largest(self):
-        self.assertEqual(largest([9, 8, 7, 6, 1, 1, 1, 1]), 98)
-        self.assertEqual(largest([8, 1, 1, 1, 1, 1, 1, 9]), 89)
-        self.assertEqual(largest([2, 3, 4, 2, 3, 4, 7, 8]), 78)
-        self.assertEqual(largest([8, 1, 8, 1, 9, 1, 2, 1]), 92)
+        self.assertEqual(largest("987654321111111", 2), "98")
+        self.assertEqual(largest("811111111111119", 2), "89")
+        self.assertEqual(largest("234234234234278", 2), "78")
+        self.assertEqual(largest("818181911112111", 2), "92")
+
+        self.assertEqual(largest("987654321111111", 12), "987654321111")
+        self.assertEqual(largest("811111111111119", 12), "811111111119")
+        self.assertEqual(largest("234234234234278", 12), "434234234278")
+        self.assertEqual(largest("818181911112111", 12), "888911112111")
 
 
 def main():
     failures = 0
-    failures += check(1, part1(parse()), 357 if is_sample else 16973)
+    failures += check(1, joltage(parse(), 2), 357 if is_sample else 16973)
+    failures += check(
+        2, joltage(parse(), 12), 3121910778619 if is_sample else 168027167146027
+    )
 
     exit(failures)
 
