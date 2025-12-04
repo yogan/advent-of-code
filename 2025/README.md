@@ -1,4 +1,4 @@
-# [Advent of Code 2025](https://adventofcode.com/2025) (6/25 ✨)
+# [Advent of Code 2025](https://adventofcode.com/2025) (8/25 ✨)
 
 ## [Day 01: Secret Entrance](https://adventofcode.com/2025/day/1) 🚪
   - ⭐⭐ [Python](day-01-python/aoc.py)
@@ -12,3 +12,6 @@
   - ⭐⭐ [Python](day-03-python/aoc.py)
   - ⭐⭐ [Haskell](day-03-haskell/src/Lib.hs) ([main](day-03-haskell/app/Main.hs), [tests](day-03-haskell/test/Spec.hs))
   - yay, recursion
+
+## [Day 04: Printing Department](https://adventofcode.com/2025/day/4) 🧻
+  - ⭐⭐ [Python](day-04-python/aoc.py)
