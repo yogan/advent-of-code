@@ -15,3 +15,5 @@
 
 ## [Day 04: Printing Department](https://adventofcode.com/2025/day/4) 🧻
   - ⭐⭐ [Python](day-04-python/aoc.py)
+  - optimized from initially 167 ms to 60 ms by introducing a dirty set of
+    positions to check each round

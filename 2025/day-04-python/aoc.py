@@ -1,17 +1,26 @@
 import sys
 
+OFFSETS = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
+
 
 def forklift(grid):
     rows, cols = len(grid), len(grid[0])
+    dirty = {(r, c) for r in range(rows) for c in range(cols) if grid[r][c] == "@"}
     p1, p2 = 0, 0
 
-    while True:
-        liftable = [
-            (r, c)
-            for r in range(rows)
-            for c in range(cols)
-            if grid[r][c] == "@" and can_lift(grid, rows, cols, r, c)
-        ]
+    while dirty:
+        liftable = []
+
+        for r, c in dirty:
+            if grid[r][c] == "@":
+                neighbors = 0
+                for dr, dc in OFFSETS:
+                    nr, nc = r + dr, c + dc
+                    if 0 <= nr < rows and 0 <= nc < cols and grid[nr][nc] == "@":
+                        neighbors += 1
+
+                if neighbors < 4:
+                    liftable.append((r, c))
 
         if not liftable:
             return p1, p2
@@ -23,15 +32,12 @@ def forklift(grid):
         for r, c in liftable:
             grid[r][c] = "."
 
-
-def can_lift(grid, rows, cols, r, c):
-    neighbors = [
-        (r + dr, c + dc)
-        for dr in [-1, 0, 1]
-        for dc in [-1, 0, 1]
-        if (dr != 0 or dc != 0) and 0 <= r + dr < rows and 0 <= c + dc < cols
-    ]
-    return sum(grid[nr][nc] == "@" for nr, nc in neighbors) < 4
+        dirty = {
+            (r + dr, c + dc)
+            for r, c in liftable
+            for dr, dc in OFFSETS
+            if 0 <= r + dr < rows and 0 <= c + dc < cols
+        }
 
 
 def parse():
@@ -39,7 +45,7 @@ def parse():
 
 
 def main():
-    p1, p2 = forklift(parse())
+    p1, p2 = forklift(parse())  # type: ignore
 
     failures = 0
     failures += check(1, p1, 13 if is_sample else 1551)
