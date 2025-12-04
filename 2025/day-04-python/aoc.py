@@ -2,44 +2,36 @@ import sys
 
 
 def forklift(grid):
-    R, C = len(grid), len(grid[0])
+    rows, cols = len(grid), len(grid[0])
     p1, p2 = 0, 0
 
     while True:
-        to_remove = []
-        for r in range(R):
-            for c in range(C):
-                if grid[r][c] == "@" and can_lift(grid, R, C, r, c):
-                    to_remove.append((r, c))
+        liftable = [
+            (r, c)
+            for r in range(rows)
+            for c in range(cols)
+            if grid[r][c] == "@" and can_lift(grid, rows, cols, r, c)
+        ]
 
-        if to_remove:
-            rolls = len(to_remove)
-            if p1 == 0:
-                p1 = rolls
-            p2 += rolls
-            for r, c in to_remove:
-                grid[r][c] = "."
-        else:
+        if not liftable:
             return p1, p2
+
+        count = len(liftable)
+        p1 = p1 or count
+        p2 += count
+
+        for r, c in liftable:
+            grid[r][c] = "."
 
 
 def can_lift(grid, rows, cols, r, c):
-    return 4 > (
-        sum(
-            grid[nr][nc] == "@"
-            for nr, nc in [
-                (r - 1, c - 1),
-                (r - 1, c),
-                (r - 1, c + 1),
-                (r, c - 1),
-                (r, c + 1),
-                (r + 1, c - 1),
-                (r + 1, c),
-                (r + 1, c + 1),
-            ]
-            if 0 <= nr < rows and 0 <= nc < cols
-        )
-    )
+    neighbors = [
+        (r + dr, c + dc)
+        for dr in [-1, 0, 1]
+        for dc in [-1, 0, 1]
+        if (dr != 0 or dc != 0) and 0 <= r + dr < rows and 0 <= c + dc < cols
+    ]
+    return sum(grid[nr][nc] == "@" for nr, nc in neighbors) < 4
 
 
 def parse():
