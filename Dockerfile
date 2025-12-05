@@ -79,9 +79,13 @@ ENV PATH="/usr/local/share/zig:${PATH}"
 # Common LISP via Roswell
 # https://github.com/roswell/roswell/wiki/Installation
 # https://github.com/roswell/roswell/releases
-RUN curl -fsSL https://github.com/roswell/roswell/releases/download/v23.10.14.114/roswell_23.10.14.114-1_amd64.deb --output roswell.deb && \
+# NOTE: without an explicit sbcl version, `ros install quicklisp` errors, at least
+# with sbcl v2.5.11, see:
+# https://github.com/yogan/advent-of-code/actions/runs/19966484132/job/57259512968
+RUN curl -fsSL https://github.com/roswell/roswell/releases/download/v24.10.115/roswell_24.10.115-1_amd64.deb --output roswell.deb && \
     dpkg -i roswell.deb && \
     rm roswell.deb && \
+    ros install sbcl-bin/2.3.2 && \
     ros install quicklisp
 
 # Julia via Juliaup
