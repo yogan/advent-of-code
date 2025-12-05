@@ -1,19 +1,28 @@
 import sys
-import unittest
 
 
 def part1(ranges, ids):
-    total = 0
-
-    for id in ids:
-        if fresh(id, ranges):
-            total += 1
-
-    return total
+    return sum(any(lo <= id <= hi for lo, hi in ranges) for id in ids)
 
 
-def fresh(id, ranges):
-    return any(lo <= id <= hi for lo, hi in ranges)
+def part2(ranges):
+    merged = set()
+
+    for lo, hi in ranges:
+        overlaps = {
+            (c_lo, c_hi)
+            for c_lo, c_hi in merged
+            if lo <= c_hi and c_lo <= hi or c_lo <= hi and lo <= c_hi
+        }
+
+        if overlaps:
+            ids = overlaps | {(lo, hi)}
+            lo, hi = min(l for l, _ in ids), max(r for _, r in ids)
+            merged -= overlaps
+
+        merged.add((lo, hi))
+
+    return sum(hi - lo + 1 for lo, hi in merged)
 
 
 def parse():
@@ -26,15 +35,12 @@ def parse():
     return ranges, ids
 
 
-class Tests(unittest.TestCase):
-    pass
-    # def test_volume(self):
-    #     self.assertEqual(volume([2, 3, 4]), 24)
-
-
 def main():
+    ranges, ids = parse()
+
     failures = 0
-    failures += check(1, part1(*parse()), 3 if is_sample else 509)
+    failures += check(1, part1(ranges, ids), 3 if is_sample else 509)
+    failures += check(2, part2(ranges), 14 if is_sample else 336790092076620)
 
     exit(failures)
 
@@ -62,12 +68,8 @@ if __name__ == "__main__":
     args = [arg for arg in sys.argv[1:] if not arg.startswith("-")]
 
     is_sample = "-s" in flags or "--sample" in flags
-    run_tests = "-t" in flags or "--test" in flags
 
     filename = "sample.txt" if is_sample else "input.txt"
     filename = args[0] if args else filename
-
-    if run_tests:
-        unittest.main(argv=sys.argv[:1])
 
     main()
