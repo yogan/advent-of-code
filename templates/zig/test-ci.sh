@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euo pipefail
+set -uo pipefail
 cd "$(dirname "$0")" || exit 1
 
 if ! ./test.sh; then
@@ -7,7 +7,9 @@ if ! ./test.sh; then
     exit 3
 fi
 
-output=$(./run.sh)
+# Printing to stderr is way easier in Zig, so main output will be there.
+output=$(./run.sh 2>&1)
+echo "${output}"
 
 expected1=14545
 result1=$(echo "${output}" | head -1)
