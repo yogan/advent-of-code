@@ -1,4 +1,4 @@
-# [Advent of Code 2025](https://adventofcode.com/2025) (8/25 ✨)
+# [Advent of Code 2025](https://adventofcode.com/2025) (10/25 ✨)
 
 ## [Day 01: Secret Entrance](https://adventofcode.com/2025/day/1) 🚪
   - ⭐⭐ [Python](day-01-python/aoc.py)
@@ -17,3 +17,7 @@
   - ⭐⭐ [Python](day-04-python/aoc.py)
   - optimized from initially 167 ms to 60 ms by introducing a dirty set of
     positions to check each round
+
+## [Day 05: Cafeteria](https://adventofcode.com/2025/day/5) ☕
+  - ⭐⭐ [Python](day-05-python/aoc.py)
+  - interval merging
