@@ -1,9 +1,6 @@
 include("AoC.jl")
 using .AoC
 
-filename = ARGS[1]
-lines = readlines(filename)
-boxes = parseInput(lines)
-
-println(part1(boxes))
-println(part2(boxes))
+readlines(ARGS[1]) |>
+parseInput |>
+(boxes -> println.((part1(boxes), part2(boxes))))

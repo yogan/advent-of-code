@@ -8,6 +8,8 @@ if ! ./test.sh; then
 fi
 
 output=$(./run.sh)
+echo
+echo "${output}"
 
 expected1=14545
 result1=$(echo "${output}" | tail -2 | head -1)
