@@ -28,4 +28,6 @@
 
 ## [Day 06: Trash Compactor](https://adventofcode.com/2025/day/6) 🗑️
   - ⭐⭐ [Python](day-06-python/aoc.py)
-  - slapping that good old `zip(*lines[::-1])` against the problem
+    - slapping that good old `zip(*lines[::-1])` against the problem
+  - ⭐⭐ [Julia](day-06-julia/src/AoC.jl) ([main](day-06-julia/src/main.jl), [tests](day-06-julia/test/runtests.jl))
+    - hooray, Julia has `rotr90` and `stack`
