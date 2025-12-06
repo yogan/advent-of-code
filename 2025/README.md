@@ -22,7 +22,9 @@
 
 ## [Day 05: Cafeteria](https://adventofcode.com/2025/day/5) ☕
   - ⭐⭐ [Python](day-05-python/aoc.py)
-  - interval merging
+    - interval merging (explicit, with sets)
+  - ⭐⭐ [Elixir](day-05-elixir/lib/aoc.ex) ([main](day-05-elixir/lib/main.ex), [tests](day-05-elixir/test/aoc_test.exs))
+    - sorting ranges by lower boundary (implicit merging)
 
 ## [Day 06: Trash Compactor](https://adventofcode.com/2025/day/6) 🗑️
   - ⭐⭐ [Python](day-06-python/aoc.py)
