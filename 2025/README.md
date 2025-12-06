@@ -1,4 +1,4 @@
-# [Advent of Code 2025](https://adventofcode.com/2025) (10/25 ✨)
+# [Advent of Code 2025](https://adventofcode.com/2025) (12/25 ✨)
 
 ## [Day 01: Secret Entrance](https://adventofcode.com/2025/day/1) 🚪
   - ⭐⭐ [Python](day-01-python/aoc.py)
@@ -21,3 +21,7 @@
 ## [Day 05: Cafeteria](https://adventofcode.com/2025/day/5) ☕
   - ⭐⭐ [Python](day-05-python/aoc.py)
   - interval merging
+
+## [Day 06: Trash Compactor](https://adventofcode.com/2025/day/6) 🗑️
+  - ⭐⭐ [Python](day-06-python/aoc.py)
+  - slapping that good old `zip(*lines[::-1])` against the problem
