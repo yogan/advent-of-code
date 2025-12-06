@@ -1,11 +1,7 @@
 const std = @import("std");
-const isDigit = std.ascii.isDigit;
-const stderr = std.debug;
+const print = std.debug.print;
 const testing = std.testing;
 const Allocator = std.mem.Allocator;
-
-const input = @embedFile("input.txt");
-const sample = @embedFile("sample.txt");
 
 const Records = struct {
     times: []const u64,
@@ -18,24 +14,24 @@ const SingleRecord = struct {
 };
 
 fn parseLine(allocator: Allocator, line: []const u8) ![]u64 {
-    var line_iter = std.mem.split(u8, line, ":");
+    var line_iter = std.mem.splitSequence(u8, line, ":");
     _ = line_iter.next();
     const numbers_part = line_iter.next() orelse "";
 
-    var numbers = std.ArrayList(u64).init(allocator);
-    defer numbers.deinit();
+    var numbers = std.ArrayList(u64){};
+    defer numbers.deinit(allocator);
 
-    var numbers_iter = std.mem.tokenize(u8, numbers_part, " ");
+    var numbers_iter = std.mem.tokenizeSequence(u8, numbers_part, " ");
     while (numbers_iter.next()) |token| {
         const num = try std.fmt.parseInt(u64, token, 10);
-        try numbers.append(num);
+        try numbers.append(allocator, num);
     }
 
-    return numbers.toOwnedSlice();
+    return try numbers.toOwnedSlice(allocator);
 }
 
 fn parseLines(allocator: Allocator, content: []const u8) !Records {
-    var line_iter = std.mem.split(u8, content, "\n");
+    var line_iter = std.mem.splitSequence(u8, content, "\n");
 
     const time_line = line_iter.next() orelse "";
     const distance_line = line_iter.next() orelse "";
@@ -47,8 +43,9 @@ fn parseLines(allocator: Allocator, content: []const u8) !Records {
 }
 
 test "parseLines parses sample" {
+    const sample_content = "Time:      7  15   30\nDistance:  9  40  200\n";
     const allocator = testing.allocator;
-    const result = try parseLines(allocator, sample);
+    const result = try parseLines(allocator, sample_content);
     defer allocator.free(result.times);
     defer allocator.free(result.distances);
 
@@ -145,8 +142,9 @@ fn part1(records: Records) u64 {
 }
 
 test "part1 returns correct result for the sample" {
+    const sample_content = "Time:      7  15   30\nDistance:  9  40  200\n";
     const allocator = testing.allocator;
-    const records = try parseLines(allocator, sample);
+    const records = try parseLines(allocator, sample_content);
     defer allocator.free(records.times);
     defer allocator.free(records.distances);
 
@@ -155,49 +153,40 @@ test "part1 returns correct result for the sample" {
     try testing.expectEqual(result, 288);
 }
 
-test "part1 returns correct result for the real input" {
-    const allocator = testing.allocator;
-    const records = try parseLines(allocator, input);
-    defer allocator.free(records.times);
-    defer allocator.free(records.distances);
-
-    const result = part1(records);
-
-    try testing.expectEqual(result, 2065338);
-}
-
 fn part2(records: Records, allocator: Allocator) !u64 {
     const single_race_records = fixKerning(allocator, records) catch unreachable;
     return countWinningRaces(single_race_records.time, single_race_records.distance);
 }
 
-test "part2 returns correct result for the real input" {
-    const allocator = testing.allocator;
-    const records = try parseLines(allocator, input);
-    defer allocator.free(records.times);
-    defer allocator.free(records.distances);
+pub fn main() !u8 {
+    const alloc = std.heap.page_allocator;
+    const args = try std.process.argsAlloc(alloc);
+    defer std.process.argsFree(alloc, args);
 
-    const result = try part2(records, allocator);
+    if (args.len != 2) {
+        print("Usage: {s} <input-file>\n", .{std.fs.path.basename(args[0])});
+        return 1;
+    }
 
-    try testing.expectEqual(result, 34934171);
-}
+    const content = try readInputFile(args[1], alloc);
+    defer alloc.free(content);
 
-pub fn main() !void {
-    const allocator = std.heap.page_allocator;
-    // const records = try parseLines(allocator, sample);
-    const records = try parseLines(allocator, input);
-    defer allocator.free(records.times);
-    defer allocator.free(records.distances);
+    const records = try parseLines(alloc, content);
+    defer alloc.free(records.times);
+    defer alloc.free(records.distances);
 
     const p1 = part1(records);
-    const p2 = part2(records, allocator) catch 0;
+    const p2 = part2(records, alloc) catch 0;
 
-    const stdout_file = std.io.getStdOut().writer();
-    var bw = std.io.bufferedWriter(stdout_file);
-    const stdout = bw.writer();
+    print("{d}\n", .{p1});
+    print("{d}\n", .{p2});
+    return 0;
+}
 
-    try stdout.print("{d}\n", .{p1});
-    try stdout.print("{d}\n", .{p2});
+pub fn readInputFile(filename: []const u8, alloc: Allocator) ![]u8 {
+    var file = try std.fs.cwd().openFile(filename, .{ .mode = .read_only });
+    defer file.close();
 
-    try bw.flush();
+    const content = try file.readToEndAlloc(alloc, 1024 * 1024); // 1MB max
+    return content;
 }

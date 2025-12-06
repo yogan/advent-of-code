@@ -1,13 +1,15 @@
 #!/bin/bash
-set -euo pipefail
+set -uo pipefail
 cd "$(dirname "$0")" || exit 1
 
-if ! zig build test; then
-    echo "Unit tests failed!"
+if ! ./test.sh; then
+    echo "Unit tests failed"
     exit 3
 fi
 
-output=$(./run.sh)
+# Printing to stderr is way easier in Zig, so main output will be there.
+output=$(./run.sh 2>&1)
+echo "${output}"
 
 expected1=2065338
 result1=$(echo "${output}" | head -1)

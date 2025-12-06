@@ -25,7 +25,7 @@
   - efficient, but complicated range based solution for *part 2* 📏
 
 ## [Day 06: Wait For It](https://adventofcode.com/2023/day/6) 🚤
-  - ⭐⭐ [Zig](day-06-zig/src/main.zig)
+  - ⭐⭐ [Zig](day-06-zig/aoc.zig)
   - took a long time to fix a memory leak
   - Zig is not for the faint of heart 🫨
 

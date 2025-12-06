@@ -1,18 +1,7 @@
 const std = @import("std");
-const stderr = std.debug;
+const print = std.debug.print;
 const testing = std.testing;
 const Allocator = std.mem.Allocator;
-
-fn readInputFile(filename: []const u8) !u24 {
-    var file = try std.fs.cwd().openFile(filename, .{});
-    defer file.close();
-
-    var buf: [10]u8 = undefined;
-    const len = try file.read(&buf);
-
-    const line = std.mem.trimRight(u8, buf[0..len], "\r\n");
-    return try std.fmt.parseInt(u24, line, 10);
-}
 
 fn part1(elves: u24, alloc: Allocator) !u24 {
     const slice = try alloc.alloc(u24, elves);
@@ -109,23 +98,28 @@ test "part2 works for five elves" {
 
 pub fn main() !u8 {
     const alloc = std.heap.page_allocator;
-
     const args = try std.process.argsAlloc(alloc);
     defer std.process.argsFree(alloc, args);
 
     if (args.len != 2) {
-        stderr.print("Usage: {s} <input-file>\n", .{std.fs.path.basename(args[0])});
+        print("Usage: {s} <input-file>\n", .{std.fs.path.basename(args[0])});
         return 1;
     }
 
-    const stdout_file = std.io.getStdOut().writer();
-    var bw = std.io.bufferedWriter(stdout_file);
-    const stdout = bw.writer();
+    const elves = try readInputFile(args[1], alloc);
 
-    const elves = try readInputFile(args[1]);
-    try stdout.print("{d}\n", .{try part1(elves, alloc)});
-    try stdout.print("{d}\n", .{try part2(elves, alloc)});
-
-    try bw.flush();
+    print("{d}\n", .{try part1(elves, alloc)});
+    print("{d}\n", .{try part2(elves, alloc)});
     return 0;
+}
+
+pub fn readInputFile(filename: []const u8, alloc: Allocator) !u24 {
+    var file = try std.fs.cwd().openFile(filename, .{ .mode = .read_only });
+    defer file.close();
+
+    const content = try file.readToEndAlloc(alloc, 1024 * 1024); // 1MB max
+    defer alloc.free(content);
+
+    const line = std.mem.trim(u8, content, "\r\n ");
+    return try std.fmt.parseInt(u24, line, 10);
 }
