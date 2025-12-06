@@ -1,31 +1,27 @@
-import math
-import re
 import sys
 
 
 def part1(lines):
-    grid = [re.split("\\s+", line.strip()) for line in lines]
-    nums = rotate([list(map(int, ns)) for ns in grid[:-1]])
-
-    return sum(calc(op, ns) for op, ns in zip(grid[-1], nums))
+    *rows, ops = (line.strip().split() for line in lines)
+    return sum(calc(op, nums) for op, nums in zip(ops, rotate(rows)))
 
 
 def part2(lines):
     total, op, nums = 0, None, []
 
-    for col in rotate(lines):
-        if all(ch in [" ", "\n"] for ch in col):
+    for new_op, *digits in rotate(lines):
+        if "".join(digits).strip() == "":
             total += calc(op, nums)
             nums = []
         else:
-            op = col[0] if col[0] != " " else op
-            nums.append(int("".join(reversed(col[1:]))))
+            op = new_op if new_op != " " else op
+            nums.append("".join(reversed(digits)))
 
     return total
 
 
 def calc(op, nums):
-    return sum(nums) if op == "+" else math.prod(nums)
+    return eval(op.join(nums))
 
 
 def rotate(grid):
