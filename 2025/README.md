@@ -15,8 +15,10 @@
 
 ## [Day 04: Printing Department](https://adventofcode.com/2025/day/4) 🧻
   - ⭐⭐ [Python](day-04-python/aoc.py)
-  - optimized from initially 167 ms to 60 ms by introducing a dirty set of
-    positions to check each round
+    - optimized from initially 167 ms to 60 ms by introducing a dirty set of
+      positions to check each round
+  - ⭐⭐ [Zig](day-04-zig/aoc.zig)
+    - no dirty set, still sort of fast (75 ms)
 
 ## [Day 05: Cafeteria](https://adventofcode.com/2025/day/5) ☕
   - ⭐⭐ [Python](day-05-python/aoc.py)

@@ -10,6 +10,7 @@
 # Cheers!
 # -andrewrk
 
+aoc
 .zig-cache/
 zig-out/
 /release/
