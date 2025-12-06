@@ -5,15 +5,15 @@ import sys
 
 def part1(lines):
     grid = [re.split("\\s+", line.strip()) for line in lines]
-    nums = list(zip(*[list(map(int, ns)) for ns in grid[:-1]][::-1]))
+    nums = rotate([list(map(int, ns)) for ns in grid[:-1]])
 
-    return sum(calc(op, nums[i]) for i, op in enumerate(grid[-1]))
+    return sum(calc(op, ns) for op, ns in zip(grid[-1], nums))
 
 
 def part2(lines):
     total, op, nums = 0, None, []
 
-    for col in zip(*lines[::-1]):
+    for col in rotate(lines):
         if all(ch in [" ", "\n"] for ch in col):
             total += calc(op, nums)
             nums = []
@@ -26,6 +26,10 @@ def part2(lines):
 
 def calc(op, nums):
     return sum(nums) if op == "+" else math.prod(nums)
+
+
+def rotate(grid):
+    return zip(*grid[::-1])
 
 
 def parse():
