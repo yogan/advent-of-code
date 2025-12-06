@@ -1,28 +1,41 @@
 import math
 import re
 import sys
-import unittest
 
 
-def part1(ops, numbers):
-    total = 0
-    for i in range(len(ops)):
-        total += sum(numbers[i]) if ops[i] == "+" else math.prod(numbers[i])
+def part1(lines):
+    grid = [re.split("\\s+", line.strip()) for line in lines]
+    nums = list(zip(*[list(map(int, ns)) for ns in grid[:-1]][::-1]))
+
+    return sum(calc(op, nums[i]) for i, op in enumerate(grid[-1]))
+
+
+def part2(lines):
+    total, op, nums = 0, None, []
+
+    for col in zip(*lines[::-1]):
+        if all(ch in [" ", "\n"] for ch in col):
+            total += calc(op, nums)
+            nums = []
+        else:
+            op = col[0] if col[0] != " " else op
+            nums.append(int("".join(reversed(col[1:]))))
+
     return total
 
 
+def calc(op, nums):
+    return sum(nums) if op == "+" else math.prod(nums)
+
+
 def parse():
-    table = [re.split("\\s+", line.strip()) for line in open(filename).readlines()]
-    return table[-1], list(zip(*[list(map(int, ns)) for ns in table[:-1]][::-1]))
-
-
-class Tests(unittest.TestCase):
-    pass
+    return open(filename).readlines()
 
 
 def main():
     failures = 0
-    failures += check(1, part1(*parse()), 4277556 if is_sample else 8108520669952)
+    failures += check(1, part1(parse()), 4277556 if is_sample else 8108520669952)
+    failures += check(2, part2(parse()), 3263827 if is_sample else 11708563470209)
 
     exit(failures)
 
@@ -50,12 +63,8 @@ if __name__ == "__main__":
     args = [arg for arg in sys.argv[1:] if not arg.startswith("-")]
 
     is_sample = "-s" in flags or "--sample" in flags
-    run_tests = "-t" in flags or "--test" in flags
 
     filename = "sample.txt" if is_sample else "input.txt"
     filename = args[0] if args else filename
-
-    if run_tests:
-        unittest.main(argv=sys.argv[:1])
 
     main()
