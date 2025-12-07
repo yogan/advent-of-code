@@ -1,40 +1,28 @@
 import sys
 import unittest
+from collections import Counter
 
 
-def part1(rows):
-    p1 = 0
-    beams = dict((c, 1) for c in rows[0])
+def travel_multiverses(rows):
+    splits = 0
+    beams = Counter({c: 1 for c in rows[0]})
 
     for splitters in rows[1:]:
-        collisions = [(c, tl) for c, tl in beams.items() if c in splitters]
-        collision_cols = [c for c, _ in collisions]
-        next_beams = dict()
-
-        for c, tl in collisions:
-            l = c - 1
-            r = c + 1
-            if l in next_beams:
-                next_beams[l] += tl
-            else:
-                next_beams[l] = tl
-            if r in next_beams:
-                next_beams[r] += tl
-            else:
-                next_beams[r] = tl
+        collisions = set()
+        next_beams = Counter()
 
         for c, tl in beams.items():
-            if c in collision_cols:
-                continue
-            if c in next_beams:
-                next_beams[c] += tl
+            if c in splitters:
+                collisions.add(c)
+                next_beams[c - 1] += tl
+                next_beams[c + 1] += tl
             else:
-                next_beams[c] = tl
+                next_beams[c] += tl
 
-        p1 += len(collisions)
+        splits += len(collisions)
         beams = next_beams
 
-    return p1, sum(beams.values())
+    return splits, sum(beams.values())
 
 
 def parse():
@@ -42,7 +30,11 @@ def parse():
 
 
 def columns(lines):
-    return [{c for c, ch in enumerate(l.strip()) if ch != "."} for l in lines]
+    return [
+        [c for c, ch in enumerate(line.strip()) if ch != "."]
+        for line in lines
+        if line.replace(".", "")
+    ]
 
 
 class Tests(unittest.TestCase):
@@ -57,12 +49,12 @@ class Tests(unittest.TestCase):
                     "......^.^......",
                 ]
             ),
-            [{7}, set(), {7}, set(), {6, 8}],
+            [[7], [7], [6, 8]],
         )
 
 
 def main():
-    p1, p2 = part1(parse())
+    p1, p2 = travel_multiverses(parse())
 
     failures = 0
     failures += check(1, p1, 21 if is_sample else 1507)
