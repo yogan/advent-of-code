@@ -2,32 +2,22 @@ package aoc
 
 import java.io.File
 
-data class Box(val l: Int, val w: Int, val h: Int)
+data class Box(val length: Int, val width: Int, val height: Int) {
+    val volume: Int get() = length * width * height
+}
+
+fun part1(boxes: List<Box>) = boxes.sumOf { it.volume }
+
 
 fun main(args: Array<String>) {
-    val lines = File(args[0]).readLines()
-    val boxes = parseLines(lines)
-
+    val boxes = parseLines(File(args[0]).readLines())
     println(part1(boxes))
-    println(part2(boxes))
 }
 
-fun parseLines(lines: List<String>): List<Box> =
-    lines.map {
-        val (l, w, h) = it.split("x").map { it.toInt() }
-        Box(l, w, h)
-    }
+fun parseLines(lines: List<String>): List<Box> = lines.map(::parseBox)
 
-fun part1(boxes: List<Box>) = boxes.sumOf { volume(it) }
-
-fun part2(boxes: List<Box>) = boxes.sumOf { surfaceArea(it) }
-
-private fun volume(box: Box) = with(box) { l * w * h }
-
-private fun surfaceArea(box: Box) = with(box) {
-    val lw = l * w
-    val wh = w * h
-    val hl = h * l
-
-    2 * (lw + wh + hl)
+private fun parseBox(line: String): Box {
+    val (length, width, height) = line.split("x").map(String::toInt)
+    return Box(length, width, height)
 }
+

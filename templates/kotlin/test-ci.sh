@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euo pipefail
+set -uo pipefail
 cd "$(dirname "$0")" || exit 1
 
 if ! ./test.sh; then
@@ -8,6 +8,8 @@ if ! ./test.sh; then
 fi
 
 output=$(./run.sh)
+echo
+echo "${output}"
 
 expected1=14545
 result1=$(echo "${output}" | head -1)
