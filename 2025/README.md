@@ -1,4 +1,4 @@
-# [Advent of Code 2025](https://adventofcode.com/2025) (12/25 ✨)
+# [Advent of Code 2025](https://adventofcode.com/2025) (14/25 ✨)
 
 ## [Day 01: Secret Entrance](https://adventofcode.com/2025/day/1) 🚪
   - ⭐⭐ [Python](day-01-python/aoc.py)
@@ -31,3 +31,7 @@
     - slapping that good old `zip(*lines[::-1])` against the problem
   - ⭐⭐ [Julia](day-06-julia/src/AoC.jl) ([main](day-06-julia/src/main.jl), [tests](day-06-julia/test/runtests.jl))
     - hooray, Julia has `rotr90` and `stack`
+
+## [Day 07: Laboratories](https://adventofcode.com/2025/day/7) 🔬
+  - ⭐⭐ [Python](day-07-python/aoc.py)
+  - cool problem, counting multiverses is fun
