@@ -34,4 +34,12 @@
 
 ## [Day 07: Laboratories](https://adventofcode.com/2025/day/7) 🔬
   - ⭐⭐ [Python](day-07-python/aoc.py)
-  - cool problem, counting multiverses is fun
+    - cool problem, counting multiverses is fun
+    - most people seem to have solved it with DP/recursion/`@cache`, but I
+      directly went for an approach to count the multiverses for each beam
+      position, and updating/merging them row by row, which works really well
+    - using a `Counter` for convenience (no existence checks)
+  - ⭐⭐ [Kotlin](day-07-kotlin/app/src/main/kotlin/aoc/App.kt) ([tests](day-07-kotlin/app/src/test/kotlin/aoc/AppTest.kt))
+    - same algorithm like the Python version, but rewritten in a functional style
+    - Kotlin is a nice language: type aliases, extensions functions, etc.
+    - in 2025 there is finally a sort-of usable LSP, so you can work in NeoVim
