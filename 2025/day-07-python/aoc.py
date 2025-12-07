@@ -3,16 +3,38 @@ import unittest
 
 
 def part1(rows):
-    splits, beams = 0, rows[0]
+    p1 = 0
+    beams = dict((c, 1) for c in rows[0])
 
     for splitters in rows[1:]:
-        collisions = beams & splitters
-        splits += len(collisions)
+        collisions = [(c, tl) for c, tl in beams.items() if c in splitters]
+        collision_cols = [c for c, _ in collisions]
+        next_beams = dict()
 
-        new = {n for c in collisions for n in (c - 1, c + 1)}
-        beams = beams - collisions | new
+        for c, tl in collisions:
+            l = c - 1
+            r = c + 1
+            if l in next_beams:
+                next_beams[l] += tl
+            else:
+                next_beams[l] = tl
+            if r in next_beams:
+                next_beams[r] += tl
+            else:
+                next_beams[r] = tl
 
-    return splits
+        for c, tl in beams.items():
+            if c in collision_cols:
+                continue
+            if c in next_beams:
+                next_beams[c] += tl
+            else:
+                next_beams[c] = tl
+
+        p1 += len(collisions)
+        beams = next_beams
+
+    return p1, sum(beams.values())
 
 
 def parse():
@@ -28,13 +50,11 @@ class Tests(unittest.TestCase):
         self.assertEqual(
             columns(
                 [
-                    # 1234567
                     ".......S.......",
                     "...............",
                     ".......^.......",
                     "...............",
                     "......^.^......",
-                    #      6 8
                 ]
             ),
             [{7}, set(), {7}, set(), {6, 8}],
@@ -42,8 +62,11 @@ class Tests(unittest.TestCase):
 
 
 def main():
+    p1, p2 = part1(parse())
+
     failures = 0
-    failures += check(1, part1(parse()), 21 if is_sample else 1507)
+    failures += check(1, p1, 21 if is_sample else 1507)
+    failures += check(2, p2, 40 if is_sample else 1537373473728)
 
     exit(failures)
 
