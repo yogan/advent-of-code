@@ -49,3 +49,5 @@
     - finally the first graph problem of the year, finding connected components
     - run time is okay (~ 900 ms); I tried to optimize with union find, but that
       did not improve anything
+  - ⭐⭐ [Nim](day-08-nim/aoc.nim) ([tests](day-08-nim/aoctests.nim))
+    - 1:1 reimplementation, run time ~ 600 ms
