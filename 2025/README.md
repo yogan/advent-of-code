@@ -47,6 +47,5 @@
 ## [Day 08: Playground](https://adventofcode.com/2025/day/8) 🛝
   - ⭐⭐ [Python](day-08-python/aoc.py)
     - finally the first graph problem of the year, finding connected components
-    - solution seems a bit ugly, but works
-    - run time is okayish, 1.2 sec
-
+    - run time is okay (~ 900 ms); I tried to optimize with union find, but that
+      did not improve anything
