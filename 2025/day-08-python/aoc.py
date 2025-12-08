@@ -4,12 +4,22 @@ import unittest
 from collections import defaultdict, deque
 
 
-def part1(coordinates):
+def solve(coordinates):
     edge_count = 10 if is_sample else 1000
-    graph = connectShortestEdges(coordinates, edge_count)
-    components = findLargestComponents(len(coordinates), graph)
+    edges, graph = connectShortestEdges(coordinates, edge_count)
+    p1 = part1(coordinates, graph)
+    p2 = part2(coordinates, edges)
+    return p1, p2
 
+
+def part1(coordinates, graph):
+    components = findLargestComponents(len(coordinates), graph)
     return math.prod(map(len, components))
+
+
+def part2(coordinates, edges):
+    (x1, _, _), (x2, _, _) = connectAll(coordinates, edges)  # type: ignore
+    return x1 * x2
 
 
 def connectShortestEdges(coordinates, edge_count):
@@ -26,7 +36,7 @@ def connectShortestEdges(coordinates, edge_count):
         graph[i].add(j)
         graph[j].add(i)
 
-    return graph
+    return edges, graph
 
 
 def findLargestComponents(nodes, graph):
@@ -57,6 +67,29 @@ def findLargestComponents(nodes, graph):
     return components[:3]
 
 
+def connectAll(nodes, edges):
+    components = []
+
+    for _, i, j in edges:
+        i_comp = [comp for comp in components if i in comp]
+        j_comp = [comp for comp in components if j in comp]
+        if not i_comp and not j_comp:
+            components.append(set([i, j]))
+        elif i_comp and j_comp:
+            if i_comp == j_comp:
+                continue
+            components.remove(i_comp[0])
+            components.remove(j_comp[0])
+            components.append(i_comp[0] | j_comp[0])
+        elif i_comp:
+            i_comp[0].add(j)
+        elif j_comp:
+            j_comp[0].add(i)
+
+        if len(components) == 1 and len(components[0]) == len(nodes):
+            return nodes[i], nodes[j]
+
+
 def distance(p1, p2):
     return math.sqrt(sum((a - b) ** 2 for a, b in zip(p1, p2)))
 
@@ -71,8 +104,11 @@ class Tests(unittest.TestCase):
 
 
 def main():
+    p1, p2 = solve(parse())
+
     failures = 0
-    failures += check(1, part1(parse()), 40 if is_sample else 62186)
+    failures += check(1, p1, 40 if is_sample else 62186)
+    failures += check(2, p2, 25272 if is_sample else 8420405530)
 
     exit(failures)
 
