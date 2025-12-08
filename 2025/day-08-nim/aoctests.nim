@@ -33,4 +33,4 @@ suite "Advent of Code in Nim":
 425,690,689
 """
 
-    check solve(parseInput(sample), isSample = true) == (40, 25272)
+    check solve(parseInput(sample), target = 9) == (40, 25272)

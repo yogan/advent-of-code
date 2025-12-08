@@ -1,4 +1,4 @@
-import std/[math, algorithm, sequtils, sets, options, strutils]
+import std/[math, algorithm, sequtils, sets, options, strutils, sugar]
 
 type Node* = tuple[x, y, z: int]
 
@@ -10,7 +10,7 @@ func findCompIndex(node: int, components: seq[HashSet[int]]): Option[int] =
     if node in comp: return some(k)
   return none(int)
 
-proc solve*(nodes: seq[Node], isSample: bool): (int, int) =
+proc solve*(nodes: seq[Node], target: int): (int, int) =
   let n = nodes.len
 
   var edges = newSeqOfCap[(int, int, int)](n * n div 2)
@@ -19,38 +19,33 @@ proc solve*(nodes: seq[Node], isSample: bool): (int, int) =
       edges.add((dist(nodes[i], nodes[j]), i, j))
   edges.sort()
 
-  var components: seq[HashSet[int]] = @[]
+  var components = newSeq[HashSet[int]]()
   var p1, p2 = 0
 
-  let target = if isSample: 9 else: 999
+  for connections, (_, i, j) in edges:
+    let i_comp = findCompIndex(i, components)
+    let j_comp = findCompIndex(j, components)
 
-  for connections, (d, i, j) in edges:
-    let i_opt = findCompIndex(i, components)
-    let j_opt = findCompIndex(j, components)
+    if i_comp.isNone and j_comp.isNone:
+      components.add([i, j].toHashSet)
 
-    if i_opt.isNone and j_opt.isNone:
-      var newComp = initHashSet[int]()
-      newComp.incl(i); newComp.incl(j)
-      components.add(newComp)
-
-    elif i_opt.isSome and j_opt.isSome:
-      let idxI = i_opt.get
-      let idxJ = j_opt.get
+    elif i_comp.isSome and j_comp.isSome:
+      let idxI = i_comp.get
+      let idxJ = j_comp.get
 
       if idxI == idxJ:
         continue
 
       let (keep, remove) = if idxI < idxJ: (idxI, idxJ) else: (idxJ, idxI)
-
       for item in components[remove]:
         components[keep].incl(item)
       components.delete(remove)
 
-    elif i_opt.isSome:
-      components[i_opt.get].incl(j)
+    elif i_comp.isSome:
+      components[i_comp.get].incl(j)
 
-    elif j_opt.isSome:
-      components[j_opt.get].incl(i)
+    elif j_comp.isSome:
+      components[j_comp.get].incl(i)
 
     if connections == target:
       var sizes = components.mapIt(it.len)
@@ -67,11 +62,11 @@ proc solve*(nodes: seq[Node], isSample: bool): (int, int) =
 
 
 proc parseInput*(data: string): seq[Node] =
-  result = @[]
-  for line in data.splitLines:
-    if line.strip.len == 0: continue
-    let parts = line.strip.split(',').map(parseInt)
-    result.add((parts[0], parts[1], parts[2]))
+  collect:
+    for line in data.splitLines:
+      if line.strip.len > 0:
+        let parts = line.strip.split(',').map(parseInt)
+        (parts[0], parts[1], parts[2])
 
 
 when isMainModule:
@@ -83,6 +78,6 @@ when isMainModule:
   let isSample = filename.extractFilename == "sample.txt"
   let nodes = parseInput(readFile(filename))
 
-  let (p1, p2) = solve(nodes, isSample)
+  let (p1, p2) = solve(nodes, target = if isSample: 9 else: 999)
   echo p1
   echo p2
