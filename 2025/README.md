@@ -1,4 +1,4 @@
-# [Advent of Code 2025](https://adventofcode.com/2025) (14/25 ✨)
+# [Advent of Code 2025](https://adventofcode.com/2025) (16/25 ✨)
 
 ## [Day 01: Secret Entrance](https://adventofcode.com/2025/day/1) 🚪
   - ⭐⭐ [Python](day-01-python/aoc.py)
@@ -43,3 +43,10 @@
     - same algorithm like the Python version, but rewritten in a functional style
     - Kotlin is a nice language: type aliases, extensions functions, etc.
     - in 2025 there is finally a sort-of usable LSP, so you can work in NeoVim
+
+## [Day 08: Playground](https://adventofcode.com/2025/day/8) 🛝
+  - ⭐⭐ [Python](day-08-python/aoc.py)
+    - finally the first graph problem of the year, finding connected components
+    - solution seems a bit ugly, but works
+    - run time is okayish, 1.2 sec
+
