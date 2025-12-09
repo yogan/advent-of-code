@@ -5,6 +5,7 @@
 .vscode/perl-lang/
 venv/
 node_modules/
+__pycache__/
 
 # prevent committing personalized input files
 **/input.txt
