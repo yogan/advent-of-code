@@ -1,4 +1,4 @@
-# [Advent of Code 2025](https://adventofcode.com/2025) (16/25 ✨)
+# [Advent of Code 2025](https://adventofcode.com/2025) (18/25 ✨)
 
 ## [Day 01: Secret Entrance](https://adventofcode.com/2025/day/1) 🚪
   - ⭐⭐ [Python](day-01-python/aoc.py)
@@ -51,3 +51,12 @@
       did not improve anything
   - ⭐⭐ [Nim](day-08-nim/aoc.nim) ([tests](day-08-nim/aoctests.nim))
     - 1:1 reimplementation, run time ~ 600 ms
+
+## [Day 09: Movie Theater](https://adventofcode.com/2025/day/9) 📽️
+  - ⭐⭐ [Python](day-09-python/aoc.py)
+    - I wrote four increasingly complicated edge/rectangle intersection
+      functions until I finally found the actual bug:  
+      `area = abs(c2 - c1 + 1) * abs(r2 - r1 + 1)`  
+      is not the same as  
+      `area = (abs(c2 - c1) + 1) * (abs(r2 - r1) + 1)`  
+      (╯°□°）╯︵ ┻━┻
