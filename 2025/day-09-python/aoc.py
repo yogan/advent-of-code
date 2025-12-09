@@ -2,15 +2,12 @@ import sys
 import unittest
 
 
-def solve(positions):
+def solve(coords):
     p1, p2 = 0, 0
-    h_edges, v_edges = edges(positions)
+    E = edges(coords)
 
-    for c1, r1 in positions:
-        for c2, r2 in positions:
-            if c1 == c2 or r1 == r2:
-                continue
-
+    for i, (c1, r1) in enumerate(coords):
+        for c2, r2 in coords[i:]:
             area = (abs(c2 - c1) + 1) * (abs(r2 - r1) + 1)
             p1 = max(p1, area)
 
@@ -18,9 +15,7 @@ def solve(positions):
                 continue
 
             rectangle = (min(c1, c2), max(c1, c2), min(r1, r2), max(r1, r2))
-            if any(inside((c1, r), (c2, r), rectangle) for r, c1, c2 in h_edges):
-                continue
-            if any(inside((c, r1), (c, r2), rectangle) for c, r1, r2 in v_edges):
+            if any(inside(e1, e2, rectangle) for e1, e2 in E):
                 continue
 
             p2 = area
@@ -28,21 +23,8 @@ def solve(positions):
     return p1, p2
 
 
-def edges(positions):
-    h_edges, v_edges = [], []
-    c1, r1 = positions[0]
-
-    for c2, r2 in positions[1:] + [positions[0]]:
-        if r1 == r2:
-            h_edges.append((r1, min(c1, c2), max(c1, c2)))
-        elif c1 == c2:
-            v_edges.append((c1, min(r1, r2), max(r1, r2)))
-        else:
-            raise ValueError("non-rectangulary detected")
-
-        r1, c1 = r2, c2
-
-    return h_edges, v_edges
+def edges(coords):
+    return [sorted([l, r]) for l, r in zip(coords, coords[1:] + [coords[0]])]
 
 
 def inside(p1, p2, rectangle):
@@ -63,12 +45,19 @@ def parse():
 
 class Tests(unittest.TestCase):
     def test_edges(self):
-        # NOTE: All positions are (col, row), which is fucking weird, but this is
-        # how the sample was illustrated in the puzzle, causing me some trouble…
-        sample = [(7, 1), (11, 1), (11, 7), (9, 7), (9, 5), (2, 5), (2, 3), (7, 3)]
-        h_edges = [(1, 7, 11), (7, 9, 11), (5, 2, 9), (3, 2, 7)]
-        v_edges = [(11, 1, 7), (9, 5, 7), (2, 3, 5), (7, 1, 3)]
-        self.assertEqual(edges(sample), (h_edges, v_edges))
+        self.assertEqual(
+            edges([(7, 1), (11, 1), (11, 7), (9, 7), (9, 5), (2, 5), (2, 3), (7, 3)]),
+            [
+                [(7, 1), (11, 1)],
+                [(11, 1), (11, 7)],
+                [(9, 7), (11, 7)],
+                [(9, 5), (9, 7)],
+                [(2, 5), (9, 5)],
+                [(2, 3), (2, 5)],
+                [(2, 3), (7, 3)],
+                [(7, 1), (7, 3)],
+            ],
+        )
 
     def test_inside(self):
         rectangle = (2, 9, 3, 7)
