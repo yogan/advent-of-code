@@ -1,4 +1,4 @@
-# [Advent of Code 2025](https://adventofcode.com/2025) (20/25 ✨)
+# [Advent of Code 2025](https://adventofcode.com/2025) (22/25 ✨)
 
 ## [Day 01: Secret Entrance](https://adventofcode.com/2025/day/1) 🚪
   - ⭐⭐ [Python](day-01-python/aoc.py)
@@ -66,3 +66,7 @@
     - part 1: BFS with a queue and skipping seen states
     - part 2: requires solving a linear equation system, and since math is hard
       I let Z3 do it
+
+## [Day 11: Reactor](https://adventofcode.com/2025/day/11) ⚡
+  - ⭐⭐ [Python](day-11-python/aoc.py)
+    - path counting using DFS + memoization
