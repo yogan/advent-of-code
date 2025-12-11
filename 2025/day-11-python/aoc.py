@@ -1,33 +1,39 @@
 import sys
-import unittest
 from collections import deque
 
 
 def part1(graph):
+    return count_paths(graph, "you", "out")
+
+
+def part2(graph):
+    svr_to_fft = count_paths(graph, "svr", "fft")
+    fft_to_dac = count_paths(graph, "fft", "dac")
+    dac_to_out = count_paths(graph, "dac", "out")
+
+    return svr_to_fft * fft_to_dac * dac_to_out
+
+
+def count_paths(graph, start, end, memo=None):
+    if memo is None:
+        memo = {}
+
+    if start in memo:
+        return memo[start]
+
+    if start == end:
+        return 1
+
     paths = 0
-    seen = set()
-    queue = deque([["you"]])
+    if start in graph:
+        for neighbor in graph[start]:
+            paths += count_paths(graph, neighbor, end, memo)
 
-    while queue:
-        path = queue.popleft()
-
-        key = tuple(path)
-        if key in seen:
-            continue
-        seen.add(key)
-
-        tail = path[-1]
-        if tail == "out":
-            paths += 1
-            continue
-
-        for node in graph[tail]:
-            queue.append(path + [node])
-
+    memo[start] = paths
     return paths
 
 
-def parse():
+def parse(filename):
     graph = dict()
     for line in open(filename).readlines():
         source, targets = line.strip().split(": ")
@@ -35,15 +41,18 @@ def parse():
     return graph
 
 
-class Tests(unittest.TestCase):
-    pass
-    # def test_volume(self):
-    #     self.assertEqual(volume([2, 3, 4]), 24)
-
-
 def main():
+    if is_sample:
+        p1 = part1(parse("sample1.txt"))
+        p2 = part2(parse("sample2.txt"))
+    else:
+        graph = parse("input.txt")
+        p1 = part1(graph)
+        p2 = part2(graph)
+
     failures = 0
-    failures += check(1, part1(parse()), 5 if is_sample else 749)
+    failures += check(1, p1, 5 if is_sample else 749)
+    failures += check(2, p2, 2 if is_sample else 420257875695750)
 
     exit(failures)
 
@@ -69,14 +78,6 @@ def check(part, actual, expected=None):
 if __name__ == "__main__":
     flags = set(arg for arg in sys.argv[1:] if arg.startswith("-"))
     args = [arg for arg in sys.argv[1:] if not arg.startswith("-")]
-
     is_sample = "-s" in flags or "--sample" in flags
-    run_tests = "-t" in flags or "--test" in flags
-
-    filename = "sample.txt" if is_sample else "input.txt"
-    filename = args[0] if args else filename
-
-    if run_tests:
-        unittest.main(argv=sys.argv[:1])
 
     main()
