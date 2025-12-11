@@ -2,16 +2,22 @@ import sys
 import unittest
 from collections import deque
 
+from z3 import Int, Optimize, Sum, sat
+
 
 def part1(machines):
-    return sum(fewest_presses(target, buttons) for target, buttons, _ in machines)
+    return sum(config_lights(target, buttons) for target, buttons, _ in machines)
 
 
-def fewest_presses(target, buttons):
+def part2(machines):
+    return sum(config_joltages(joltages, buttons) for _, buttons, joltages in machines)
+
+
+def config_lights(target, buttons):
     len_buttons = len(buttons)
-    initial_lights = tuple([False] * len(target))
-    queue = deque([(initial_lights, [0] * len_buttons)])
-    seen = set([initial_lights])
+    initial = tuple([False] * len(target))
+    queue = deque([(initial, [0] * len_buttons)])
+    seen = set([initial])
 
     while True:
         lights, presses = queue.popleft()
@@ -32,6 +38,30 @@ def press(lights, button):
     return tuple(not light if i in button else light for i, light in enumerate(lights))
 
 
+def config_joltages(target, buttons):
+    opt = Optimize()
+    n, m = len(buttons), len(target)
+    coeffs = [Int(f"c_{i+1}") for i in range(n)]
+    incs = [button_to_incs(button, m) for button in buttons]
+
+    for c in coeffs:
+        opt.add(c >= 0)
+
+    for j in range(m):
+        opt.add(Sum([coeffs[i] * incs[i][j] for i in range(n)]) == target[j])
+
+    opt.minimize(Sum(coeffs))
+
+    assert opt.check() == sat, "linear equation system not solvable"
+    model = opt.model()
+
+    return sum(model[c].as_long() for c in coeffs)  # type: ignore
+
+
+def button_to_incs(button, length):
+    return [1 if i in button else 0 for i in range(length)]
+
+
 def parse():
     return [parse_machine(line.strip()) for line in open(filename).readlines()]
 
@@ -41,7 +71,7 @@ def parse_machine(line):
 
     target = tuple(ch == "#" for ch in target)
     buttons = [list(map(int, b.split(","))) for b in buttons]
-    joltages = [int(j) for j in joltages.split(",")]
+    joltages = tuple(int(j) for j in joltages.split(","))
 
     return target, buttons, joltages
 
@@ -53,7 +83,7 @@ class Tests(unittest.TestCase):
         )
         self.assertEqual(target, (False, True, True, False))
         self.assertEqual(buttons, [[3], [1, 3], [2], [2, 3], [0, 2], [0, 1]])
-        self.assertEqual(joltages, [3, 5, 4, 7])
+        self.assertEqual(joltages, (3, 5, 4, 7))
 
     def test_press(self):
         lights = (False, True, True, False)
@@ -64,10 +94,15 @@ class Tests(unittest.TestCase):
         self.assertEqual(press(lights, [0, 2]), (True, True, False, False))
         self.assertEqual(press(lights, [0, 1]), (True, False, True, False))
 
+    def test_button_to_incs(self):
+        self.assertEqual(button_to_incs([3], 4), [0, 0, 0, 1])
+        self.assertEqual(button_to_incs([1, 3], 4), [0, 1, 0, 1])
+
 
 def main():
     failures = 0
     failures += check(1, part1(parse()), 7 if is_sample else 449)
+    failures += check(2, part2(parse()), 33 if is_sample else 17848)
 
     exit(failures)
 
