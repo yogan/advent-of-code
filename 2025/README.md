@@ -1,4 +1,4 @@
-# [Advent of Code 2025](https://adventofcode.com/2025) (22/25 ✨)
+# [Advent of Code 2025](https://adventofcode.com/2025) (24/24 ✨)
 
 ## [Day 01: Secret Entrance](https://adventofcode.com/2025/day/1) 🚪
   - ⭐⭐ [Python](day-01-python/aoc.py)
@@ -70,3 +70,7 @@
 ## [Day 11: Reactor](https://adventofcode.com/2025/day/11) ⚡
   - ⭐⭐ [Python](day-11-python/aoc.py)
     - path counting using DFS + memoization
+
+## [Day 12: Christmas Tree Farm](https://adventofcode.com/2025/day/12) 🌲
+  - ⭐⭐ [Python](day-12-python/aoc.py)
+    - better look at that input…
