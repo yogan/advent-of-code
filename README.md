@@ -8,7 +8,7 @@
 * [2022 solutions](2022/README.md) 46/50 ✨ (14 languages)
 * [2023 solutions](2023/README.md) 50/50 ✨ (6 languages, mostly Python)
 * [2024 solutions](2024/README.md) 50/50 ✨ (Awk, Bash, C#, Dart, Elixir, Fortran, Gleam, Haskell, Idris, Julia, Kotlin, Lua, MATLAB, Nim, OCaml, Python, Vim)
-* [2025 solutions](2025/README.md) 22/25 ✨ (Python, Gleam, Rust, Haskell, Zig, Elixir, Julia, Kotlin, Nim)
+* [2025 solutions](2025/README.md) 24/24 ✨ (Python, Gleam, Rust, Haskell, Zig, Elixir, Julia, Kotlin, Nim)
 * [Vim solutions](vim/README.md) 40 ✨ (from 20 days over all years)
 
 ## Other Coding Puzzles
