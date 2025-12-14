@@ -73,4 +73,5 @@
 
 ## [Day 12: Christmas Tree Farm](https://adventofcode.com/2025/day/12) 🌲
   - ⭐⭐ [Python](day-12-python/aoc.py)
-    - better look at that input…
+  - ⭐⭐ [Awk](day-12-awk/aoc.awk)
+  - better look at that input…
