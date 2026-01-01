@@ -10,8 +10,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     # this brings add-apt-repository, needed later:
     software-properties-common \
     # various languages directly from apt
-    vim fish bats leiningen r-base r-cran-testthat ruby3.2 polyml golang-go gawk \
-    guile-3.0 crystal elixir erlang-base erlang-dev erlang-eunit rebar3 nim \
+    vim fish bats leiningen r-base r-cran-testthat ruby3.2 ruby3.2-dev ruby-minitest \
+    polyml golang-go gawk guile-3.0 crystal nim \
+    elixir erlang-base erlang-dev erlang-eunit rebar3 \
     openjdk-8-jdk-headless swi-prolog-nox tcl gfortran octave octave-symbolic \
     # shellcheck and fd for the shellcheck script
     shellcheck fd-find \
@@ -93,9 +94,6 @@ RUN curl -fsSL https://github.com/roswell/roswell/releases/download/v24.10.115/r
 # https://github.com/JuliaLang/juliaup
 RUN curl -fsSL https://install.julialang.org | sh -s -- --yes
 ENV PATH="/root/.juliaup/bin:${PATH}"
-
-# Add Ruby Minitest gem
-RUN gem install minitest
 
 # Gleam
 # https://gleam.run/getting-started/installing
