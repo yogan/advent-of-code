@@ -2,4 +2,4 @@
 set -euo pipefail
 cd "$(dirname "$0")" || exit 1
 
-dotnet test aoc.sln
+dotnet test

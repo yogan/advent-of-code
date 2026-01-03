@@ -1,7 +1,5 @@
 using Xunit;
 
-namespace aoc;
-
 public class AoCTests
 {
     static readonly string[] Sample = ["1x2x3", "987x10x1"];
