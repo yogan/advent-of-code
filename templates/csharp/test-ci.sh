@@ -1,21 +1,18 @@
 #!/bin/bash
 set -uo pipefail
-cd "$(dirname "$0")" || exit 1
+cd "$(dirname "$0")" || exit 9
 
-if ! ./test.sh; then
-	echo "Unit tests failed"
+if ! ./build-ci.sh; then
+	echo "Build failed"
 	exit 3
 fi
 
-BINARY="./bin/Release/net9.0/aoc"
-
-if [ ! -f "${BINARY}" ]; then
-	echo "Binary not found: ${BINARY}"
-	echo "This either means that build-ci.sh was not run, or that it failed."
+if ! ./test.sh; then
+	echo "Unit tests failed"
 	exit 4
 fi
 
-output=$(${BINARY} input.txt)
+output=$(./bin/Release/net9.0/aoc input.txt)
 echo
 echo "${output}"
 
