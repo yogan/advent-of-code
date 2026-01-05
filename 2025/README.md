@@ -60,6 +60,7 @@
       is not the same as  
       `area = (abs(c2 - c1) + 1) * (abs(r2 - r1) + 1)`  
       (╯°□°）╯︵ ┻━┻
+  - ⭐⭐ [F#](day-09-fsharp/AoC.fs)
 
 ## [Day 10: Factory](https://adventofcode.com/2025/day/10) 🏭
   - ⭐⭐ [Python](day-10-python/aoc.py)
