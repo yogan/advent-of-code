@@ -7,35 +7,31 @@ type Edge = (Coord * Coord)
 type Rectangle = (int * int * int * int)
 
 module AoC =
-    let area (c1, r1) (c2, r2) =
-        int64 (abs (c2 - c1) + 1) * int64 (abs (r2 - r1) + 1)
-
-    let combinations list =
-        list
-        |> List.indexed
-        |> List.collect (fun (i, x) -> list |> List.skip i |> List.map (fun y -> x, y))
-
     let edges (coords: Coord seq) : Edge list =
         let cs = coords |> Seq.toList
         let csShifted = List.tail cs @ [ List.head cs ]
         List.zip cs csShifted |> List.map (fun (l, r) -> if l <= r then l, r else r, l)
 
-    let edgeWithin (edges: Edge list) (c1: int, r1: int) (c2: int, r2: int) : bool =
-        let rectangle = min c1 c2, max c1 c2, min r1 r2, max r1 r2
-        let cMin, cMax, rMin, rMax = rectangle
-
-        let inside (p1: Coord) (p2: Coord) =
-            let c1, r1 = p1
-            let c2, r2 = p2
-
-            if r1 = r2 then
-                rMin < r1 && r1 < rMax && c1 < cMax && cMin < c2
-            else
-                cMin < c1 && c1 < cMax && r1 < rMax && rMin < r2
-
-        edges |> List.exists (fun (e1, e2) -> inside e1 e2)
-
     let solve (coords: Coord list) : (int64 * int64) =
+        let area (c1, r1) (c2, r2) =
+            int64 (abs (c2 - c1) + 1) * int64 (abs (r2 - r1) + 1)
+
+        let combinations list =
+            list
+            |> List.indexed
+            |> List.collect (fun (i, x) -> list |> List.skip i |> List.map (fun y -> x, y))
+
+        let edgeWithin edges (c1, r1) (c2, r2) =
+            let cMin, cMax, rMin, rMax = min c1 c2, max c1 c2, min r1 r2, max r1 r2
+
+            let inside (c1, r1) (c2, r2) =
+                if r1 = r2 then
+                    rMin < r1 && r1 < rMax && c1 < cMax && cMin < c2
+                else
+                    cMin < c1 && c1 < cMax && r1 < rMax && rMin < r2
+
+            edges |> List.exists (fun (e1, e2) -> inside e1 e2)
+
         let edges = edges coords
 
         let tryPair (p1, p2) (c1, c2) =
